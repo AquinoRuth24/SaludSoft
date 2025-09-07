@@ -10,11 +10,15 @@ using System.Windows.Forms;
 
 namespace SaludSoft
 {
-    public partial class Form1 : Form
+    public partial class SaludSoft : Form
     {
-        public Form1()
+        public SaludSoft()
         {
             InitializeComponent();
+            
+
         }
+
+   
     }
 }
