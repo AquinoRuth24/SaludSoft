@@ -19,6 +19,9 @@ namespace SaludSoft
 
         }
 
-   
+        private void BNuevoPaciente_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

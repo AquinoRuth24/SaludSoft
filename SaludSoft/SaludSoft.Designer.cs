@@ -35,11 +35,12 @@
             this.BPacientes = new System.Windows.Forms.Button();
             this.BInicio = new System.Windows.Forms.Button();
             this.PSuperior = new System.Windows.Forms.Panel();
+            this.BNuevoPaciente = new System.Windows.Forms.Button();
             this.LRecepcionista = new System.Windows.Forms.Label();
             this.Label = new System.Windows.Forms.Label();
             this.LNombre = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.BCita = new System.Windows.Forms.Button();
+            this.BNuevaCita = new System.Windows.Forms.Button();
             this.PPacientes = new System.Windows.Forms.Panel();
             this.PPacientesHoy = new System.Windows.Forms.PictureBox();
             this.LPacientesHoy = new System.Windows.Forms.Label();
@@ -126,20 +127,34 @@
             // PSuperior
             // 
             this.PSuperior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
+            this.PSuperior.Controls.Add(this.BNuevoPaciente);
             this.PSuperior.Controls.Add(this.LRecepcionista);
             this.PSuperior.Controls.Add(this.Label);
             this.PSuperior.Controls.Add(this.LNombre);
             this.PSuperior.Controls.Add(this.pictureBox1);
-            this.PSuperior.Controls.Add(this.BCita);
+            this.PSuperior.Controls.Add(this.BNuevaCita);
             this.PSuperior.Location = new System.Drawing.Point(2, 1);
             this.PSuperior.Name = "PSuperior";
             this.PSuperior.Size = new System.Drawing.Size(800, 75);
             this.PSuperior.TabIndex = 1;
             // 
+            // BNuevoPaciente
+            // 
+            this.BNuevoPaciente.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(106)))), ((int)(((byte)(32)))));
+            this.BNuevoPaciente.Font = new System.Drawing.Font("Microsoft YaHei", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BNuevoPaciente.ForeColor = System.Drawing.Color.White;
+            this.BNuevoPaciente.Location = new System.Drawing.Point(684, 11);
+            this.BNuevoPaciente.Name = "BNuevoPaciente";
+            this.BNuevoPaciente.Size = new System.Drawing.Size(102, 54);
+            this.BNuevoPaciente.TabIndex = 5;
+            this.BNuevoPaciente.Text = "+ Nuevo Paciente";
+            this.BNuevoPaciente.UseVisualStyleBackColor = false;
+            this.BNuevoPaciente.Click += new System.EventHandler(this.BNuevoPaciente_Click);
+            // 
             // LRecepcionista
             // 
             this.LRecepcionista.AutoSize = true;
-            this.LRecepcionista.Font = new System.Drawing.Font("Microsoft YaHei UI", 21.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LRecepcionista.Font = new System.Drawing.Font("Microsoft YaHei UI", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LRecepcionista.Location = new System.Drawing.Point(108, 8);
             this.LRecepcionista.Name = "LRecepcionista";
             this.LRecepcionista.Size = new System.Drawing.Size(209, 38);
@@ -176,17 +191,17 @@
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
-            // BCita
+            // BNuevaCita
             // 
-            this.BCita.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(106)))), ((int)(((byte)(32)))));
-            this.BCita.Font = new System.Drawing.Font("Microsoft YaHei", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BCita.ForeColor = System.Drawing.Color.White;
-            this.BCita.Location = new System.Drawing.Point(668, 11);
-            this.BCita.Name = "BCita";
-            this.BCita.Size = new System.Drawing.Size(118, 54);
-            this.BCita.TabIndex = 0;
-            this.BCita.Text = "+   Nueva Cita";
-            this.BCita.UseVisualStyleBackColor = false;
+            this.BNuevaCita.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(106)))), ((int)(((byte)(32)))));
+            this.BNuevaCita.Font = new System.Drawing.Font("Microsoft YaHei", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BNuevaCita.ForeColor = System.Drawing.Color.White;
+            this.BNuevaCita.Location = new System.Drawing.Point(555, 11);
+            this.BNuevaCita.Name = "BNuevaCita";
+            this.BNuevaCita.Size = new System.Drawing.Size(118, 54);
+            this.BNuevaCita.TabIndex = 0;
+            this.BNuevaCita.Text = "+   Nueva Cita";
+            this.BNuevaCita.UseVisualStyleBackColor = false;
             // 
             // PPacientes
             // 
@@ -389,7 +404,7 @@
 
         private System.Windows.Forms.Panel PMenu;
         private System.Windows.Forms.Panel PSuperior;
-        private System.Windows.Forms.Button BCita;
+        private System.Windows.Forms.Button BNuevaCita;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button BDoctores;
         private System.Windows.Forms.Button BCitasMedicas;
@@ -414,6 +429,7 @@
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.PictureBox pictureBox5;
+        private System.Windows.Forms.Button BNuevoPaciente;
     }
 }
 

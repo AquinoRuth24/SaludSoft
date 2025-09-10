@@ -16,7 +16,7 @@ namespace SaludSoft
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SaludSoft());
+            Application.Run(new FormPaciente());
         }
     }
 }
