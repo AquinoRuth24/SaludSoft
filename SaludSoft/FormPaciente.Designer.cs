@@ -41,6 +41,8 @@
             this.LPaciente = new System.Windows.Forms.Label();
             this.LTexto = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.LCiudad = new System.Windows.Forms.Label();
+            this.TBCiudad = new System.Windows.Forms.TextBox();
             this.TBEmail = new System.Windows.Forms.TextBox();
             this.TBDireccion = new System.Windows.Forms.TextBox();
             this.TBTelefono = new System.Windows.Forms.TextBox();
@@ -60,8 +62,7 @@
             this.TBApellido = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.LInfoPaciente = new System.Windows.Forms.Label();
-            this.TBCiudad = new System.Windows.Forms.TextBox();
-            this.LCiudad = new System.Windows.Forms.Label();
+            this.BPruebaConexion = new System.Windows.Forms.Button();
             this.PanelLogoPaciente.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.PMenu.SuspendLayout();
@@ -197,6 +198,23 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(595, 141);
             this.panel3.TabIndex = 5;
+            // 
+            // LCiudad
+            // 
+            this.LCiudad.AutoSize = true;
+            this.LCiudad.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LCiudad.Location = new System.Drawing.Point(319, 56);
+            this.LCiudad.Name = "LCiudad";
+            this.LCiudad.Size = new System.Drawing.Size(60, 18);
+            this.LCiudad.TabIndex = 8;
+            this.LCiudad.Text = "Ciudad:";
+            // 
+            // TBCiudad
+            // 
+            this.TBCiudad.Location = new System.Drawing.Point(415, 56);
+            this.TBCiudad.Name = "TBCiudad";
+            this.TBCiudad.Size = new System.Drawing.Size(123, 20);
+            this.TBCiudad.TabIndex = 7;
             // 
             // TBEmail
             // 
@@ -383,28 +401,22 @@
             this.LInfoPaciente.TabIndex = 8;
             this.LInfoPaciente.Text = "Informacion Personal";
             // 
-            // TBCiudad
+            // BPruebaConexion
             // 
-            this.TBCiudad.Location = new System.Drawing.Point(415, 56);
-            this.TBCiudad.Name = "TBCiudad";
-            this.TBCiudad.Size = new System.Drawing.Size(123, 20);
-            this.TBCiudad.TabIndex = 7;
-            // 
-            // LCiudad
-            // 
-            this.LCiudad.AutoSize = true;
-            this.LCiudad.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LCiudad.Location = new System.Drawing.Point(319, 56);
-            this.LCiudad.Name = "LCiudad";
-            this.LCiudad.Size = new System.Drawing.Size(60, 18);
-            this.LCiudad.TabIndex = 8;
-            this.LCiudad.Text = "Ciudad:";
+            this.BPruebaConexion.Location = new System.Drawing.Point(342, 245);
+            this.BPruebaConexion.Name = "BPruebaConexion";
+            this.BPruebaConexion.Size = new System.Drawing.Size(204, 23);
+            this.BPruebaConexion.TabIndex = 8;
+            this.BPruebaConexion.Text = "Prueba Conexion";
+            this.BPruebaConexion.UseVisualStyleBackColor = true;
+            this.BPruebaConexion.Click += new System.EventHandler(this.BPruebaConexion_Click);
             // 
             // FormPaciente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.BPruebaConexion);
             this.Controls.Add(this.BEliminar);
             this.Controls.Add(this.BRegistrar);
             this.Controls.Add(this.panel3);
@@ -463,5 +475,6 @@
         private System.Windows.Forms.TextBox TBDireccion;
         private System.Windows.Forms.Label LCiudad;
         private System.Windows.Forms.TextBox TBCiudad;
+        private System.Windows.Forms.Button BPruebaConexion;
     }
 }
