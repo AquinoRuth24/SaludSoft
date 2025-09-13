@@ -41,6 +41,8 @@
             this.LPaciente = new System.Windows.Forms.Label();
             this.LTexto = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.TBNroCalle = new System.Windows.Forms.TextBox();
+            this.LNroCalle = new System.Windows.Forms.Label();
             this.LCiudad = new System.Windows.Forms.Label();
             this.TBCiudad = new System.Windows.Forms.TextBox();
             this.TBEmail = new System.Windows.Forms.TextBox();
@@ -52,8 +54,6 @@
             this.LInfoContacto = new System.Windows.Forms.Label();
             this.BRegistrar = new System.Windows.Forms.Button();
             this.BEliminar = new System.Windows.Forms.Button();
-            this.RBMujer = new System.Windows.Forms.RadioButton();
-            this.RBHombre = new System.Windows.Forms.RadioButton();
             this.LNombre = new System.Windows.Forms.Label();
             this.LDni = new System.Windows.Forms.Label();
             this.LApellido = new System.Windows.Forms.Label();
@@ -185,6 +185,8 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
+            this.panel3.Controls.Add(this.TBNroCalle);
+            this.panel3.Controls.Add(this.LNroCalle);
             this.panel3.Controls.Add(this.LCiudad);
             this.panel3.Controls.Add(this.TBCiudad);
             this.panel3.Controls.Add(this.TBEmail);
@@ -199,11 +201,29 @@
             this.panel3.Size = new System.Drawing.Size(595, 141);
             this.panel3.TabIndex = 5;
             // 
+            // TBNroCalle
+            // 
+            this.TBNroCalle.Location = new System.Drawing.Point(429, 111);
+            this.TBNroCalle.Name = "TBNroCalle";
+            this.TBNroCalle.Size = new System.Drawing.Size(100, 20);
+            this.TBNroCalle.TabIndex = 10;
+            this.TBNroCalle.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TBNroCalle_KeyPress);
+            // 
+            // LNroCalle
+            // 
+            this.LNroCalle.AutoSize = true;
+            this.LNroCalle.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LNroCalle.Location = new System.Drawing.Point(304, 111);
+            this.LNroCalle.Name = "LNroCalle";
+            this.LNroCalle.Size = new System.Drawing.Size(102, 18);
+            this.LNroCalle.TabIndex = 9;
+            this.LNroCalle.Text = "Numero Calle:";
+            // 
             // LCiudad
             // 
             this.LCiudad.AutoSize = true;
             this.LCiudad.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LCiudad.Location = new System.Drawing.Point(319, 56);
+            this.LCiudad.Location = new System.Drawing.Point(319, 54);
             this.LCiudad.Name = "LCiudad";
             this.LCiudad.Size = new System.Drawing.Size(60, 18);
             this.LCiudad.TabIndex = 8;
@@ -211,10 +231,11 @@
             // 
             // TBCiudad
             // 
-            this.TBCiudad.Location = new System.Drawing.Point(415, 56);
+            this.TBCiudad.Location = new System.Drawing.Point(415, 54);
             this.TBCiudad.Name = "TBCiudad";
             this.TBCiudad.Size = new System.Drawing.Size(123, 20);
             this.TBCiudad.TabIndex = 7;
+            this.TBCiudad.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TBCiudad_KeyPress);
             // 
             // TBEmail
             // 
@@ -222,10 +243,11 @@
             this.TBEmail.Name = "TBEmail";
             this.TBEmail.Size = new System.Drawing.Size(126, 20);
             this.TBEmail.TabIndex = 6;
+            this.TBEmail.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TBEmail_KeyPress);
             // 
             // TBDireccion
             // 
-            this.TBDireccion.Location = new System.Drawing.Point(415, 95);
+            this.TBDireccion.Location = new System.Drawing.Point(415, 82);
             this.TBDireccion.Name = "TBDireccion";
             this.TBDireccion.Size = new System.Drawing.Size(123, 20);
             this.TBDireccion.TabIndex = 5;
@@ -236,12 +258,13 @@
             this.TBTelefono.Name = "TBTelefono";
             this.TBTelefono.Size = new System.Drawing.Size(126, 20);
             this.TBTelefono.TabIndex = 4;
+            this.TBTelefono.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TBTelefono_KeyPress);
             // 
             // LDireccion
             // 
             this.LDireccion.AutoSize = true;
             this.LDireccion.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LDireccion.Location = new System.Drawing.Point(319, 93);
+            this.LDireccion.Location = new System.Drawing.Point(319, 84);
             this.LDireccion.Name = "LDireccion";
             this.LDireccion.Size = new System.Drawing.Size(75, 18);
             this.LDireccion.TabIndex = 3;
@@ -300,28 +323,7 @@
             this.BEliminar.TabIndex = 7;
             this.BEliminar.Text = "Cancelar";
             this.BEliminar.UseVisualStyleBackColor = true;
-            // 
-            // RBMujer
-            // 
-            this.RBMujer.AutoSize = true;
-            this.RBMujer.Location = new System.Drawing.Point(420, 115);
-            this.RBMujer.Name = "RBMujer";
-            this.RBMujer.Size = new System.Drawing.Size(51, 17);
-            this.RBMujer.TabIndex = 0;
-            this.RBMujer.TabStop = true;
-            this.RBMujer.Text = "Mujer";
-            this.RBMujer.UseVisualStyleBackColor = true;
-            // 
-            // RBHombre
-            // 
-            this.RBHombre.AutoSize = true;
-            this.RBHombre.Location = new System.Drawing.Point(341, 115);
-            this.RBHombre.Name = "RBHombre";
-            this.RBHombre.Size = new System.Drawing.Size(62, 17);
-            this.RBHombre.TabIndex = 1;
-            this.RBHombre.TabStop = true;
-            this.RBHombre.Text = "Hombre";
-            this.RBHombre.UseVisualStyleBackColor = true;
+            this.BEliminar.Click += new System.EventHandler(this.BEliminar_Click);
             // 
             // LNombre
             // 
@@ -359,6 +361,7 @@
             this.TBDni.Name = "TBDni";
             this.TBDni.Size = new System.Drawing.Size(140, 20);
             this.TBDni.TabIndex = 5;
+            this.TBDni.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TBDni_KeyPress);
             // 
             // TBNombre
             // 
@@ -366,6 +369,7 @@
             this.TBNombre.Name = "TBNombre";
             this.TBNombre.Size = new System.Drawing.Size(132, 20);
             this.TBNombre.TabIndex = 6;
+            this.TBNombre.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TBNombre_KeyPress);
             // 
             // TBApellido
             // 
@@ -373,6 +377,7 @@
             this.TBApellido.Name = "TBApellido";
             this.TBApellido.Size = new System.Drawing.Size(138, 20);
             this.TBApellido.TabIndex = 7;
+            this.TBApellido.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TBApellido_KeyPress);
             // 
             // panel2
             // 
@@ -384,8 +389,6 @@
             this.panel2.Controls.Add(this.LApellido);
             this.panel2.Controls.Add(this.LDni);
             this.panel2.Controls.Add(this.LNombre);
-            this.panel2.Controls.Add(this.RBHombre);
-            this.panel2.Controls.Add(this.RBMujer);
             this.panel2.Location = new System.Drawing.Point(184, 94);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(567, 145);
@@ -403,7 +406,7 @@
             // 
             // BPruebaConexion
             // 
-            this.BPruebaConexion.Location = new System.Drawing.Point(342, 245);
+            this.BPruebaConexion.Location = new System.Drawing.Point(155, 423);
             this.BPruebaConexion.Name = "BPruebaConexion";
             this.BPruebaConexion.Size = new System.Drawing.Size(204, 23);
             this.BPruebaConexion.TabIndex = 8;
@@ -456,8 +459,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button BRegistrar;
         private System.Windows.Forms.Button BEliminar;
-        private System.Windows.Forms.RadioButton RBMujer;
-        private System.Windows.Forms.RadioButton RBHombre;
         private System.Windows.Forms.Label LNombre;
         private System.Windows.Forms.Label LDni;
         private System.Windows.Forms.Label LApellido;
@@ -476,5 +477,7 @@
         private System.Windows.Forms.Label LCiudad;
         private System.Windows.Forms.TextBox TBCiudad;
         private System.Windows.Forms.Button BPruebaConexion;
+        private System.Windows.Forms.TextBox TBNroCalle;
+        private System.Windows.Forms.Label LNroCalle;
     }
 }

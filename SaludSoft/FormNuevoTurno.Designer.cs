@@ -68,12 +68,12 @@
             this.button6 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.cmbHora = new System.Windows.Forms.ComboBox();
             this.LhoraTurno = new System.Windows.Forms.Label();
             this.dateTimePickerFecha = new System.Windows.Forms.DateTimePicker();
             this.LFechaTurno = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.cmbHora = new System.Windows.Forms.ComboBox();
             this.PanelLogoPaciente.SuspendLayout();
             this.panel1.SuspendLayout();
             this.PMenu.SuspendLayout();
@@ -466,6 +466,7 @@
             this.button9.TabIndex = 9;
             this.button9.Text = "Agregar";
             this.button9.UseVisualStyleBackColor = false;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // panel7
             // 
@@ -480,6 +481,14 @@
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(302, 93);
             this.panel7.TabIndex = 10;
+            // 
+            // cmbHora
+            // 
+            this.cmbHora.FormattingEnabled = true;
+            this.cmbHora.Location = new System.Drawing.Point(169, 60);
+            this.cmbHora.Name = "cmbHora";
+            this.cmbHora.Size = new System.Drawing.Size(121, 21);
+            this.cmbHora.TabIndex = 15;
             // 
             // LhoraTurno
             // 
@@ -527,14 +536,6 @@
             this.label4.Size = new System.Drawing.Size(150, 25);
             this.label4.TabIndex = 8;
             this.label4.Text = "Fecha y Hora";
-            // 
-            // cmbHora
-            // 
-            this.cmbHora.FormattingEnabled = true;
-            this.cmbHora.Location = new System.Drawing.Point(169, 60);
-            this.cmbHora.Name = "cmbHora";
-            this.cmbHora.Size = new System.Drawing.Size(121, 21);
-            this.cmbHora.TabIndex = 15;
             // 
             // FormNuevoTurno
             // 

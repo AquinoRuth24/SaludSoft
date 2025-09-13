@@ -29,12 +29,12 @@ namespace SaludSoft
         {
             try
             {
-                using (SqlConnection conn = Conexion.GetConnection())
+                using (SqlConnection conexion = Conexion.GetConnection())
                 {
-                    conn.Open();
+                    conexion.Open();
                     string query = "SELECT id_profesional, nombre + ' ' + apellido AS Doctor FROM Profesional";
 
-                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                    SqlDataAdapter da = new SqlDataAdapter(query, conexion);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
@@ -54,5 +54,11 @@ namespace SaludSoft
                 MessageBox.Show("Error al cargar doctores: " + ex.Message);
             }
         }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
