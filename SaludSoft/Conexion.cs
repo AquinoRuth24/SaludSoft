@@ -9,11 +9,11 @@ namespace SaludSoft
 {
         public static class Conexion
         {
-            // Cambiá "localhost\\SQLEXPRESS" si tu instancia es distinta
+            
             private static string connectionString =
-               "Server=localhost\\SQLEXPRESS;Database=Tp3punto9;Trusted_Connection=True;";
+                 "Server=localhost\\SQLEXPRESS;Database=SaludSoft;Trusted_Connection=True;";
 
-            public static SqlConnection GetConnection()
+        public static SqlConnection GetConnection()
             {
                 return new SqlConnection(connectionString);
             }

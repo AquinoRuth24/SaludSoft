@@ -34,7 +34,7 @@
             this.LabelRegistroPaciente = new System.Windows.Forms.Label();
             this.PMenu = new System.Windows.Forms.Panel();
             this.BDoctores = new System.Windows.Forms.Button();
-            this.BCitasMedicas = new System.Windows.Forms.Button();
+            this.BTurnos = new System.Windows.Forms.Button();
             this.BPacientes = new System.Windows.Forms.Button();
             this.BInicio = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -104,7 +104,7 @@
             // 
             this.PMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
             this.PMenu.Controls.Add(this.BDoctores);
-            this.PMenu.Controls.Add(this.BCitasMedicas);
+            this.PMenu.Controls.Add(this.BTurnos);
             this.PMenu.Controls.Add(this.BPacientes);
             this.PMenu.Controls.Add(this.BInicio);
             this.PMenu.Location = new System.Drawing.Point(-5, 94);
@@ -122,20 +122,20 @@
             this.BDoctores.Text = "Doctores";
             this.BDoctores.UseVisualStyleBackColor = true;
             // 
-            // BCitasMedicas
+            // BTurnos
             // 
-            this.BCitasMedicas.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BCitasMedicas.Location = new System.Drawing.Point(21, 152);
-            this.BCitasMedicas.Name = "BCitasMedicas";
-            this.BCitasMedicas.Size = new System.Drawing.Size(92, 61);
-            this.BCitasMedicas.TabIndex = 4;
-            this.BCitasMedicas.Text = "Citas Medicas";
-            this.BCitasMedicas.UseVisualStyleBackColor = true;
+            this.BTurnos.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BTurnos.Location = new System.Drawing.Point(17, 164);
+            this.BTurnos.Name = "BTurnos";
+            this.BTurnos.Size = new System.Drawing.Size(108, 37);
+            this.BTurnos.TabIndex = 4;
+            this.BTurnos.Text = "Turnos";
+            this.BTurnos.UseVisualStyleBackColor = true;
             // 
             // BPacientes
             // 
             this.BPacientes.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BPacientes.Location = new System.Drawing.Point(11, 92);
+            this.BPacientes.Location = new System.Drawing.Point(15, 103);
             this.BPacientes.Name = "BPacientes";
             this.BPacientes.Size = new System.Drawing.Size(114, 40);
             this.BPacientes.TabIndex = 5;
@@ -281,7 +281,7 @@
             // BRegistrar
             // 
             this.BRegistrar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
-            this.BRegistrar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BRegistrar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BRegistrar.ForeColor = System.Drawing.SystemColors.Control;
             this.BRegistrar.Location = new System.Drawing.Point(713, 415);
             this.BRegistrar.Name = "BRegistrar";
@@ -293,7 +293,7 @@
             // 
             // BEliminar
             // 
-            this.BEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BEliminar.Location = new System.Drawing.Point(596, 415);
             this.BEliminar.Name = "BEliminar";
             this.BEliminar.Size = new System.Drawing.Size(91, 36);
@@ -446,7 +446,7 @@
         private System.Windows.Forms.Label LabelRegistroPaciente;
         private System.Windows.Forms.Panel PMenu;
         private System.Windows.Forms.Button BDoctores;
-        private System.Windows.Forms.Button BCitasMedicas;
+        private System.Windows.Forms.Button BTurnos;
         private System.Windows.Forms.Button BPacientes;
         private System.Windows.Forms.Button BInicio;
         private System.Windows.Forms.PictureBox pictureBox1;

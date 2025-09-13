@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaludSoft));
             this.PMenu = new System.Windows.Forms.Panel();
             this.BDoctores = new System.Windows.Forms.Button();
-            this.BCitasMedicas = new System.Windows.Forms.Button();
+            this.BTurnos = new System.Windows.Forms.Button();
             this.BPacientes = new System.Windows.Forms.Button();
             this.BInicio = new System.Windows.Forms.Button();
             this.PSuperior = new System.Windows.Forms.Panel();
@@ -50,9 +50,9 @@
             this.PDoctores = new System.Windows.Forms.Panel();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.LDoctores = new System.Windows.Forms.Label();
-            this.PRoximaCitas = new System.Windows.Forms.Panel();
+            this.PRoximosTurnos = new System.Windows.Forms.Panel();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.LproximaCita = new System.Windows.Forms.Label();
+            this.LproximoTurno = new System.Windows.Forms.Label();
             this.PEspecialidades = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.PTurnos = new System.Windows.Forms.Panel();
@@ -66,7 +66,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.PDoctores.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            this.PRoximaCitas.SuspendLayout();
+            this.PRoximosTurnos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             this.PEspecialidades.SuspendLayout();
             this.PTurnos.SuspendLayout();
@@ -76,7 +76,7 @@
             // 
             this.PMenu.BackColor = System.Drawing.Color.DarkGreen;
             this.PMenu.Controls.Add(this.BDoctores);
-            this.PMenu.Controls.Add(this.BCitasMedicas);
+            this.PMenu.Controls.Add(this.BTurnos);
             this.PMenu.Controls.Add(this.BPacientes);
             this.PMenu.Controls.Add(this.BInicio);
             this.PMenu.Location = new System.Drawing.Point(2, 65);
@@ -87,27 +87,27 @@
             // BDoctores
             // 
             this.BDoctores.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BDoctores.Location = new System.Drawing.Point(10, 251);
+            this.BDoctores.Location = new System.Drawing.Point(3, 230);
             this.BDoctores.Name = "BDoctores";
-            this.BDoctores.Size = new System.Drawing.Size(92, 46);
+            this.BDoctores.Size = new System.Drawing.Size(107, 34);
             this.BDoctores.TabIndex = 3;
             this.BDoctores.Text = "Doctores";
             this.BDoctores.UseVisualStyleBackColor = true;
             // 
-            // BCitasMedicas
+            // BTurnos
             // 
-            this.BCitasMedicas.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BCitasMedicas.Location = new System.Drawing.Point(10, 166);
-            this.BCitasMedicas.Name = "BCitasMedicas";
-            this.BCitasMedicas.Size = new System.Drawing.Size(92, 61);
-            this.BCitasMedicas.TabIndex = 4;
-            this.BCitasMedicas.Text = "Citas Medicas";
-            this.BCitasMedicas.UseVisualStyleBackColor = true;
+            this.BTurnos.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BTurnos.Location = new System.Drawing.Point(10, 176);
+            this.BTurnos.Name = "BTurnos";
+            this.BTurnos.Size = new System.Drawing.Size(92, 36);
+            this.BTurnos.TabIndex = 4;
+            this.BTurnos.Text = "Turnos";
+            this.BTurnos.UseVisualStyleBackColor = true;
             // 
             // BPacientes
             // 
             this.BPacientes.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BPacientes.Location = new System.Drawing.Point(3, 103);
+            this.BPacientes.Location = new System.Drawing.Point(3, 114);
             this.BPacientes.Name = "BPacientes";
             this.BPacientes.Size = new System.Drawing.Size(114, 40);
             this.BPacientes.TabIndex = 5;
@@ -147,7 +147,7 @@
             this.BNuevoPaciente.Name = "BNuevoPaciente";
             this.BNuevoPaciente.Size = new System.Drawing.Size(102, 54);
             this.BNuevoPaciente.TabIndex = 5;
-            this.BNuevoPaciente.Text = "+ Nuevo Paciente";
+            this.BNuevoPaciente.Text = "+ Nuevo     Paciente";
             this.BNuevoPaciente.UseVisualStyleBackColor = false;
             this.BNuevoPaciente.Click += new System.EventHandler(this.BNuevoPaciente_Click);
             // 
@@ -196,12 +196,13 @@
             this.BNuevaCita.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(106)))), ((int)(((byte)(32)))));
             this.BNuevaCita.Font = new System.Drawing.Font("Microsoft YaHei", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BNuevaCita.ForeColor = System.Drawing.Color.White;
-            this.BNuevaCita.Location = new System.Drawing.Point(555, 11);
+            this.BNuevaCita.Location = new System.Drawing.Point(570, 11);
             this.BNuevaCita.Name = "BNuevaCita";
-            this.BNuevaCita.Size = new System.Drawing.Size(118, 54);
+            this.BNuevaCita.Size = new System.Drawing.Size(108, 54);
             this.BNuevaCita.TabIndex = 0;
-            this.BNuevaCita.Text = "+   Nueva Cita";
+            this.BNuevaCita.Text = "+ Nuevo     Turno";
             this.BNuevaCita.UseVisualStyleBackColor = false;
+            this.BNuevaCita.Click += new System.EventHandler(this.BNuevaCita_Click);
             // 
             // PPacientes
             // 
@@ -293,15 +294,15 @@
             this.LDoctores.TabIndex = 0;
             this.LDoctores.Text = "Doctores ";
             // 
-            // PRoximaCitas
+            // PRoximosTurnos
             // 
-            this.PRoximaCitas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
-            this.PRoximaCitas.Controls.Add(this.pictureBox5);
-            this.PRoximaCitas.Controls.Add(this.LproximaCita);
-            this.PRoximaCitas.Location = new System.Drawing.Point(128, 262);
-            this.PRoximaCitas.Name = "PRoximaCitas";
-            this.PRoximaCitas.Size = new System.Drawing.Size(200, 100);
-            this.PRoximaCitas.TabIndex = 5;
+            this.PRoximosTurnos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
+            this.PRoximosTurnos.Controls.Add(this.pictureBox5);
+            this.PRoximosTurnos.Controls.Add(this.LproximoTurno);
+            this.PRoximosTurnos.Location = new System.Drawing.Point(128, 262);
+            this.PRoximosTurnos.Name = "PRoximosTurnos";
+            this.PRoximosTurnos.Size = new System.Drawing.Size(200, 100);
+            this.PRoximosTurnos.TabIndex = 5;
             // 
             // pictureBox5
             // 
@@ -313,15 +314,15 @@
             this.pictureBox5.TabIndex = 8;
             this.pictureBox5.TabStop = false;
             // 
-            // LproximaCita
+            // LproximoTurno
             // 
-            this.LproximaCita.AutoSize = true;
-            this.LproximaCita.Font = new System.Drawing.Font("Bookman Old Style", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LproximaCita.Location = new System.Drawing.Point(3, 11);
-            this.LproximaCita.Name = "LproximaCita";
-            this.LproximaCita.Size = new System.Drawing.Size(121, 19);
-            this.LproximaCita.TabIndex = 0;
-            this.LproximaCita.Text = "Proximas Citas";
+            this.LproximoTurno.AutoSize = true;
+            this.LproximoTurno.Font = new System.Drawing.Font("Bookman Old Style", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LproximoTurno.Location = new System.Drawing.Point(3, 11);
+            this.LproximoTurno.Name = "LproximoTurno";
+            this.LproximoTurno.Size = new System.Drawing.Size(133, 19);
+            this.LproximoTurno.TabIndex = 0;
+            this.LproximoTurno.Text = "Proximos Turnos";
             // 
             // PEspecialidades
             // 
@@ -368,7 +369,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.PTurnos);
             this.Controls.Add(this.PEspecialidades);
-            this.Controls.Add(this.PRoximaCitas);
+            this.Controls.Add(this.PRoximosTurnos);
             this.Controls.Add(this.PDoctores);
             this.Controls.Add(this.PCitas);
             this.Controls.Add(this.PPacientes);
@@ -389,8 +390,8 @@
             this.PDoctores.ResumeLayout(false);
             this.PDoctores.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            this.PRoximaCitas.ResumeLayout(false);
-            this.PRoximaCitas.PerformLayout();
+            this.PRoximosTurnos.ResumeLayout(false);
+            this.PRoximosTurnos.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             this.PEspecialidades.ResumeLayout(false);
             this.PEspecialidades.PerformLayout();
@@ -407,7 +408,7 @@
         private System.Windows.Forms.Button BNuevaCita;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button BDoctores;
-        private System.Windows.Forms.Button BCitasMedicas;
+        private System.Windows.Forms.Button BTurnos;
         private System.Windows.Forms.Button BPacientes;
         private System.Windows.Forms.Button BInicio;
         private System.Windows.Forms.Label Label;
@@ -419,8 +420,8 @@
         private System.Windows.Forms.Label LCitasProgramadas;
         private System.Windows.Forms.Panel PDoctores;
         private System.Windows.Forms.Label LDoctores;
-        private System.Windows.Forms.Panel PRoximaCitas;
-        private System.Windows.Forms.Label LproximaCita;
+        private System.Windows.Forms.Panel PRoximosTurnos;
+        private System.Windows.Forms.Label LproximoTurno;
         private System.Windows.Forms.Panel PEspecialidades;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Panel PTurnos;

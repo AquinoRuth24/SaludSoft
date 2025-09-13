@@ -21,7 +21,15 @@ namespace SaludSoft
 
         private void BNuevoPaciente_Click(object sender, EventArgs e)
         {
+            // se instancia el formulario y se muestra 
+            FormPaciente frm = new FormPaciente();  
+            frm.ShowDialog();
+        }
 
+        private void BNuevaCita_Click(object sender, EventArgs e)
+        {
+            FormNuevoTurno frm = new FormNuevoTurno();
+            frm.ShowDialog();
         }
     }
 }
