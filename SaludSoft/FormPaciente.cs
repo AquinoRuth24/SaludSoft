@@ -256,6 +256,7 @@ namespace SaludSoft
             }
         }
 
+        // botones 
         private void BEliminar_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("¿Desea cancelar el Registro?",
@@ -266,7 +267,22 @@ namespace SaludSoft
             if (result == DialogResult.Yes)
             {
                 LimpiarCampos();
+                this.Close();
             }
+        }
+
+        private void BInicio_Click(object sender, EventArgs e)
+        {
+            SaludSoft frm = new SaludSoft();
+            frm.ShowDialog();
+            this.Close();
+        }
+
+        private void BPacientes_Click(object sender, EventArgs e)
+        {
+            FormListaPacientes frm = new FormListaPacientes();
+            frm.ShowDialog();
+            this.Close();
         }
     }
 }

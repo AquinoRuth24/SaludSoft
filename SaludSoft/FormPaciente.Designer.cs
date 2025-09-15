@@ -141,6 +141,7 @@
             this.BPacientes.TabIndex = 5;
             this.BPacientes.Text = "Pacientes";
             this.BPacientes.UseVisualStyleBackColor = true;
+            this.BPacientes.Click += new System.EventHandler(this.BPacientes_Click);
             // 
             // BInicio
             // 
@@ -151,6 +152,7 @@
             this.BInicio.TabIndex = 2;
             this.BInicio.Text = "Inicio";
             this.BInicio.UseVisualStyleBackColor = true;
+            this.BInicio.Click += new System.EventHandler(this.BInicio_Click);
             // 
             // panel1
             // 

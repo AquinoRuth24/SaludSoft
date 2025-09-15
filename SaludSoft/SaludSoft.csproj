@@ -47,6 +47,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conexion.cs" />
+    <Compile Include="FormListaPacientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormListaPacientes.Designer.cs">
+      <DependentUpon>FormListaPacientes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormModificarPaciente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormModificarPaciente.Designer.cs">
+      <DependentUpon>FormModificarPaciente.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormNuevoTurno.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +79,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormListaPacientes.resx">
+      <DependentUpon>FormListaPacientes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormModificarPaciente.resx">
+      <DependentUpon>FormModificarPaciente.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormNuevoTurno.resx">
       <DependentUpon>FormNuevoTurno.cs</DependentUpon>
     </EmbeddedResource>

@@ -46,7 +46,7 @@
             this.LPacientesHoy = new System.Windows.Forms.Label();
             this.PCitas = new System.Windows.Forms.Panel();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.LCitasProgramadas = new System.Windows.Forms.Label();
+            this.LTurnosProgramados = new System.Windows.Forms.Label();
             this.PDoctores = new System.Windows.Forms.Panel();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.LDoctores = new System.Windows.Forms.Label();
@@ -113,6 +113,7 @@
             this.BPacientes.TabIndex = 5;
             this.BPacientes.Text = "Pacientes";
             this.BPacientes.UseVisualStyleBackColor = true;
+            this.BPacientes.Click += new System.EventHandler(this.BPacientes_Click);
             // 
             // BInicio
             // 
@@ -123,6 +124,7 @@
             this.BInicio.TabIndex = 2;
             this.BInicio.Text = "Inicio";
             this.BInicio.UseVisualStyleBackColor = true;
+            this.BInicio.Click += new System.EventHandler(this.BInicio_Click);
             // 
             // PSuperior
             // 
@@ -206,7 +208,7 @@
             // 
             // PPacientes
             // 
-            this.PPacientes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
+            this.PPacientes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(249)))), ((int)(((byte)(240)))));
             this.PPacientes.Controls.Add(this.PPacientesHoy);
             this.PPacientes.Controls.Add(this.LPacientesHoy);
             this.PPacientes.Location = new System.Drawing.Point(128, 108);
@@ -236,37 +238,37 @@
             // 
             // PCitas
             // 
-            this.PCitas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
+            this.PCitas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(243)))), ((int)(((byte)(235)))));
             this.PCitas.Controls.Add(this.pictureBox3);
-            this.PCitas.Controls.Add(this.LCitasProgramadas);
-            this.PCitas.Location = new System.Drawing.Point(363, 108);
+            this.PCitas.Controls.Add(this.LTurnosProgramados);
+            this.PCitas.Location = new System.Drawing.Point(353, 108);
             this.PCitas.Name = "PCitas";
-            this.PCitas.Size = new System.Drawing.Size(200, 100);
+            this.PCitas.Size = new System.Drawing.Size(219, 100);
             this.PCitas.TabIndex = 3;
             // 
             // pictureBox3
             // 
             this.pictureBox3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox3.BackgroundImage")));
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox3.Location = new System.Drawing.Point(153, 0);
+            this.pictureBox3.Location = new System.Drawing.Point(169, 3);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(47, 53);
             this.pictureBox3.TabIndex = 8;
             this.pictureBox3.TabStop = false;
             // 
-            // LCitasProgramadas
+            // LTurnosProgramados
             // 
-            this.LCitasProgramadas.AutoSize = true;
-            this.LCitasProgramadas.Font = new System.Drawing.Font("Bookman Old Style", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LCitasProgramadas.Location = new System.Drawing.Point(3, 6);
-            this.LCitasProgramadas.Name = "LCitasProgramadas";
-            this.LCitasProgramadas.Size = new System.Drawing.Size(150, 19);
-            this.LCitasProgramadas.TabIndex = 0;
-            this.LCitasProgramadas.Text = "Citas Programadas";
+            this.LTurnosProgramados.AutoSize = true;
+            this.LTurnosProgramados.Font = new System.Drawing.Font("Bookman Old Style", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LTurnosProgramados.Location = new System.Drawing.Point(3, 6);
+            this.LTurnosProgramados.Name = "LTurnosProgramados";
+            this.LTurnosProgramados.Size = new System.Drawing.Size(163, 19);
+            this.LTurnosProgramados.TabIndex = 0;
+            this.LTurnosProgramados.Text = "Turnos Programadas";
             // 
             // PDoctores
             // 
-            this.PDoctores.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
+            this.PDoctores.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(240)))), ((int)(((byte)(250)))));
             this.PDoctores.Controls.Add(this.pictureBox4);
             this.PDoctores.Controls.Add(this.LDoctores);
             this.PDoctores.Location = new System.Drawing.Point(588, 108);
@@ -296,7 +298,7 @@
             // 
             // PRoximosTurnos
             // 
-            this.PRoximosTurnos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
+            this.PRoximosTurnos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(243)))), ((int)(((byte)(235)))));
             this.PRoximosTurnos.Controls.Add(this.pictureBox5);
             this.PRoximosTurnos.Controls.Add(this.LproximoTurno);
             this.PRoximosTurnos.Location = new System.Drawing.Point(128, 262);
@@ -326,7 +328,7 @@
             // 
             // PEspecialidades
             // 
-            this.PEspecialidades.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
+            this.PEspecialidades.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(240)))), ((int)(((byte)(250)))));
             this.PEspecialidades.Controls.Add(this.label5);
             this.PEspecialidades.Location = new System.Drawing.Point(363, 262);
             this.PEspecialidades.Name = "PEspecialidades";
@@ -345,7 +347,7 @@
             // 
             // PTurnos
             // 
-            this.PTurnos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
+            this.PTurnos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(249)))), ((int)(((byte)(240)))));
             this.PTurnos.Controls.Add(this.LTodosLosTurnos);
             this.PTurnos.Location = new System.Drawing.Point(588, 262);
             this.PTurnos.Name = "PTurnos";
@@ -417,7 +419,7 @@
         private System.Windows.Forms.Panel PPacientes;
         private System.Windows.Forms.Label LPacientesHoy;
         private System.Windows.Forms.Panel PCitas;
-        private System.Windows.Forms.Label LCitasProgramadas;
+        private System.Windows.Forms.Label LTurnosProgramados;
         private System.Windows.Forms.Panel PDoctores;
         private System.Windows.Forms.Label LDoctores;
         private System.Windows.Forms.Panel PRoximosTurnos;

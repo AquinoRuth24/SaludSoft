@@ -31,5 +31,17 @@ namespace SaludSoft
             FormNuevoTurno frm = new FormNuevoTurno();
             frm.ShowDialog();
         }
+
+        private void BInicio_Click(object sender, EventArgs e)
+        {
+            SaludSoft frm = new SaludSoft();
+            frm.ShowDialog();
+        }
+
+        private void BPacientes_Click(object sender, EventArgs e)
+        {
+            FormListaPacientes frm = new FormListaPacientes();
+            frm.ShowDialog();
+        }
     }
 }

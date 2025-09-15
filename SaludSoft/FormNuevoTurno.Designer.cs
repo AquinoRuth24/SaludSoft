@@ -42,19 +42,19 @@
             this.BInicio = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.button5 = new System.Windows.Forms.Button();
-            this.BTurnos = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
+            this.BDoctoresFromTurnos = new System.Windows.Forms.Button();
+            this.BTurnosFromTurnos = new System.Windows.Forms.Button();
+            this.BPacientesFormTurno = new System.Windows.Forms.Button();
+            this.BInicioFormTurno = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.LCita = new System.Windows.Forms.Label();
             this.LTexto = new System.Windows.Forms.Label();
             this.LabelRegistroCitas = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.LDatosPaciente = new System.Windows.Forms.Label();
-            this.TBApellido = new System.Windows.Forms.TextBox();
-            this.TBNomYApe = new System.Windows.Forms.TextBox();
             this.TBDni = new System.Windows.Forms.TextBox();
+            this.TBNomYApe = new System.Windows.Forms.TextBox();
+            this.TBTelefono = new System.Windows.Forms.TextBox();
             this.LEmail = new System.Windows.Forms.Label();
             this.LTelefono = new System.Windows.Forms.Label();
             this.LNomYApe = new System.Windows.Forms.Label();
@@ -65,10 +65,10 @@
             this.panel6 = new System.Windows.Forms.Panel();
             this.cmbDoctores = new System.Windows.Forms.ComboBox();
             this.LSeleccioneDoctor = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
+            this.BCancelarTurno = new System.Windows.Forms.Button();
+            this.BAgregarTurno = new System.Windows.Forms.Button();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.cmbHora = new System.Windows.Forms.ComboBox();
+            this.dateTimePickerHora = new System.Windows.Forms.DateTimePicker();
             this.LhoraTurno = new System.Windows.Forms.Label();
             this.dateTimePickerFecha = new System.Windows.Forms.DateTimePicker();
             this.LFechaTurno = new System.Windows.Forms.Label();
@@ -214,54 +214,56 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
-            this.panel2.Controls.Add(this.button5);
-            this.panel2.Controls.Add(this.BTurnos);
-            this.panel2.Controls.Add(this.button7);
-            this.panel2.Controls.Add(this.button8);
+            this.panel2.Controls.Add(this.BDoctoresFromTurnos);
+            this.panel2.Controls.Add(this.BTurnosFromTurnos);
+            this.panel2.Controls.Add(this.BPacientesFormTurno);
+            this.panel2.Controls.Add(this.BInicioFormTurno);
             this.panel2.Location = new System.Drawing.Point(0, 94);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(154, 351);
             this.panel2.TabIndex = 3;
             // 
-            // button5
+            // BDoctoresFromTurnos
             // 
-            this.button5.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(27, 223);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(92, 46);
-            this.button5.TabIndex = 3;
-            this.button5.Text = "Doctores";
-            this.button5.UseVisualStyleBackColor = true;
+            this.BDoctoresFromTurnos.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BDoctoresFromTurnos.Location = new System.Drawing.Point(27, 223);
+            this.BDoctoresFromTurnos.Name = "BDoctoresFromTurnos";
+            this.BDoctoresFromTurnos.Size = new System.Drawing.Size(92, 46);
+            this.BDoctoresFromTurnos.TabIndex = 3;
+            this.BDoctoresFromTurnos.Text = "Doctores";
+            this.BDoctoresFromTurnos.UseVisualStyleBackColor = true;
             // 
-            // BTurnos
+            // BTurnosFromTurnos
             // 
-            this.BTurnos.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BTurnos.Location = new System.Drawing.Point(14, 159);
-            this.BTurnos.Name = "BTurnos";
-            this.BTurnos.Size = new System.Drawing.Size(107, 37);
-            this.BTurnos.TabIndex = 4;
-            this.BTurnos.Text = "Turnos";
-            this.BTurnos.UseVisualStyleBackColor = true;
+            this.BTurnosFromTurnos.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BTurnosFromTurnos.Location = new System.Drawing.Point(14, 159);
+            this.BTurnosFromTurnos.Name = "BTurnosFromTurnos";
+            this.BTurnosFromTurnos.Size = new System.Drawing.Size(107, 37);
+            this.BTurnosFromTurnos.TabIndex = 4;
+            this.BTurnosFromTurnos.Text = "Turnos";
+            this.BTurnosFromTurnos.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // BPacientesFormTurno
             // 
-            this.button7.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.Location = new System.Drawing.Point(11, 89);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(114, 40);
-            this.button7.TabIndex = 5;
-            this.button7.Text = "Pacientes";
-            this.button7.UseVisualStyleBackColor = true;
+            this.BPacientesFormTurno.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BPacientesFormTurno.Location = new System.Drawing.Point(11, 89);
+            this.BPacientesFormTurno.Name = "BPacientesFormTurno";
+            this.BPacientesFormTurno.Size = new System.Drawing.Size(114, 40);
+            this.BPacientesFormTurno.TabIndex = 5;
+            this.BPacientesFormTurno.Text = "Pacientes";
+            this.BPacientesFormTurno.UseVisualStyleBackColor = true;
+            this.BPacientesFormTurno.Click += new System.EventHandler(this.BPacientesFormTurno_Click);
             // 
-            // button8
+            // BInicioFormTurno
             // 
-            this.button8.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button8.Location = new System.Drawing.Point(21, 19);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(92, 43);
-            this.button8.TabIndex = 2;
-            this.button8.Text = "Inicio";
-            this.button8.UseVisualStyleBackColor = true;
+            this.BInicioFormTurno.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BInicioFormTurno.Location = new System.Drawing.Point(21, 19);
+            this.BInicioFormTurno.Name = "BInicioFormTurno";
+            this.BInicioFormTurno.Size = new System.Drawing.Size(92, 43);
+            this.BInicioFormTurno.TabIndex = 2;
+            this.BInicioFormTurno.Text = "Inicio";
+            this.BInicioFormTurno.UseVisualStyleBackColor = true;
+            this.BInicioFormTurno.Click += new System.EventHandler(this.BInicioFormTurno_Click);
             // 
             // panel3
             // 
@@ -306,9 +308,9 @@
             // 
             this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
             this.panel4.Controls.Add(this.LDatosPaciente);
-            this.panel4.Controls.Add(this.TBApellido);
-            this.panel4.Controls.Add(this.TBNomYApe);
             this.panel4.Controls.Add(this.TBDni);
+            this.panel4.Controls.Add(this.TBNomYApe);
+            this.panel4.Controls.Add(this.TBTelefono);
             this.panel4.Controls.Add(this.LEmail);
             this.panel4.Controls.Add(this.LTelefono);
             this.panel4.Controls.Add(this.LNomYApe);
@@ -327,12 +329,13 @@
             this.LDatosPaciente.TabIndex = 8;
             this.LDatosPaciente.Text = "Datos del Paciente";
             // 
-            // TBApellido
+            // TBDni
             // 
-            this.TBApellido.Location = new System.Drawing.Point(363, 77);
-            this.TBApellido.Name = "TBApellido";
-            this.TBApellido.Size = new System.Drawing.Size(138, 20);
-            this.TBApellido.TabIndex = 7;
+            this.TBDni.Location = new System.Drawing.Point(363, 77);
+            this.TBDni.Name = "TBDni";
+            this.TBDni.Size = new System.Drawing.Size(138, 20);
+            this.TBDni.TabIndex = 7;
+            this.TBDni.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TBDni_KeyPress);
             // 
             // TBNomYApe
             // 
@@ -341,28 +344,28 @@
             this.TBNomYApe.Size = new System.Drawing.Size(132, 20);
             this.TBNomYApe.TabIndex = 6;
             // 
-            // TBDni
+            // TBTelefono
             // 
-            this.TBDni.Location = new System.Drawing.Point(186, 77);
-            this.TBDni.Name = "TBDni";
-            this.TBDni.Size = new System.Drawing.Size(140, 20);
-            this.TBDni.TabIndex = 5;
+            this.TBTelefono.Location = new System.Drawing.Point(189, 77);
+            this.TBTelefono.Name = "TBTelefono";
+            this.TBTelefono.Size = new System.Drawing.Size(140, 20);
+            this.TBTelefono.TabIndex = 5;
             // 
             // LEmail
             // 
             this.LEmail.AutoSize = true;
             this.LEmail.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LEmail.Location = new System.Drawing.Point(377, 55);
+            this.LEmail.Location = new System.Drawing.Point(406, 55);
             this.LEmail.Name = "LEmail";
-            this.LEmail.Size = new System.Drawing.Size(124, 18);
+            this.LEmail.Size = new System.Drawing.Size(50, 18);
             this.LEmail.TabIndex = 4;
-            this.LEmail.Text = "Email: (Opcional)";
+            this.LEmail.Text = "DNI: *";
             // 
             // LTelefono
             // 
             this.LTelefono.AutoSize = true;
             this.LTelefono.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LTelefono.Location = new System.Drawing.Point(217, 55);
+            this.LTelefono.Location = new System.Drawing.Point(205, 55);
             this.LTelefono.Name = "LTelefono";
             this.LTelefono.Size = new System.Drawing.Size(75, 18);
             this.LTelefono.TabIndex = 3;
@@ -444,34 +447,34 @@
             this.LSeleccioneDoctor.TabIndex = 8;
             this.LSeleccioneDoctor.Text = "Seleccione un Doctor";
             // 
-            // button6
+            // BCancelarTurno
             // 
-            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Location = new System.Drawing.Point(610, 399);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(81, 42);
-            this.button6.TabIndex = 8;
-            this.button6.Text = "Cancelar";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.BCancelarTurno.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BCancelarTurno.Location = new System.Drawing.Point(610, 399);
+            this.BCancelarTurno.Name = "BCancelarTurno";
+            this.BCancelarTurno.Size = new System.Drawing.Size(81, 42);
+            this.BCancelarTurno.TabIndex = 8;
+            this.BCancelarTurno.Text = "Cancelar";
+            this.BCancelarTurno.UseVisualStyleBackColor = true;
+            this.BCancelarTurno.Click += new System.EventHandler(this.BCancelarTurno_Click);
             // 
-            // button9
+            // BAgregarTurno
             // 
-            this.button9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
-            this.button9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button9.ForeColor = System.Drawing.SystemColors.Control;
-            this.button9.Location = new System.Drawing.Point(713, 399);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(87, 42);
-            this.button9.TabIndex = 9;
-            this.button9.Text = "Agregar";
-            this.button9.UseVisualStyleBackColor = false;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.BAgregarTurno.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
+            this.BAgregarTurno.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BAgregarTurno.ForeColor = System.Drawing.SystemColors.Control;
+            this.BAgregarTurno.Location = new System.Drawing.Point(713, 399);
+            this.BAgregarTurno.Name = "BAgregarTurno";
+            this.BAgregarTurno.Size = new System.Drawing.Size(87, 42);
+            this.BAgregarTurno.TabIndex = 9;
+            this.BAgregarTurno.Text = "Agregar";
+            this.BAgregarTurno.UseVisualStyleBackColor = false;
+            this.BAgregarTurno.Click += new System.EventHandler(this.BAgregarTurno_Click);
             // 
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
-            this.panel7.Controls.Add(this.cmbHora);
+            this.panel7.Controls.Add(this.dateTimePickerHora);
             this.panel7.Controls.Add(this.LhoraTurno);
             this.panel7.Controls.Add(this.dateTimePickerFecha);
             this.panel7.Controls.Add(this.LFechaTurno);
@@ -482,13 +485,14 @@
             this.panel7.Size = new System.Drawing.Size(302, 93);
             this.panel7.TabIndex = 10;
             // 
-            // cmbHora
+            // dateTimePickerHora
             // 
-            this.cmbHora.FormattingEnabled = true;
-            this.cmbHora.Location = new System.Drawing.Point(169, 60);
-            this.cmbHora.Name = "cmbHora";
-            this.cmbHora.Size = new System.Drawing.Size(121, 21);
-            this.cmbHora.TabIndex = 15;
+            this.dateTimePickerHora.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePickerHora.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePickerHora.Location = new System.Drawing.Point(198, 60);
+            this.dateTimePickerHora.Name = "dateTimePickerHora";
+            this.dateTimePickerHora.Size = new System.Drawing.Size(82, 24);
+            this.dateTimePickerHora.TabIndex = 15;
             // 
             // LhoraTurno
             // 
@@ -543,8 +547,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 444);
             this.Controls.Add(this.panel7);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.button6);
+            this.Controls.Add(this.BAgregarTurno);
+            this.Controls.Add(this.BCancelarTurno);
             this.Controls.Add(this.panel6);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel4);
@@ -587,19 +591,19 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button BTurnos;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button BDoctoresFromTurnos;
+        private System.Windows.Forms.Button BTurnosFromTurnos;
+        private System.Windows.Forms.Button BPacientesFormTurno;
+        private System.Windows.Forms.Button BInicioFormTurno;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label LCita;
         private System.Windows.Forms.Label LTexto;
         private System.Windows.Forms.Label LabelRegistroCitas;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label LDatosPaciente;
-        private System.Windows.Forms.TextBox TBApellido;
-        private System.Windows.Forms.TextBox TBNomYApe;
         private System.Windows.Forms.TextBox TBDni;
+        private System.Windows.Forms.TextBox TBNomYApe;
+        private System.Windows.Forms.TextBox TBTelefono;
         private System.Windows.Forms.Label LEmail;
         private System.Windows.Forms.Label LTelefono;
         private System.Windows.Forms.Label LNomYApe;
@@ -609,8 +613,8 @@
         private System.Windows.Forms.Label LMotivoConsulta;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label LSeleccioneDoctor;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button BCancelarTurno;
+        private System.Windows.Forms.Button BAgregarTurno;
         private System.Windows.Forms.ComboBox cmbDoctores;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.DateTimePicker dateTimePickerFecha;
@@ -618,6 +622,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label LhoraTurno;
-        private System.Windows.Forms.ComboBox cmbHora;
+        private System.Windows.Forms.DateTimePicker dateTimePickerHora;
     }
 }
