@@ -15,13 +15,17 @@ namespace SaludSoft
         public FormLogin()
         {
             InitializeComponent();
-            // Bloquear teclas no alfanuméricas
-            tbUsuario.KeyPress += SoloAlfanumerico_KeyPress;
-            tbContraseña.KeyPress += SoloAlfanumerico_KeyPress;
 
-            // Si pegan texto con caracteres inválidos, lo limpio
-            tbUsuario.TextChanged += SanitizarAlPegar;
-            tbContraseña.TextChanged += SanitizarAlPegar;
+            if (!DesignMode) 
+            {
+                // Bloquear teclas no alfanuméricas
+                tbUsuario.KeyPress += SoloAlfanumerico_KeyPress;
+                tbContraseña.KeyPress += SoloAlfanumerico_KeyPress;
+
+                // Si pegan texto con caracteres inválidos, lo limpio
+                tbUsuario.TextChanged += SanitizarAlPegar;
+                tbContraseña.TextChanged += SanitizarAlPegar;
+            }
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -51,12 +55,12 @@ namespace SaludSoft
 
         private void lOlvidasteContraseña_Click(object sender, EventArgs e)
         {
-        MessageBox.Show(
-        "Contactá al administrador o usa el proceso de recuperación.",
-        "Olvidé mi contraseña",
-        MessageBoxButtons.OK,
-        MessageBoxIcon.Information
-    );
+            MessageBox.Show(
+                "Contactá al administrador o usa el proceso de recuperación.",
+                "Olvidé mi contraseña",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
         }
 
         // 1) Bloquea en el momento de tipear (no permite escribir nada que no sea letra o número)

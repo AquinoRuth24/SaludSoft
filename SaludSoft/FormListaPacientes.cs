@@ -15,8 +15,11 @@ namespace SaludSoft
     {
         public FormListaPacientes()
         {
-            InitializeComponent();
-            CargarPacientes();
+            if (!DesignMode)
+            {
+                InitializeComponent();
+                CargarPacientes();
+            }
         }
         // botones 
         private void BInicioFormTurno_Click(object sender, EventArgs e)

@@ -57,8 +57,9 @@
             this.panel1.Controls.Add(this.label3);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(878, 471);
+            this.panel1.Size = new System.Drawing.Size(988, 509);
             this.panel1.TabIndex = 1;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -67,9 +68,10 @@
             this.lOlvidasteContraseña.AutoSize = true;
             this.lOlvidasteContraseña.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lOlvidasteContraseña.ForeColor = System.Drawing.Color.Red;
-            this.lOlvidasteContraseña.Location = new System.Drawing.Point(334, 406);
+            this.lOlvidasteContraseña.Location = new System.Drawing.Point(414, 468);
+            this.lOlvidasteContraseña.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lOlvidasteContraseña.Name = "lOlvidasteContraseña";
-            this.lOlvidasteContraseña.Size = new System.Drawing.Size(226, 24);
+            this.lOlvidasteContraseña.Size = new System.Drawing.Size(154, 17);
             this.lOlvidasteContraseña.TabIndex = 6;
             this.lOlvidasteContraseña.Text = "¿Olvidaste tu contraseña?";
             this.lOlvidasteContraseña.Click += new System.EventHandler(this.lOlvidasteContraseña_Click);
@@ -79,9 +81,10 @@
             this.btIniciarSesion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.btIniciarSesion.Font = new System.Drawing.Font("Comic Sans MS", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btIniciarSesion.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btIniciarSesion.Location = new System.Drawing.Point(338, 334);
+            this.btIniciarSesion.Location = new System.Drawing.Point(429, 405);
+            this.btIniciarSesion.Margin = new System.Windows.Forms.Padding(2);
             this.btIniciarSesion.Name = "btIniciarSesion";
-            this.btIniciarSesion.Size = new System.Drawing.Size(209, 52);
+            this.btIniciarSesion.Size = new System.Drawing.Size(139, 34);
             this.btIniciarSesion.TabIndex = 4;
             this.btIniciarSesion.Text = "Iniciar Sesión";
             this.btIniciarSesion.UseVisualStyleBackColor = false;
@@ -89,17 +92,19 @@
             // 
             // tbContraseña
             // 
-            this.tbContraseña.Location = new System.Drawing.Point(443, 272);
+            this.tbContraseña.Location = new System.Drawing.Point(469, 313);
+            this.tbContraseña.Margin = new System.Windows.Forms.Padding(2);
             this.tbContraseña.Name = "tbContraseña";
-            this.tbContraseña.Size = new System.Drawing.Size(147, 26);
+            this.tbContraseña.Size = new System.Drawing.Size(99, 20);
             this.tbContraseña.TabIndex = 5;
             this.tbContraseña.UseSystemPasswordChar = true;
             // 
             // tbUsuario
             // 
-            this.tbUsuario.Location = new System.Drawing.Point(443, 206);
+            this.tbUsuario.Location = new System.Drawing.Point(469, 270);
+            this.tbUsuario.Margin = new System.Windows.Forms.Padding(2);
             this.tbUsuario.Name = "tbUsuario";
-            this.tbUsuario.Size = new System.Drawing.Size(147, 26);
+            this.tbUsuario.Size = new System.Drawing.Size(99, 20);
             this.tbUsuario.TabIndex = 4;
             // 
             // label4
@@ -107,9 +112,10 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Comic Sans MS", 14F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.OliveDrab;
-            this.label4.Location = new System.Drawing.Point(253, 128);
+            this.label4.Location = new System.Drawing.Point(371, 192);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(388, 40);
+            this.label4.Size = new System.Drawing.Size(263, 27);
             this.label4.TabIndex = 2;
             this.label4.Text = "Sistema de Gestión Médica";
             // 
@@ -117,9 +123,10 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(292, 206);
+            this.label1.Location = new System.Drawing.Point(358, 270);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(96, 28);
+            this.label1.Size = new System.Drawing.Size(66, 19);
             this.label1.TabIndex = 2;
             this.label1.Text = "Usuario :";
             this.label1.Click += new System.EventHandler(this.label1_Click);
@@ -129,9 +136,10 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label2.Location = new System.Drawing.Point(267, 272);
+            this.label2.Location = new System.Drawing.Point(358, 313);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(126, 28);
+            this.label2.Size = new System.Drawing.Size(89, 19);
             this.label2.TabIndex = 3;
             this.label2.Text = "Contraseña :";
             this.label2.Click += new System.EventHandler(this.label2_Click);
@@ -142,30 +150,33 @@
             this.label3.Font = new System.Drawing.Font("Comic Sans MS", 36F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
                 | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.Green;
-            this.label3.Location = new System.Drawing.Point(255, 9);
+            this.label3.Location = new System.Drawing.Point(374, 99);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(391, 102);
+            this.label3.Size = new System.Drawing.Size(260, 68);
             this.label3.TabIndex = 1;
             this.label3.Text = "SaludSoft";
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(138, 78);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.Size = new System.Drawing.Size(174, 179);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
             // 
             // FormLogin
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(878, 464);
+            this.ClientSize = new System.Drawing.Size(988, 508);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FormLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "\"SaludSoft - Login\"";

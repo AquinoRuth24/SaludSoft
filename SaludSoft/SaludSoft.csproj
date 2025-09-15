@@ -73,6 +73,24 @@
       <DependentUpon>Admin.cs</DependentUpon>
     </Compile>
     <Compile Include="Conexion.cs" />
+    <Compile Include="FormListaPacientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormListaPacientes.Designer.cs">
+      <DependentUpon>FormListaPacientes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLogin.Designer.cs">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormModificarPaciente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormModificarPaciente.Designer.cs">
+      <DependentUpon>FormModificarPaciente.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormNuevoTurno.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,6 +103,12 @@
     <Compile Include="FormPaciente.Designer.cs">
       <DependentUpon>FormPaciente.cs</DependentUpon>
     </Compile>
+    <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SaludSoft.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,25 +117,44 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Admin.resx">
+      <DependentUpon>Admin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormListaPacientes.resx">
+      <DependentUpon>FormListaPacientes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLogin.resx">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormModificarPaciente.resx">
+      <DependentUpon>FormModificarPaciente.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormNuevoTurno.resx">
       <DependentUpon>FormNuevoTurno.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormPaciente.resx">
       <DependentUpon>FormPaciente.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="obj\Debug\SaludSoft.FormListaPacientes.resources" />
+    <EmbeddedResource Include="obj\Debug\SaludSoft.FormModificarPaciente.resources" />
+    <EmbeddedResource Include="obj\Debug\SaludSoft.FormNuevoTurno.resources" />
+    <EmbeddedResource Include="obj\Debug\SaludSoft.FormPaciente.resources" />
+    <EmbeddedResource Include="obj\Debug\SaludSoft.Properties.Resources.resources" />
+    <EmbeddedResource Include="obj\Debug\SaludSoft.SaludSoft.resources" />
     <EmbeddedResource Include="SaludSoft.resx">
       <DependentUpon>SaludSoft.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <None Include="bin\Debug\SaludSoft.exe.config" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="obj\Debug\SaludSoft.csproj.AssemblyReference.cache" />
+    <None Include="obj\Debug\SaludSoft.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\Debug\SaludSoft.csproj.GenerateResource.cache" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -126,7 +169,23 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\Release\" />
     <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\fotos\avatar.png" />
+    <Content Include="bin\Debug\fotos\calendario.png" />
+    <Content Include="bin\Debug\fotos\CitasProgramadas.png" />
+    <Content Include="bin\Debug\fotos\equipo-medico.png" />
+    <Content Include="bin\Debug\fotos\logo.jpg" />
+    <Content Include="bin\Debug\fotos\logoChico.jpg" />
+    <Content Include="bin\Debug\SaludSoft.exe" />
+    <Content Include="bin\Debug\SaludSoft.pdb" />
+    <Content Include="obj\Debug\SaludSoft.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\SaludSoft.exe" />
+    <Content Include="obj\Debug\SaludSoft.pdb" />
+    <Content Include="obj\Debug\TempPE\FormLogin1.Designer.cs.dll" />
+    <Content Include="obj\Debug\TempPE\Properties.Resources.Designer.cs.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
