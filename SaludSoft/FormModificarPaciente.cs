@@ -18,7 +18,7 @@ namespace SaludSoft
 
         public FormModificarPaciente(
             int id, string nombre, string apellido, string dni,
-            string telefono, string email, string calle, string numero, string ciudad)
+            string telefono, string email, string direccion)
         {
             InitializeComponent();
             idPaciente = id;
@@ -29,13 +29,10 @@ namespace SaludSoft
             TBDni.Text = dni;
             TBTelefono.Text = telefono;
             TBEmail.Text = email;
-
-            TBDireccion.Text = calle;
-            TBNroCalle.Text = numero;
-            TBCiudad.Text = ciudad;
+            TBDireccion.Text = direccion;
         }
 
-
+        // funcionalidades de los botones
         private void BGuardar_Click(object sender, EventArgs e)
         {
             using (SqlConnection conexion = Conexion.GetConnection())
@@ -48,28 +45,32 @@ namespace SaludSoft
                 {
                     // Actualiza los datos del paciente
                     string queryPaciente = @"UPDATE Paciente 
-                                         SET nombre = @nombre, apellido = @apellido, dni = @dni, 
-                                             telefono = @telefono, email = @email
-                                         WHERE id_paciente = @id";
+                                     SET nombre = @nombre, 
+                                         apellido = @apellido, 
+                                         dni = @dni, 
+                                         telefono = @telefono, 
+                                         email = @email,
+                                         direccion = @direccion,
+                                         sexo = @sexo
+                                     WHERE id_paciente = @id";
 
-                    SqlCommand cmdPaciente = new SqlCommand(queryPaciente, conexion, trans);
-                    cmdPaciente.Parameters.AddWithValue("@nombre", TBNombre.Text);
-                    cmdPaciente.Parameters.AddWithValue("@apellido", TBApellido.Text);
-                    cmdPaciente.Parameters.AddWithValue("@dni", TBDni.Text);
-                    cmdPaciente.Parameters.AddWithValue("@telefono", TBTelefono.Text);
-                    cmdPaciente.Parameters.AddWithValue("@email", TBEmail.Text);
+                       SqlCommand cmdPaciente = new SqlCommand(queryPaciente, conexion, trans);
+                       cmdPaciente.Parameters.AddWithValue("@nombre", TBNombre.Text.Trim());
+                       cmdPaciente.Parameters.AddWithValue("@apellido", TBApellido.Text.Trim());
+                       cmdPaciente.Parameters.AddWithValue("@dni", int.Parse(TBDni.Text.Trim()));
+                       cmdPaciente.Parameters.AddWithValue("@telefono", TBTelefono.Text.Trim());
+                       cmdPaciente.Parameters.AddWithValue("@email", TBEmail.Text.Trim());
+                       cmdPaciente.Parameters.AddWithValue("@direccion", TBDireccion.Text.Trim());
+                       cmdPaciente.Parameters.AddWithValue("@sexo", RBMasculino.Checked ? "Masculino" : "Femenino");
+                    // Id del paciente que estamos modificando
                     cmdPaciente.Parameters.AddWithValue("@id", idPaciente);
-                    cmdPaciente.ExecuteNonQuery();
+                       cmdPaciente.ExecuteNonQuery();
 
-                    // Actualiza la Direccion
-                    string queryCheck = "SELECT COUNT(*) FROM Direccion WHERE id_paciente = @id";
-                    SqlCommand cmdCheck = new SqlCommand(queryCheck, conexion, trans);
-                    cmdCheck.Parameters.AddWithValue("@id", idPaciente);
-                   
-                    trans.Commit();
-                    MessageBox.Show("Paciente actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.Close();
-                }
+                       trans.Commit();
+
+                       MessageBox.Show("Paciente actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                       this.Close();
+                 }
                 catch (Exception ex)
                 {
                     trans.Rollback();
@@ -81,6 +82,13 @@ namespace SaludSoft
         private void BCancelar_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+
+        private void BNuevoPaciente_Click(object sender, EventArgs e)
+        {
+            FormPaciente frm = new FormPaciente();
+            frm.ShowDialog();
             this.Close();
         }
     }

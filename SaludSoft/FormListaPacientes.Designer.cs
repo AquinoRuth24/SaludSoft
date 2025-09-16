@@ -30,9 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormListaPacientes));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.BVolver = new System.Windows.Forms.Button();
             this.LTexto = new System.Windows.Forms.Label();
             this.LabelGestionPaciente = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.BCerrarSesion = new System.Windows.Forms.Button();
             this.BDoctoresFromTurnos = new System.Windows.Forms.Button();
             this.BTurnosFromTurnos = new System.Windows.Forms.Button();
             this.BPacientesFormTurno = new System.Windows.Forms.Button();
@@ -50,14 +53,18 @@
             this.BInicio = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.dgvPacientes = new System.Windows.Forms.DataGridView();
-            this.BVolver = new System.Windows.Forms.Button();
+            this.TBBuscar = new System.Windows.Forms.TextBox();
+            this.BBuscarPaciente = new System.Windows.Forms.Button();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.PanelLogoPaciente.SuspendLayout();
             this.panel3.SuspendLayout();
             this.PMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPacientes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -68,8 +75,19 @@
             this.panel1.Controls.Add(this.LabelGestionPaciente);
             this.panel1.Location = new System.Drawing.Point(175, 10);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(595, 46);
+            this.panel1.Size = new System.Drawing.Size(800, 46);
             this.panel1.TabIndex = 4;
+            // 
+            // BVolver
+            // 
+            this.BVolver.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BVolver.Location = new System.Drawing.Point(15, 9);
+            this.BVolver.Name = "BVolver";
+            this.BVolver.Size = new System.Drawing.Size(77, 31);
+            this.BVolver.TabIndex = 3;
+            this.BVolver.Text = "<--Volver";
+            this.BVolver.UseVisualStyleBackColor = true;
+            this.BVolver.Click += new System.EventHandler(this.BVolver_Click);
             // 
             // LTexto
             // 
@@ -83,7 +101,7 @@
             // 
             this.LabelGestionPaciente.AutoSize = true;
             this.LabelGestionPaciente.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelGestionPaciente.Location = new System.Drawing.Point(181, 10);
+            this.LabelGestionPaciente.Location = new System.Drawing.Point(292, 9);
             this.LabelGestionPaciente.Name = "LabelGestionPaciente";
             this.LabelGestionPaciente.Size = new System.Drawing.Size(213, 26);
             this.LabelGestionPaciente.TabIndex = 1;
@@ -92,14 +110,34 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
+            this.panel2.Controls.Add(this.panel4);
             this.panel2.Controls.Add(this.BDoctoresFromTurnos);
             this.panel2.Controls.Add(this.BTurnosFromTurnos);
             this.panel2.Controls.Add(this.BPacientesFormTurno);
             this.panel2.Controls.Add(this.BInicioFormTurno);
             this.panel2.Location = new System.Drawing.Point(2, 104);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(154, 351);
+            this.panel2.Size = new System.Drawing.Size(154, 416);
             this.panel2.TabIndex = 5;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.BCerrarSesion);
+            this.panel4.Location = new System.Drawing.Point(0, 292);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(154, 124);
+            this.panel4.TabIndex = 10;
+            // 
+            // BCerrarSesion
+            // 
+            this.BCerrarSesion.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BCerrarSesion.Location = new System.Drawing.Point(13, 13);
+            this.BCerrarSesion.Name = "BCerrarSesion";
+            this.BCerrarSesion.Size = new System.Drawing.Size(108, 53);
+            this.BCerrarSesion.TabIndex = 6;
+            this.BCerrarSesion.Text = "Cerrar sesion";
+            this.BCerrarSesion.UseVisualStyleBackColor = true;
+            this.BCerrarSesion.Click += new System.EventHandler(this.BCerrarSesion_Click);
             // 
             // BDoctoresFromTurnos
             // 
@@ -272,28 +310,50 @@
             // 
             this.dgvPacientes.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dgvPacientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPacientes.Location = new System.Drawing.Point(175, 73);
+            this.dgvPacientes.Location = new System.Drawing.Point(175, 105);
             this.dgvPacientes.Name = "dgvPacientes";
-            this.dgvPacientes.Size = new System.Drawing.Size(595, 365);
+            this.dgvPacientes.Size = new System.Drawing.Size(800, 391);
             this.dgvPacientes.TabIndex = 7;
             this.dgvPacientes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPacientes_CellContentClick);
             // 
-            // BVolver
+            // TBBuscar
             // 
-            this.BVolver.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BVolver.Location = new System.Drawing.Point(15, 9);
-            this.BVolver.Name = "BVolver";
-            this.BVolver.Size = new System.Drawing.Size(77, 31);
-            this.BVolver.TabIndex = 3;
-            this.BVolver.Text = "<--Volver";
-            this.BVolver.UseVisualStyleBackColor = true;
-            this.BVolver.Click += new System.EventHandler(this.BVolver_Click);
+            this.TBBuscar.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TBBuscar.Location = new System.Drawing.Point(274, 72);
+            this.TBBuscar.Name = "TBBuscar";
+            this.TBBuscar.Size = new System.Drawing.Size(540, 26);
+            this.TBBuscar.TabIndex = 8;
+            this.TBBuscar.TextChanged += new System.EventHandler(this.TBBuscar_TextChanged);
+            // 
+            // BBuscarPaciente
+            // 
+            this.BBuscarPaciente.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BBuscarPaciente.Location = new System.Drawing.Point(846, 72);
+            this.BBuscarPaciente.Name = "BBuscarPaciente";
+            this.BBuscarPaciente.Size = new System.Drawing.Size(81, 26);
+            this.BBuscarPaciente.TabIndex = 9;
+            this.BBuscarPaciente.Text = "Buscar";
+            this.BBuscarPaciente.UseVisualStyleBackColor = true;
+            this.BBuscarPaciente.Click += new System.EventHandler(this.BBuscarPaciente_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox2.Location = new System.Drawing.Point(198, 73);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(70, 23);
+            this.pictureBox2.TabIndex = 10;
+            this.pictureBox2.TabStop = false;
             // 
             // FormListaPacientes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1005, 523);
+            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.BBuscarPaciente);
+            this.Controls.Add(this.TBBuscar);
             this.Controls.Add(this.dgvPacientes);
             this.Controls.Add(this.PanelLogoPaciente);
             this.Controls.Add(this.panel2);
@@ -303,12 +363,15 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
             this.PanelLogoPaciente.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.PMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPacientes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -336,5 +399,10 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.DataGridView dgvPacientes;
         private System.Windows.Forms.Button BVolver;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Button BCerrarSesion;
+        private System.Windows.Forms.TextBox TBBuscar;
+        private System.Windows.Forms.Button BBuscarPaciente;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }

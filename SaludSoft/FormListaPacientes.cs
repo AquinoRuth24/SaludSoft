@@ -41,15 +41,42 @@ namespace SaludSoft
            
             this.Close(); 
         }
+
+        private void BCerrarSesion_Click(object sender, EventArgs e)
+        {
+            FormLogin frm = new FormLogin();
+            frm.ShowDialog();
+            this.Close();
+        }
+
+        private void TBBuscar_TextChanged(object sender, EventArgs e)
+        {
+            string filtro = TBBuscar.Text.Trim();
+            CargarPacientes(filtro);
+        }
+
+        private void BBuscarPaciente_Click(object sender, EventArgs e)
+        {
+            string filtro = TBBuscar.Text.Trim();
+            CargarPacientes(filtro);
+        }
+
         // cargar pacientes
-        private void CargarPacientes()
+        private void CargarPacientes(string filtro = "")
         {
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 conexion.Open();
 
-                string query = "SELECT nombre, apellido, dni, telefono, email FROM Paciente";
+                string query = @"SELECT p.id_paciente, p.nombre, p.apellido, p.dni, p.telefono, p.email, 
+                        p.direccion, p.sexo, e.descripcion AS estado
+                 FROM Paciente p
+                 INNER JOIN EstadoPaciente e ON p.id_estado = e.id_estado
+                 WHERE(p.nombre LIKE @filtro OR p.apellido LIKE @filtro OR p.dni LIKE @filtro)";
+
                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                da.SelectCommand.Parameters.AddWithValue("@filtro", "%" + filtro + "%");
+
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
@@ -59,7 +86,7 @@ namespace SaludSoft
                 dgvPacientes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 dgvPacientes.AllowUserToAddRows = false;
 
-                // Agregar botones de acción si no existen
+                // botones de acciones
                 if (dgvPacientes.Columns["Editar"] == null)
                 {
                     DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
@@ -69,11 +96,11 @@ namespace SaludSoft
                     btnEditar.UseColumnTextForButtonValue = true;
                     dgvPacientes.Columns.Add(btnEditar);
 
-                    //DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
-                    //btnEliminar.Name = "Eliminar";
-                    //btnEliminar.Text = "Eliminar";
-                    //btnEliminar.UseColumnTextForButtonValue = true;
-                    //dgvPacientes.Columns.Add(btnEliminar);
+                    DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
+                    btnEliminar.Name = "Eliminar";
+                    btnEliminar.Text = "Eliminar";
+                    btnEliminar.UseColumnTextForButtonValue = true;
+                    dgvPacientes.Columns.Add(btnEliminar);
                 }
             }
         }
@@ -82,7 +109,10 @@ namespace SaludSoft
         {
             if (e.RowIndex >= 0)
             {
-                if (dgvPacientes.Columns[e.ColumnIndex].Name == "Editar")
+                string columnName = dgvPacientes.Columns[e.ColumnIndex].Name;
+
+                // EDITAR
+                if (columnName == "Editar")
                 {
                     int idPaciente = Convert.ToInt32(dgvPacientes.Rows[e.RowIndex].Cells["id_paciente"].Value);
 
@@ -91,38 +121,53 @@ namespace SaludSoft
                     string dni = dgvPacientes.Rows[e.RowIndex].Cells["dni"].Value.ToString();
                     string telefono = dgvPacientes.Rows[e.RowIndex].Cells["telefono"].Value.ToString();
                     string email = dgvPacientes.Rows[e.RowIndex].Cells["email"].Value.ToString();
-
-                    string calle = "";
-                    string numero = "";
-                    string ciudad = "";
-
-                    using (SqlConnection conexion = Conexion.GetConnection())
-                    {
-                        conexion.Open();
-                        string query = "SELECT calle, numero_calle, ciudad FROM Direccion WHERE id_paciente = @id";
-                        SqlCommand cmd = new SqlCommand(query, conexion);
-                        cmd.Parameters.AddWithValue("@id", idPaciente);
-
-                        SqlDataReader reader = cmd.ExecuteReader();
-                        if (reader.Read())
-                        {
-                            calle = reader["calle"].ToString();
-                            numero = reader["numero_calle"].ToString();
-                            ciudad = reader["ciudad"].ToString();
-                        }
-                    }
+                    string direccion = dgvPacientes.Rows[e.RowIndex].Cells["direccion"].Value.ToString();
+                    string sexo = dgvPacientes.Rows[e.RowIndex].Cells["sexo"].Value.ToString();
 
                     FormModificarPaciente frmEditar = new FormModificarPaciente(
-                        idPaciente, nombre, apellido, dni, telefono, email, calle, numero, ciudad
+                        idPaciente, nombre, apellido, dni, telefono, email,direccion
                     );
                     frmEditar.ShowDialog();
 
-                    // actualiza los datos
+                    // actualiza la informacion del paciente
                     CargarPacientes();
+                }
+
+                // ELIMINAR
+                if (columnName == "Eliminar")
+                {
+                    int idPaciente = Convert.ToInt32(dgvPacientes.Rows[e.RowIndex].Cells["id_paciente"].Value);
+
+                    DialogResult result = MessageBox.Show("¿Está seguro de eliminar este paciente?",
+                                                          "Confirmación",
+                                                          MessageBoxButtons.YesNo,
+                                                          MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        using (SqlConnection conexion = Conexion.GetConnection())
+                        {
+                            conexion.Open();
+                            // baja logica del paciente 2 = inactivo
+                            string queryDelete = "UPDATE Paciente SET id_estado = 2 WHERE id_paciente = @id";
+
+                            SqlCommand cmd = new SqlCommand(queryDelete, conexion);
+                            cmd.Parameters.AddWithValue("@id", idPaciente);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        MessageBox.Show("Paciente eliminado correctamente.",
+                                        "Éxito",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Information);
+
+                        // Actualiza la lista de pacientes
+                        CargarPacientes();
+                    }
                 }
             }
         }
 
-    
+      
     }
 }

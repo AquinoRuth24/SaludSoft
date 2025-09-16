@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaludSoft));
             this.PMenu = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.BCerrarSesion = new System.Windows.Forms.Button();
             this.BDoctores = new System.Windows.Forms.Button();
             this.BTurnos = new System.Windows.Forms.Button();
             this.BPacientes = new System.Windows.Forms.Button();
@@ -58,6 +60,7 @@
             this.PTurnos = new System.Windows.Forms.Panel();
             this.LTodosLosTurnos = new System.Windows.Forms.Label();
             this.PMenu.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.PSuperior.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.PPacientes.SuspendLayout();
@@ -75,6 +78,7 @@
             // PMenu
             // 
             this.PMenu.BackColor = System.Drawing.Color.DarkGreen;
+            this.PMenu.Controls.Add(this.panel4);
             this.PMenu.Controls.Add(this.BDoctores);
             this.PMenu.Controls.Add(this.BTurnos);
             this.PMenu.Controls.Add(this.BPacientes);
@@ -83,6 +87,25 @@
             this.PMenu.Name = "PMenu";
             this.PMenu.Size = new System.Drawing.Size(120, 384);
             this.PMenu.TabIndex = 0;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.BCerrarSesion);
+            this.panel4.Location = new System.Drawing.Point(3, 270);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(154, 124);
+            this.panel4.TabIndex = 11;
+            // 
+            // BCerrarSesion
+            // 
+            this.BCerrarSesion.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BCerrarSesion.Location = new System.Drawing.Point(3, 34);
+            this.BCerrarSesion.Name = "BCerrarSesion";
+            this.BCerrarSesion.Size = new System.Drawing.Size(108, 53);
+            this.BCerrarSesion.TabIndex = 6;
+            this.BCerrarSesion.Text = "Cerrar sesion";
+            this.BCerrarSesion.UseVisualStyleBackColor = true;
+            this.BCerrarSesion.Click += new System.EventHandler(this.BCerrarSesion_Click);
             // 
             // BDoctores
             // 
@@ -380,6 +403,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.Name = "SaludSoft";
             this.PMenu.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
             this.PSuperior.ResumeLayout(false);
             this.PSuperior.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -433,6 +457,8 @@
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.Button BNuevoPaciente;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Button BCerrarSesion;
     }
 }
 

@@ -43,5 +43,12 @@ namespace SaludSoft
             FormListaPacientes frm = new FormListaPacientes();
             frm.ShowDialog();
         }
+
+        private void BCerrarSesion_Click(object sender, EventArgs e)
+        {
+            FormLogin frm = new FormLogin();
+            frm.ShowDialog();
+            this.Close();
+        }
     }
 }

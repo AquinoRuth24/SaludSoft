@@ -188,6 +188,6 @@ namespace SaludSoft
             LimpiarCampos();
             this.Close();
         }
-       }
+    }
     }
 
