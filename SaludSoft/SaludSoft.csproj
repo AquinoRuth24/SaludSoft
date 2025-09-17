@@ -170,7 +170,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Release\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\fotos\avatar.png" />
@@ -186,6 +185,17 @@
     <Content Include="obj\Debug\SaludSoft.pdb" />
     <Content Include="obj\Debug\TempPE\FormLogin1.Designer.cs.dll" />
     <Content Include="obj\Debug\TempPE\Properties.Resources.Designer.cs.dll" />
+    <None Include="Resources\circulo-marca-x.png" />
+    <None Include="Resources\monedas.png" />
+    <None Include="Resources\alt-de-inventario.png" />
+    <None Include="Resources\hogar.png" />
+    <None Include="Resources\construccion-de-casas.png" />
+    <None Include="Resources\libro-medico.png" />
+    <None Include="Resources\CitasProgramadas.png" />
+    <None Include="Resources\equipo-medico.png" />
+    <None Include="Resources\usuario.png" />
+    <None Include="Resources\agregar.png" />
+    <None Include="Resources\logo1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
