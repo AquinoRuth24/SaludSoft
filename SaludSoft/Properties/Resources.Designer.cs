@@ -83,6 +83,16 @@ namespace SaludSoft.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap angulo_izquierdo {
+            get {
+                object obj = ResourceManager.GetObject("angulo-izquierdo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap circulo_marca_x {
             get {
                 object obj = ResourceManager.GetObject("circulo-marca-x", resourceCulture);
