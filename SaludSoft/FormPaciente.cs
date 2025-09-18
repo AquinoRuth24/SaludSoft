@@ -284,5 +284,6 @@ namespace SaludSoft
             frm.ShowDialog();
             this.Close();
         }
+
     }
 }

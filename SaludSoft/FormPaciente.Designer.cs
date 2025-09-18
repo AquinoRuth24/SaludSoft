@@ -146,7 +146,7 @@
             // BDoctores
             // 
             this.BDoctores.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BDoctores.Location = new System.Drawing.Point(27, 200);
+            this.BDoctores.Location = new System.Drawing.Point(27, 182);
             this.BDoctores.Name = "BDoctores";
             this.BDoctores.Size = new System.Drawing.Size(92, 46);
             this.BDoctores.TabIndex = 3;
@@ -156,7 +156,7 @@
             // BTurnos
             // 
             this.BTurnos.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BTurnos.Location = new System.Drawing.Point(17, 147);
+            this.BTurnos.Location = new System.Drawing.Point(23, 129);
             this.BTurnos.Name = "BTurnos";
             this.BTurnos.Size = new System.Drawing.Size(108, 37);
             this.BTurnos.TabIndex = 4;
@@ -166,7 +166,7 @@
             // BPacientes
             // 
             this.BPacientes.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BPacientes.Location = new System.Drawing.Point(17, 88);
+            this.BPacientes.Location = new System.Drawing.Point(17, 76);
             this.BPacientes.Name = "BPacientes";
             this.BPacientes.Size = new System.Drawing.Size(114, 40);
             this.BPacientes.TabIndex = 5;
@@ -177,7 +177,7 @@
             // BInicio
             // 
             this.BInicio.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BInicio.Location = new System.Drawing.Point(27, 26);
+            this.BInicio.Location = new System.Drawing.Point(27, 19);
             this.BInicio.Name = "BInicio";
             this.BInicio.Size = new System.Drawing.Size(92, 43);
             this.BInicio.TabIndex = 2;
