@@ -109,6 +109,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Resources\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Resources\FormUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,6 +154,9 @@
     <EmbeddedResource Include="obj\Debug\SaludSoft.FormPaciente.resources" />
     <EmbeddedResource Include="obj\Debug\SaludSoft.Properties.Resources.resources" />
     <EmbeddedResource Include="obj\Debug\SaludSoft.SaludSoft.resources" />
+    <EmbeddedResource Include="Resources\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\FormUsuario.resx">
       <DependentUpon>FormUsuario.cs</DependentUpon>
     </EmbeddedResource>
@@ -195,6 +204,9 @@
     <Content Include="obj\Debug\SaludSoft.pdb" />
     <Content Include="obj\Debug\TempPE\FormLogin1.Designer.cs.dll" />
     <Content Include="obj\Debug\TempPE\Properties.Resources.Designer.cs.dll" />
+    <None Include="Resources\basura.png" />
+    <None Include="Resources\archivo-de-edicion1.png" />
+    <None Include="Resources\agregar-usuario.png" />
     <None Include="Resources\circulo-marca-x.png" />
     <None Include="Resources\monedas.png" />
     <None Include="Resources\alt-de-inventario.png" />

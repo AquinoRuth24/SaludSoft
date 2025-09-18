@@ -73,6 +73,16 @@ namespace SaludSoft.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap agregar_usuario {
+            get {
+                object obj = ResourceManager.GetObject("agregar-usuario", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap alt_de_inventario {
             get {
                 object obj = ResourceManager.GetObject("alt-de-inventario", resourceCulture);
@@ -86,6 +96,26 @@ namespace SaludSoft.Properties {
         internal static System.Drawing.Bitmap angulo_izquierdo {
             get {
                 object obj = ResourceManager.GetObject("angulo-izquierdo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap archivo_de_edicion {
+            get {
+                object obj = ResourceManager.GetObject("archivo-de-edicion", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap basura {
+            get {
+                object obj = ResourceManager.GetObject("basura", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
