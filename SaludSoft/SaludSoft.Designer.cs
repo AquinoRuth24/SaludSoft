@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaludSoft));
             this.PMenu = new System.Windows.Forms.Panel();
+            this.BAgenda = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.BCerrarSesion = new System.Windows.Forms.Button();
             this.BDoctores = new System.Windows.Forms.Button();
@@ -78,6 +79,7 @@
             // PMenu
             // 
             this.PMenu.BackColor = System.Drawing.Color.DarkGreen;
+            this.PMenu.Controls.Add(this.BAgenda);
             this.PMenu.Controls.Add(this.panel4);
             this.PMenu.Controls.Add(this.BDoctores);
             this.PMenu.Controls.Add(this.BTurnos);
@@ -85,21 +87,32 @@
             this.PMenu.Controls.Add(this.BInicio);
             this.PMenu.Location = new System.Drawing.Point(2, 65);
             this.PMenu.Name = "PMenu";
-            this.PMenu.Size = new System.Drawing.Size(120, 384);
+            this.PMenu.Size = new System.Drawing.Size(120, 463);
             this.PMenu.TabIndex = 0;
+            // 
+            // BAgenda
+            // 
+            this.BAgenda.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BAgenda.Location = new System.Drawing.Point(7, 287);
+            this.BAgenda.Name = "BAgenda";
+            this.BAgenda.Size = new System.Drawing.Size(98, 35);
+            this.BAgenda.TabIndex = 8;
+            this.BAgenda.Text = "Agenda";
+            this.BAgenda.UseVisualStyleBackColor = true;
+            this.BAgenda.Click += new System.EventHandler(this.BAgenda_Click);
             // 
             // panel4
             // 
             this.panel4.Controls.Add(this.BCerrarSesion);
-            this.panel4.Location = new System.Drawing.Point(3, 270);
+            this.panel4.Location = new System.Drawing.Point(3, 339);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(154, 124);
+            this.panel4.Size = new System.Drawing.Size(117, 124);
             this.panel4.TabIndex = 11;
             // 
             // BCerrarSesion
             // 
             this.BCerrarSesion.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BCerrarSesion.Location = new System.Drawing.Point(3, 34);
+            this.BCerrarSesion.Location = new System.Drawing.Point(3, 45);
             this.BCerrarSesion.Name = "BCerrarSesion";
             this.BCerrarSesion.Size = new System.Drawing.Size(108, 53);
             this.BCerrarSesion.TabIndex = 6;
@@ -110,7 +123,7 @@
             // BDoctores
             // 
             this.BDoctores.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BDoctores.Location = new System.Drawing.Point(3, 230);
+            this.BDoctores.Location = new System.Drawing.Point(7, 175);
             this.BDoctores.Name = "BDoctores";
             this.BDoctores.Size = new System.Drawing.Size(107, 34);
             this.BDoctores.TabIndex = 3;
@@ -120,7 +133,7 @@
             // BTurnos
             // 
             this.BTurnos.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BTurnos.Location = new System.Drawing.Point(10, 176);
+            this.BTurnos.Location = new System.Drawing.Point(10, 230);
             this.BTurnos.Name = "BTurnos";
             this.BTurnos.Size = new System.Drawing.Size(92, 36);
             this.BTurnos.TabIndex = 4;
@@ -130,9 +143,9 @@
             // BPacientes
             // 
             this.BPacientes.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BPacientes.Location = new System.Drawing.Point(3, 114);
+            this.BPacientes.Location = new System.Drawing.Point(6, 115);
             this.BPacientes.Name = "BPacientes";
-            this.BPacientes.Size = new System.Drawing.Size(114, 40);
+            this.BPacientes.Size = new System.Drawing.Size(102, 40);
             this.BPacientes.TabIndex = 5;
             this.BPacientes.Text = "Pacientes";
             this.BPacientes.UseVisualStyleBackColor = true;
@@ -141,7 +154,7 @@
             // BInicio
             // 
             this.BInicio.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BInicio.Location = new System.Drawing.Point(10, 37);
+            this.BInicio.Location = new System.Drawing.Point(10, 50);
             this.BInicio.Name = "BInicio";
             this.BInicio.Size = new System.Drawing.Size(92, 43);
             this.BInicio.TabIndex = 2;
@@ -160,7 +173,7 @@
             this.PSuperior.Controls.Add(this.BNuevaCita);
             this.PSuperior.Location = new System.Drawing.Point(2, 1);
             this.PSuperior.Name = "PSuperior";
-            this.PSuperior.Size = new System.Drawing.Size(800, 75);
+            this.PSuperior.Size = new System.Drawing.Size(931, 75);
             this.PSuperior.TabIndex = 1;
             // 
             // BNuevoPaciente
@@ -168,7 +181,7 @@
             this.BNuevoPaciente.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(106)))), ((int)(((byte)(32)))));
             this.BNuevoPaciente.Font = new System.Drawing.Font("Microsoft YaHei", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BNuevoPaciente.ForeColor = System.Drawing.Color.White;
-            this.BNuevoPaciente.Location = new System.Drawing.Point(684, 11);
+            this.BNuevoPaciente.Location = new System.Drawing.Point(819, 11);
             this.BNuevoPaciente.Name = "BNuevoPaciente";
             this.BNuevoPaciente.Size = new System.Drawing.Size(102, 54);
             this.BNuevoPaciente.TabIndex = 5;
@@ -190,7 +203,7 @@
             // 
             this.Label.AutoSize = true;
             this.Label.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label.Location = new System.Drawing.Point(357, 43);
+            this.Label.Location = new System.Drawing.Point(424, 46);
             this.Label.Name = "Label";
             this.Label.Size = new System.Drawing.Size(192, 19);
             this.Label.TabIndex = 2;
@@ -200,7 +213,7 @@
             // 
             this.LNombre.AutoSize = true;
             this.LNombre.Font = new System.Drawing.Font("Candara", 18F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LNombre.Location = new System.Drawing.Point(387, 8);
+            this.LNombre.Location = new System.Drawing.Point(465, 8);
             this.LNombre.Name = "LNombre";
             this.LNombre.Size = new System.Drawing.Size(110, 29);
             this.LNombre.TabIndex = 3;
@@ -221,7 +234,7 @@
             this.BNuevaCita.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(106)))), ((int)(((byte)(32)))));
             this.BNuevaCita.Font = new System.Drawing.Font("Microsoft YaHei", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BNuevaCita.ForeColor = System.Drawing.Color.White;
-            this.BNuevaCita.Location = new System.Drawing.Point(570, 11);
+            this.BNuevaCita.Location = new System.Drawing.Point(697, 11);
             this.BNuevaCita.Name = "BNuevaCita";
             this.BNuevaCita.Size = new System.Drawing.Size(108, 54);
             this.BNuevaCita.TabIndex = 0;
@@ -234,7 +247,7 @@
             this.PPacientes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(249)))), ((int)(((byte)(240)))));
             this.PPacientes.Controls.Add(this.PPacientesHoy);
             this.PPacientes.Controls.Add(this.LPacientesHoy);
-            this.PPacientes.Location = new System.Drawing.Point(128, 108);
+            this.PPacientes.Location = new System.Drawing.Point(164, 134);
             this.PPacientes.Name = "PPacientes";
             this.PPacientes.Size = new System.Drawing.Size(200, 100);
             this.PPacientes.TabIndex = 2;
@@ -264,7 +277,7 @@
             this.PCitas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(243)))), ((int)(((byte)(235)))));
             this.PCitas.Controls.Add(this.pictureBox3);
             this.PCitas.Controls.Add(this.LTurnosProgramados);
-            this.PCitas.Location = new System.Drawing.Point(353, 108);
+            this.PCitas.Location = new System.Drawing.Point(423, 145);
             this.PCitas.Name = "PCitas";
             this.PCitas.Size = new System.Drawing.Size(219, 100);
             this.PCitas.TabIndex = 3;
@@ -294,7 +307,7 @@
             this.PDoctores.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(240)))), ((int)(((byte)(250)))));
             this.PDoctores.Controls.Add(this.pictureBox4);
             this.PDoctores.Controls.Add(this.LDoctores);
-            this.PDoctores.Location = new System.Drawing.Point(588, 108);
+            this.PDoctores.Location = new System.Drawing.Point(699, 145);
             this.PDoctores.Name = "PDoctores";
             this.PDoctores.Size = new System.Drawing.Size(200, 100);
             this.PDoctores.TabIndex = 4;
@@ -324,7 +337,7 @@
             this.PRoximosTurnos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(243)))), ((int)(((byte)(235)))));
             this.PRoximosTurnos.Controls.Add(this.pictureBox5);
             this.PRoximosTurnos.Controls.Add(this.LproximoTurno);
-            this.PRoximosTurnos.Location = new System.Drawing.Point(128, 262);
+            this.PRoximosTurnos.Location = new System.Drawing.Point(164, 341);
             this.PRoximosTurnos.Name = "PRoximosTurnos";
             this.PRoximosTurnos.Size = new System.Drawing.Size(200, 100);
             this.PRoximosTurnos.TabIndex = 5;
@@ -333,7 +346,7 @@
             // 
             this.pictureBox5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox5.BackgroundImage")));
             this.pictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox5.Location = new System.Drawing.Point(148, 3);
+            this.pictureBox5.Location = new System.Drawing.Point(142, 3);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(52, 50);
             this.pictureBox5.TabIndex = 8;
@@ -353,7 +366,7 @@
             // 
             this.PEspecialidades.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(240)))), ((int)(((byte)(250)))));
             this.PEspecialidades.Controls.Add(this.label5);
-            this.PEspecialidades.Location = new System.Drawing.Point(363, 262);
+            this.PEspecialidades.Location = new System.Drawing.Point(442, 341);
             this.PEspecialidades.Name = "PEspecialidades";
             this.PEspecialidades.Size = new System.Drawing.Size(200, 100);
             this.PEspecialidades.TabIndex = 6;
@@ -372,7 +385,7 @@
             // 
             this.PTurnos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(249)))), ((int)(((byte)(240)))));
             this.PTurnos.Controls.Add(this.LTodosLosTurnos);
-            this.PTurnos.Location = new System.Drawing.Point(588, 262);
+            this.PTurnos.Location = new System.Drawing.Point(699, 341);
             this.PTurnos.Name = "PTurnos";
             this.PTurnos.Size = new System.Drawing.Size(200, 100);
             this.PTurnos.TabIndex = 7;
@@ -391,7 +404,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(935, 523);
             this.Controls.Add(this.PTurnos);
             this.Controls.Add(this.PEspecialidades);
             this.Controls.Add(this.PRoximosTurnos);
@@ -459,6 +472,7 @@
         private System.Windows.Forms.Button BNuevoPaciente;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button BCerrarSesion;
+        private System.Windows.Forms.Button BAgenda;
     }
 }
 

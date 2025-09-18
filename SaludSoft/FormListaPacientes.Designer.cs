@@ -75,7 +75,7 @@
             this.panel1.Controls.Add(this.LabelGestionPaciente);
             this.panel1.Location = new System.Drawing.Point(175, 10);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 46);
+            this.panel1.Size = new System.Drawing.Size(752, 46);
             this.panel1.TabIndex = 4;
             // 
             // BVolver
@@ -312,7 +312,7 @@
             this.dgvPacientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvPacientes.Location = new System.Drawing.Point(175, 105);
             this.dgvPacientes.Name = "dgvPacientes";
-            this.dgvPacientes.Size = new System.Drawing.Size(800, 391);
+            this.dgvPacientes.Size = new System.Drawing.Size(752, 391);
             this.dgvPacientes.TabIndex = 7;
             this.dgvPacientes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPacientes_CellContentClick);
             // 
@@ -350,7 +350,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1005, 523);
+            this.ClientSize = new System.Drawing.Size(935, 523);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.BBuscarPaciente);
             this.Controls.Add(this.TBBuscar);

@@ -50,5 +50,11 @@ namespace SaludSoft
             frm.ShowDialog();
             this.Close();
         }
+
+        private void BAgenda_Click(object sender, EventArgs e)
+        {
+            FormAgenda frm = new FormAgenda();
+            frm.ShowDialog();
+        }
     }
 }
