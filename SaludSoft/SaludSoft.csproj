@@ -127,12 +127,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Resources\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -178,9 +172,6 @@
     <EmbeddedResource Include="obj\Debug\SaludSoft.FormPaciente.resources" />
     <EmbeddedResource Include="obj\Debug\SaludSoft.Properties.Resources.resources" />
     <EmbeddedResource Include="obj\Debug\SaludSoft.SaludSoft.resources" />
-    <EmbeddedResource Include="Resources\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormUsuario.resx">
       <DependentUpon>FormUsuario.cs</DependentUpon>
     </EmbeddedResource>

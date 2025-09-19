@@ -55,6 +55,7 @@ namespace SaludSoft
         {
             FormAgenda frm = new FormAgenda();
             frm.ShowDialog();
+            this.Close();
         }
     }
 }

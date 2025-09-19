@@ -11,12 +11,19 @@ namespace SaludSoft
         {
             InitializeComponent();
 
-            // Configurar pickers de hora
+            // Configuración de los pickers de hora
             DTPHoraInicio.Format = DateTimePickerFormat.Time;
             DTPHoraInicio.ShowUpDown = true;
 
             DPTHoraFin.Format = DateTimePickerFormat.Time;
             DPTHoraFin.ShowUpDown = true;
+
+            // Cargar días de la semana
+            CBDiaSemana.Items.AddRange(new string[]
+            {
+                "Lunes","Martes","Miércoles","Jueves","Viernes"
+            });
+            CBDiaSemana.SelectedIndex = 0;
 
             CargarProfesionales();
         }
@@ -28,8 +35,8 @@ namespace SaludSoft
                 conexion.Open();
 
                 string query = @"SELECT id_profesional, nombre + ' ' + apellido AS Profesional 
-                         FROM Profesional 
-                         WHERE id_estado = 1"; // solo profesionales activos
+                                 FROM Profesional 
+                                 WHERE id_estado = 1"; // solo profesionales activos
 
                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
                 DataTable dt = new DataTable();
@@ -42,8 +49,6 @@ namespace SaludSoft
                 if (dt.Rows.Count > 0)
                 {
                     CMBProfesional.SelectedIndex = 0;
-
-                    // Cargar sus consultorios directamente
                     int idProfesional = Convert.ToInt32(CMBProfesional.SelectedValue);
                     CargarConsultorios(idProfesional);
                 }
@@ -60,11 +65,12 @@ namespace SaludSoft
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 conexion.Open();
+
                 string query = @"SELECT pc.id_profesional_consultorio, 
-                                c.descripcion AS Consultorio
-                         FROM Profesional_Consultorio pc
-                         INNER JOIN Consultorio c ON pc.id_consultorio = c.id_consultorio
-                         WHERE pc.id_profesional = @idProfesional";
+                                        c.descripcion AS Consultorio
+                                 FROM Profesional_Consultorio pc
+                                 INNER JOIN Consultorio c ON pc.id_consultorio = c.id_consultorio
+                                 WHERE pc.id_profesional = @idProfesional";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
                 da.SelectCommand.Parameters.AddWithValue("@idProfesional", idProfesional);
@@ -95,43 +101,56 @@ namespace SaludSoft
         {
             if (CMBProfesional.SelectedValue == null || CMBConsultorio.SelectedValue == null)
             {
-                MessageBox.Show("Debe seleccionar un profesional y un consultorio.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Debe seleccionar un profesional y un consultorio.",
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            DateTime fecha = DPTFecha.Value.Date;
+            if (CBDiaSemana.SelectedItem == null)
+            {
+                MessageBox.Show("Debe seleccionar un día de la semana.",
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             TimeSpan horaInicio = DTPHoraInicio.Value.TimeOfDay;
             TimeSpan horaFin = DPTHoraFin.Value.TimeOfDay;
 
             if (horaFin <= horaInicio)
             {
-                MessageBox.Show("La hora de fin debe ser mayor a la hora de inicio.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("La hora de fin debe ser mayor a la hora de inicio.",
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             int idProfesionalConsultorio = Convert.ToInt32(CMBConsultorio.SelectedValue);
+            string diaSemana = CBDiaSemana.SelectedItem.ToString();
+            int intervalo = 30;
 
-            // el id_usuario de la/el recepcionista logueada
+            // id_usuario = recepcionista logueada (por ahora fijo en 1)
             int idUsuario = 1;
 
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 conexion.Open();
 
-                string query = @"INSERT INTO Agenda (disponibilidad, hora_inicio, hora_fin, id_usuario, id_profesional_consultorio)
-                                 VALUES (@fecha, @horaInicio, @horaFin, @idUsuario, @idProfCons)";
+                string query = @"INSERT INTO Agenda 
+                                (id_usuario, id_profesional_consultorio, diaSemana, horaInicio, horaFin, intervalo)
+                                VALUES (@idUsuario, @idProfCons, @diaSemana, @horaInicio, @horaFin, @intervalo)";
 
                 SqlCommand cmd = new SqlCommand(query, conexion);
-                cmd.Parameters.AddWithValue("@fecha", fecha);
-                cmd.Parameters.AddWithValue("@horaInicio", horaInicio);
-                cmd.Parameters.AddWithValue("@horaFin", horaFin);
                 cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
                 cmd.Parameters.AddWithValue("@idProfCons", idProfesionalConsultorio);
+                cmd.Parameters.AddWithValue("@diaSemana", diaSemana);
+                cmd.Parameters.AddWithValue("@horaInicio", horaInicio);
+                cmd.Parameters.AddWithValue("@horaFin", horaFin);
+                cmd.Parameters.AddWithValue("@intervalo", intervalo);
 
                 cmd.ExecuteNonQuery();
             }
 
-            MessageBox.Show("Disponibilidad guardada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Disponibilidad guardada correctamente.",
+                            "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }
 
@@ -144,10 +163,8 @@ namespace SaludSoft
 
             if (result == DialogResult.Yes)
             {
-                //LimpiarCampos();
                 this.Close();
             }
         }
     }
 }
-

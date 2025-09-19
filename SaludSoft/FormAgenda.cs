@@ -17,53 +17,74 @@ namespace SaludSoft
         {
             InitializeComponent();
             CargarProfesionales();
+            CargarConsultorios();
             CargarAgenda();
+
+            DTVGAgenda.CellClick += DTVGAgenda_CellClick; // evento para botones
+        }
+        // botones
+        private void BInicio_Click(object sender, EventArgs e)
+        {
+            SaludSoft frm = new SaludSoft();
+            frm.ShowDialog();
         }
 
+        private void BPacientes_Click(object sender, EventArgs e)
+        {
+            FormListaPacientes frm = new FormListaPacientes();
+            frm.ShowDialog();
+        }
+
+        private void BCerrarSesion_Click(object sender, EventArgs e)
+        {
+            FormLogin frm = new FormLogin();
+            frm.ShowDialog();
+            this.Close();
+        }
+
+        private void BAgenda_Click(object sender, EventArgs e)
+        {
+            FormAgenda frm = new FormAgenda();
+            frm.ShowDialog();
+            this.Close();
+        }
         private void CargarProfesionales()
         {
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 conexion.Open();
-
                 string query = @"SELECT id_profesional, nombre + ' ' + apellido AS Profesional 
-                         FROM Profesional 
-                         WHERE id_estado = 1"; // solo profesionales activos
+                                 FROM Profesional 
+                                 WHERE id_estado = 1";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
-                CMBProfesional.DataSource = dt;
-                CMBProfesional.DisplayMember = "Profesional";
-                CMBProfesional.ValueMember = "id_profesional";
+                // Opción "Todos"
+                DataRow row = dt.NewRow();
+                row["id_profesional"] = 0;
+                row["Profesional"] = "Todos los profesionales";
+                dt.Rows.InsertAt(row, 0);
 
-                if (dt.Rows.Count > 0)
-                {
-                    CMBProfesional.SelectedIndex = 0;
-
-                    // Cargar sus consultorios directamente
-                    int idProfesional = Convert.ToInt32(CMBProfesional.SelectedValue);
-                    CargarConsultorios(idProfesional);
-                }
-                else
-                {
-                    CMBProfesional.SelectedIndex = -1;
-                    CMBConsultorio.DataSource = null;
-                }
+                CMBProfesionales.DataSource = dt;
+                CMBProfesionales.DisplayMember = "Profesional";
+                CMBProfesionales.ValueMember = "id_profesional";
             }
         }
 
-        private void CargarConsultorios(int idProfesional)
+        private void CargarConsultorios(int idProfesional = 0)
         {
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 conexion.Open();
-                string query = @"SELECT pc.id_profesional_consultorio, 
-                                c.descripcion AS Consultorio
-                         FROM Profesional_Consultorio pc
-                         INNER JOIN Consultorio c ON pc.id_consultorio = c.id_consultorio
-                         WHERE pc.id_profesional = @idProfesional";
+                string query = @"SELECT c.id_consultorio, c.descripcion AS Consultorio
+                                 FROM Consultorio c
+                                 WHERE EXISTS (
+                                    SELECT 1 FROM Profesional_Consultorio pc 
+                                    WHERE pc.id_consultorio = c.id_consultorio
+                                    AND (@idProfesional = 0 OR pc.id_profesional = @idProfesional)
+                                 )";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
                 da.SelectCommand.Parameters.AddWithValue("@idProfesional", idProfesional);
@@ -71,35 +92,44 @@ namespace SaludSoft
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
+                // Opción "Todos"
+                DataRow row = dt.NewRow();
+                row["id_consultorio"] = 0;
+                row["Consultorio"] = "Todos los consultorios";
+                dt.Rows.InsertAt(row, 0);
+
                 CMBConsultorio.DataSource = dt;
                 CMBConsultorio.DisplayMember = "Consultorio";
-                CMBConsultorio.ValueMember = "id_profesional_consultorio";
-                CMBConsultorio.SelectedIndex = -1;
+                CMBConsultorio.ValueMember = "id_consultorio";
             }
         }
 
-        private void CargarAgenda(string filtro = "")
+        private void CargarAgenda(int idProfesional = 0, int idConsultorio = 0, DateTime? fecha = null)
         {
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 conexion.Open();
-
                 string query = @"
-            SELECT 
-                a.id_agenda,
-                a.disponibilidad,
-                u.nombre + ' ' + u.apellido AS Recepcionista,
-                p.nombre + ' ' + p.apellido AS Profesional,
-                c.descripcion AS Consultorio
-            FROM Agenda a
-            INNER JOIN Usuario u ON a.id_usuario = u.id_usuario
-            INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
-            INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
-            INNER JOIN Consultorio c ON pc.id_consultorio = c.id_consultorio
-            WHERE (p.nombre LIKE @filtro OR p.apellido LIKE @filtro OR c.descripcion LIKE @filtro)";
+                    SELECT 
+                     a.id_agenda,
+                     a.diaSemana AS Disponibilidad,
+                      FORMAT(a.horaInicio, 'HH:mm') + ' - ' + FORMAT(a.horaFin, 'HH:mm') AS Horario,
+                       u.nombre + ' ' + u.apellido AS Recepcionista,
+                       p.nombre + ' ' + p.apellido AS Profesional,
+                       c.descripcion AS Consultorio
+                      FROM Agenda a
+                        INNER JOIN Usuario u ON a.id_usuario = u.id_usuario
+                        INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
+                        INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
+                        INNER JOIN Consultorio c ON pc.id_consultorio = c.id_consultorio
+                        WHERE (@idProfesional = 0 OR p.id_profesional = @idProfesional)
+                        AND (@idConsultorio = 0 OR c.id_consultorio = @idConsultorio)
+                       ORDER BY a.horaInicio";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
-                da.SelectCommand.Parameters.AddWithValue("@filtro", "%" + filtro + "%");
+                da.SelectCommand.Parameters.AddWithValue("@idProfesional", idProfesional);
+                da.SelectCommand.Parameters.AddWithValue("@idConsultorio", idConsultorio);
+                da.SelectCommand.Parameters.AddWithValue("@fecha", (object)fecha ?? DBNull.Value);
 
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -110,94 +140,58 @@ namespace SaludSoft
                 DTVGAgenda.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 DTVGAgenda.AllowUserToAddRows = false;
 
-                // agregar botones si no existen
-                if (DTVGAgenda.Columns["Editar"] == null)
-                {
-                    DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
-                    btnEditar.HeaderText = "Acciones";
-                    btnEditar.Name = "Editar";
-                    btnEditar.Text = "Modificar";
-                    btnEditar.UseColumnTextForButtonValue = true;
-                    DTVGAgenda.Columns.Add(btnEditar);
-
-                    DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
-                    btnEliminar.Name = "Eliminar";
-                    btnEliminar.Text = "Eliminar";
-                    btnEliminar.UseColumnTextForButtonValue = true;
-                    DTVGAgenda.Columns.Add(btnEliminar);
-                }
+                ConfigurarGrid();
             }
         }
 
-        private void DTVGAgenda_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void ConfigurarGrid()
         {
-            if (e.RowIndex >= 0)
+            if (!DTVGAgenda.Columns.Contains("Editar"))
             {
-                string columnName = DTVGAgenda.Columns[e.ColumnIndex].Name;
+                DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
+                btnEditar.HeaderText = "Acciones";
+                btnEditar.Name = "Editar";
+                btnEditar.Text = "Modificar";
+                btnEditar.UseColumnTextForButtonValue = true;
+                DTVGAgenda.Columns.Add(btnEditar);
+            }
+        }
 
-                // EDITAR
-                if (columnName == "Editar")
+        private void DTVGAgenda_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && DTVGAgenda.Columns[e.ColumnIndex].Name == "Editar")
+            {
+                //int idAgenda = Convert.ToInt32(DTVGAgenda.Rows[e.RowIndex].Cells["id_agenda"].Value);idAgenda
+
+                FormModificarAgenda frm = new FormModificarAgenda();
+                if (frm.ShowDialog() == DialogResult.OK)
                 {
-                    int idAgenda = Convert.ToInt32(DTVGAgenda.Rows[e.RowIndex].Cells["id_agenda"].Value);
-                    DateTime fecha = Convert.ToDateTime(DTVGAgenda.Rows[e.RowIndex].Cells["disponibilidad"].Value);
-
-                    // Podés abrir un form para editar
-                   // FormModificarAgenda frmEditar = new FormModificarAgenda(//idAgenda, fecha);
-                   // frmEditar.ShowDialog();
-
                     CargarAgenda();
                 }
-
-                // ELIMINAR
-                if (columnName == "Eliminar")
-                {
-                    int idAgenda = Convert.ToInt32(DTVGAgenda.Rows[e.RowIndex].Cells["id_agenda"].Value);
-
-                    DialogResult result = MessageBox.Show("¿Está seguro de eliminar esta disponibilidad?",
-                                                          "Confirmación",
-                                                          MessageBoxButtons.YesNo,
-                                                          MessageBoxIcon.Warning);
-
-                    if (result == DialogResult.Yes)
-                    {
-                        using (SqlConnection conexion = Conexion.GetConnection())
-                        {
-                            conexion.Open();
-                            string queryDelete = "DELETE FROM Agenda WHERE id_agenda = @id";
-
-                            SqlCommand cmd = new SqlCommand(queryDelete, conexion);
-                            cmd.Parameters.AddWithValue("@id", idAgenda);
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        MessageBox.Show("Disponibilidad eliminada correctamente.",
-                                        "Éxito",
-                                        MessageBoxButtons.OK,
-                                        MessageBoxIcon.Information);
-
-                        CargarAgenda();
-                    }
-                }
             }
         }
-        // para enlazar los combox profesional y consultorio
+
         private void CMBProfesional_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (int.TryParse(CMBProfesional.SelectedValue?.ToString(), out int idProfesional))
+            if (int.TryParse(CMBProfesionales.SelectedValue?.ToString(), out int idProfesional))
             {
                 CargarConsultorios(idProfesional);
             }
-            else
-            {
-                CMBConsultorio.DataSource = null;
-            }
+        }
+
+        private void BBuscar_Click(object sender, EventArgs e)
+        {
+            int idProfesional = Convert.ToInt32(CMBProfesionales.SelectedValue);
+            int idConsultorio = Convert.ToInt32(CMBConsultorio.SelectedValue);
+
+            CargarAgenda(idProfesional, idConsultorio);
         }
 
         private void BNuevaDisponibilidad_Click(object sender, EventArgs e)
         {
             FormNuevaDisponibilidad frm = new FormNuevaDisponibilidad();
-            frm.ShowDialog();
+                // actualiza la agenda despues de agregar nueva disponbilidad
+                CargarAgenda();
         }
     }
 }
-

@@ -48,12 +48,13 @@
             this.LGestionAgenda = new System.Windows.Forms.Label();
             this.DTVGAgenda = new System.Windows.Forms.DataGridView();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.LDisponibilidad = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.LConsultorios = new System.Windows.Forms.Label();
-            this.LProfesionales = new System.Windows.Forms.Label();
+            this.BBuscar = new System.Windows.Forms.Button();
+            this.LConsultorio = new System.Windows.Forms.Label();
+            this.LProfesional = new System.Windows.Forms.Label();
             this.CMBConsultorio = new System.Windows.Forms.ComboBox();
-            this.CMBProfesional = new System.Windows.Forms.ComboBox();
+            this.CMBProfesionales = new System.Windows.Forms.ComboBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.BAgenda = new System.Windows.Forms.Button();
             this.PMenu.SuspendLayout();
             this.panel4.SuspendLayout();
             this.PanelLogoPaciente.SuspendLayout();
@@ -62,11 +63,13 @@
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DTVGAgenda)).BeginInit();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // PMenu
             // 
             this.PMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
+            this.PMenu.Controls.Add(this.BAgenda);
             this.PMenu.Controls.Add(this.panel4);
             this.PMenu.Controls.Add(this.BDoctores);
             this.PMenu.Controls.Add(this.BTurnos);
@@ -202,13 +205,13 @@
             this.panel2.Controls.Add(this.LGestionAgenda);
             this.panel2.Location = new System.Drawing.Point(163, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(764, 67);
+            this.panel2.Size = new System.Drawing.Size(865, 67);
             this.panel2.TabIndex = 5;
             // 
             // BNuevaDisponibilidad
             // 
             this.BNuevaDisponibilidad.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BNuevaDisponibilidad.Location = new System.Drawing.Point(617, 10);
+            this.BNuevaDisponibilidad.Location = new System.Drawing.Point(735, 7);
             this.BNuevaDisponibilidad.Name = "BNuevaDisponibilidad";
             this.BNuevaDisponibilidad.Size = new System.Drawing.Size(113, 52);
             this.BNuevaDisponibilidad.TabIndex = 3;
@@ -228,7 +231,7 @@
             // 
             this.LGestionAgenda.AutoSize = true;
             this.LGestionAgenda.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LGestionAgenda.Location = new System.Drawing.Point(257, 10);
+            this.LGestionAgenda.Location = new System.Drawing.Point(308, 20);
             this.LGestionAgenda.Name = "LGestionAgenda";
             this.LGestionAgenda.Size = new System.Drawing.Size(197, 26);
             this.LGestionAgenda.TabIndex = 1;
@@ -238,86 +241,97 @@
             // 
             this.DTVGAgenda.BackgroundColor = System.Drawing.SystemColors.Control;
             this.DTVGAgenda.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DTVGAgenda.Location = new System.Drawing.Point(163, 226);
+            this.DTVGAgenda.Location = new System.Drawing.Point(163, 154);
             this.DTVGAgenda.Name = "DTVGAgenda";
-            this.DTVGAgenda.Size = new System.Drawing.Size(764, 288);
+            this.DTVGAgenda.Size = new System.Drawing.Size(865, 360);
             this.DTVGAgenda.TabIndex = 6;
-            this.DTVGAgenda.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DTVGAgenda_CellContentClick);
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.LDisponibilidad);
-            this.panel3.Controls.Add(this.dateTimePicker1);
-            this.panel3.Controls.Add(this.LConsultorios);
-            this.panel3.Controls.Add(this.LProfesionales);
+            this.panel3.Controls.Add(this.BBuscar);
+            this.panel3.Controls.Add(this.LConsultorio);
+            this.panel3.Controls.Add(this.LProfesional);
             this.panel3.Controls.Add(this.CMBConsultorio);
-            this.panel3.Controls.Add(this.CMBProfesional);
+            this.panel3.Controls.Add(this.CMBProfesionales);
+            this.panel3.Controls.Add(this.pictureBox2);
             this.panel3.Location = new System.Drawing.Point(163, 79);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(764, 138);
+            this.panel3.Size = new System.Drawing.Size(865, 69);
             this.panel3.TabIndex = 7;
             // 
-            // LDisponibilidad
+            // BBuscar
             // 
-            this.LDisponibilidad.AutoSize = true;
-            this.LDisponibilidad.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LDisponibilidad.Location = new System.Drawing.Point(24, 88);
-            this.LDisponibilidad.Name = "LDisponibilidad";
-            this.LDisponibilidad.Size = new System.Drawing.Size(120, 23);
-            this.LDisponibilidad.TabIndex = 5;
-            this.LDisponibilidad.Text = "Disponibilidad:";
+            this.BBuscar.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BBuscar.Location = new System.Drawing.Point(756, 26);
+            this.BBuscar.Name = "BBuscar";
+            this.BBuscar.Size = new System.Drawing.Size(92, 34);
+            this.BBuscar.TabIndex = 18;
+            this.BBuscar.Text = "Buscar";
+            this.BBuscar.UseVisualStyleBackColor = true;
             // 
-            // dateTimePicker1
+            // LConsultorio
             // 
-            this.dateTimePicker1.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker1.Location = new System.Drawing.Point(159, 91);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(271, 26);
-            this.dateTimePicker1.TabIndex = 4;
+            this.LConsultorio.AutoSize = true;
+            this.LConsultorio.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LConsultorio.Location = new System.Drawing.Point(547, 6);
+            this.LConsultorio.Name = "LConsultorio";
+            this.LConsultorio.Size = new System.Drawing.Size(97, 23);
+            this.LConsultorio.TabIndex = 16;
+            this.LConsultorio.Text = "Consultorio:";
             // 
-            // LConsultorios
+            // LProfesional
             // 
-            this.LConsultorios.AutoSize = true;
-            this.LConsultorios.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LConsultorios.Location = new System.Drawing.Point(391, 19);
-            this.LConsultorios.Name = "LConsultorios";
-            this.LConsultorios.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.LConsultorios.Size = new System.Drawing.Size(104, 23);
-            this.LConsultorios.TabIndex = 3;
-            this.LConsultorios.Text = "Consultorios:";
-            // 
-            // LProfesionales
-            // 
-            this.LProfesionales.AutoSize = true;
-            this.LProfesionales.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LProfesionales.Location = new System.Drawing.Point(24, 21);
-            this.LProfesionales.Name = "LProfesionales";
-            this.LProfesionales.Size = new System.Drawing.Size(111, 23);
-            this.LProfesionales.TabIndex = 2;
-            this.LProfesionales.Text = "Profesionales:";
+            this.LProfesional.AutoSize = true;
+            this.LProfesional.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LProfesional.Location = new System.Drawing.Point(272, 6);
+            this.LProfesional.Name = "LProfesional";
+            this.LProfesional.Size = new System.Drawing.Size(96, 23);
+            this.LProfesional.TabIndex = 15;
+            this.LProfesional.Text = "Profesional:";
             // 
             // CMBConsultorio
             // 
+            this.CMBConsultorio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CMBConsultorio.FormattingEnabled = true;
-            this.CMBConsultorio.Location = new System.Drawing.Point(525, 19);
+            this.CMBConsultorio.Location = new System.Drawing.Point(484, 32);
             this.CMBConsultorio.Name = "CMBConsultorio";
-            this.CMBConsultorio.Size = new System.Drawing.Size(172, 21);
-            this.CMBConsultorio.TabIndex = 1;
+            this.CMBConsultorio.Size = new System.Drawing.Size(229, 28);
+            this.CMBConsultorio.TabIndex = 13;
             // 
-            // CMBProfesional
+            // CMBProfesionales
             // 
-            this.CMBProfesional.FormattingEnabled = true;
-            this.CMBProfesional.Location = new System.Drawing.Point(159, 23);
-            this.CMBProfesional.Name = "CMBProfesional";
-            this.CMBProfesional.Size = new System.Drawing.Size(185, 21);
-            this.CMBProfesional.TabIndex = 0;
-            this.CMBProfesional.SelectedIndexChanged += new System.EventHandler(this.CMBProfesional_SelectedIndexChanged);
+            this.CMBProfesionales.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CMBProfesionales.FormattingEnabled = true;
+            this.CMBProfesionales.Location = new System.Drawing.Point(210, 32);
+            this.CMBProfesionales.Name = "CMBProfesionales";
+            this.CMBProfesionales.Size = new System.Drawing.Size(216, 28);
+            this.CMBProfesionales.TabIndex = 12;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox2.Location = new System.Drawing.Point(3, 16);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(70, 44);
+            this.pictureBox2.TabIndex = 11;
+            this.pictureBox2.TabStop = false;
+            // 
+            // BAgenda
+            // 
+            this.BAgenda.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BAgenda.Location = new System.Drawing.Point(21, 264);
+            this.BAgenda.Name = "BAgenda";
+            this.BAgenda.Size = new System.Drawing.Size(98, 35);
+            this.BAgenda.TabIndex = 10;
+            this.BAgenda.Text = "Agenda";
+            this.BAgenda.UseVisualStyleBackColor = true;
             // 
             // FormAgenda
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(939, 518);
+            this.ClientSize = new System.Drawing.Size(1040, 518);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.DTVGAgenda);
             this.Controls.Add(this.panel2);
@@ -336,6 +350,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.DTVGAgenda)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -361,11 +376,12 @@
         private System.Windows.Forms.Button BNuevaDisponibilidad;
         private System.Windows.Forms.DataGridView DTVGAgenda;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Button BBuscar;
+        private System.Windows.Forms.Label LConsultorio;
+        private System.Windows.Forms.Label LProfesional;
         private System.Windows.Forms.ComboBox CMBConsultorio;
-        private System.Windows.Forms.ComboBox CMBProfesional;
-        private System.Windows.Forms.Label LProfesionales;
-        private System.Windows.Forms.Label LDisponibilidad;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.Label LConsultorios;
+        private System.Windows.Forms.ComboBox CMBProfesionales;
+        private System.Windows.Forms.Button BAgenda;
     }
 }

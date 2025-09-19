@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SaludSoft.Resources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +19,8 @@ namespace SaludSoft
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new FormLogin());
             Application.Run(new SaludSoft());
+            //Application.Run(new Admin());
+            //Application.Run(new FormUsuario());
         }
     }
 }

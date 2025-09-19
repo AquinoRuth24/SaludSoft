@@ -42,6 +42,8 @@
             this.LTexto = new System.Windows.Forms.Label();
             this.LNuevaDisponibilidad = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.LDia = new System.Windows.Forms.Label();
+            this.CBDiaSemana = new System.Windows.Forms.ComboBox();
             this.BGuardar = new System.Windows.Forms.Button();
             this.BCancelar = new System.Windows.Forms.Button();
             this.DPTHoraFin = new System.Windows.Forms.DateTimePicker();
@@ -50,12 +52,11 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.LHoraFin = new System.Windows.Forms.Label();
             this.LHoraInicio = new System.Windows.Forms.Label();
-            this.LFecha = new System.Windows.Forms.Label();
-            this.DPTFecha = new System.Windows.Forms.DateTimePicker();
             this.LConsultorios = new System.Windows.Forms.Label();
             this.LProfesionales = new System.Windows.Forms.Label();
             this.CMBConsultorio = new System.Windows.Forms.ComboBox();
             this.CMBProfesional = new System.Windows.Forms.ComboBox();
+            this.BAgenda = new System.Windows.Forms.Button();
             this.PMenu.SuspendLayout();
             this.panel4.SuspendLayout();
             this.PanelLogoPaciente.SuspendLayout();
@@ -69,6 +70,7 @@
             // PMenu
             // 
             this.PMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
+            this.PMenu.Controls.Add(this.BAgenda);
             this.PMenu.Controls.Add(this.panel4);
             this.PMenu.Controls.Add(this.BDoctores);
             this.PMenu.Controls.Add(this.BTurnos);
@@ -163,7 +165,7 @@
             this.panel1.Controls.Add(this.LNuevaDisponibilidad);
             this.panel1.Location = new System.Drawing.Point(162, 7);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(777, 51);
+            this.panel1.Size = new System.Drawing.Size(870, 51);
             this.panel1.TabIndex = 5;
             // 
             // LTexto
@@ -186,6 +188,8 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.LDia);
+            this.panel3.Controls.Add(this.CBDiaSemana);
             this.panel3.Controls.Add(this.BGuardar);
             this.panel3.Controls.Add(this.BCancelar);
             this.panel3.Controls.Add(this.DPTHoraFin);
@@ -194,22 +198,39 @@
             this.panel3.Controls.Add(this.pictureBox2);
             this.panel3.Controls.Add(this.LHoraFin);
             this.panel3.Controls.Add(this.LHoraInicio);
-            this.panel3.Controls.Add(this.LFecha);
-            this.panel3.Controls.Add(this.DPTFecha);
             this.panel3.Controls.Add(this.LConsultorios);
             this.panel3.Controls.Add(this.LProfesionales);
             this.panel3.Controls.Add(this.CMBConsultorio);
             this.panel3.Controls.Add(this.CMBProfesional);
             this.panel3.Location = new System.Drawing.Point(181, 64);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(720, 454);
+            this.panel3.Size = new System.Drawing.Size(834, 454);
             this.panel3.TabIndex = 8;
+            // 
+            // LDia
+            // 
+            this.LDia.AutoSize = true;
+            this.LDia.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LDia.Location = new System.Drawing.Point(90, 267);
+            this.LDia.Name = "LDia";
+            this.LDia.Size = new System.Drawing.Size(146, 23);
+            this.LDia.TabIndex = 19;
+            this.LDia.Text = "Dia De La Semana:";
+            // 
+            // CBDiaSemana
+            // 
+            this.CBDiaSemana.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CBDiaSemana.FormattingEnabled = true;
+            this.CBDiaSemana.Location = new System.Drawing.Point(76, 310);
+            this.CBDiaSemana.Name = "CBDiaSemana";
+            this.CBDiaSemana.Size = new System.Drawing.Size(160, 28);
+            this.CBDiaSemana.TabIndex = 16;
             // 
             // BGuardar
             // 
             this.BGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
             this.BGuardar.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BGuardar.Location = new System.Drawing.Point(618, 415);
+            this.BGuardar.Location = new System.Drawing.Point(722, 404);
             this.BGuardar.Name = "BGuardar";
             this.BGuardar.Size = new System.Drawing.Size(99, 36);
             this.BGuardar.TabIndex = 13;
@@ -220,7 +241,7 @@
             // BCancelar
             // 
             this.BCancelar.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BCancelar.Location = new System.Drawing.Point(493, 415);
+            this.BCancelar.Location = new System.Drawing.Point(597, 404);
             this.BCancelar.Name = "BCancelar";
             this.BCancelar.Size = new System.Drawing.Size(97, 36);
             this.BCancelar.TabIndex = 12;
@@ -232,27 +253,27 @@
             // 
             this.DPTHoraFin.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DPTHoraFin.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.DPTHoraFin.Location = new System.Drawing.Point(574, 273);
+            this.DPTHoraFin.Location = new System.Drawing.Point(641, 310);
             this.DPTHoraFin.Name = "DPTHoraFin";
             this.DPTHoraFin.ShowUpDown = true;
-            this.DPTHoraFin.Size = new System.Drawing.Size(86, 28);
+            this.DPTHoraFin.Size = new System.Drawing.Size(102, 28);
             this.DPTHoraFin.TabIndex = 11;
             // 
             // DTPHoraInicio
             // 
             this.DTPHoraInicio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DTPHoraInicio.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.DTPHoraInicio.Location = new System.Drawing.Point(300, 273);
+            this.DTPHoraInicio.Location = new System.Drawing.Point(362, 310);
             this.DTPHoraInicio.Name = "DTPHoraInicio";
             this.DTPHoraInicio.ShowUpDown = true;
-            this.DTPHoraInicio.Size = new System.Drawing.Size(84, 28);
+            this.DTPHoraInicio.Size = new System.Drawing.Size(105, 28);
             this.DTPHoraInicio.TabIndex = 10;
             // 
             // pictureBox3
             // 
             this.pictureBox3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox3.BackgroundImage")));
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox3.Location = new System.Drawing.Point(35, 28);
+            this.pictureBox3.Location = new System.Drawing.Point(351, 14);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(64, 55);
             this.pictureBox3.TabIndex = 9;
@@ -262,9 +283,9 @@
             // 
             this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox2.Location = new System.Drawing.Point(16, 182);
+            this.pictureBox2.Location = new System.Drawing.Point(351, 145);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(48, 42);
+            this.pictureBox2.Size = new System.Drawing.Size(81, 102);
             this.pictureBox2.TabIndex = 8;
             this.pictureBox2.TabStop = false;
             // 
@@ -272,7 +293,7 @@
             // 
             this.LHoraFin.AutoSize = true;
             this.LHoraFin.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LHoraFin.Location = new System.Drawing.Point(570, 189);
+            this.LHoraFin.Location = new System.Drawing.Point(652, 252);
             this.LHoraFin.Name = "LHoraFin";
             this.LHoraFin.Size = new System.Drawing.Size(74, 23);
             this.LHoraFin.TabIndex = 7;
@@ -282,36 +303,17 @@
             // 
             this.LHoraInicio.AutoSize = true;
             this.LHoraInicio.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LHoraInicio.Location = new System.Drawing.Point(290, 189);
+            this.LHoraInicio.Location = new System.Drawing.Point(373, 267);
             this.LHoraInicio.Name = "LHoraInicio";
             this.LHoraInicio.Size = new System.Drawing.Size(94, 23);
             this.LHoraInicio.TabIndex = 6;
             this.LHoraInicio.Text = "Hora Inicio";
             // 
-            // LFecha
-            // 
-            this.LFecha.AutoSize = true;
-            this.LFecha.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LFecha.Location = new System.Drawing.Point(70, 189);
-            this.LFecha.Name = "LFecha";
-            this.LFecha.Size = new System.Drawing.Size(57, 23);
-            this.LFecha.TabIndex = 5;
-            this.LFecha.Text = "Fecha:";
-            // 
-            // DPTFecha
-            // 
-            this.DPTFecha.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DPTFecha.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.DPTFecha.Location = new System.Drawing.Point(16, 273);
-            this.DPTFecha.Name = "DPTFecha";
-            this.DPTFecha.Size = new System.Drawing.Size(95, 28);
-            this.DPTFecha.TabIndex = 4;
-            // 
             // LConsultorios
             // 
             this.LConsultorios.AutoSize = true;
             this.LConsultorios.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LConsultorios.Location = new System.Drawing.Point(384, 90);
+            this.LConsultorios.Location = new System.Drawing.Point(441, 99);
             this.LConsultorios.Name = "LConsultorios";
             this.LConsultorios.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.LConsultorios.Size = new System.Drawing.Size(104, 23);
@@ -322,7 +324,7 @@
             // 
             this.LProfesionales.AutoSize = true;
             this.LProfesionales.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LProfesionales.Location = new System.Drawing.Point(12, 86);
+            this.LProfesionales.Location = new System.Drawing.Point(31, 99);
             this.LProfesionales.Name = "LProfesionales";
             this.LProfesionales.Size = new System.Drawing.Size(111, 23);
             this.LProfesionales.TabIndex = 2;
@@ -330,25 +332,37 @@
             // 
             // CMBConsultorio
             // 
+            this.CMBConsultorio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CMBConsultorio.FormattingEnabled = true;
-            this.CMBConsultorio.Location = new System.Drawing.Point(530, 92);
+            this.CMBConsultorio.Location = new System.Drawing.Point(597, 94);
             this.CMBConsultorio.Name = "CMBConsultorio";
-            this.CMBConsultorio.Size = new System.Drawing.Size(172, 21);
+            this.CMBConsultorio.Size = new System.Drawing.Size(172, 28);
             this.CMBConsultorio.TabIndex = 1;
             // 
             // CMBProfesional
             // 
+            this.CMBProfesional.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CMBProfesional.FormattingEnabled = true;
-            this.CMBProfesional.Location = new System.Drawing.Point(160, 90);
+            this.CMBProfesional.Location = new System.Drawing.Point(149, 94);
             this.CMBProfesional.Name = "CMBProfesional";
-            this.CMBProfesional.Size = new System.Drawing.Size(185, 21);
+            this.CMBProfesional.Size = new System.Drawing.Size(185, 28);
             this.CMBProfesional.TabIndex = 0;
+            // 
+            // BAgenda
+            // 
+            this.BAgenda.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BAgenda.Location = new System.Drawing.Point(21, 257);
+            this.BAgenda.Name = "BAgenda";
+            this.BAgenda.Size = new System.Drawing.Size(98, 35);
+            this.BAgenda.TabIndex = 10;
+            this.BAgenda.Text = "Agenda";
+            this.BAgenda.UseVisualStyleBackColor = true;
             // 
             // FormNuevaDisponibilidad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(941, 530);
+            this.ClientSize = new System.Drawing.Size(1044, 530);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.PanelLogoPaciente);
@@ -384,8 +398,6 @@
         private System.Windows.Forms.Label LTexto;
         private System.Windows.Forms.Label LNuevaDisponibilidad;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label LFecha;
-        private System.Windows.Forms.DateTimePicker DPTFecha;
         private System.Windows.Forms.Label LConsultorios;
         private System.Windows.Forms.Label LProfesionales;
         private System.Windows.Forms.ComboBox CMBConsultorio;
@@ -398,5 +410,8 @@
         private System.Windows.Forms.DateTimePicker DTPHoraInicio;
         private System.Windows.Forms.Button BGuardar;
         private System.Windows.Forms.Button BCancelar;
+        private System.Windows.Forms.ComboBox CBDiaSemana;
+        private System.Windows.Forms.Label LDia;
+        private System.Windows.Forms.Button BAgenda;
     }
 }

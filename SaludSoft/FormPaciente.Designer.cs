@@ -73,6 +73,7 @@
             this.LFechaConsulta = new System.Windows.Forms.Label();
             this.DTMHistorialInicial = new System.Windows.Forms.DateTimePicker();
             this.LHistorialInicial = new System.Windows.Forms.Label();
+            this.BAgenda = new System.Windows.Forms.Button();
             this.PanelLogoPaciente.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.PMenu.SuspendLayout();
@@ -114,6 +115,7 @@
             // PMenu
             // 
             this.PMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
+            this.PMenu.Controls.Add(this.BAgenda);
             this.PMenu.Controls.Add(this.panel4);
             this.PMenu.Controls.Add(this.BDoctores);
             this.PMenu.Controls.Add(this.BTurnos);
@@ -545,6 +547,16 @@
             this.LHistorialInicial.TabIndex = 0;
             this.LHistorialInicial.Text = "Historial Inicial";
             // 
+            // BAgenda
+            // 
+            this.BAgenda.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BAgenda.Location = new System.Drawing.Point(23, 264);
+            this.BAgenda.Name = "BAgenda";
+            this.BAgenda.Size = new System.Drawing.Size(98, 35);
+            this.BAgenda.TabIndex = 10;
+            this.BAgenda.Text = "Agenda";
+            this.BAgenda.UseVisualStyleBackColor = true;
+            // 
             // FormPaciente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -617,5 +629,6 @@
         private System.Windows.Forms.Label LSexo;
         private System.Windows.Forms.RadioButton RBFemenino;
         private System.Windows.Forms.RadioButton RBMasculino;
+        private System.Windows.Forms.Button BAgenda;
     }
 }

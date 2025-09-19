@@ -74,6 +74,9 @@
             this.LFechaTurno = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.BAgenda = new System.Windows.Forms.Button();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.BCerrarSesion = new System.Windows.Forms.Button();
             this.PanelLogoPaciente.SuspendLayout();
             this.panel1.SuspendLayout();
             this.PMenu.SuspendLayout();
@@ -84,6 +87,7 @@
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel7.SuspendLayout();
+            this.panel8.SuspendLayout();
             this.SuspendLayout();
             // 
             // PanelLogoPaciente
@@ -214,19 +218,21 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
+            this.panel2.Controls.Add(this.panel8);
+            this.panel2.Controls.Add(this.BAgenda);
             this.panel2.Controls.Add(this.BDoctoresFromTurnos);
             this.panel2.Controls.Add(this.BTurnosFromTurnos);
             this.panel2.Controls.Add(this.BPacientesFormTurno);
             this.panel2.Controls.Add(this.BInicioFormTurno);
             this.panel2.Location = new System.Drawing.Point(0, 94);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(154, 351);
+            this.panel2.Size = new System.Drawing.Size(154, 405);
             this.panel2.TabIndex = 3;
             // 
             // BDoctoresFromTurnos
             // 
             this.BDoctoresFromTurnos.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BDoctoresFromTurnos.Location = new System.Drawing.Point(27, 223);
+            this.BDoctoresFromTurnos.Location = new System.Drawing.Point(24, 164);
             this.BDoctoresFromTurnos.Name = "BDoctoresFromTurnos";
             this.BDoctoresFromTurnos.Size = new System.Drawing.Size(92, 46);
             this.BDoctoresFromTurnos.TabIndex = 3;
@@ -236,7 +242,7 @@
             // BTurnosFromTurnos
             // 
             this.BTurnosFromTurnos.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BTurnosFromTurnos.Location = new System.Drawing.Point(14, 159);
+            this.BTurnosFromTurnos.Location = new System.Drawing.Point(14, 119);
             this.BTurnosFromTurnos.Name = "BTurnosFromTurnos";
             this.BTurnosFromTurnos.Size = new System.Drawing.Size(107, 37);
             this.BTurnosFromTurnos.TabIndex = 4;
@@ -246,7 +252,7 @@
             // BPacientesFormTurno
             // 
             this.BPacientesFormTurno.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BPacientesFormTurno.Location = new System.Drawing.Point(11, 89);
+            this.BPacientesFormTurno.Location = new System.Drawing.Point(11, 68);
             this.BPacientesFormTurno.Name = "BPacientesFormTurno";
             this.BPacientesFormTurno.Size = new System.Drawing.Size(114, 40);
             this.BPacientesFormTurno.TabIndex = 5;
@@ -273,14 +279,14 @@
             this.panel3.Controls.Add(this.LabelRegistroCitas);
             this.panel3.Location = new System.Drawing.Point(173, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(595, 73);
+            this.panel3.Size = new System.Drawing.Size(829, 73);
             this.panel3.TabIndex = 4;
             // 
             // LCita
             // 
             this.LCita.AutoSize = true;
             this.LCita.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LCita.Location = new System.Drawing.Point(24, 47);
+            this.LCita.Location = new System.Drawing.Point(125, 47);
             this.LCita.Name = "LCita";
             this.LCita.Size = new System.Drawing.Size(528, 21);
             this.LCita.TabIndex = 3;
@@ -298,7 +304,7 @@
             // 
             this.LabelRegistroCitas.AutoSize = true;
             this.LabelRegistroCitas.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelRegistroCitas.Location = new System.Drawing.Point(117, 11);
+            this.LabelRegistroCitas.Location = new System.Drawing.Point(245, 10);
             this.LabelRegistroCitas.Name = "LabelRegistroCitas";
             this.LabelRegistroCitas.Size = new System.Drawing.Size(296, 26);
             this.LabelRegistroCitas.TabIndex = 1;
@@ -316,14 +322,14 @@
             this.panel4.Controls.Add(this.LNomYApe);
             this.panel4.Location = new System.Drawing.Point(190, 79);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(567, 109);
+            this.panel4.Size = new System.Drawing.Size(812, 109);
             this.panel4.TabIndex = 5;
             // 
             // LDatosPaciente
             // 
             this.LDatosPaciente.AutoSize = true;
             this.LDatosPaciente.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LDatosPaciente.Location = new System.Drawing.Point(3, 11);
+            this.LDatosPaciente.Location = new System.Drawing.Point(269, 12);
             this.LDatosPaciente.Name = "LDatosPaciente";
             this.LDatosPaciente.Size = new System.Drawing.Size(208, 25);
             this.LDatosPaciente.TabIndex = 8;
@@ -331,7 +337,7 @@
             // 
             // TBDni
             // 
-            this.TBDni.Location = new System.Drawing.Point(363, 77);
+            this.TBDni.Location = new System.Drawing.Point(614, 77);
             this.TBDni.Name = "TBDni";
             this.TBDni.Size = new System.Drawing.Size(138, 20);
             this.TBDni.TabIndex = 7;
@@ -339,14 +345,14 @@
             // 
             // TBNomYApe
             // 
-            this.TBNomYApe.Location = new System.Drawing.Point(8, 77);
+            this.TBNomYApe.Location = new System.Drawing.Point(114, 77);
             this.TBNomYApe.Name = "TBNomYApe";
             this.TBNomYApe.Size = new System.Drawing.Size(132, 20);
             this.TBNomYApe.TabIndex = 6;
             // 
             // TBTelefono
             // 
-            this.TBTelefono.Location = new System.Drawing.Point(189, 77);
+            this.TBTelefono.Location = new System.Drawing.Point(356, 77);
             this.TBTelefono.Name = "TBTelefono";
             this.TBTelefono.Size = new System.Drawing.Size(140, 20);
             this.TBTelefono.TabIndex = 5;
@@ -355,7 +361,7 @@
             // 
             this.LEmail.AutoSize = true;
             this.LEmail.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LEmail.Location = new System.Drawing.Point(406, 55);
+            this.LEmail.Location = new System.Drawing.Point(640, 44);
             this.LEmail.Name = "LEmail";
             this.LEmail.Size = new System.Drawing.Size(50, 18);
             this.LEmail.TabIndex = 4;
@@ -365,7 +371,7 @@
             // 
             this.LTelefono.AutoSize = true;
             this.LTelefono.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LTelefono.Location = new System.Drawing.Point(205, 55);
+            this.LTelefono.Location = new System.Drawing.Point(374, 44);
             this.LTelefono.Name = "LTelefono";
             this.LTelefono.Size = new System.Drawing.Size(75, 18);
             this.LTelefono.TabIndex = 3;
@@ -375,7 +381,7 @@
             // 
             this.LNomYApe.AutoSize = true;
             this.LNomYApe.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LNomYApe.Location = new System.Drawing.Point(3, 55);
+            this.LNomYApe.Location = new System.Drawing.Point(109, 47);
             this.LNomYApe.Name = "LNomYApe";
             this.LNomYApe.Size = new System.Drawing.Size(139, 18);
             this.LNomYApe.TabIndex = 2;
@@ -389,7 +395,7 @@
             this.panel5.Controls.Add(this.LMotivoConsulta);
             this.panel5.Location = new System.Drawing.Point(190, 306);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(567, 87);
+            this.panel5.Size = new System.Drawing.Size(812, 87);
             this.panel5.TabIndex = 6;
             // 
             // LDetalleConsulta
@@ -450,7 +456,7 @@
             // BCancelarTurno
             // 
             this.BCancelarTurno.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BCancelarTurno.Location = new System.Drawing.Point(610, 399);
+            this.BCancelarTurno.Location = new System.Drawing.Point(779, 457);
             this.BCancelarTurno.Name = "BCancelarTurno";
             this.BCancelarTurno.Size = new System.Drawing.Size(81, 42);
             this.BCancelarTurno.TabIndex = 8;
@@ -463,7 +469,7 @@
             this.BAgregarTurno.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
             this.BAgregarTurno.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BAgregarTurno.ForeColor = System.Drawing.SystemColors.Control;
-            this.BAgregarTurno.Location = new System.Drawing.Point(713, 399);
+            this.BAgregarTurno.Location = new System.Drawing.Point(900, 457);
             this.BAgregarTurno.Name = "BAgregarTurno";
             this.BAgregarTurno.Size = new System.Drawing.Size(87, 42);
             this.BAgregarTurno.TabIndex = 9;
@@ -480,16 +486,16 @@
             this.panel7.Controls.Add(this.LFechaTurno);
             this.panel7.Controls.Add(this.label5);
             this.panel7.Controls.Add(this.label4);
-            this.panel7.Location = new System.Drawing.Point(455, 197);
+            this.panel7.Location = new System.Drawing.Point(468, 197);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(302, 93);
+            this.panel7.Size = new System.Drawing.Size(534, 93);
             this.panel7.TabIndex = 10;
             // 
             // dateTimePickerHora
             // 
             this.dateTimePickerHora.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePickerHora.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dateTimePickerHora.Location = new System.Drawing.Point(198, 60);
+            this.dateTimePickerHora.Location = new System.Drawing.Point(437, 55);
             this.dateTimePickerHora.Name = "dateTimePickerHora";
             this.dateTimePickerHora.Size = new System.Drawing.Size(82, 24);
             this.dateTimePickerHora.TabIndex = 15;
@@ -498,7 +504,7 @@
             // 
             this.LhoraTurno.AutoSize = true;
             this.LhoraTurno.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LhoraTurno.Location = new System.Drawing.Point(208, 35);
+            this.LhoraTurno.Location = new System.Drawing.Point(434, 21);
             this.LhoraTurno.Name = "LhoraTurno";
             this.LhoraTurno.Size = new System.Drawing.Size(51, 18);
             this.LhoraTurno.TabIndex = 14;
@@ -508,7 +514,7 @@
             // 
             this.dateTimePickerFecha.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePickerFecha.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePickerFecha.Location = new System.Drawing.Point(18, 60);
+            this.dateTimePickerFecha.Location = new System.Drawing.Point(156, 60);
             this.dateTimePickerFecha.Name = "dateTimePickerFecha";
             this.dateTimePickerFecha.Size = new System.Drawing.Size(103, 24);
             this.dateTimePickerFecha.TabIndex = 13;
@@ -517,7 +523,7 @@
             // 
             this.LFechaTurno.AutoSize = true;
             this.LFechaTurno.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LFechaTurno.Location = new System.Drawing.Point(37, 35);
+            this.LFechaTurno.Location = new System.Drawing.Point(177, 30);
             this.LFechaTurno.Name = "LFechaTurno";
             this.LFechaTurno.Size = new System.Drawing.Size(59, 18);
             this.LFechaTurno.TabIndex = 11;
@@ -535,17 +541,45 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(86, 5);
+            this.label4.Location = new System.Drawing.Point(242, 5);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(150, 25);
             this.label4.TabIndex = 8;
             this.label4.Text = "Fecha y Hora";
             // 
+            // BAgenda
+            // 
+            this.BAgenda.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BAgenda.Location = new System.Drawing.Point(21, 223);
+            this.BAgenda.Name = "BAgenda";
+            this.BAgenda.Size = new System.Drawing.Size(98, 35);
+            this.BAgenda.TabIndex = 9;
+            this.BAgenda.Text = "Agenda";
+            this.BAgenda.UseVisualStyleBackColor = true;
+            // 
+            // panel8
+            // 
+            this.panel8.Controls.Add(this.BCerrarSesion);
+            this.panel8.Location = new System.Drawing.Point(3, 281);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(151, 124);
+            this.panel8.TabIndex = 10;
+            // 
+            // BCerrarSesion
+            // 
+            this.BCerrarSesion.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BCerrarSesion.Location = new System.Drawing.Point(21, 51);
+            this.BCerrarSesion.Name = "BCerrarSesion";
+            this.BCerrarSesion.Size = new System.Drawing.Size(108, 53);
+            this.BCerrarSesion.TabIndex = 6;
+            this.BCerrarSesion.Text = "Cerrar sesion";
+            this.BCerrarSesion.UseVisualStyleBackColor = true;
+            // 
             // FormNuevoTurno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 444);
+            this.ClientSize = new System.Drawing.Size(1014, 511);
             this.Controls.Add(this.panel7);
             this.Controls.Add(this.BAgregarTurno);
             this.Controls.Add(this.BCancelarTurno);
@@ -572,6 +606,7 @@
             this.panel6.PerformLayout();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
+            this.panel8.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -623,5 +658,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label LhoraTurno;
         private System.Windows.Forms.DateTimePicker dateTimePickerHora;
+        private System.Windows.Forms.Button BAgenda;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Button BCerrarSesion;
     }
 }

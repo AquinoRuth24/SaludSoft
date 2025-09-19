@@ -56,6 +56,7 @@
             this.TBBuscar = new System.Windows.Forms.TextBox();
             this.BBuscarPaciente = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.BAgenda = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -75,7 +76,7 @@
             this.panel1.Controls.Add(this.LabelGestionPaciente);
             this.panel1.Location = new System.Drawing.Point(175, 10);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(752, 46);
+            this.panel1.Size = new System.Drawing.Size(850, 46);
             this.panel1.TabIndex = 4;
             // 
             // BVolver
@@ -110,6 +111,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
+            this.panel2.Controls.Add(this.BAgenda);
             this.panel2.Controls.Add(this.panel4);
             this.panel2.Controls.Add(this.BDoctoresFromTurnos);
             this.panel2.Controls.Add(this.BTurnosFromTurnos);
@@ -142,7 +144,7 @@
             // BDoctoresFromTurnos
             // 
             this.BDoctoresFromTurnos.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BDoctoresFromTurnos.Location = new System.Drawing.Point(27, 223);
+            this.BDoctoresFromTurnos.Location = new System.Drawing.Point(24, 165);
             this.BDoctoresFromTurnos.Name = "BDoctoresFromTurnos";
             this.BDoctoresFromTurnos.Size = new System.Drawing.Size(92, 46);
             this.BDoctoresFromTurnos.TabIndex = 3;
@@ -152,7 +154,7 @@
             // BTurnosFromTurnos
             // 
             this.BTurnosFromTurnos.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BTurnosFromTurnos.Location = new System.Drawing.Point(14, 159);
+            this.BTurnosFromTurnos.Location = new System.Drawing.Point(17, 110);
             this.BTurnosFromTurnos.Name = "BTurnosFromTurnos";
             this.BTurnosFromTurnos.Size = new System.Drawing.Size(107, 37);
             this.BTurnosFromTurnos.TabIndex = 4;
@@ -162,7 +164,7 @@
             // BPacientesFormTurno
             // 
             this.BPacientesFormTurno.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BPacientesFormTurno.Location = new System.Drawing.Point(11, 89);
+            this.BPacientesFormTurno.Location = new System.Drawing.Point(13, 55);
             this.BPacientesFormTurno.Name = "BPacientesFormTurno";
             this.BPacientesFormTurno.Size = new System.Drawing.Size(114, 40);
             this.BPacientesFormTurno.TabIndex = 5;
@@ -173,7 +175,7 @@
             // BInicioFormTurno
             // 
             this.BInicioFormTurno.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BInicioFormTurno.Location = new System.Drawing.Point(21, 19);
+            this.BInicioFormTurno.Location = new System.Drawing.Point(21, 0);
             this.BInicioFormTurno.Name = "BInicioFormTurno";
             this.BInicioFormTurno.Size = new System.Drawing.Size(92, 43);
             this.BInicioFormTurno.TabIndex = 2;
@@ -310,16 +312,16 @@
             // 
             this.dgvPacientes.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dgvPacientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPacientes.Location = new System.Drawing.Point(175, 105);
+            this.dgvPacientes.Location = new System.Drawing.Point(175, 110);
             this.dgvPacientes.Name = "dgvPacientes";
-            this.dgvPacientes.Size = new System.Drawing.Size(752, 391);
+            this.dgvPacientes.Size = new System.Drawing.Size(850, 386);
             this.dgvPacientes.TabIndex = 7;
             this.dgvPacientes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPacientes_CellContentClick);
             // 
             // TBBuscar
             // 
             this.TBBuscar.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TBBuscar.Location = new System.Drawing.Point(274, 72);
+            this.TBBuscar.Location = new System.Drawing.Point(331, 70);
             this.TBBuscar.Name = "TBBuscar";
             this.TBBuscar.Size = new System.Drawing.Size(540, 26);
             this.TBBuscar.TabIndex = 8;
@@ -328,7 +330,7 @@
             // BBuscarPaciente
             // 
             this.BBuscarPaciente.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BBuscarPaciente.Location = new System.Drawing.Point(846, 72);
+            this.BBuscarPaciente.Location = new System.Drawing.Point(928, 70);
             this.BBuscarPaciente.Name = "BBuscarPaciente";
             this.BBuscarPaciente.Size = new System.Drawing.Size(81, 26);
             this.BBuscarPaciente.TabIndex = 9;
@@ -340,17 +342,27 @@
             // 
             this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox2.Location = new System.Drawing.Point(198, 73);
+            this.pictureBox2.Location = new System.Drawing.Point(229, 73);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(70, 23);
             this.pictureBox2.TabIndex = 10;
             this.pictureBox2.TabStop = false;
             // 
+            // BAgenda
+            // 
+            this.BAgenda.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BAgenda.Location = new System.Drawing.Point(23, 237);
+            this.BAgenda.Name = "BAgenda";
+            this.BAgenda.Size = new System.Drawing.Size(98, 35);
+            this.BAgenda.TabIndex = 11;
+            this.BAgenda.Text = "Agenda";
+            this.BAgenda.UseVisualStyleBackColor = true;
+            // 
             // FormListaPacientes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(935, 523);
+            this.ClientSize = new System.Drawing.Size(1037, 523);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.BBuscarPaciente);
             this.Controls.Add(this.TBBuscar);
@@ -404,5 +416,6 @@
         private System.Windows.Forms.TextBox TBBuscar;
         private System.Windows.Forms.Button BBuscarPaciente;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Button BAgenda;
     }
 }
