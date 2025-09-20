@@ -63,7 +63,7 @@
             this.panel1.Controls.Add(this.btMedicos);
             this.panel1.Controls.Add(this.btUsuario);
             this.panel1.Location = new System.Drawing.Point(2, 42);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(144, 454);
             this.panel1.TabIndex = 0;
@@ -73,10 +73,10 @@
             this.btCerrarSesion.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btCerrarSesion.Image = global::SaludSoft.Properties.Resources.circulo_marca_x;
             this.btCerrarSesion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btCerrarSesion.Location = new System.Drawing.Point(10, 286);
-            this.btCerrarSesion.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btCerrarSesion.Location = new System.Drawing.Point(0, 344);
+            this.btCerrarSesion.Margin = new System.Windows.Forms.Padding(2);
             this.btCerrarSesion.Name = "btCerrarSesion";
-            this.btCerrarSesion.Size = new System.Drawing.Size(121, 29);
+            this.btCerrarSesion.Size = new System.Drawing.Size(139, 41);
             this.btCerrarSesion.TabIndex = 2;
             this.btCerrarSesion.Text = "Cerrar Sesión";
             this.btCerrarSesion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -87,10 +87,10 @@
             this.btBackup.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btBackup.Image = global::SaludSoft.Properties.Resources.monedas;
             this.btBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btBackup.Location = new System.Drawing.Point(32, 226);
-            this.btBackup.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btBackup.Location = new System.Drawing.Point(14, 292);
+            this.btBackup.Margin = new System.Windows.Forms.Padding(2);
             this.btBackup.Name = "btBackup";
-            this.btBackup.Size = new System.Drawing.Size(89, 36);
+            this.btBackup.Size = new System.Drawing.Size(107, 36);
             this.btBackup.TabIndex = 2;
             this.btBackup.Text = "Backup ";
             this.btBackup.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -101,10 +101,10 @@
             this.btConsultorios.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btConsultorios.Image = global::SaludSoft.Properties.Resources.construccion_de_casas;
             this.btConsultorios.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btConsultorios.Location = new System.Drawing.Point(10, 123);
-            this.btConsultorios.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btConsultorios.Location = new System.Drawing.Point(9, 166);
+            this.btConsultorios.Margin = new System.Windows.Forms.Padding(2);
             this.btConsultorios.Name = "btConsultorios";
-            this.btConsultorios.Size = new System.Drawing.Size(111, 36);
+            this.btConsultorios.Size = new System.Drawing.Size(129, 45);
             this.btConsultorios.TabIndex = 2;
             this.btConsultorios.Text = "Consultorios";
             this.btConsultorios.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -115,10 +115,10 @@
             this.btTurnos.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btTurnos.Image = global::SaludSoft.Properties.Resources.alt_de_inventario;
             this.btTurnos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btTurnos.Location = new System.Drawing.Point(32, 168);
-            this.btTurnos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btTurnos.Location = new System.Drawing.Point(28, 231);
+            this.btTurnos.Margin = new System.Windows.Forms.Padding(2);
             this.btTurnos.Name = "btTurnos";
-            this.btTurnos.Size = new System.Drawing.Size(77, 40);
+            this.btTurnos.Size = new System.Drawing.Size(89, 40);
             this.btTurnos.TabIndex = 5;
             this.btTurnos.Text = "Turnos ";
             this.btTurnos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -130,9 +130,9 @@
             this.btInicio.Image = global::SaludSoft.Properties.Resources.hogar;
             this.btInicio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btInicio.Location = new System.Drawing.Point(31, 10);
-            this.btInicio.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btInicio.Margin = new System.Windows.Forms.Padding(2);
             this.btInicio.Name = "btInicio";
-            this.btInicio.Size = new System.Drawing.Size(78, 27);
+            this.btInicio.Size = new System.Drawing.Size(90, 38);
             this.btInicio.TabIndex = 2;
             this.btInicio.Text = "Inicio ";
             this.btInicio.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -143,10 +143,10 @@
             this.btMedicos.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btMedicos.Image = global::SaludSoft.Properties.Resources.equipo_medico;
             this.btMedicos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btMedicos.Location = new System.Drawing.Point(25, 78);
-            this.btMedicos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btMedicos.Location = new System.Drawing.Point(14, 101);
+            this.btMedicos.Margin = new System.Windows.Forms.Padding(2);
             this.btMedicos.Name = "btMedicos";
-            this.btMedicos.Size = new System.Drawing.Size(92, 34);
+            this.btMedicos.Size = new System.Drawing.Size(113, 45);
             this.btMedicos.TabIndex = 4;
             this.btMedicos.Text = "Médicos ";
             this.btMedicos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -157,10 +157,10 @@
             this.btUsuario.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btUsuario.Image = global::SaludSoft.Properties.Resources.usuario;
             this.btUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btUsuario.Location = new System.Drawing.Point(23, 40);
-            this.btUsuario.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btUsuario.Location = new System.Drawing.Point(23, 52);
+            this.btUsuario.Margin = new System.Windows.Forms.Padding(2);
             this.btUsuario.Name = "btUsuario";
-            this.btUsuario.Size = new System.Drawing.Size(98, 34);
+            this.btUsuario.Size = new System.Drawing.Size(104, 38);
             this.btUsuario.TabIndex = 3;
             this.btUsuario.Text = "Usuarios ";
             this.btUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -172,7 +172,7 @@
             this.panel2.Controls.Add(this.btGestionUsuario);
             this.panel2.Controls.Add(this.lAdministrador);
             this.panel2.Location = new System.Drawing.Point(145, -1);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(523, 55);
             this.panel2.TabIndex = 2;
@@ -183,7 +183,7 @@
             this.btGestionUsuario.Image = global::SaludSoft.Properties.Resources.agregar;
             this.btGestionUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btGestionUsuario.Location = new System.Drawing.Point(307, 8);
-            this.btGestionUsuario.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btGestionUsuario.Margin = new System.Windows.Forms.Padding(2);
             this.btGestionUsuario.Name = "btGestionUsuario";
             this.btGestionUsuario.Size = new System.Drawing.Size(193, 32);
             this.btGestionUsuario.TabIndex = 3;
@@ -213,7 +213,7 @@
             this.panel3.Controls.Add(this.btMedicosActivos);
             this.panel3.Controls.Add(this.btTotalUsuario);
             this.panel3.Location = new System.Drawing.Point(147, 52);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(521, 395);
             this.panel3.TabIndex = 3;
@@ -225,7 +225,7 @@
             this.btConsultoriosDisponibles.Image = global::SaludSoft.Properties.Resources.construccion_de_casas;
             this.btConsultoriosDisponibles.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btConsultoriosDisponibles.Location = new System.Drawing.Point(115, 252);
-            this.btConsultoriosDisponibles.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btConsultoriosDisponibles.Margin = new System.Windows.Forms.Padding(2);
             this.btConsultoriosDisponibles.Name = "btConsultoriosDisponibles";
             this.btConsultoriosDisponibles.Size = new System.Drawing.Size(259, 54);
             this.btConsultoriosDisponibles.TabIndex = 4;
@@ -240,7 +240,7 @@
             this.btEspecialidades.Image = global::SaludSoft.Properties.Resources.libro_medico;
             this.btEspecialidades.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btEspecialidades.Location = new System.Drawing.Point(261, 136);
-            this.btEspecialidades.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btEspecialidades.Margin = new System.Windows.Forms.Padding(2);
             this.btEspecialidades.Name = "btEspecialidades";
             this.btEspecialidades.Size = new System.Drawing.Size(177, 65);
             this.btEspecialidades.TabIndex = 3;
@@ -255,7 +255,7 @@
             this.btCitasMes.Image = global::SaludSoft.Properties.Resources.CitasProgramadas;
             this.btCitasMes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btCitasMes.Location = new System.Drawing.Point(36, 136);
-            this.btCitasMes.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btCitasMes.Margin = new System.Windows.Forms.Padding(2);
             this.btCitasMes.Name = "btCitasMes";
             this.btCitasMes.Size = new System.Drawing.Size(177, 62);
             this.btCitasMes.TabIndex = 2;
@@ -270,7 +270,7 @@
             this.btMedicosActivos.Image = global::SaludSoft.Properties.Resources.equipo_medico;
             this.btMedicosActivos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btMedicosActivos.Location = new System.Drawing.Point(261, 42);
-            this.btMedicosActivos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btMedicosActivos.Margin = new System.Windows.Forms.Padding(2);
             this.btMedicosActivos.Name = "btMedicosActivos";
             this.btMedicosActivos.Size = new System.Drawing.Size(171, 60);
             this.btMedicosActivos.TabIndex = 1;
@@ -285,7 +285,7 @@
             this.btTotalUsuario.Image = global::SaludSoft.Properties.Resources.usuario;
             this.btTotalUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btTotalUsuario.Location = new System.Drawing.Point(48, 42);
-            this.btTotalUsuario.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btTotalUsuario.Margin = new System.Windows.Forms.Padding(2);
             this.btTotalUsuario.Name = "btTotalUsuario";
             this.btTotalUsuario.Size = new System.Drawing.Size(165, 60);
             this.btTotalUsuario.TabIndex = 0;
@@ -297,7 +297,7 @@
             // 
             this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
             this.pictureBox1.Location = new System.Drawing.Point(2, -1);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(144, 49);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -313,7 +313,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Admin";
             this.Text = "Admin";
             this.panel1.ResumeLayout(false);

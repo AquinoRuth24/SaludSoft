@@ -57,14 +57,14 @@ namespace SaludSoft.Resources
         }
 
 
-        private enum RolUsuario { Paciente = 0, Medico = 1, Administrador = 2, Recepcionista = 3 }
+        private enum RolUsuario { Paciente = 0, Medico = 1, Recepcionista = 2, Administrador = 3 }
 
         // ------------------ Load & Rol ------------------
         private void FormUsuario_Load(object sender, EventArgs e)
         {
             if (cbRol != null && cbRol.Items.Count == 0)
             {
-                cbRol.Items.AddRange(new object[] { "Paciente", "Médico", "Administrador", "Recepcionista" });
+                cbRol.Items.AddRange(new object[] { "Paciente", "Médico", "Recepcionista","Administrador" });
                 cbRol.DropDownStyle = ComboBoxStyle.DropDownList;
             }
             if (cbRol != null && cbRol.SelectedIndex < 0) cbRol.SelectedIndex = 0;
@@ -80,14 +80,14 @@ namespace SaludSoft.Resources
             // Ocultar específicos
             SetVisible("gbPaciente", false);
             SetVisible("gbMedico", false);
-            SetVisible("gbAdmin", false);
             SetVisible("gbRecep", false);
-
+            SetVisible("gbAdmin", false);
+           
             // Ocultar todas las contraseñas por rol
-            ShowPwdFor("Paciente", false);
             ShowPwdFor("Medico", false);
             ShowPwdFor("Administrador", false);
-            ShowPwdFor("Recep", false); // fallback a "Recepcionista"
+            ShowPwdFor("Recep", false);
+           
 
             // (opcional) extras de médico
             ToggleMedicoExtras(false);
@@ -97,7 +97,7 @@ namespace SaludSoft.Resources
             {
                 case RolUsuario.Paciente:
                     SetVisible("gbPaciente", true);
-                    ShowPwdFor("Paciente", true);   // si usás contraseña para paciente
+            
                     break;
 
                 case RolUsuario.Medico:
@@ -106,15 +106,17 @@ namespace SaludSoft.Resources
                     ToggleMedicoExtras(true);
                     break;
 
+                case RolUsuario.Recepcionista:
+                    SetVisible("gbRecepcionista", true);
+                    ShowPwdFor("Recepcionista", true);      
+                    break;
+
                 case RolUsuario.Administrador:
                     SetVisible("gbAdmin", true);
                     ShowPwdFor("Administrador", true);
                     break;
 
-                case RolUsuario.Recepcionista:
-                    SetVisible("gbRecep", true);
-                    ShowPwdFor("Recep", true);      // o “Recepcionista”
-                    break;
+                
             }
         }
 
@@ -142,11 +144,6 @@ namespace SaludSoft.Resources
                 // var login = new FormLogin();
                 // login.Show();
                 // this.Hide();
-
-                // O, si querés cerrar todo:
-                // Application.Exit();
-
-                // O solo cerrar este form:
                 this.Close();
             }
         }
@@ -181,23 +178,9 @@ namespace SaludSoft.Resources
             {
                 string matricula = GetTextAny("tbMatricula");
                 string especialidad = GetTextAny("tbEspecialidadFormUsuario", "tbEspecialidad");
-                string universidad = GetTextAny("tbUniversidad");
-                string anios = GetNumericText("nudAniosExp");
+        
                 string consultorio = GetTextAny("tbConsultorio");
-                extra = $" | Matrícula: {matricula} | Esp.: {especialidad} | Univ.: {universidad} | Años: {anios} | Cons.: {consultorio}";
-            }
-            else if (rol == RolUsuario.Administrador)
-            {
-                string depto = GetTextAny("tbDepartamento", "txtDepartamento");
-                string nivel = GetComboText("cboNivelAcceso");
-                extra = $" | Depto: {depto} | Nivel: {nivel}";
-            }
-            else if (rol == RolUsuario.Recepcionista)
-            {
-                string idiomas = GetTextAny("tbIdiomas", "txtIdiomas");
-                string exp = GetNumericText("nudExpRecep");
-                if (!string.IsNullOrWhiteSpace(idiomas) || !string.IsNullOrWhiteSpace(exp))
-                    extra = $" | Idiomas: {idiomas} | Exp: {exp}";
+                extra = $" | Matrícula: {matricula} | Esp.: {especialidad} | Cons.: {consultorio}";
             }
 
             // SIN BD: solo mostramos resumen
@@ -415,10 +398,6 @@ namespace SaludSoft.Resources
             SetVisible("tbMatricula", visible);
             SetVisible("lEspecialidadFormUsuario", visible);
             SetVisible("tbEspecialidadFormUsuario", visible);
-            SetVisible("lUniversidad", visible);
-            SetVisible("tbUniversidad", visible);
-            SetVisible("lAniosExp", visible);
-            SetVisible("nudAniosExp", visible);
             SetVisible("lConsultorio", visible);
             SetVisible("tbConsultorio", visible);
         }
@@ -438,8 +417,7 @@ namespace SaludSoft.Resources
             var rol = (RolUsuario)(cbRol?.SelectedIndex ?? 0);
             switch (rol)
             {
-                case RolUsuario.Paciente:
-                    return FindCtl<TextBox>("tbContrasenaPaciente") ?? FindCtl<TextBox>("tbContraseñaPaciente");
+               
                 case RolUsuario.Medico:
                     return FindCtl<TextBox>("tbContrasenaMedico") ?? FindCtl<TextBox>("tbContraseñaMedico");
                 case RolUsuario.Administrador:
@@ -457,5 +435,10 @@ namespace SaludSoft.Resources
 
         // Si el diseñador tiene este handler enganchado, puede quedar vacío:
         private void rbFemenino_CheckedChanged(object sender, EventArgs e) { }
+
+        private void lContraseñaRecep_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
