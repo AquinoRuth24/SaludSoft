@@ -193,5 +193,11 @@ namespace SaludSoft
                 // actualiza la agenda despues de agregar nueva disponbilidad
                 CargarAgenda();
         }
+
+        private void BVolverAgenda_Click(object sender, EventArgs e)
+        {
+
+            this.Close();
+        }
     }
 }

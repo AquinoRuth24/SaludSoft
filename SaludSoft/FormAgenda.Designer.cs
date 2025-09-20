@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAgenda));
             this.PMenu = new System.Windows.Forms.Panel();
+            this.BAgenda = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.BCerrarSesion = new System.Windows.Forms.Button();
             this.BDoctores = new System.Windows.Forms.Button();
@@ -54,7 +55,7 @@
             this.CMBConsultorio = new System.Windows.Forms.ComboBox();
             this.CMBProfesionales = new System.Windows.Forms.ComboBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.BAgenda = new System.Windows.Forms.Button();
+            this.BVolverAgenda = new System.Windows.Forms.Button();
             this.PMenu.SuspendLayout();
             this.panel4.SuspendLayout();
             this.PanelLogoPaciente.SuspendLayout();
@@ -79,6 +80,16 @@
             this.PMenu.Name = "PMenu";
             this.PMenu.Size = new System.Drawing.Size(154, 438);
             this.PMenu.TabIndex = 3;
+            // 
+            // BAgenda
+            // 
+            this.BAgenda.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BAgenda.Location = new System.Drawing.Point(21, 264);
+            this.BAgenda.Name = "BAgenda";
+            this.BAgenda.Size = new System.Drawing.Size(98, 35);
+            this.BAgenda.TabIndex = 10;
+            this.BAgenda.Text = "Agenda";
+            this.BAgenda.UseVisualStyleBackColor = true;
             // 
             // panel4
             // 
@@ -200,6 +211,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
+            this.panel2.Controls.Add(this.BVolverAgenda);
             this.panel2.Controls.Add(this.BNuevaDisponibilidad);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.LGestionAgenda);
@@ -317,15 +329,16 @@
             this.pictureBox2.TabIndex = 11;
             this.pictureBox2.TabStop = false;
             // 
-            // BAgenda
+            // BVolverAgenda
             // 
-            this.BAgenda.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BAgenda.Location = new System.Drawing.Point(21, 264);
-            this.BAgenda.Name = "BAgenda";
-            this.BAgenda.Size = new System.Drawing.Size(98, 35);
-            this.BAgenda.TabIndex = 10;
-            this.BAgenda.Text = "Agenda";
-            this.BAgenda.UseVisualStyleBackColor = true;
+            this.BVolverAgenda.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BVolverAgenda.Location = new System.Drawing.Point(15, 19);
+            this.BVolverAgenda.Name = "BVolverAgenda";
+            this.BVolverAgenda.Size = new System.Drawing.Size(77, 31);
+            this.BVolverAgenda.TabIndex = 8;
+            this.BVolverAgenda.Text = "<--Volver";
+            this.BVolverAgenda.UseVisualStyleBackColor = true;
+            this.BVolverAgenda.Click += new System.EventHandler(this.BVolverAgenda_Click);
             // 
             // FormAgenda
             // 
@@ -383,5 +396,6 @@
         private System.Windows.Forms.ComboBox CMBConsultorio;
         private System.Windows.Forms.ComboBox CMBProfesionales;
         private System.Windows.Forms.Button BAgenda;
+        private System.Windows.Forms.Button BVolverAgenda;
     }
 }

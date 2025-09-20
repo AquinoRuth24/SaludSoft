@@ -58,6 +58,8 @@ namespace SaludSoft
                 return;
             }
 
+            MessageBox.Show("Buscando DNI: " + dni); // ver qué DNI se está enviando
+
             string query = "SELECT nombre, apellido, id_paciente FROM Paciente WHERE dni = @dni";
 
             try
@@ -68,20 +70,24 @@ namespace SaludSoft
                     cmd.Parameters.Add("@dni", SqlDbType.Int).Value = dni;
 
                     conexion.Open();
+
                     using (SqlDataReader dr = cmd.ExecuteReader())
                     {
-                        if (dr.Read())
+                        if (dr.HasRows) //debug extra
                         {
+                            dr.Read();
                             TBNombre.Text = dr["nombre"]?.ToString() ?? "";
                             TBApellido.Text = dr["apellido"]?.ToString() ?? "";
                             TBIdPaciente.Text = dr["id_paciente"]?.ToString() ?? "";
+
+                            MessageBox.Show("Paciente encontrado: " + TBNombre.Text + " " + TBApellido.Text);
                         }
                         else
                         {
-                            MessageBox.Show("Paciente no encontrado.");
+                            MessageBox.Show("No se encontró paciente con ese DNI en la base actual.");
                             TBNombre.Text = "";
                             TBApellido.Text = "";
-                            TBIdPaciente.Text = ""; // limpiar/ocultar
+                            TBIdPaciente.Text = "";
                             TBDniPaciente.Focus();
                         }
                     }
