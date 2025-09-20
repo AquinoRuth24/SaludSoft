@@ -17,177 +17,151 @@ namespace SaludSoft
         public FormNuevoTurno()
         {
             InitializeComponent();
-            CargarDoctores();
+            CargarProfesionales();
+            CargarEstados();
         }
 
-        private void CargarDoctores()
+        // Paciente
+        private void CargarProfesionales()
         {
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                conexion.Open();
+                string query = "SELECT id_profesional, nombre + ' ' + apellido AS Profesional FROM Profesional";
+                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                cmbDoctores.DataSource = dt;
+                cmbDoctores.DisplayMember = "Profesional";
+                cmbDoctores.ValueMember = "id_profesional";
+                cmbDoctores.SelectedIndex = -1;
+            }
+        }
+
+        private void CargarEstados()
+        {
+            CMBEstadoTurno.Items.Add("Pendiente");
+            CMBEstadoTurno.Items.Add("Confirmado");
+            CMBEstadoTurno.Items.Add("Cancelado");
+            CMBEstadoTurno.Items.Add("Realizado");
+            CMBEstadoTurno.SelectedIndex = 0;
+        }
+
+        private void BBuscarPaciente_Click(object sender, EventArgs e)
+        {
+            // Validar que el DNI sea un número válido
+            if (!int.TryParse(TBDniPaciente.Text.Trim(), out int dni))
+            {
+                MessageBox.Show("Ingrese un DNI válido.");
+                TBDniPaciente.Focus();
+                return;
+            }
+
+            string query = "SELECT nombre, apellido, id_paciente FROM Paciente WHERE dni = @dni";
+
             try
             {
                 using (SqlConnection conexion = Conexion.GetConnection())
+                using (SqlCommand cmd = new SqlCommand(query, conexion))
                 {
+                    cmd.Parameters.Add("@dni", SqlDbType.Int).Value = dni;
+
                     conexion.Open();
-                    string query = "SELECT id_profesional, nombre + ' ' + apellido AS Doctor FROM Profesional";
-
-                    SqlDataAdapter da = new SqlDataAdapter(query, conexion);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-
-                    cmbDoctores.DataSource = dt;
-                    // se configura para mostrar el nombre completo(se concatena en la base de datos)
-                    cmbDoctores.DisplayMember = "Doctor";
-                    // se guarda el id del profesional
-                    cmbDoctores.ValueMember = "id_profesional";
-                    // para que no se muestre ninguna seleccion inicial 
-                    cmbDoctores.SelectedIndex = -1;
-                    // se ve mientras no se haya seleccionado nada
-                    cmbDoctores.Text = "Seleccione un doctor";
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            TBNombre.Text = dr["nombre"]?.ToString() ?? "";
+                            TBApellido.Text = dr["apellido"]?.ToString() ?? "";
+                            TBIdPaciente.Text = dr["id_paciente"]?.ToString() ?? "";
+                        }
+                        else
+                        {
+                            MessageBox.Show("Paciente no encontrado.");
+                            TBNombre.Text = "";
+                            TBApellido.Text = "";
+                            TBIdPaciente.Text = ""; // limpiar/ocultar
+                            TBDniPaciente.Focus();
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar doctores: " + ex.Message);
+                MessageBox.Show("Error al buscar paciente: " + ex.Message);
             }
         }
-        // validaciones
-        private void TBDni_KeyPress(object sender, KeyPressEventArgs e)
+
+        private void cmbDoctores_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            if (cmbDoctores.SelectedValue == null) return;
+
+            using (SqlConnection conexion = Conexion.GetConnection())
             {
-                e.Handled = true;
+                conexion.Open();
+                string query = @"SELECT pc.id_profesional_consultorio, c.descripcion 
+                                 FROM Profesional_Consultorio pc
+                                 INNER JOIN Consultorio c ON pc.id_consultorio = c.id_consultorio
+                                 WHERE pc.id_profesional = @id_profesional";
+                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                da.SelectCommand.Parameters.AddWithValue("@id_profesional", cmbDoctores.SelectedValue);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                CMBConsultorio.DataSource = dt;
+                CMBConsultorio.DisplayMember = "descripcion";
+                CMBConsultorio.ValueMember = "id_profesional_consultorio";
             }
         }
 
-        private bool ValidarCampos()
+        private void cmbConsultorio_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Verifica DNI 
-            if (string.IsNullOrWhiteSpace(TBDni.Text))
-            {
-                MessageBox.Show("Debe ingresar un DNI.");
-                TBTelefono.Focus();
-                return false;
-            }
+            if (CMBConsultorio.SelectedValue == null) return;
 
-            if (!int.TryParse(TBDni.Text, out _))
+            using (SqlConnection conexion = Conexion.GetConnection())
             {
-                MessageBox.Show("El DNI debe contener solo números.");
-                TBTelefono.Focus();
-                return false;
+                conexion.Open();
+                string query = @"SELECT id_agenda, 
+                                        diaSemana + ' ' + FORMAT(horaInicio, 'HH:mm') + '-' + FORMAT(horaFin, 'HH:mm') AS Horario
+                                 FROM Agenda 
+                                 WHERE id_profesional_consultorio = @id_pc";
+                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                da.SelectCommand.Parameters.AddWithValue("@id_pc", CMBConsultorio.SelectedValue);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                // horarios viene de la agenda del profesional en el consultorio seleccionado
+                CMBHorario.DataSource = dt;
+                CMBHorario.DisplayMember = "Horario";
+                CMBHorario.ValueMember = "id_agenda";
             }
-
-            // Verifica que se seleccione un doctor
-            if (cmbDoctores.SelectedIndex == -1)
-            {
-                MessageBox.Show("Debe seleccionar un doctor.");
-                cmbDoctores.Focus();
-                return false;
-            }
-
-            // Verifica fecha que sea una valida y no anterior al dia actual
-            if (dateTimePickerFecha.Value.Date < DateTime.Today)
-            {
-                MessageBox.Show("La fecha no puede ser anterior a hoy.");
-                dateTimePickerFecha.Focus();
-                return false;
-            }
-
-            // La hora es obligatoria
-            if (dateTimePickerHora.CustomFormat == " ")
-            {
-                MessageBox.Show("Debe seleccionar una hora.");
-                dateTimePickerHora.Focus();
-                return false;
-            }
-
-            return true;
         }
 
-        // se agrega el turno
         private void BAgregarTurno_Click(object sender, EventArgs e)
         {
-            try
+            using (SqlConnection conexion = Conexion.GetConnection())
             {
-                if (!ValidarCampos())
-                    return;
+                conexion.Open();
+                string query = @"INSERT INTO Turnos (fecha, estado, motivo, id_paciente, id_agenda, id_profesional_consultorio)
+                 VALUES (@fecha, @estado, @motivo, @id_paciente, @id_agenda, @id_pc)";
+                SqlCommand cmd = new SqlCommand(query, conexion);
+                cmd.Parameters.AddWithValue("@id_turno", Guid.NewGuid().GetHashCode()); 
+                cmd.Parameters.AddWithValue("@fecha", DTPFechas.Value);
+                cmd.Parameters.AddWithValue("@estado", CMBEstadoTurno.SelectedItem.ToString());
+                cmd.Parameters.AddWithValue("@motivo", TBMotivoConsulta.Text);
+                cmd.Parameters.AddWithValue("@id_paciente", TBIdPaciente.Text);
+                cmd.Parameters.AddWithValue("@id_agenda", CMBHorario.SelectedValue);
+                cmd.Parameters.AddWithValue("@id_pc", CMBConsultorio.SelectedValue);
 
-                int idPaciente = -1;
-
-                using (SqlConnection conexion = Conexion.GetConnection())
-                {
-                    conexion.Open();
-
-                    // Verifica si el paciente existe en la BD mediante el dni
-                    string queryPaciente = "SELECT id_paciente FROM Paciente WHERE dni = @dni";
-                    SqlCommand cmdPaciente = new SqlCommand(queryPaciente, conexion);
-                    cmdPaciente.Parameters.AddWithValue("@dni", TBDni.Text.Trim());
-
-                    object result = cmdPaciente.ExecuteScalar();
-                    if (result != null)
-                    {
-                        idPaciente = Convert.ToInt32(result);
-                    }
-                    else
-                    {
-                        MessageBox.Show("El paciente no está registrado. Primero debe registrarse.");
-                        return;
-                    }
-
-                    // registra  el turno
-                    string query = @"INSERT INTO Turnos (id_paciente, id_profesional, fecha, hora, motivo) 
-                             VALUES (@idPaciente, @idDoctor, @fecha, @hora, @motivo)";
-
-                    SqlCommand cmd = new SqlCommand(query, conexion);
-                    cmd.Parameters.AddWithValue("@idPaciente", idPaciente);
-                    cmd.Parameters.AddWithValue("@idDoctor", cmbDoctores.SelectedValue);
-                    cmd.Parameters.AddWithValue("@fecha", dateTimePickerFecha.Value.Date);
-                    cmd.Parameters.AddWithValue("@hora", dateTimePickerHora.Value.ToString("HH:mm"));
-                    cmd.Parameters.AddWithValue("@motivo", TBMotivoConsulta.Text.Trim());
-
-                    cmd.ExecuteNonQuery();
-                    MessageBox.Show("Turno registrado con éxito.");
-
-                    LimpiarCampos();
-                    this.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al registrar el turno: " + ex.Message);
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("Turno guardado correctamente");
             }
         }
-       
-        private void LimpiarCampos()
-        {
-            {
-                TBNomYApe.Clear();
-                TBTelefono.Clear();
-                TBDni.Clear();
-                TBMotivoConsulta.Clear();
-                cmbDoctores.SelectedIndex = -1;
-                dateTimePickerHora.Value = DateTime.Now;
-                dateTimePickerFecha.Value = DateTime.Today;
-            }
-        }
-
-        // botones 
-        private void BInicioFormTurno_Click(object sender, EventArgs e)
-        {
-            SaludSoft frm = new SaludSoft();
-            frm.ShowDialog();
-            this.Close();
-        }
-        private void BPacientesFormTurno_Click(object sender, EventArgs e)
-        {
-            FormListaPacientes frm = new FormListaPacientes();
-            frm.ShowDialog();
-            this.Close();
-        }
-
+   
         private void BCancelarTurno_Click(object sender, EventArgs e)
         {
-            LimpiarCampos();
             this.Close();
         }
     }
-    }
+}
 
