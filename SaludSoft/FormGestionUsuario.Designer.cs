@@ -28,12 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.dgUsuario = new System.Windows.Forms.DataGridView();
-            this.colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cbTipo = new System.Windows.Forms.ComboBox();
+            this.btAgregarUsuario = new System.Windows.Forms.Button();
+            this.cbEstado = new System.Windows.Forms.ComboBox();
             this.colNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colApellido = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDNI = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -44,9 +46,8 @@
             this.colEstado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMatricula = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colEspecialidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cbTipo = new System.Windows.Forms.ComboBox();
-            this.btAgregarUsuario = new System.Windows.Forms.Button();
-            this.cbEstado = new System.Windows.Forms.ComboBox();
+            this.colEditar = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.colEliminar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgUsuario)).BeginInit();
             this.SuspendLayout();
@@ -88,17 +89,16 @@
             this.dgUsuario.AllowUserToDeleteRows = false;
             this.dgUsuario.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgUsuario.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Comic Sans MS", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgUsuario.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Comic Sans MS", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgUsuario.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgUsuario.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgUsuario.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colId,
             this.colNombre,
             this.colApellido,
             this.colDNI,
@@ -108,7 +108,9 @@
             this.colSexo,
             this.colEstado,
             this.colMatricula,
-            this.colEspecialidad});
+            this.colEspecialidad,
+            this.colEditar,
+            this.colEliminar});
             this.dgUsuario.Location = new System.Drawing.Point(0, 174);
             this.dgUsuario.MultiSelect = false;
             this.dgUsuario.Name = "dgUsuario";
@@ -116,15 +118,45 @@
             this.dgUsuario.RowHeadersVisible = false;
             this.dgUsuario.RowTemplate.Height = 40;
             this.dgUsuario.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgUsuario.Size = new System.Drawing.Size(796, 257);
+            this.dgUsuario.Size = new System.Drawing.Size(796, 305);
             this.dgUsuario.TabIndex = 1;
             this.dgUsuario.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgUsuario_CellContentClick);
             // 
-            // colId
+            // cbTipo
             // 
-            this.colId.HeaderText = "Id_usuario";
-            this.colId.Name = "colId";
-            this.colId.ReadOnly = true;
+            this.cbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTipo.FormattingEnabled = true;
+            this.cbTipo.Items.AddRange(new object[] {
+            "Todos",
+            "Paciente",
+            "Médico",
+            "Recepcionista",
+            "Administrador"});
+            this.cbTipo.Location = new System.Drawing.Point(27, 104);
+            this.cbTipo.Name = "cbTipo";
+            this.cbTipo.Size = new System.Drawing.Size(231, 21);
+            this.cbTipo.TabIndex = 2;
+            // 
+            // btAgregarUsuario
+            // 
+            this.btAgregarUsuario.Image = global::SaludSoft.Properties.Resources.agregar_usuario;
+            this.btAgregarUsuario.Location = new System.Drawing.Point(709, 90);
+            this.btAgregarUsuario.Name = "btAgregarUsuario";
+            this.btAgregarUsuario.Size = new System.Drawing.Size(75, 46);
+            this.btAgregarUsuario.TabIndex = 4;
+            this.btAgregarUsuario.UseVisualStyleBackColor = true;
+            this.btAgregarUsuario.Click += new System.EventHandler(this.btAgregarUsuario_Click);
+            // 
+            // cbEstado
+            // 
+            this.cbEstado.FormattingEnabled = true;
+            this.cbEstado.Items.AddRange(new object[] {
+            "Activo",
+            "Inactivo"});
+            this.cbEstado.Location = new System.Drawing.Point(352, 104);
+            this.cbEstado.Name = "cbEstado";
+            this.cbEstado.Size = new System.Drawing.Size(233, 21);
+            this.cbEstado.TabIndex = 5;
             // 
             // colNombre
             // 
@@ -186,41 +218,23 @@
             this.colEspecialidad.Name = "colEspecialidad";
             this.colEspecialidad.ReadOnly = true;
             // 
-            // cbTipo
+            // colEditar
             // 
-            this.cbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTipo.FormattingEnabled = true;
-            this.cbTipo.Items.AddRange(new object[] {
-            "Todos",
-            "Paciente",
-            "Médico",
-            "Recepcionista",
-            "Administrador"});
-            this.cbTipo.Location = new System.Drawing.Point(27, 104);
-            this.cbTipo.Name = "cbTipo";
-            this.cbTipo.Size = new System.Drawing.Size(231, 21);
-            this.cbTipo.TabIndex = 2;
+            this.colEditar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colEditar.HeaderText = "Acciones";
+            this.colEditar.Name = "colEditar";
+            this.colEditar.ReadOnly = true;
+            this.colEditar.Text = "Editar";
+            this.colEditar.UseColumnTextForButtonValue = true;
             // 
-            // btAgregarUsuario
+            // colEliminar
             // 
-            this.btAgregarUsuario.Image = global::SaludSoft.Properties.Resources.agregar_usuario;
-            this.btAgregarUsuario.Location = new System.Drawing.Point(709, 90);
-            this.btAgregarUsuario.Name = "btAgregarUsuario";
-            this.btAgregarUsuario.Size = new System.Drawing.Size(75, 46);
-            this.btAgregarUsuario.TabIndex = 4;
-            this.btAgregarUsuario.UseVisualStyleBackColor = true;
-            this.btAgregarUsuario.Click += new System.EventHandler(this.btAgregarUsuario_Click);
-            // 
-            // cbEstado
-            // 
-            this.cbEstado.FormattingEnabled = true;
-            this.cbEstado.Items.AddRange(new object[] {
-            "Activo",
-            "Inactivo"});
-            this.cbEstado.Location = new System.Drawing.Point(352, 104);
-            this.cbEstado.Name = "cbEstado";
-            this.cbEstado.Size = new System.Drawing.Size(233, 21);
-            this.cbEstado.TabIndex = 5;
+            this.colEliminar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colEliminar.HeaderText = "Acciones";
+            this.colEliminar.Name = "colEliminar";
+            this.colEliminar.ReadOnly = true;
+            this.colEliminar.Text = "Eliminar";
+            this.colEliminar.UseColumnTextForButtonValue = true;
             // 
             // FormGestionUsuario
             // 
@@ -250,7 +264,8 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dgUsuario;
         private System.Windows.Forms.ComboBox cbTipo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId;
+        private System.Windows.Forms.Button btAgregarUsuario;
+        private System.Windows.Forms.ComboBox cbEstado;
         private System.Windows.Forms.DataGridViewTextBoxColumn colNombre;
         private System.Windows.Forms.DataGridViewTextBoxColumn colApellido;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDNI;
@@ -261,7 +276,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colEstado;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMatricula;
         private System.Windows.Forms.DataGridViewTextBoxColumn colEspecialidad;
-        private System.Windows.Forms.Button btAgregarUsuario;
-        private System.Windows.Forms.ComboBox cbEstado;
+        private System.Windows.Forms.DataGridViewButtonColumn colEditar;
+        private System.Windows.Forms.DataGridViewButtonColumn colEliminar;
     }
 }

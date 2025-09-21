@@ -29,13 +29,12 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btCitas = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lTitulo = new System.Windows.Forms.Label();
-            this.btInicio = new System.Windows.Forms.Button();
-            this.btCitas = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.tbBuscarPaciente = new System.Windows.Forms.TextBox();
             this.dgPacientes = new System.Windows.Forms.DataGridView();
             this.colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -57,11 +56,49 @@
             this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.btCitas);
-            this.panel1.Controls.Add(this.btInicio);
             this.panel1.Location = new System.Drawing.Point(1, 71);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(183, 397);
             this.panel1.TabIndex = 0;
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Image = global::SaludSoft.Properties.Resources.circulo_marca_x;
+            this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button2.Location = new System.Drawing.Point(11, 334);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(153, 41);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "Cerrar Sesión";
+            this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Image = global::SaludSoft.Properties.Resources.usuario;
+            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.Location = new System.Drawing.Point(21, 56);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(136, 59);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Pacientes";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // btCitas
+            // 
+            this.btCitas.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btCitas.Image = global::SaludSoft.Properties.Resources.CitasProgramadas;
+            this.btCitas.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btCitas.Location = new System.Drawing.Point(21, 139);
+            this.btCitas.Name = "btCitas";
+            this.btCitas.Size = new System.Drawing.Size(121, 62);
+            this.btCitas.TabIndex = 3;
+            this.btCitas.Text = "Citas  ";
+            this.btCitas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btCitas.UseVisualStyleBackColor = true;
             // 
             // pictureBox1
             // 
@@ -92,58 +129,6 @@
             this.lTitulo.Size = new System.Drawing.Size(101, 29);
             this.lTitulo.TabIndex = 3;
             this.lTitulo.Text = "MÉDICO";
-            // 
-            // btInicio
-            // 
-            this.btInicio.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btInicio.Image = global::SaludSoft.Properties.Resources.hogar;
-            this.btInicio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btInicio.Location = new System.Drawing.Point(39, 60);
-            this.btInicio.Name = "btInicio";
-            this.btInicio.Size = new System.Drawing.Size(108, 39);
-            this.btInicio.TabIndex = 3;
-            this.btInicio.Text = "Inicio";
-            this.btInicio.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btInicio.UseVisualStyleBackColor = true;
-            // 
-            // btCitas
-            // 
-            this.btCitas.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btCitas.Image = global::SaludSoft.Properties.Resources.CitasProgramadas;
-            this.btCitas.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btCitas.Location = new System.Drawing.Point(26, 246);
-            this.btCitas.Name = "btCitas";
-            this.btCitas.Size = new System.Drawing.Size(121, 40);
-            this.btCitas.TabIndex = 3;
-            this.btCitas.Text = "Citas";
-            this.btCitas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btCitas.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Image = global::SaludSoft.Properties.Resources.usuario;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(21, 152);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(136, 43);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Pacientes";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Image = global::SaludSoft.Properties.Resources.circulo_marca_x;
-            this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.Location = new System.Drawing.Point(22, 334);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(135, 41);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Cerrar Sesión";
-            this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button2.UseVisualStyleBackColor = true;
             // 
             // tbBuscarPaciente
             // 
@@ -246,7 +231,6 @@
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button btInicio;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label lTitulo;
         private System.Windows.Forms.Button btCitas;

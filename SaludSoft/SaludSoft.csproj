@@ -85,6 +85,12 @@
     <Compile Include="FormGestionUsuario.Designer.cs">
       <DependentUpon>FormGestionUsuario.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormHistorial.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHistorial.Designer.cs">
+      <DependentUpon>FormHistorial.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormListaPacientes.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -163,6 +169,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormGestionUsuario.resx">
       <DependentUpon>FormGestionUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHistorial.resx">
+      <DependentUpon>FormHistorial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormListaPacientes.resx">
       <DependentUpon>FormListaPacientes.cs</DependentUpon>
