@@ -247,6 +247,7 @@
     <Content Include="obj\Debug\SaludSoft.pdb" />
     <Content Include="obj\Debug\TempPE\FormLogin1.Designer.cs.dll" />
     <Content Include="obj\Debug\TempPE\Properties.Resources.Designer.cs.dll" />
+    <None Include="Resources\busqueda.png" />
     <None Include="Resources\expediente-del-paciente.png" />
     <None Include="Resources\basura.png" />
     <None Include="Resources\archivo-de-edicion1.png" />

@@ -16,5 +16,10 @@ namespace SaludSoft
         {
             InitializeComponent();
         }
+
+        private void tbBuscarPaciente_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
