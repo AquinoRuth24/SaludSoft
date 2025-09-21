@@ -1,8 +1,15 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using SaludSoft.Security; // Para PasswordHasher.Hash
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Text;
+using System.Threading.Tasks;
+using System.Net.Mail;
 
 namespace SaludSoft.Resources
 {
@@ -51,18 +58,11 @@ namespace SaludSoft.Resources
             }
             return true;
         }
-
-        private enum RolUsuario { Paciente = 0, Medico = 1, Recepcionista = 2, Administrador = 3 }
-
         // ------------------ Load & Rol ------------------
         private void FormUsuario_Load(object sender, EventArgs e)
         {
-            if (cbRol != null && cbRol.Items.Count == 0)
-            {
-                // OJO: ya NO agregamos "Administrador"
-                cbRol.Items.AddRange(new object[] { "Paciente", "Médico", "Recepcionista" });
-                cbRol.DropDownStyle = ComboBoxStyle.DropDownList;
-            }
+            CargarRoles();
+
             if (cbRol != null && cbRol.SelectedIndex < 0) cbRol.SelectedIndex = 0;
 
             AplicarUIRol();
@@ -80,13 +80,9 @@ namespace SaludSoft.Resources
             ShowPwdFor("Medico", false);
             ShowPwdFor("Recep", false);
             ShowPwdFor("Recepcionista", false);
-            // (mantengo estas dos por seguridad aunque ya no se usen)
             ShowPwdFor("Administrador", false);
             ShowPwdFor("Admin", false);
 
-            ToggleMedicoExtras(false);
-
-            var rol = (RolUsuario)(cbRol?.SelectedIndex ?? 0);
             switch (rol)
             {
                 case RolUsuario.Paciente:
@@ -107,12 +103,7 @@ namespace SaludSoft.Resources
                     ShowPwdFor("Recep", true);
                     FindCtl<GroupBox>("gbRecepcionista")?.BringToFront();
                     break;
-
-                    // case RolUsuario.Administrador: // <- Eliminado: no se permite
-                    //     break;
             }
-
-            this.PerformLayout();
         }
 
         private void HideAllRoleGroups()
@@ -120,7 +111,7 @@ namespace SaludSoft.Resources
             SetVisible("gbPaciente", false);
             SetVisible("gbMedico", false);
             SetVisible("gbRecepcionista", false);
-            SetVisible("gbAdmin", false); // por si existe en el form, que quede oculto
+            SetVisible("gbAdmin", false);
         }
 
         // ------------------ Botones ------------------
@@ -148,9 +139,8 @@ namespace SaludSoft.Resources
 
         private void btAgregar_Click(object sender, EventArgs e)
         {
-            var rolDestino = (RolUsuario)(cbRol?.SelectedIndex ?? 0);
+            if (cbRol?.SelectedValue == null)
 
-            // BLOQUEO DURO: no permitir crear Administrador
             if (rolDestino == RolUsuario.Administrador)
             {
                 Msg("No está permitido crear usuarios con rol Administrador.");
@@ -159,7 +149,7 @@ namespace SaludSoft.Resources
 
             if (!ValidarFormulario()) return;
 
-            // Comunes
+            // Datos comunes
             string nombre = GetText("tbNombre");
             string apellido = GetText("tbApellido");
             string dni = GetText("tbDni");
@@ -167,43 +157,36 @@ namespace SaludSoft.Resources
             string correo = GetText("tbCorreo");
             string telefono = GetText("tbTelefono");
 
-            string rolStr = cbRol?.Text ?? rolDestino.ToString();
-
-            // Contraseña -> HASH PBKDF2 (PasswordHasher)
+            // Contraseña (hash PBKDF2)
             string pwPlano = GetPasswordForCurrentRole() ?? "";
             string passwordHash = string.IsNullOrWhiteSpace(pwPlano) ? null : PasswordHasher.Hash(pwPlano);
 
-            // Específicos
-            string extra = "";
-            if (rolDestino == RolUsuario.Medico)
+            using (var con = new SqlConnection("Server=localhost\\SQLEXPRESS;Database=SaludSoft;Trusted_Connection=True;"))
             {
-                string matricula = GetTextAny("tbMatricula");
-                string especialidad = GetTextAny("tbEspecialidadFormUsuario", "tbEspecialidad");
-                string consultorio = GetTextAny("tbConsultorio");
-                extra = $" | Matrícula: {matricula} | Esp.: {especialidad} | Cons.: {consultorio}";
+                con.Open();
+                SqlTransaction tx = con.BeginTransaction();
+
+                try
             }
 
-            MessageBox.Show(
-                $"Rol: {rolStr}\n" +
-                $"Nombre: {nombre} {apellido}\n" +
-                $"DNI: {dni}\n" +
-                $"Correo: {correo}\n" +
-                $"Tel.: {telefono}\n" +
-                $"Dirección: {direccion}\n" +
-                $"Contraseña: {(string.IsNullOrEmpty(passwordHash) ? "(vacía)" : "(hash generado)")}\n" +
-                $"{extra}",
-                "Usuario (modo sin BD)",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
+                    // Insert según rol
+                    if (rolDestino == RolUsuario.Paciente)
+                    {
+                        var rbM = FindCtl<RadioButton>("rbMasculino");
+                        var sexo = (rbM != null && rbM.Checked) ? "Masculino" : "Femenino";
 
-            // Limpiar contraseña ingresada
-            var tbPwd = GetPasswordTextBoxForCurrentRole();
-            if (tbPwd != null) tbPwd.Text = string.Empty;
+                        string sqlPaciente = @"INSERT INTO Paciente (nombre, apellido, dni, sexo, direccion, email, telefono, id_estado)
+                                               VALUES (@nombre, @apellido, @dni, @sexo, @direccion, @correo, @telefono, 1)";
+                        using (var cmd = new SqlCommand(sqlPaciente, con, tx))
+                        {
+                            cmd.Parameters.AddWithValue("@nombre", nombre);
+                            cmd.Parameters.AddWithValue("@apellido", apellido);
+                            cmd.Parameters.AddWithValue("@dni", int.Parse(dni));
 
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-        }
+                        string sqlProfesional = @"INSERT INTO Profesional (id_profesional, nombre, apellido, email, matricula, id_estado, id_especialidad)
+                                                  VALUES ((SELECT ISNULL(MAX(id_profesional),0)+1 FROM Profesional),
+                                                          @nombre, @apellido, @correo, @matricula, 1, @id_especialidad)";
+
 
         private void btVolver_Click(object sender, EventArgs e)
         {
@@ -259,7 +242,6 @@ namespace SaludSoft.Resources
             }
             else if (rol == RolUsuario.Administrador)
             {
-                // No debería alcanzarse porque no se permite Administrador en UI ni al guardar
                 Msg("No está permitido crear usuarios con rol Administrador.");
                 return false;
             }
@@ -422,7 +404,7 @@ namespace SaludSoft.Resources
                 case RolUsuario.Medico:
                     return FindCtl<TextBox>("tbContrasenaMedico") ?? FindCtl<TextBox>("tbContraseñaMedico");
                 case RolUsuario.Administrador:
-                    // No debería usarse ya, pero por si acaso devolvemos null para bloquear validación
+
                     return null;
                 case RolUsuario.Recepcionista:
                     return FindCtl<TextBox>("tbContrasenaRecep") ?? FindCtl<TextBox>("tbContraseñaRecep")
