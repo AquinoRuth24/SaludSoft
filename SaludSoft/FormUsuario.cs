@@ -12,7 +12,6 @@ namespace SaludSoft.Resources
         {
             InitializeComponent();
 
-            // Eventos base
             this.Load += FormUsuario_Load;
             if (cbRol != null) cbRol.SelectedIndexChanged += cbRol_SelectedIndexChanged;
 
@@ -24,6 +23,7 @@ namespace SaludSoft.Resources
             WireInputRestrictions();
             WireSexoRadioButtons();
         }
+
         // --- Helpers de validación reutilizables ---
         private bool Req(string name, string message)
         {
@@ -36,10 +36,6 @@ namespace SaludSoft.Resources
             return false;
         }
 
-        /// <summary>
-        /// Exige que el primer TextBox existente entre 'names' tenga texto.
-        /// Si ninguno de los nombres existe, lo consideramos OK.
-        /// </summary>
         private bool ReqAny(string[] names, string message)
         {
             foreach (var n in names)
@@ -53,9 +49,8 @@ namespace SaludSoft.Resources
                     return false;
                 }
             }
-            return true; // ningún control de la lista existe -> no falla
+            return true;
         }
-
 
         private enum RolUsuario { Paciente = 0, Medico = 1, Recepcionista = 2, Administrador = 3 }
 
@@ -64,7 +59,8 @@ namespace SaludSoft.Resources
         {
             if (cbRol != null && cbRol.Items.Count == 0)
             {
-                cbRol.Items.AddRange(new object[] { "Paciente", "Médico", "Recepcionista","Administrador" });
+                // OJO: ya NO agregamos "Administrador"
+                cbRol.Items.AddRange(new object[] { "Paciente", "Médico", "Recepcionista" });
                 cbRol.DropDownStyle = ComboBoxStyle.DropDownList;
             }
             if (cbRol != null && cbRol.SelectedIndex < 0) cbRol.SelectedIndex = 0;
@@ -75,21 +71,19 @@ namespace SaludSoft.Resources
 
         private void cbRol_SelectedIndexChanged(object sender, EventArgs e) => AplicarUIRol();
 
+        // ------------------ Mostrar/Ocultar por Rol ------------------
         private void AplicarUIRol()
         {
-            // Ocultar específicos
-            SetVisible("gbPaciente", false);
-            SetVisible("gbMedico", false);
-            SetVisible("gbRecep", false);
-            SetVisible("gbAdmin", false);
-           
-            // Ocultar todas las contraseñas por rol
-            ShowPwdFor("Medico", false);
-            ShowPwdFor("Administrador", false);
-            ShowPwdFor("Recep", false);
-           
+            HideAllRoleGroups();
 
-            // (opcional) extras de médico
+            // Ocultar variantes de contraseña
+            ShowPwdFor("Medico", false);
+            ShowPwdFor("Recep", false);
+            ShowPwdFor("Recepcionista", false);
+            // (mantengo estas dos por seguridad aunque ya no se usen)
+            ShowPwdFor("Administrador", false);
+            ShowPwdFor("Admin", false);
+
             ToggleMedicoExtras(false);
 
             var rol = (RolUsuario)(cbRol?.SelectedIndex ?? 0);
@@ -97,56 +91,55 @@ namespace SaludSoft.Resources
             {
                 case RolUsuario.Paciente:
                     SetVisible("gbPaciente", true);
-            
+                    FindCtl<GroupBox>("gbPaciente")?.BringToFront();
                     break;
 
                 case RolUsuario.Medico:
                     SetVisible("gbMedico", true);
                     ShowPwdFor("Medico", true);
                     ToggleMedicoExtras(true);
+                    FindCtl<GroupBox>("gbMedico")?.BringToFront();
                     break;
 
                 case RolUsuario.Recepcionista:
                     SetVisible("gbRecepcionista", true);
-                    ShowPwdFor("Recepcionista", true);      
+                    ShowPwdFor("Recepcionista", true);
+                    ShowPwdFor("Recep", true);
+                    FindCtl<GroupBox>("gbRecepcionista")?.BringToFront();
                     break;
 
-                case RolUsuario.Administrador:
-                    SetVisible("gbAdmin", true);
-                    ShowPwdFor("Administrador", true);
-                    break;
-
-                
+                    // case RolUsuario.Administrador: // <- Eliminado: no se permite
+                    //     break;
             }
+
+            this.PerformLayout();
+        }
+
+        private void HideAllRoleGroups()
+        {
+            SetVisible("gbPaciente", false);
+            SetVisible("gbMedico", false);
+            SetVisible("gbRecepcionista", false);
+            SetVisible("gbAdmin", false); // por si existe en el form, que quede oculto
         }
 
         // ------------------ Botones ------------------
-        // Botón "Inicio"
         private void button1_Click(object sender, EventArgs e)
         {
-            // Opción simple: cerrar este formulario (volver atrás)
             this.DialogResult = DialogResult.Cancel;
             this.Close();
-
-            // Si preferís ir a otra pantalla, descomentá y ajustá:
-            // var home = new Admin();   // o el form que sea tu inicio
-            // home.Show();
-            // this.Hide();
         }
-        // Botón "Cerrar sesión"
+
         private void button2_Click(object sender, EventArgs e)
         {
             var r = MessageBox.Show("¿Cerrar sesión?", "Confirmar",
                                     MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (r == DialogResult.Yes)
             {
-                // Si tenés pantalla de login:
-                // var login = new FormLogin();
-                // login.Show();
-                // this.Hide();
                 this.Close();
             }
         }
+
         private void btCancelar_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
@@ -155,6 +148,15 @@ namespace SaludSoft.Resources
 
         private void btAgregar_Click(object sender, EventArgs e)
         {
+            var rolDestino = (RolUsuario)(cbRol?.SelectedIndex ?? 0);
+
+            // BLOQUEO DURO: no permitir crear Administrador
+            if (rolDestino == RolUsuario.Administrador)
+            {
+                Msg("No está permitido crear usuarios con rol Administrador.");
+                return;
+            }
+
             if (!ValidarFormulario()) return;
 
             // Comunes
@@ -165,25 +167,22 @@ namespace SaludSoft.Resources
             string correo = GetText("tbCorreo");
             string telefono = GetText("tbTelefono");
 
-            var rol = (RolUsuario)(cbRol?.SelectedIndex ?? 0);
-            string rolStr = cbRol?.Text ?? rol.ToString();
+            string rolStr = cbRol?.Text ?? rolDestino.ToString();
 
             // Contraseña -> HASH PBKDF2 (PasswordHasher)
             string pwPlano = GetPasswordForCurrentRole() ?? "";
             string passwordHash = string.IsNullOrWhiteSpace(pwPlano) ? null : PasswordHasher.Hash(pwPlano);
 
-            // Específicos (sin “Turno”)
+            // Específicos
             string extra = "";
-            if (rol == RolUsuario.Medico)
+            if (rolDestino == RolUsuario.Medico)
             {
                 string matricula = GetTextAny("tbMatricula");
                 string especialidad = GetTextAny("tbEspecialidadFormUsuario", "tbEspecialidad");
-        
                 string consultorio = GetTextAny("tbConsultorio");
                 extra = $" | Matrícula: {matricula} | Esp.: {especialidad} | Cons.: {consultorio}";
             }
 
-            // SIN BD: solo mostramos resumen
             MessageBox.Show(
                 $"Rol: {rolStr}\n" +
                 $"Nombre: {nombre} {apellido}\n" +
@@ -205,9 +204,9 @@ namespace SaludSoft.Resources
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
+
         private void btVolver_Click(object sender, EventArgs e)
         {
-            // Haz aquí lo que quieras al “volver”. Por ejemplo, cerrar el form:
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
@@ -222,7 +221,7 @@ namespace SaludSoft.Resources
             if (!Req("tbTelefono", "Ingrese el teléfono")) return false;
 
             // Regex
-            const string SOLO_LETRAS = @"^[\p{L}\s]+$";                  // letras (incluye acentos) y espacios
+            const string SOLO_LETRAS = @"^[\p{L}\s]+$";
             const string SOLO_NUMEROS = @"^\d+$";
             const string EMAIL_BASICO = @"^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
 
@@ -260,9 +259,9 @@ namespace SaludSoft.Resources
             }
             else if (rol == RolUsuario.Administrador)
             {
-                if (!ReqAny(new[] { "tbDepartamento", "txtDepartamento" }, "Ingrese el departamento")) return false;
-                var cboNivel = FindCtl<ComboBox>("cboNivelAcceso");
-                if (cboNivel != null && string.IsNullOrWhiteSpace(cboNivel.Text)) { Msg("Seleccione el nivel de acceso"); return false; }
+                // No debería alcanzarse porque no se permite Administrador en UI ni al guardar
+                Msg("No está permitido crear usuarios con rol Administrador.");
+                return false;
             }
 
             // Sexo: si tenés rbMasculino / rbFemenino, exige uno
@@ -276,12 +275,6 @@ namespace SaludSoft.Resources
             return true;
 
             // Helpers locales
-            bool Req(string name, string message)
-            {
-                var tb = FindCtl<TextBox>(name);
-                if (tb != null && string.IsNullOrWhiteSpace(tb.Text)) { Msg(message); tb?.Focus(); return false; }
-                return true;
-            }
             bool Match(string name, string pattern, string message)
             {
                 var tb = FindCtl<TextBox>(name);
@@ -329,8 +322,7 @@ namespace SaludSoft.Resources
         {
             if (char.IsControl(e.KeyChar)) return;
             char c = e.KeyChar;
-            if (char.IsLetterOrDigit(c) || c == '@' || c == '.' || c == '_' || c == '-')
-                return;
+            if (char.IsLetterOrDigit(c) || c == '@' || c == '.' || c == '_' || c == '-') return;
             e.Handled = true;
         }
 
@@ -352,7 +344,6 @@ namespace SaludSoft.Resources
             var rbM = FindCtl<RadioButton>("rbMasculino");
             var rbF = FindCtl<RadioButton>("rbFemenino");
 
-            // Si están en contenedores distintos, fuerzo exclusión manual
             if (rbM != null && rbF != null)
             {
                 if (sender == rbM && rbM.Checked) rbF.Checked = false;
@@ -370,28 +361,39 @@ namespace SaludSoft.Resources
             if (c != null) c.Visible = visible;
         }
 
-        // Muestra/oculta Label/TextBox de contraseña por rol (acepta 'Contrasena'/'Contraseña' y 'Recep'/'Recepcionista')
+        // Muestra/oculta Label/TextBox de contraseña por rol.
+        // Acepta Contrasena/Contraseña/Contrasenia y sufijos Admin/Administrador/Medico/Recep/Recepcionista
         private void ShowPwdFor(string rolSuffix, bool visible)
         {
-            var lbl = FindCtl<Label>($"lContrasena{rolSuffix}") ?? FindCtl<Label>($"lContraseña{rolSuffix}");
-            var tb = FindCtl<TextBox>($"tbContrasena{rolSuffix}") ?? FindCtl<TextBox>($"tbContraseña{rolSuffix}");
+            string[] bases = { "Contrasena", "Contraseña", "Contrasenia" };
+            string[] endings = {
+                rolSuffix,
+                rolSuffix == "Administrador" ? "Admin" : null,
+                rolSuffix == "Admin" ? "Administrador" : null,
+                rolSuffix == "Recep" ? "Recepcionista" : null
+            };
 
-            if (rolSuffix == "Recep" && lbl == null && tb == null)
+            foreach (var b in bases)
             {
-                lbl = FindCtl<Label>("lContrasenaRecepcionista") ?? FindCtl<Label>("lContraseñaRecepcionista");
-                tb = FindCtl<TextBox>("tbContrasenaRecepcionista") ?? FindCtl<TextBox>("tbContraseñaRecepcionista");
-            }
+                foreach (var end in endings)
+                {
+                    if (end == null) continue;
 
-            if (lbl != null) lbl.Visible = visible;
-            if (tb != null)
-            {
-                tb.Visible = visible;
-                tb.UseSystemPasswordChar = true;
-                tb.PasswordChar = '●';
+                    var lbl = FindCtl<Label>($"l{b}{end}");
+                    if (lbl != null) lbl.Visible = visible;
+
+                    var tb = FindCtl<TextBox>($"tb{b}{end}");
+                    if (tb != null)
+                    {
+                        tb.Visible = visible;
+                        tb.UseSystemPasswordChar = true;
+                        tb.PasswordChar = '●';
+                    }
+                }
             }
         }
 
-        // Extras de médico (ajusta según tus nombres reales)
+        // Extras de médico
         private void ToggleMedicoExtras(bool visible)
         {
             SetVisible("lMatricula", visible);
@@ -417,11 +419,11 @@ namespace SaludSoft.Resources
             var rol = (RolUsuario)(cbRol?.SelectedIndex ?? 0);
             switch (rol)
             {
-               
                 case RolUsuario.Medico:
                     return FindCtl<TextBox>("tbContrasenaMedico") ?? FindCtl<TextBox>("tbContraseñaMedico");
                 case RolUsuario.Administrador:
-                    return FindCtl<TextBox>("tbContrasenaAdministrador") ?? FindCtl<TextBox>("tbContraseñaAdministrador");
+                    // No debería usarse ya, pero por si acaso devolvemos null para bloquear validación
+                    return null;
                 case RolUsuario.Recepcionista:
                     return FindCtl<TextBox>("tbContrasenaRecep") ?? FindCtl<TextBox>("tbContraseñaRecep")
                            ?? FindCtl<TextBox>("tbContrasenaRecepcionista") ?? FindCtl<TextBox>("tbContraseñaRecepcionista");
@@ -429,16 +431,12 @@ namespace SaludSoft.Resources
                     return null;
             }
         }
+
         private string GetPasswordForCurrentRole() => GetPasswordTextBoxForCurrentRole()?.Text?.Trim() ?? "";
 
         private void Msg(string text) => MessageBox.Show(text, "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-        // Si el diseñador tiene este handler enganchado, puede quedar vacío:
         private void rbFemenino_CheckedChanged(object sender, EventArgs e) { }
-
-        private void lContraseñaRecep_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void lContraseñaRecep_Click(object sender, EventArgs e) { }
     }
 }

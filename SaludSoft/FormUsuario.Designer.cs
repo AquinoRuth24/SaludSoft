@@ -61,9 +61,6 @@
             this.lMatricula = new System.Windows.Forms.Label();
             this.tbEspecialidad = new System.Windows.Forms.TextBox();
             this.lEspecialidad = new System.Windows.Forms.Label();
-            this.gbAdmin = new System.Windows.Forms.GroupBox();
-            this.tbContraseñaAdmin = new System.Windows.Forms.TextBox();
-            this.lContraseñaAdmin = new System.Windows.Forms.Label();
             this.gbRecepcionista = new System.Windows.Forms.GroupBox();
             this.tbContraseñaRecep = new System.Windows.Forms.TextBox();
             this.lContraseñaRecepcionista = new System.Windows.Forms.Label();
@@ -75,7 +72,6 @@
             this.gbComun.SuspendLayout();
             this.gbPaciente.SuspendLayout();
             this.gbMedico.SuspendLayout();
-            this.gbAdmin.SuspendLayout();
             this.gbRecepcionista.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -282,8 +278,7 @@
             this.cbRol.Items.AddRange(new object[] {
             "Paciente",
             "Médico",
-            "Recepcionista",
-            "Administrador"});
+            "Recepcionista"});
             this.cbRol.Location = new System.Drawing.Point(147, 72);
             this.cbRol.Margin = new System.Windows.Forms.Padding(2);
             this.cbRol.Name = "cbRol";
@@ -459,38 +454,6 @@
             this.lEspecialidad.TabIndex = 7;
             this.lEspecialidad.Text = "Especialidad: ";
             // 
-            // gbAdmin
-            // 
-            this.gbAdmin.Controls.Add(this.tbContraseñaAdmin);
-            this.gbAdmin.Controls.Add(this.lContraseñaAdmin);
-            this.gbAdmin.Location = new System.Drawing.Point(146, 268);
-            this.gbAdmin.Margin = new System.Windows.Forms.Padding(2);
-            this.gbAdmin.Name = "gbAdmin";
-            this.gbAdmin.Padding = new System.Windows.Forms.Padding(2);
-            this.gbAdmin.Size = new System.Drawing.Size(520, 58);
-            this.gbAdmin.TabIndex = 6;
-            this.gbAdmin.TabStop = false;
-            this.gbAdmin.Visible = false;
-            // 
-            // tbContraseñaAdmin
-            // 
-            this.tbContraseñaAdmin.Location = new System.Drawing.Point(277, 22);
-            this.tbContraseñaAdmin.Margin = new System.Windows.Forms.Padding(2);
-            this.tbContraseñaAdmin.Name = "tbContraseñaAdmin";
-            this.tbContraseñaAdmin.Size = new System.Drawing.Size(137, 20);
-            this.tbContraseñaAdmin.TabIndex = 1;
-            // 
-            // lContraseñaAdmin
-            // 
-            this.lContraseñaAdmin.AutoSize = true;
-            this.lContraseñaAdmin.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lContraseñaAdmin.Location = new System.Drawing.Point(111, 20);
-            this.lContraseñaAdmin.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lContraseñaAdmin.Name = "lContraseñaAdmin";
-            this.lContraseñaAdmin.Size = new System.Drawing.Size(96, 20);
-            this.lContraseñaAdmin.TabIndex = 0;
-            this.lContraseñaAdmin.Text = "Contraseña: ";
-            // 
             // gbRecepcionista
             // 
             this.gbRecepcionista.Controls.Add(this.tbContraseñaRecep);
@@ -568,7 +531,6 @@
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(669, 452);
             this.Controls.Add(this.gbMedico);
-            this.Controls.Add(this.gbAdmin);
             this.Controls.Add(this.gbRecepcionista);
             this.Controls.Add(this.btAgregar);
             this.Controls.Add(this.btCancelar);
@@ -590,8 +552,6 @@
             this.gbPaciente.PerformLayout();
             this.gbMedico.ResumeLayout(false);
             this.gbMedico.PerformLayout();
-            this.gbAdmin.ResumeLayout(false);
-            this.gbAdmin.PerformLayout();
             this.gbRecepcionista.ResumeLayout(false);
             this.gbRecepcionista.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -635,9 +595,6 @@
         private System.Windows.Forms.RadioButton rbFemenino;
         private System.Windows.Forms.TextBox tbContraseñaMedico;
         private System.Windows.Forms.Label lContraseñaMedico;
-        private System.Windows.Forms.GroupBox gbAdmin;
-        private System.Windows.Forms.TextBox tbContraseñaAdmin;
-        private System.Windows.Forms.Label lContraseñaAdmin;
         private System.Windows.Forms.GroupBox gbRecepcionista;
         private System.Windows.Forms.TextBox tbContraseñaRecep;
         private System.Windows.Forms.Label lContraseñaRecepcionista;

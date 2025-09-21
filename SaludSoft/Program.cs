@@ -1,4 +1,5 @@
 ﻿using SaludSoft.Resources;
+using SaludSoft.Resources.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +18,12 @@ namespace SaludSoft
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-           // Application.Run(new FormLogin());
-            Application.Run(new SaludSoft());
+            //Application.Run(new FormLogin());
+            // Application.Run(new SaludSoft());
             //Application.Run(new Admin());
             //Application.Run(new FormUsuario());
+            //Application.Run(new FormGestionUsuario());
+            Application.Run(new Medico());
         }
     }
 }
