@@ -25,8 +25,8 @@ namespace SaludSoft
                 int idHistorial = Convert.ToInt32(dgHistorial.Rows[e.RowIndex].Cells["colIdHistorial"].Value);
 
                 // Abrir formulario de detalle/modificación
-                FormDetalleHistorial frm = new FormDetalleHistorial(idHistorial);
-                frm.ShowDialog();
+                // frm = new FormDetalleHistorial(idHistorial);
+                //frm.ShowDialog();
             }
         }
     }
