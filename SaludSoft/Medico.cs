@@ -21,5 +21,17 @@ namespace SaludSoft
         {
 
         }
+
+        private void BHistorial_Click(object sender, EventArgs e)
+        {
+            FormHistorial frm = new FormHistorial();
+            frm.ShowDialog();
+        }
+
+        private void BCerrarSesion_Click(object sender, EventArgs e)
+        {
+            FormLogin frm = new FormLogin();
+            frm.ShowDialog();
+        }
     }
 }

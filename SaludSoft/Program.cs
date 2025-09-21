@@ -22,8 +22,8 @@ namespace SaludSoft
             // Application.Run(new SaludSoft());
             //Application.Run(new Admin());
             //Application.Run(new FormUsuario());
-            //Application.Run(new FormGestionUsuario());
-            Application.Run(new Medico());
+            Application.Run(new FormGestionUsuario());
+            //Application.Run(new Medico());
         }
     }
 }

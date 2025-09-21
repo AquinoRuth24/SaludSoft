@@ -33,9 +33,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.dgUsuario = new System.Windows.Forms.DataGridView();
-            this.cbTipo = new System.Windows.Forms.ComboBox();
-            this.btAgregarUsuario = new System.Windows.Forms.Button();
-            this.cbEstado = new System.Windows.Forms.ComboBox();
             this.colNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colApellido = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDNI = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -48,6 +45,9 @@
             this.colEspecialidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colEditar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.colEliminar = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.cbTipo = new System.Windows.Forms.ComboBox();
+            this.btAgregarUsuario = new System.Windows.Forms.Button();
+            this.cbEstado = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgUsuario)).BeginInit();
             this.SuspendLayout();
@@ -59,7 +59,7 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(796, 79);
+            this.panel1.Size = new System.Drawing.Size(994, 79);
             this.panel1.TabIndex = 0;
             // 
             // button1
@@ -77,7 +77,7 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.White;
             this.label1.Font = new System.Drawing.Font("Comic Sans MS", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(320, 21);
+            this.label1.Location = new System.Drawing.Point(362, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(204, 29);
             this.label1.TabIndex = 1;
@@ -118,45 +118,9 @@
             this.dgUsuario.RowHeadersVisible = false;
             this.dgUsuario.RowTemplate.Height = 40;
             this.dgUsuario.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgUsuario.Size = new System.Drawing.Size(796, 305);
+            this.dgUsuario.Size = new System.Drawing.Size(984, 305);
             this.dgUsuario.TabIndex = 1;
             this.dgUsuario.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgUsuario_CellContentClick);
-            // 
-            // cbTipo
-            // 
-            this.cbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTipo.FormattingEnabled = true;
-            this.cbTipo.Items.AddRange(new object[] {
-            "Todos",
-            "Paciente",
-            "Médico",
-            "Recepcionista",
-            "Administrador"});
-            this.cbTipo.Location = new System.Drawing.Point(27, 104);
-            this.cbTipo.Name = "cbTipo";
-            this.cbTipo.Size = new System.Drawing.Size(231, 21);
-            this.cbTipo.TabIndex = 2;
-            // 
-            // btAgregarUsuario
-            // 
-            this.btAgregarUsuario.Image = global::SaludSoft.Properties.Resources.agregar_usuario;
-            this.btAgregarUsuario.Location = new System.Drawing.Point(709, 90);
-            this.btAgregarUsuario.Name = "btAgregarUsuario";
-            this.btAgregarUsuario.Size = new System.Drawing.Size(75, 46);
-            this.btAgregarUsuario.TabIndex = 4;
-            this.btAgregarUsuario.UseVisualStyleBackColor = true;
-            this.btAgregarUsuario.Click += new System.EventHandler(this.btAgregarUsuario_Click);
-            // 
-            // cbEstado
-            // 
-            this.cbEstado.FormattingEnabled = true;
-            this.cbEstado.Items.AddRange(new object[] {
-            "Activo",
-            "Inactivo"});
-            this.cbEstado.Location = new System.Drawing.Point(352, 104);
-            this.cbEstado.Name = "cbEstado";
-            this.cbEstado.Size = new System.Drawing.Size(233, 21);
-            this.cbEstado.TabIndex = 5;
             // 
             // colNombre
             // 
@@ -236,12 +200,48 @@
             this.colEliminar.Text = "Eliminar";
             this.colEliminar.UseColumnTextForButtonValue = true;
             // 
+            // cbTipo
+            // 
+            this.cbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTipo.FormattingEnabled = true;
+            this.cbTipo.Items.AddRange(new object[] {
+            "Todos",
+            "Paciente",
+            "Médico",
+            "Recepcionista",
+            "Administrador"});
+            this.cbTipo.Location = new System.Drawing.Point(177, 118);
+            this.cbTipo.Name = "cbTipo";
+            this.cbTipo.Size = new System.Drawing.Size(231, 21);
+            this.cbTipo.TabIndex = 2;
+            // 
+            // btAgregarUsuario
+            // 
+            this.btAgregarUsuario.Image = global::SaludSoft.Properties.Resources.agregar_usuario;
+            this.btAgregarUsuario.Location = new System.Drawing.Point(882, 104);
+            this.btAgregarUsuario.Name = "btAgregarUsuario";
+            this.btAgregarUsuario.Size = new System.Drawing.Size(75, 46);
+            this.btAgregarUsuario.TabIndex = 4;
+            this.btAgregarUsuario.UseVisualStyleBackColor = true;
+            this.btAgregarUsuario.Click += new System.EventHandler(this.btAgregarUsuario_Click);
+            // 
+            // cbEstado
+            // 
+            this.cbEstado.FormattingEnabled = true;
+            this.cbEstado.Items.AddRange(new object[] {
+            "Activo",
+            "Inactivo"});
+            this.cbEstado.Location = new System.Drawing.Point(517, 118);
+            this.cbEstado.Name = "cbEstado";
+            this.cbEstado.Size = new System.Drawing.Size(233, 21);
+            this.cbEstado.TabIndex = 5;
+            // 
             // FormGestionUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(796, 528);
+            this.ClientSize = new System.Drawing.Size(996, 528);
             this.Controls.Add(this.cbEstado);
             this.Controls.Add(this.btAgregarUsuario);
             this.Controls.Add(this.cbTipo);

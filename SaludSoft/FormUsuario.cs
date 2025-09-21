@@ -1,15 +1,9 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Mail;
+using SaludSoft.Security; // Para PasswordHasher.Hash
+using System.Data.SqlClient;
 
 namespace SaludSoft.Resources
 {
@@ -58,11 +52,18 @@ namespace SaludSoft.Resources
             }
             return true;
         }
+
+        private enum RolUsuario { Paciente = 0, Medico = 1, Recepcionista = 2, Administrador = 3 }
+
         // ------------------ Load & Rol ------------------
         private void FormUsuario_Load(object sender, EventArgs e)
         {
-            CargarRoles();
+            if (cbRol != null && cbRol.Items.Count == 0)
+            {
 
+                cbRol.Items.AddRange(new object[] { "Paciente", "Médico", "Recepcionista" });
+                cbRol.DropDownStyle = ComboBoxStyle.DropDownList;
+            }
             if (cbRol != null && cbRol.SelectedIndex < 0) cbRol.SelectedIndex = 0;
 
             AplicarUIRol();
@@ -80,9 +81,13 @@ namespace SaludSoft.Resources
             ShowPwdFor("Medico", false);
             ShowPwdFor("Recep", false);
             ShowPwdFor("Recepcionista", false);
+            // (mantengo estas dos por seguridad aunque ya no se usen)
             ShowPwdFor("Administrador", false);
             ShowPwdFor("Admin", false);
 
+            ToggleMedicoExtras(false);
+
+            var rol = (RolUsuario)(cbRol?.SelectedIndex ?? 0);
             switch (rol)
             {
                 case RolUsuario.Paciente:
@@ -103,7 +108,12 @@ namespace SaludSoft.Resources
                     ShowPwdFor("Recep", true);
                     FindCtl<GroupBox>("gbRecepcionista")?.BringToFront();
                     break;
+
+                    // case RolUsuario.Administrador: // <- Eliminado: no se permite
+                    //     break;
             }
+
+            this.PerformLayout();
         }
 
         private void HideAllRoleGroups()
@@ -111,7 +121,7 @@ namespace SaludSoft.Resources
             SetVisible("gbPaciente", false);
             SetVisible("gbMedico", false);
             SetVisible("gbRecepcionista", false);
-            SetVisible("gbAdmin", false);
+            SetVisible("gbAdmin", false); // por si existe en el form, que quede oculto
         }
 
         // ------------------ Botones ------------------
@@ -139,8 +149,9 @@ namespace SaludSoft.Resources
 
         private void btAgregar_Click(object sender, EventArgs e)
         {
-            if (cbRol?.SelectedValue == null)
+            var rolDestino = (RolUsuario)(cbRol?.SelectedIndex ?? 0);
 
+            // no permitir crear Administrador
             if (rolDestino == RolUsuario.Administrador)
             {
                 Msg("No está permitido crear usuarios con rol Administrador.");
@@ -149,7 +160,7 @@ namespace SaludSoft.Resources
 
             if (!ValidarFormulario()) return;
 
-            // Datos comunes
+            // Comunes
             string nombre = GetText("tbNombre");
             string apellido = GetText("tbApellido");
             string dni = GetText("tbDni");
@@ -157,36 +168,120 @@ namespace SaludSoft.Resources
             string correo = GetText("tbCorreo");
             string telefono = GetText("tbTelefono");
 
-            // Contraseña (hash PBKDF2)
+            string rolStr = cbRol?.Text ?? rolDestino.ToString();
+
+            // Contraseña -> HASH PBKDF2 (PasswordHasher)
             string pwPlano = GetPasswordForCurrentRole() ?? "";
             string passwordHash = string.IsNullOrWhiteSpace(pwPlano) ? null : PasswordHasher.Hash(pwPlano);
 
-            using (var con = new SqlConnection("Server=localhost\\SQLEXPRESS;Database=SaludSoft;Trusted_Connection=True;"))
+            // Específicos
+            try
             {
-                con.Open();
-                SqlTransaction tx = con.BeginTransaction();
+                using (SqlConnection conexion = Conexion.GetConnection())
+                {
+                    conexion.Open();
 
-                try
-            }
+                    // --- Insert en Usuario ---
+                    string insertUsuario = @"
+                INSERT INTO Usuario (nombre, apellido, contraseña, email, telefono, id_rol)
+                VALUES (@nombre, @apellido, @contraseña, @correo, @telefono, @idRol);
+                SELECT SCOPE_IDENTITY();";
 
-                    // Insert según rol
+                    int idRol = (int)rolDestino + 1;
+
+                    int idUsuario;
+                    using (SqlCommand cmd = new SqlCommand(insertUsuario, conexion))
+                    {
+                        cmd.Parameters.AddWithValue("@nombre", nombre);
+                        cmd.Parameters.AddWithValue("@apellido", apellido);
+                        cmd.Parameters.AddWithValue("@contraseña", (object)passwordHash ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@correo", correo);
+                        cmd.Parameters.AddWithValue("@telefono", (object)telefono ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@idRol", idRol);
+
+                        idUsuario = Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+
+                    // --- Insert extra si es Paciente ---
                     if (rolDestino == RolUsuario.Paciente)
                     {
-                        var rbM = FindCtl<RadioButton>("rbMasculino");
-                        var sexo = (rbM != null && rbM.Checked) ? "Masculino" : "Femenino";
+                        string sexo = (FindCtl<RadioButton>("rbMasculino")?.Checked ?? false) ? "Masculino" : "Femenino";
 
-                        string sqlPaciente = @"INSERT INTO Paciente (nombre, apellido, dni, sexo, direccion, email, telefono, id_estado)
-                                               VALUES (@nombre, @apellido, @dni, @sexo, @direccion, @correo, @telefono, 1)";
-                        using (var cmd = new SqlCommand(sqlPaciente, con, tx))
+                        string insertPaciente = @"
+                    INSERT INTO Paciente (nombre, apellido, dni, sexo, direccion, email, telefono, id_estado)
+                    VALUES (@nombre, @apellido, @dni, @sexo, @direccion, @correo, @telefono, 1);";
+
+                        using (SqlCommand cmd = new SqlCommand(insertPaciente, conexion))
                         {
                             cmd.Parameters.AddWithValue("@nombre", nombre);
                             cmd.Parameters.AddWithValue("@apellido", apellido);
                             cmd.Parameters.AddWithValue("@dni", int.Parse(dni));
+                            cmd.Parameters.AddWithValue("@sexo", sexo);
+                            cmd.Parameters.AddWithValue("@direccion", direccion);
+                            cmd.Parameters.AddWithValue("@correo", (object)correo ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@telefono", (object)telefono ?? DBNull.Value);
 
-                        string sqlProfesional = @"INSERT INTO Profesional (id_profesional, nombre, apellido, email, matricula, id_estado, id_especialidad)
-                                                  VALUES ((SELECT ISNULL(MAX(id_profesional),0)+1 FROM Profesional),
-                                                          @nombre, @apellido, @correo, @matricula, 1, @id_especialidad)";
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
 
+                    // --- Insert extra si es Médico ---
+                    if (rolDestino == RolUsuario.Medico)
+                    {
+                        string matricula = GetTextAny("tbMatricula");
+                        string especialidad = GetTextAny("tbEspecialidadFormUsuario", "tbEspecialidad");
+                        string consultorio = GetTextAny("tbConsultorio");
+
+                        int idEspecialidad = 0;
+
+                        // Primero buscar id_especialidad
+                        using (SqlCommand cmdCheck = new SqlCommand(
+                            "SELECT TOP 1 id_especialidad FROM Especialidad WHERE nombre = @especialidad", conexion))
+                        {
+                            cmdCheck.Parameters.AddWithValue("@especialidad", especialidad);
+                            var result = cmdCheck.ExecuteScalar();
+
+                            if (result == null)
+                            {
+                                MessageBox.Show("La especialidad ingresada no existe. Verifique la entrada.",
+                                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return; // cancelar el guardado
+                            }
+
+                            idEspecialidad = Convert.ToInt32(result);
+                        }
+
+                        // Ahora sí, insertar en Profesional
+                        string insertProfesional = @"
+                          INSERT INTO Profesional (nombre, apellido, email, matricula, id_estado, id_especialidad)
+                          VALUES (@nombre, @apellido, @correo, @matricula, 1, @idEspecialidad);";
+
+                        using (SqlCommand cmd = new SqlCommand(insertProfesional, conexion))
+                        {
+                            cmd.Parameters.AddWithValue("@nombre", nombre);
+                            cmd.Parameters.AddWithValue("@apellido", apellido);
+                            cmd.Parameters.AddWithValue("@correo", correo);
+                            cmd.Parameters.AddWithValue("@matricula", int.Parse(matricula));
+                            cmd.Parameters.AddWithValue("@idEspecialidad", idEspecialidad);
+
+                            cmd.ExecuteNonQuery();
+                        }
+
+                    }
+
+                    MessageBox.Show("Usuario agregado correctamente en la base de datos.",
+                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LimpiarCampos();
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al guardar en la base de datos: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
 
         private void btVolver_Click(object sender, EventArgs e)
         {
@@ -242,16 +337,21 @@ namespace SaludSoft.Resources
             }
             else if (rol == RolUsuario.Administrador)
             {
+                // No debería alcanzarse porque no se permite Administrador en UI ni al guardar
                 Msg("No está permitido crear usuarios con rol Administrador.");
                 return false;
             }
 
             // Sexo: si tenés rbMasculino / rbFemenino, exige uno
-            var rbM = FindCtl<RadioButton>("rbMasculino");
-            var rbF = FindCtl<RadioButton>("rbFemenino");
-            if ((rbM != null || rbF != null) && !((rbM?.Checked ?? false) || (rbF?.Checked ?? false)))
+            if (rol == RolUsuario.Paciente)
             {
-                Msg("Seleccione el sexo"); return false;
+                var rbM = FindCtl<RadioButton>("rbMasculino");
+                var rbF = FindCtl<RadioButton>("rbFemenino");
+                if ((rbM != null || rbF != null) && !((rbM?.Checked ?? false) || (rbF?.Checked ?? false)))
+                {
+                    Msg("Seleccione el sexo");
+                    return false;
+                }
             }
 
             return true;
@@ -404,7 +504,7 @@ namespace SaludSoft.Resources
                 case RolUsuario.Medico:
                     return FindCtl<TextBox>("tbContrasenaMedico") ?? FindCtl<TextBox>("tbContraseñaMedico");
                 case RolUsuario.Administrador:
-
+                    // No debería usarse ya, pero por si acaso devolvemos null para bloquear validación
                     return null;
                 case RolUsuario.Recepcionista:
                     return FindCtl<TextBox>("tbContrasenaRecep") ?? FindCtl<TextBox>("tbContraseñaRecep")
@@ -420,5 +520,33 @@ namespace SaludSoft.Resources
 
         private void rbFemenino_CheckedChanged(object sender, EventArgs e) { }
         private void lContraseñaRecep_Click(object sender, EventArgs e) { }
+
+        private void LimpiarCampos()
+        {
+            // Recorre todos los TextBox y limpia su contenido
+            foreach (var tb in this.Controls.OfType<TextBox>())
+                tb.Clear();
+
+            // También limpia TextBox que estén dentro de GroupBox u otros contenedores
+            foreach (var gb in this.Controls.OfType<GroupBox>())
+            {
+                foreach (var tb in gb.Controls.OfType<TextBox>())
+                    tb.Clear();
+            }
+
+            // Restablecer ComboBox (roles)
+            if (cbRol != null && cbRol.Items.Count > 0)
+                cbRol.SelectedIndex = 0;
+
+            // Deseleccionar radios de sexo
+            var rbM = FindCtl<RadioButton>("rbMasculino");
+            var rbF = FindCtl<RadioButton>("rbFemenino");
+            if (rbM != null) rbM.Checked = false;
+            if (rbF != null) rbF.Checked = false;
+
+            // Opcional: limpiar NumericUpDown si usás
+            foreach (var nud in this.Controls.OfType<NumericUpDown>())
+                nud.Value = nud.Minimum;
+        }
     }
 }

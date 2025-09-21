@@ -22,11 +22,11 @@ namespace SaludSoft
             if (dgHistorial.Columns[e.ColumnIndex].Name == "colEditar" && e.RowIndex >= 0)
             {
                 // Tomar el id de historial de la fila
-                int idHistorial = Convert.ToInt32(dgHistorial.Rows[e.RowIndex].Cells["colIdHistorial"].Value);
+                //int idHistorial = Convert.ToInt32(dgHistorial.Rows[e.RowIndex].Cells["colIdHistorial"].Value);
 
                 // Abrir formulario de detalle/modificación
-                FormDetalleHistorial frm = new FormDetalleHistorial(idHistorial);
-                frm.ShowDialog();
+               // FormDetalleHistorial frm = new FormDetalleHistorial(idHistorial);
+               // frm.ShowDialog();
             }
         }
     }
