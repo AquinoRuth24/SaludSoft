@@ -427,6 +427,8 @@ namespace SaludSoft.Resources.Models
                 }
             }
         }
+
+
     }
 
     // ===== Diálogo simple inline para edición mínima (fallback si no está FormUsuario) =====

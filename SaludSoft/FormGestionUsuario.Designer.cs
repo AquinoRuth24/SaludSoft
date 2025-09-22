@@ -210,7 +210,7 @@
             "Médico",
             "Recepcionista",
             "Administrador"});
-            this.cbTipo.Location = new System.Drawing.Point(177, 118);
+            this.cbTipo.Location = new System.Drawing.Point(384, 118);
             this.cbTipo.Name = "cbTipo";
             this.cbTipo.Size = new System.Drawing.Size(231, 21);
             this.cbTipo.TabIndex = 2;
@@ -231,7 +231,7 @@
             this.cbEstado.Items.AddRange(new object[] {
             "Activo",
             "Inactivo"});
-            this.cbEstado.Location = new System.Drawing.Point(517, 118);
+            this.cbEstado.Location = new System.Drawing.Point(630, 118);
             this.cbEstado.Name = "cbEstado";
             this.cbEstado.Size = new System.Drawing.Size(233, 21);
             this.cbEstado.TabIndex = 5;
