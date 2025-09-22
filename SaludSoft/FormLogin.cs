@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using SaludSoft.Security; 
+using SaludSoft.Security;
 
 namespace SaludSoft
 {
@@ -84,7 +84,6 @@ namespace SaludSoft
             );
         }
 
-     
         // AUTENTICACIÓN contra BD
         private sealed class LoginResult
         {
@@ -93,7 +92,7 @@ namespace SaludSoft
             public string Rol { get; set; }
         }
 
-        // Traemos el hash y verificamos en memoria.
+        //hash y verificamos
         private LoginResult Autenticar(string email, string passwordIngresada)
         {
             const string sql = @"
@@ -122,7 +121,8 @@ WHERE u.email = @email;";
                     string hashGuardado = rd.IsDBNull(3) ? null : rd.GetString(3);
 
                     // Verificar hash
-                    bool ok = PasswordHasher.Verify(passwordIngresada, hashGuardado);
+                    bool ok = !string.IsNullOrEmpty(hashGuardado) &&
+                              PasswordHasher.Verify(passwordIngresada, hashGuardado);
                     if (!ok) return null;
 
                     return new LoginResult
@@ -135,16 +135,16 @@ WHERE u.email = @email;";
             }
         }
 
-        
         // Navegación por rol 
         private void AbrirSegunRol(string rol, string nombre)
         {
+            
             string formName;
             switch (rol.Trim().ToLowerInvariant())
             {
-                case "administrador": formName = "Admin"; break;           
-                case "recepcionista": formName = "FormSaludSoft"; break;   
-                case "medico": formName = "FormMedico"; break;     
+                case "administrador": formName = "Admin"; break;
+                case "recepcionista": formName = "SaludSoft"; break; 
+                case "medico": formName = "Medico"; break;  
                 default:
                     MessageBox.Show($"Rol '{rol}' sin vista asignada.", "Aviso",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -155,7 +155,7 @@ WHERE u.email = @email;";
             if (destino == null)
             {
                 MessageBox.Show($"No se encontró el formulario '{formName}'. " +
-                                $"Crealo o cambia el nombre en el switch.", "Aviso",
+                                $"Crealo o cambiá el nombre en el switch.", "Aviso",
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -192,15 +192,14 @@ WHERE u.email = @email;";
             catch { return null; }
         }
 
-        
         // USUARIO = EMAIL (permitir @ . _ - + y sólo una @)
         private static bool EsEmailChar(char c)
             => char.IsLetterOrDigit(c) || c == '@' || c == '.' || c == '_' || c == '-' || c == '+';
 
         private void SoloEmail_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (char.IsControl(e.KeyChar)) return;              
-            if (e.KeyChar == ' ') { e.Handled = true; return; } 
+            if (char.IsControl(e.KeyChar)) return;
+            if (e.KeyChar == ' ') { e.Handled = true; return; }
 
             if (!EsEmailChar(e.KeyChar)) { e.Handled = true; return; }
 
@@ -224,7 +223,7 @@ WHERE u.email = @email;";
 
                 if (c == '@')
                 {
-                    if (vioArroba) continue; 
+                    if (vioArroba) continue;
                     vioArroba = true;
                 }
 
@@ -247,7 +246,6 @@ WHERE u.email = @email;";
             if (dot == s.Length - 1) return false;
             return true;
         }
-
 
         private void tbUsuario_TextChanged(object sender, EventArgs e) { }
         private void tbContraseña_TextChanged(object sender, EventArgs e) { }
