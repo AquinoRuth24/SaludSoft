@@ -29,15 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btCerrarSesion = new System.Windows.Forms.Button();
-            this.btBackup = new System.Windows.Forms.Button();
-            this.btConsultorios = new System.Windows.Forms.Button();
-            this.btTurnos = new System.Windows.Forms.Button();
-            this.btInicio = new System.Windows.Forms.Button();
-            this.btMedicos = new System.Windows.Forms.Button();
-            this.btUsuario = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.btGestionUsuario = new System.Windows.Forms.Button();
             this.lAdministrador = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.btHistorial = new System.Windows.Forms.Button();
@@ -46,7 +38,15 @@
             this.btCitasMes = new System.Windows.Forms.Button();
             this.btMedicosActivos = new System.Windows.Forms.Button();
             this.btTotalUsuario = new System.Windows.Forms.Button();
+            this.btGestionUsuario = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btCerrarSesion = new System.Windows.Forms.Button();
+            this.btBackup = new System.Windows.Forms.Button();
+            this.btConsultorios = new System.Windows.Forms.Button();
+            this.btTurnos = new System.Windows.Forms.Button();
+            this.btInicio = new System.Windows.Forms.Button();
+            this.btMedicos = new System.Windows.Forms.Button();
+            this.btUsuario = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -68,6 +68,166 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(144, 397);
             this.panel1.TabIndex = 0;
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.panel2.Controls.Add(this.btGestionUsuario);
+            this.panel2.Controls.Add(this.lAdministrador);
+            this.panel2.Location = new System.Drawing.Point(145, -1);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(730, 55);
+            this.panel2.TabIndex = 2;
+            // 
+            // lAdministrador
+            // 
+            this.lAdministrador.AutoSize = true;
+            this.lAdministrador.BackColor = System.Drawing.Color.Transparent;
+            this.lAdministrador.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lAdministrador.ForeColor = System.Drawing.Color.Green;
+            this.lAdministrador.Location = new System.Drawing.Point(21, 13);
+            this.lAdministrador.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lAdministrador.Name = "lAdministrador";
+            this.lAdministrador.Size = new System.Drawing.Size(156, 27);
+            this.lAdministrador.TabIndex = 3;
+            this.lAdministrador.Text = "Administrador  ";
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.panel3.Controls.Add(this.btHistorial);
+            this.panel3.Controls.Add(this.btConsultoriosDisponibles);
+            this.panel3.Controls.Add(this.btEspecialidades);
+            this.panel3.Controls.Add(this.btCitasMes);
+            this.panel3.Controls.Add(this.btMedicosActivos);
+            this.panel3.Controls.Add(this.btTotalUsuario);
+            this.panel3.Location = new System.Drawing.Point(144, 52);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(731, 387);
+            this.panel3.TabIndex = 3;
+            // 
+            // btHistorial
+            // 
+            this.btHistorial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btHistorial.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btHistorial.Image = global::SaludSoft.Properties.Resources.expediente_del_paciente;
+            this.btHistorial.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btHistorial.Location = new System.Drawing.Point(115, 242);
+            this.btHistorial.Name = "btHistorial";
+            this.btHistorial.Size = new System.Drawing.Size(165, 65);
+            this.btHistorial.TabIndex = 5;
+            this.btHistorial.Text = "Historial Paciente";
+            this.btHistorial.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btHistorial.UseVisualStyleBackColor = false;
+            this.btHistorial.Click += new System.EventHandler(this.btHistorial_Click);
+            // 
+            // btConsultoriosDisponibles
+            // 
+            this.btConsultoriosDisponibles.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btConsultoriosDisponibles.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btConsultoriosDisponibles.Image = global::SaludSoft.Properties.Resources.construccion_de_casas;
+            this.btConsultoriosDisponibles.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btConsultoriosDisponibles.Location = new System.Drawing.Point(372, 242);
+            this.btConsultoriosDisponibles.Margin = new System.Windows.Forms.Padding(2);
+            this.btConsultoriosDisponibles.Name = "btConsultoriosDisponibles";
+            this.btConsultoriosDisponibles.Size = new System.Drawing.Size(230, 65);
+            this.btConsultoriosDisponibles.TabIndex = 4;
+            this.btConsultoriosDisponibles.Text = "Consultorios Disponibles ";
+            this.btConsultoriosDisponibles.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btConsultoriosDisponibles.UseVisualStyleBackColor = false;
+            this.btConsultoriosDisponibles.Click += new System.EventHandler(this.btConsultoriosDisponibles_Click);
+            // 
+            // btEspecialidades
+            // 
+            this.btEspecialidades.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btEspecialidades.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btEspecialidades.Image = global::SaludSoft.Properties.Resources.libro_medico;
+            this.btEspecialidades.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btEspecialidades.Location = new System.Drawing.Point(409, 136);
+            this.btEspecialidades.Margin = new System.Windows.Forms.Padding(2);
+            this.btEspecialidades.Name = "btEspecialidades";
+            this.btEspecialidades.Size = new System.Drawing.Size(193, 65);
+            this.btEspecialidades.TabIndex = 3;
+            this.btEspecialidades.Text = "Especialidades ";
+            this.btEspecialidades.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btEspecialidades.UseVisualStyleBackColor = false;
+            this.btEspecialidades.Click += new System.EventHandler(this.btEspecialidades_Click);
+            // 
+            // btCitasMes
+            // 
+            this.btCitasMes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btCitasMes.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btCitasMes.Image = global::SaludSoft.Properties.Resources.CitasProgramadas;
+            this.btCitasMes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btCitasMes.Location = new System.Drawing.Point(115, 139);
+            this.btCitasMes.Margin = new System.Windows.Forms.Padding(2);
+            this.btCitasMes.Name = "btCitasMes";
+            this.btCitasMes.Size = new System.Drawing.Size(165, 62);
+            this.btCitasMes.TabIndex = 2;
+            this.btCitasMes.Text = "Citas del mes";
+            this.btCitasMes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btCitasMes.UseVisualStyleBackColor = false;
+            this.btCitasMes.Click += new System.EventHandler(this.btCitasMes_Click);
+            // 
+            // btMedicosActivos
+            // 
+            this.btMedicosActivos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btMedicosActivos.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btMedicosActivos.Image = global::SaludSoft.Properties.Resources.equipo_medico;
+            this.btMedicosActivos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btMedicosActivos.Location = new System.Drawing.Point(414, 42);
+            this.btMedicosActivos.Margin = new System.Windows.Forms.Padding(2);
+            this.btMedicosActivos.Name = "btMedicosActivos";
+            this.btMedicosActivos.Size = new System.Drawing.Size(188, 60);
+            this.btMedicosActivos.TabIndex = 1;
+            this.btMedicosActivos.Text = "Médicos Activos ";
+            this.btMedicosActivos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btMedicosActivos.UseVisualStyleBackColor = false;
+            this.btMedicosActivos.Click += new System.EventHandler(this.btMedicosActivos_Click);
+            // 
+            // btTotalUsuario
+            // 
+            this.btTotalUsuario.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btTotalUsuario.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btTotalUsuario.Image = global::SaludSoft.Properties.Resources.usuario;
+            this.btTotalUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btTotalUsuario.Location = new System.Drawing.Point(115, 42);
+            this.btTotalUsuario.Margin = new System.Windows.Forms.Padding(2);
+            this.btTotalUsuario.Name = "btTotalUsuario";
+            this.btTotalUsuario.Size = new System.Drawing.Size(165, 60);
+            this.btTotalUsuario.TabIndex = 0;
+            this.btTotalUsuario.Text = "Total  Usuarios ";
+            this.btTotalUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btTotalUsuario.UseVisualStyleBackColor = false;
+            this.btTotalUsuario.Click += new System.EventHandler(this.btTotalUsuario_Click);
+            // 
+            // btGestionUsuario
+            // 
+            this.btGestionUsuario.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btGestionUsuario.Image = global::SaludSoft.Properties.Resources.agregar;
+            this.btGestionUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btGestionUsuario.Location = new System.Drawing.Point(391, 11);
+            this.btGestionUsuario.Margin = new System.Windows.Forms.Padding(2);
+            this.btGestionUsuario.Name = "btGestionUsuario";
+            this.btGestionUsuario.Size = new System.Drawing.Size(193, 32);
+            this.btGestionUsuario.TabIndex = 3;
+            this.btGestionUsuario.Text = "Gestionar Usuario ";
+            this.btGestionUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btGestionUsuario.UseVisualStyleBackColor = true;
+            this.btGestionUsuario.Click += new System.EventHandler(this.btGestionUsuario_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
+            this.pictureBox1.Location = new System.Drawing.Point(2, -1);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(144, 49);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
             // 
             // btCerrarSesion
             // 
@@ -174,171 +334,11 @@
             this.btUsuario.UseVisualStyleBackColor = true;
             this.btUsuario.Click += new System.EventHandler(this.btUsuario_Click);
             // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.panel2.Controls.Add(this.btGestionUsuario);
-            this.panel2.Controls.Add(this.lAdministrador);
-            this.panel2.Location = new System.Drawing.Point(145, -1);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(659, 55);
-            this.panel2.TabIndex = 2;
-            // 
-            // btGestionUsuario
-            // 
-            this.btGestionUsuario.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btGestionUsuario.Image = global::SaludSoft.Properties.Resources.agregar;
-            this.btGestionUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btGestionUsuario.Location = new System.Drawing.Point(391, 11);
-            this.btGestionUsuario.Margin = new System.Windows.Forms.Padding(2);
-            this.btGestionUsuario.Name = "btGestionUsuario";
-            this.btGestionUsuario.Size = new System.Drawing.Size(193, 32);
-            this.btGestionUsuario.TabIndex = 3;
-            this.btGestionUsuario.Text = "Gestionar Usuario ";
-            this.btGestionUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btGestionUsuario.UseVisualStyleBackColor = true;
-            this.btGestionUsuario.Click += new System.EventHandler(this.btGestionUsuario_Click);
-            // 
-            // lAdministrador
-            // 
-            this.lAdministrador.AutoSize = true;
-            this.lAdministrador.BackColor = System.Drawing.Color.Transparent;
-            this.lAdministrador.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lAdministrador.ForeColor = System.Drawing.Color.Green;
-            this.lAdministrador.Location = new System.Drawing.Point(21, 13);
-            this.lAdministrador.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lAdministrador.Name = "lAdministrador";
-            this.lAdministrador.Size = new System.Drawing.Size(156, 27);
-            this.lAdministrador.TabIndex = 3;
-            this.lAdministrador.Text = "Administrador  ";
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.panel3.Controls.Add(this.btHistorial);
-            this.panel3.Controls.Add(this.btConsultoriosDisponibles);
-            this.panel3.Controls.Add(this.btEspecialidades);
-            this.panel3.Controls.Add(this.btCitasMes);
-            this.panel3.Controls.Add(this.btMedicosActivos);
-            this.panel3.Controls.Add(this.btTotalUsuario);
-            this.panel3.Location = new System.Drawing.Point(144, 52);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(660, 387);
-            this.panel3.TabIndex = 3;
-            // 
-            // btHistorial
-            // 
-            this.btHistorial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btHistorial.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btHistorial.Image = global::SaludSoft.Properties.Resources.expediente_del_paciente;
-            this.btHistorial.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btHistorial.Location = new System.Drawing.Point(48, 243);
-            this.btHistorial.Name = "btHistorial";
-            this.btHistorial.Size = new System.Drawing.Size(165, 65);
-            this.btHistorial.TabIndex = 5;
-            this.btHistorial.Text = "Historial Paciente";
-            this.btHistorial.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btHistorial.UseVisualStyleBackColor = false;
-            this.btHistorial.Click += new System.EventHandler(this.btHistorial_Click);
-            // 
-            // btConsultoriosDisponibles
-            // 
-            this.btConsultoriosDisponibles.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btConsultoriosDisponibles.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btConsultoriosDisponibles.Image = global::SaludSoft.Properties.Resources.construccion_de_casas;
-            this.btConsultoriosDisponibles.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btConsultoriosDisponibles.Location = new System.Drawing.Point(372, 242);
-            this.btConsultoriosDisponibles.Margin = new System.Windows.Forms.Padding(2);
-            this.btConsultoriosDisponibles.Name = "btConsultoriosDisponibles";
-            this.btConsultoriosDisponibles.Size = new System.Drawing.Size(230, 65);
-            this.btConsultoriosDisponibles.TabIndex = 4;
-            this.btConsultoriosDisponibles.Text = "Consultorios Disponibles ";
-            this.btConsultoriosDisponibles.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btConsultoriosDisponibles.UseVisualStyleBackColor = false;
-            this.btConsultoriosDisponibles.Click += new System.EventHandler(this.btConsultoriosDisponibles_Click);
-            // 
-            // btEspecialidades
-            // 
-            this.btEspecialidades.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btEspecialidades.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btEspecialidades.Image = global::SaludSoft.Properties.Resources.libro_medico;
-            this.btEspecialidades.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btEspecialidades.Location = new System.Drawing.Point(409, 136);
-            this.btEspecialidades.Margin = new System.Windows.Forms.Padding(2);
-            this.btEspecialidades.Name = "btEspecialidades";
-            this.btEspecialidades.Size = new System.Drawing.Size(193, 65);
-            this.btEspecialidades.TabIndex = 3;
-            this.btEspecialidades.Text = "Especialidades ";
-            this.btEspecialidades.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btEspecialidades.UseVisualStyleBackColor = false;
-            this.btEspecialidades.Click += new System.EventHandler(this.btEspecialidades_Click);
-            // 
-            // btCitasMes
-            // 
-            this.btCitasMes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btCitasMes.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btCitasMes.Image = global::SaludSoft.Properties.Resources.CitasProgramadas;
-            this.btCitasMes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btCitasMes.Location = new System.Drawing.Point(48, 136);
-            this.btCitasMes.Margin = new System.Windows.Forms.Padding(2);
-            this.btCitasMes.Name = "btCitasMes";
-            this.btCitasMes.Size = new System.Drawing.Size(165, 62);
-            this.btCitasMes.TabIndex = 2;
-            this.btCitasMes.Text = "Citas del mes";
-            this.btCitasMes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btCitasMes.UseVisualStyleBackColor = false;
-            this.btCitasMes.Click += new System.EventHandler(this.btCitasMes_Click);
-            // 
-            // btMedicosActivos
-            // 
-            this.btMedicosActivos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btMedicosActivos.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btMedicosActivos.Image = global::SaludSoft.Properties.Resources.equipo_medico;
-            this.btMedicosActivos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btMedicosActivos.Location = new System.Drawing.Point(414, 42);
-            this.btMedicosActivos.Margin = new System.Windows.Forms.Padding(2);
-            this.btMedicosActivos.Name = "btMedicosActivos";
-            this.btMedicosActivos.Size = new System.Drawing.Size(188, 60);
-            this.btMedicosActivos.TabIndex = 1;
-            this.btMedicosActivos.Text = "Médicos Activos ";
-            this.btMedicosActivos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btMedicosActivos.UseVisualStyleBackColor = false;
-            this.btMedicosActivos.Click += new System.EventHandler(this.btMedicosActivos_Click);
-            // 
-            // btTotalUsuario
-            // 
-            this.btTotalUsuario.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btTotalUsuario.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btTotalUsuario.Image = global::SaludSoft.Properties.Resources.usuario;
-            this.btTotalUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btTotalUsuario.Location = new System.Drawing.Point(48, 42);
-            this.btTotalUsuario.Margin = new System.Windows.Forms.Padding(2);
-            this.btTotalUsuario.Name = "btTotalUsuario";
-            this.btTotalUsuario.Size = new System.Drawing.Size(165, 60);
-            this.btTotalUsuario.TabIndex = 0;
-            this.btTotalUsuario.Text = "Total  Usuarios ";
-            this.btTotalUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btTotalUsuario.UseVisualStyleBackColor = false;
-            this.btTotalUsuario.Click += new System.EventHandler(this.btTotalUsuario_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
-            this.pictureBox1.Location = new System.Drawing.Point(2, -1);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(144, 49);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            // 
             // Admin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(805, 438);
+            this.ClientSize = new System.Drawing.Size(874, 438);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.pictureBox1);

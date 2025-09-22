@@ -43,13 +43,27 @@
             this.colDni = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTel = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCorreo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btBuscar = new System.Windows.Forms.Button();
             this.lDNI = new System.Windows.Forms.Label();
+            this.btBuscar = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pnlCitas = new System.Windows.Forms.Panel();
+            this.dgCitas = new System.Windows.Forms.DataGridView();
+            this.colHora = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPaciente = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMotivo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colConsultorio = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lFecha = new System.Windows.Forms.Label();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.btCerrar = new System.Windows.Forms.Button();
+            this.lCitas = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgPacientes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.pnlCitas.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgCitas)).BeginInit();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -117,6 +131,7 @@
             this.btCitas.Text = "Citas  ";
             this.btCitas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btCitas.UseVisualStyleBackColor = true;
+            this.btCitas.Click += new System.EventHandler(this.btCitas_Click);
             // 
             // panel2
             // 
@@ -204,25 +219,6 @@
             this.colCorreo.Name = "colCorreo";
             this.colCorreo.ReadOnly = true;
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
-            this.pictureBox1.Location = new System.Drawing.Point(1, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(183, 74);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            // 
-            // btBuscar
-            // 
-            this.btBuscar.Image = global::SaludSoft.Properties.Resources.busqueda;
-            this.btBuscar.Location = new System.Drawing.Point(593, 81);
-            this.btBuscar.Name = "btBuscar";
-            this.btBuscar.Size = new System.Drawing.Size(75, 33);
-            this.btBuscar.TabIndex = 5;
-            this.btBuscar.UseVisualStyleBackColor = true;
-            // 
             // lDNI
             // 
             this.lDNI.AutoSize = true;
@@ -233,11 +229,141 @@
             this.lDNI.TabIndex = 6;
             this.lDNI.Text = "DNI: ";
             // 
+            // btBuscar
+            // 
+            this.btBuscar.Image = global::SaludSoft.Properties.Resources.busqueda;
+            this.btBuscar.Location = new System.Drawing.Point(580, 87);
+            this.btBuscar.Name = "btBuscar";
+            this.btBuscar.Size = new System.Drawing.Size(75, 33);
+            this.btBuscar.TabIndex = 5;
+            this.btBuscar.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
+            this.pictureBox1.Location = new System.Drawing.Point(1, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(183, 74);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pnlCitas
+            // 
+            this.pnlCitas.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.pnlCitas.Controls.Add(this.dgCitas);
+            this.pnlCitas.Controls.Add(this.lFecha);
+            this.pnlCitas.Controls.Add(this.dateTimePicker1);
+            this.pnlCitas.Controls.Add(this.panel3);
+            this.pnlCitas.Location = new System.Drawing.Point(190, 213);
+            this.pnlCitas.Name = "pnlCitas";
+            this.pnlCitas.Size = new System.Drawing.Size(402, 260);
+            this.pnlCitas.TabIndex = 7;
+            this.pnlCitas.Visible = false;
+            // 
+            // dgCitas
+            // 
+            this.dgCitas.AllowUserToAddRows = false;
+            this.dgCitas.AllowUserToDeleteRows = false;
+            this.dgCitas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgCitas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgCitas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colHora,
+            this.colPaciente,
+            this.colMotivo,
+            this.colConsultorio});
+            this.dgCitas.Location = new System.Drawing.Point(16, 107);
+            this.dgCitas.Name = "dgCitas";
+            this.dgCitas.ReadOnly = true;
+            this.dgCitas.RowHeadersVisible = false;
+            this.dgCitas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgCitas.Size = new System.Drawing.Size(370, 121);
+            this.dgCitas.TabIndex = 4;
+            // 
+            // colHora
+            // 
+            this.colHora.HeaderText = "Hora";
+            this.colHora.Name = "colHora";
+            this.colHora.ReadOnly = true;
+            // 
+            // colPaciente
+            // 
+            this.colPaciente.HeaderText = "Paciente";
+            this.colPaciente.Name = "colPaciente";
+            this.colPaciente.ReadOnly = true;
+            // 
+            // colMotivo
+            // 
+            this.colMotivo.HeaderText = "Motivo";
+            this.colMotivo.Name = "colMotivo";
+            this.colMotivo.ReadOnly = true;
+            // 
+            // colConsultorio
+            // 
+            this.colConsultorio.HeaderText = "Consultorio";
+            this.colConsultorio.Name = "colConsultorio";
+            this.colConsultorio.ReadOnly = true;
+            // 
+            // lFecha
+            // 
+            this.lFecha.AutoSize = true;
+            this.lFecha.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lFecha.Location = new System.Drawing.Point(6, 74);
+            this.lFecha.Name = "lFecha";
+            this.lFecha.Size = new System.Drawing.Size(58, 19);
+            this.lFecha.TabIndex = 3;
+            this.lFecha.Text = "Fecha: ";
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.CalendarFont = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePicker1.Location = new System.Drawing.Point(80, 67);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.ShowUpDown = true;
+            this.dateTimePicker1.Size = new System.Drawing.Size(115, 26);
+            this.dateTimePicker1.TabIndex = 2;
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.panel3.Controls.Add(this.btCerrar);
+            this.panel3.Controls.Add(this.lCitas);
+            this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(402, 62);
+            this.panel3.TabIndex = 1;
+            // 
+            // btCerrar
+            // 
+            this.btCerrar.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btCerrar.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btCerrar.Image = global::SaludSoft.Properties.Resources.circulo_marca_x;
+            this.btCerrar.Location = new System.Drawing.Point(366, 3);
+            this.btCerrar.Name = "btCerrar";
+            this.btCerrar.Size = new System.Drawing.Size(33, 30);
+            this.btCerrar.TabIndex = 2;
+            this.btCerrar.UseVisualStyleBackColor = false;
+            // 
+            // lCitas
+            // 
+            this.lCitas.AutoSize = true;
+            this.lCitas.BackColor = System.Drawing.Color.White;
+            this.lCitas.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lCitas.Location = new System.Drawing.Point(135, 20);
+            this.lCitas.Name = "lCitas";
+            this.lCitas.Size = new System.Drawing.Size(107, 23);
+            this.lCitas.TabIndex = 0;
+            this.lCitas.Text = "Citas del día";
+            // 
             // Medico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(1009, 511);
+            this.Controls.Add(this.pnlCitas);
             this.Controls.Add(this.lDNI);
             this.Controls.Add(this.btBuscar);
             this.Controls.Add(this.dgPacientes);
@@ -252,6 +378,11 @@
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgPacientes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.pnlCitas.ResumeLayout(false);
+            this.pnlCitas.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgCitas)).EndInit();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -277,5 +408,16 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colCorreo;
         private System.Windows.Forms.Button btBuscar;
         private System.Windows.Forms.Label lDNI;
+        private System.Windows.Forms.Panel pnlCitas;
+        private System.Windows.Forms.Label lCitas;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Button btCerrar;
+        private System.Windows.Forms.DataGridView dgCitas;
+        private System.Windows.Forms.Label lFecha;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colHora;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPaciente;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMotivo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colConsultorio;
     }
 }
