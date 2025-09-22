@@ -1,4 +1,4 @@
-﻿namespace SaludSoft.Resources.Models
+﻿namespace SaludSoft
 {
     partial class FormGestionUsuario
     {
@@ -45,9 +45,7 @@
             this.colEspecialidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colEditar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.colEliminar = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.cbTipo = new System.Windows.Forms.ComboBox();
             this.btAgregarUsuario = new System.Windows.Forms.Button();
-            this.cbEstado = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgUsuario)).BeginInit();
             this.SuspendLayout();
@@ -70,7 +68,6 @@
             this.button1.Size = new System.Drawing.Size(75, 44);
             this.button1.TabIndex = 1;
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
             // 
@@ -120,7 +117,6 @@
             this.dgUsuario.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgUsuario.Size = new System.Drawing.Size(984, 369);
             this.dgUsuario.TabIndex = 1;
-            this.dgUsuario.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgUsuario_CellContentClick);
             // 
             // colNombre
             // 
@@ -200,21 +196,6 @@
             this.colEliminar.Text = "Eliminar";
             this.colEliminar.UseColumnTextForButtonValue = true;
             // 
-            // cbTipo
-            // 
-            this.cbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTipo.FormattingEnabled = true;
-            this.cbTipo.Items.AddRange(new object[] {
-            "Todos",
-            "Paciente",
-            "Médico",
-            "Recepcionista",
-            "Administrador"});
-            this.cbTipo.Location = new System.Drawing.Point(377, 104);
-            this.cbTipo.Name = "cbTipo";
-            this.cbTipo.Size = new System.Drawing.Size(231, 21);
-            this.cbTipo.TabIndex = 2;
-            // 
             // btAgregarUsuario
             // 
             this.btAgregarUsuario.Image = global::SaludSoft.Properties.Resources.agregar_usuario;
@@ -225,31 +206,17 @@
             this.btAgregarUsuario.UseVisualStyleBackColor = true;
             this.btAgregarUsuario.Click += new System.EventHandler(this.btAgregarUsuario_Click);
             // 
-            // cbEstado
-            // 
-            this.cbEstado.FormattingEnabled = true;
-            this.cbEstado.Items.AddRange(new object[] {
-            "Activo",
-            "Inactivo"});
-            this.cbEstado.Location = new System.Drawing.Point(633, 104);
-            this.cbEstado.Name = "cbEstado";
-            this.cbEstado.Size = new System.Drawing.Size(233, 21);
-            this.cbEstado.TabIndex = 5;
-            // 
             // FormGestionUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(996, 528);
-            this.Controls.Add(this.cbEstado);
             this.Controls.Add(this.btAgregarUsuario);
-            this.Controls.Add(this.cbTipo);
             this.Controls.Add(this.dgUsuario);
             this.Controls.Add(this.panel1);
             this.Name = "FormGestionUsuario";
             this.Text = "FormGestionUsuario";
-            this.Load += new System.EventHandler(this.FormGestionUsuario_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgUsuario)).EndInit();
@@ -263,9 +230,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dgUsuario;
-        private System.Windows.Forms.ComboBox cbTipo;
         private System.Windows.Forms.Button btAgregarUsuario;
-        private System.Windows.Forms.ComboBox cbEstado;
         private System.Windows.Forms.DataGridViewTextBoxColumn colNombre;
         private System.Windows.Forms.DataGridViewTextBoxColumn colApellido;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDNI;

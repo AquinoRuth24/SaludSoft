@@ -1,509 +1,207 @@
-﻿using System;
+﻿using SaludSoft.Resources;
+using SaludSoft.Resources.Models;
+using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Windows.Forms;
 
-namespace SaludSoft.Resources.Models
+namespace SaludSoft
 {
     public partial class FormGestionUsuario : Form
     {
-        // Índices de columnas (resueltos una vez)
-        private int _colEstado = -1;
-        private int _colRol = -1;
-        private int _colEspecialidad = -1;
-
-        // Índices de las columnas de acciones
-        private int _colEditar = -1;
-        private int _colEliminar = -1;
-
         public FormGestionUsuario()
         {
-            InitializeComponent();
-            CargarUsuarios();
+            if (!DesignMode)
+            {
+                InitializeComponent();
+                CargarUsuarios();
+                dgUsuario.CellContentClick += dgUsuario_CellContentClick;
+            }
         }
 
-        private void CargarUsuarios()
+        // Cargar usuarios
+        private void CargarUsuarios(string filtro = "")
         {
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 conexion.Open();
 
-                string queryUsuarios = @"
-                   SELECT id_usuario,
-                   nombre,
-                   apellido,
-                   email,
-                   telefono,
-                   id_rol
-                   FROM Usuario";
+                string query = @"
+                 SELECT u.id_usuario, 
+                  u.nombre, 
+                  u.apellido, 
+                  u.email, 
+                  u.telefono, 
+                  r.descripcion AS rol,
+                  e.id_estado,
+                  e.descripcion AS estado,
+                  p.matricula, 
+                  p.id_especialidad
+                  FROM Usuario u
+                  INNER JOIN Rol r ON u.id_rol = r.id_rol
+                 INNER JOIN EstadoPaciente e ON u.id_estado = e.id_estado
+                 LEFT JOIN Profesional p ON p.id_usuario = u.id_usuario
+                 WHERE u.nombre LIKE @filtro 
+                 OR u.apellido LIKE @filtro 
+                 OR u.email LIKE @filtro";
 
-                SqlDataAdapter daUsuarios = new SqlDataAdapter(queryUsuarios, conexion);
-                DataTable dtUsuarios = new DataTable();
-                daUsuarios.Fill(dtUsuarios);
+                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                da.SelectCommand.Parameters.AddWithValue("@filtro", "%" + filtro + "%");
 
-                // Cargar en DataGridView de Usuarios
-                dgUsuario.DataSource = dtUsuarios;
-            }
-        }
+                DataTable dt = new DataTable();
+                da.Fill(dt);
 
-        private void FormGestionUsuario_Load(object sender, EventArgs e)
-        {
-            // --- Ajustes visuales de la grilla (opcionales) ---
-            if (dgUsuario != null)
-            {
+                dgUsuario.DataSource = null; // limpiar primero
+                dgUsuario.Columns.Clear();
+                dgUsuario.DataSource = dt;
+
                 dgUsuario.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                dgUsuario.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-                dgUsuario.RowHeadersVisible = false;
                 dgUsuario.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                dgUsuario.MultiSelect = false;
-                dgUsuario.ReadOnly = true; // mantenemos lectura en grilla; edición se hace en diálogo
-            }
+                dgUsuario.AllowUserToAddRows = false;
 
-            // --- Combo de Rol ---
-            if (cbTipo != null && cbTipo.Items.Count == 0)
-            {
-                cbTipo.Items.AddRange(new object[] { "Todos", "Paciente", "Médico", "Recepcionista", "Administrador" });
-                cbTipo.DropDownStyle = ComboBoxStyle.DropDownList;
-                cbTipo.SelectedIndex = 0;
-            }
+                // Botón Editar
+                DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
+                btnEditar.HeaderText = "Editar";
+                btnEditar.Name = "Editar";
+                btnEditar.Text = "Modificar";
+                btnEditar.UseColumnTextForButtonValue = true;
+                dgUsuario.Columns.Add(btnEditar);
 
-            // --- Combo de Estado ---
-            if (cbEstado != null && cbEstado.Items.Count == 0)
-            {
-                cbEstado.Items.AddRange(new object[] { "Todos", "Activo", "Inactivo" });
-                cbEstado.DropDownStyle = ComboBoxStyle.DropDownList;
-                cbEstado.SelectedIndex = 0;
-            }
+                // Botón Eliminar (solo para usuarios activos)
+                DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
+                btnEliminar.HeaderText = "Eliminar";
+                btnEliminar.Name = "Eliminar";
+                btnEliminar.Text = "Eliminar";
+                btnEliminar.UseColumnTextForButtonValue = true;
+                dgUsuario.Columns.Add(btnEliminar);
 
-            // Disparar filtros al cambiar combos
-            if (cbTipo != null) cbTipo.SelectedIndexChanged += (s, ev) => AplicarFiltros();
-            if (cbEstado != null) cbEstado.SelectedIndexChanged += (s, ev) => AplicarFiltros();
+                // Botón Restaurar (solo para usuarios inactivos)
+                DataGridViewButtonColumn btnRestaurar = new DataGridViewButtonColumn();
+                btnRestaurar.HeaderText = "Restaurar";
+                btnRestaurar.Name = "Restaurar";
+                btnRestaurar.Text = "Restaurar";
+                btnRestaurar.UseColumnTextForButtonValue = true;
+                dgUsuario.Columns.Add(btnRestaurar);
 
-            // Resolver índices de columnas existentes
-            _colEstado = FindColumnIndex(new[] { "Estado", "estado" });
-            _colRol = FindColumnIndex(new[] { "Rol", "rol", "Tipo", "tipo_usuario", "Tipo Usuario" });
-            _colEspecialidad = FindColumnIndex(new[] { "Especialidad", "especialidad" });
-
-            // Agregar columnas de acciones (Editar/Eliminar) al lado de "Especialidad"
-            AgregarColumnasAcciones();
-
-            // Manejar clicks de botones en la grilla
-            dgUsuario.CellContentClick -= dgUsuario_CellContentClick;
-            dgUsuario.CellContentClick += dgUsuario_CellContentClick;
-
-            // Filtro inicial
-            AplicarFiltros();
-        }
-
-        // === Agregar Usuario: abrir FormUsuario modal, sin cerrar ni ocultar este form ===
-        private void btAgregarUsuario_Click(object sender, EventArgs e)
-        {
-            // Si ya hay un FormUsuario abierto, traerlo al frente
-            var existente = Application.OpenForms.Cast<Form>()
-                                 .FirstOrDefault(f => f.GetType().Name == "FormUsuario");
-            if (existente != null)
-            {
-                try
-                {
-                    existente.WindowState = FormWindowState.Normal;
-                    existente.BringToFront();
-                    existente.Activate();
-                }
-                catch { /* ignorar */ }
-                return;
-            }
-
-            // Crear por reflexión (evita error de referencia directa)
-            var tipo = typeof(FormGestionUsuario).Assembly.GetTypes()
-                        .FirstOrDefault(t => typeof(Form).IsAssignableFrom(t) && t.Name == "FormUsuario");
-            if (tipo == null)
-            {
-                MessageBox.Show("No se encontró el formulario 'FormUsuario'. Verificá el nombre/clase.",
-                                "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            using (var frm = (Form)Activator.CreateInstance(tipo))
-            {
-                frm.StartPosition = FormStartPosition.CenterParent;
-                frm.ShowDialog(this); // modal
-            }
-
-            // Si guardaste cambios en FormUsuario, acá podés recargar y re-aplicar filtros
-            // RecargarUsuariosDesdeBD();
-            // AplicarFiltros();
-        }
-
-        // === Volver: ocultar este form, abrir/activar Admin; cuando Admin se cierre, cerrar este ===
-        private void button1_Click(object sender, EventArgs e)
-        {
-            var admin = Application.OpenForms.Cast<Form>()
-                          .FirstOrDefault(f => f.GetType().Name == "Admin");
-
-            if (admin == null)
-            {
-                var tipoAdmin = typeof(FormGestionUsuario).Assembly.GetTypes()
-                                  .FirstOrDefault(t => typeof(Form).IsAssignableFrom(t) && t.Name == "Admin");
-                if (tipoAdmin == null)
-                {
-                    MessageBox.Show("No se encontró el formulario 'Admin'. Verificá el nombre/clase.",
-                                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
-
-                admin = (Form)Activator.CreateInstance(tipoAdmin);
-                admin.StartPosition = FormStartPosition.CenterScreen;
-                admin.FormClosed += (s2, ev2) =>
-                {
-                    try { this.Close(); } catch { /* ignorar */ }
-                };
-
-                this.Hide();
-                admin.Show();
-            }
-            else
-            {
-                admin.WindowState = FormWindowState.Normal;
-                admin.BringToFront();
-                admin.Activate();
-
-                admin.FormClosed -= Admin_FormClosed_CerrarEste;
-                admin.FormClosed += Admin_FormClosed_CerrarEste;
-
-                this.Hide();
+                // Ocultar columnas sensibles
+                if (dgUsuario.Columns.Contains("matricula")) dgUsuario.Columns["matricula"].Visible = false;
+                if (dgUsuario.Columns.Contains("idEspecialidad")) dgUsuario.Columns["idEspecialidad"].Visible = false;
+                if (dgUsuario.Columns.Contains("id_estado")) dgUsuario.Columns["id_estado"].Visible = false;
             }
         }
 
-        private void Admin_FormClosed_CerrarEste(object sender, FormClosedEventArgs e)
-        {
-            try { this.Close(); } catch { /* ignorar */ }
-        }
-
-        // ===================== CLICK en botones de acciones =====================
+        // Eventos en DataGridView
         private void dgUsuario_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            if (e.RowIndex < 0) return; // Ignorar encabezado
+            if (dgUsuario.Rows[e.RowIndex].Cells["id_usuario"].Value == null) return;
 
-            if (e.ColumnIndex == _colEditar)
+            int idUsuario = Convert.ToInt32(dgUsuario.Rows[e.RowIndex].Cells["id_usuario"].Value);
+            string columnName = dgUsuario.Columns[e.ColumnIndex].Name;
+
+            // ===== Botón Editar =====
+            if (columnName == "Editar")
             {
-                EditarFilaConDialogo(e.RowIndex);
-            }
-            else if (e.ColumnIndex == _colEliminar)
-            {
-                EliminarFilaConConfirmacion();
-            }
-        }
+                string nombre = dgUsuario.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
+                string apellido = dgUsuario.Rows[e.RowIndex].Cells["apellido"].Value.ToString();
+                string email = dgUsuario.Rows[e.RowIndex].Cells["email"].Value.ToString();
+                string telefono = dgUsuario.Rows[e.RowIndex].Cells["telefono"].Value.ToString();
+                string rol = dgUsuario.Rows[e.RowIndex].Cells["rol"].Value.ToString();
+                int estado = Convert.ToInt32(dgUsuario.Rows[e.RowIndex].Cells["id_estado"].Value);
 
-        // ===================== Filtros =====================
-        private void AplicarFiltros()
-        {
-            if (dgUsuario == null) return;
-
-            if (_colEstado == -1) _colEstado = FindColumnIndex(new[] { "Estado", "estado" });
-            if (_colRol == -1) _colRol = FindColumnIndex(new[] { "Rol", "rol", "Tipo", "tipo_usuario", "Tipo Usuario" });
-            if (_colEspecialidad == -1) _colEspecialidad = FindColumnIndex(new[] { "Especialidad", "especialidad" });
-
-            string filtroRol = (cbTipo?.SelectedItem?.ToString() ?? "Todos").Trim().ToLowerInvariant();
-            string filtroEstado = (cbEstado?.SelectedItem?.ToString() ?? "Todos").Trim().ToLowerInvariant();
-
-            bool filtraRol = _colRol != -1 && filtroRol != "todos";
-            bool filtraEstado = _colEstado != -1 && filtroEstado != "todos";
-
-            foreach (DataGridViewRow row in dgUsuario.Rows)
-            {
-                if (row.IsNewRow) continue;
-
-                bool okRol = true;
-                if (filtraRol)
+                if (rol == "Medico")
                 {
-                    string vRol = (row.Cells[_colRol].Value?.ToString() ?? "").Trim().ToLowerInvariant();
-                    okRol = vRol == filtroRol;
-                }
+                    // Manejo seguro de matrícula
+                    string matricula = dgUsuario.Rows[e.RowIndex].Cells["matricula"].Value == DBNull.Value
+                                        ? ""
+                                        : dgUsuario.Rows[e.RowIndex].Cells["matricula"].Value.ToString();
 
-                bool okEstado = true;
-                if (filtraEstado)
-                {
-                    string vEstado = (row.Cells[_colEstado].Value?.ToString() ?? "").Trim().ToLowerInvariant();
-                    okEstado = vEstado == filtroEstado;
-                }
-
-                row.Visible = okRol && okEstado;
-            }
-        }
-
-        // ===================== Helpers de columnas y acciones =====================
-        private int FindColumnIndex(string[] posiblesNombres)
-        {
-            if (dgUsuario == null || dgUsuario.Columns.Count == 0) return -1;
-
-            foreach (DataGridViewColumn col in dgUsuario.Columns)
-            {
-                string name = (col.Name ?? "").Trim();
-                string header = (col.HeaderText ?? "").Trim();
-                string prop = (col.DataPropertyName ?? "").Trim();
-
-                foreach (var esperado in posiblesNombres)
-                {
-                    if (string.Equals(header, esperado, StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(name, esperado, StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(prop, esperado, StringComparison.OrdinalIgnoreCase))
-                        return col.Index;
-                }
-            }
-            return -1;
-        }
-
-        private void AgregarColumnasAcciones()
-        {
-            if (dgUsuario == null) return;
-
-            // Si ya las agregamos antes, no repetir
-            if (_colEditar != -1 || _colEliminar != -1)
-                return;
-
-            // Ubicar después de "Especialidad"; si no existe, al final
-            int insertAt = (_colEspecialidad != -1) ? _colEspecialidad + 1 : dgUsuario.Columns.Count;
-
-            // Columna Editar
-            var colEditar = new DataGridViewButtonColumn
-            {
-                HeaderText = "Acciones",
-                Name = "colEditar",
-                Text = "Editar",
-                UseColumnTextForButtonValue = true,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                FlatStyle = FlatStyle.Popup
-            };
-
-            // Insertar "Editar"
-            dgUsuario.Columns.Insert(insertAt, colEditar);
-            _colEditar = insertAt;
-
-            // Columna Eliminar (otra columna botón)
-            var colEliminar = new DataGridViewButtonColumn
-            {
-                HeaderText = "", // vacío porque ya dice "Acciones" en la anterior
-                Name = "colEliminar",
-                Text = "Eliminar",
-                UseColumnTextForButtonValue = true,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
-                FlatStyle = FlatStyle.Popup
-            };
-
-            dgUsuario.Columns.Insert(insertAt + 1, colEliminar);
-            _colEliminar = insertAt + 1;
-
-            // Ajustar pesos si usás Fill
-            try
-            {
-                dgUsuario.Columns[_colEditar].FillWeight = 60;
-                dgUsuario.Columns[_colEliminar].FillWeight = 70;
-            }
-            catch { /* ignorar si no aplica */ }
-        }
-
-        private void EditarFilaConDialogo(int rowIndex)
-        {
-            if (rowIndex < 0 || rowIndex >= dgUsuario.Rows.Count) return;
-            var row = dgUsuario.Rows[rowIndex];
-            if (row.IsNewRow) return;
-
-            // Armar nombre visible
-            var nombre = SafeCell(row, new[] { "Nombre", "nombre" });
-            var apellido = SafeCell(row, new[] { "Apellido", "apellido" });
-            string etiqueta = (apellido + " " + nombre).Trim();
-            if (string.IsNullOrEmpty(etiqueta))
-                etiqueta = SafeCell(row, new[] { "Email", "email" });
-
-            // Confirmación previa
-            var rta = MessageBox.Show(
-                $"¿Desea editar los datos de:\n\n{etiqueta}?",
-                "Confirmar edición", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (rta != DialogResult.Yes) return;
-
-            // Si existe FormUsuario, abrimos esa ventana de edición (modal)
-            var tipo = typeof(FormGestionUsuario).Assembly.GetTypes()
-                        .FirstOrDefault(t => typeof(Form).IsAssignableFrom(t) && t.Name == "FormUsuario");
-
-            if (tipo != null)
-            {
-                using (var frm = (Form)Activator.CreateInstance(tipo))
-                {
-                    frm.StartPosition = FormStartPosition.CenterParent;
-
-                    // Si tu FormUsuario soporta modo edición por propiedades públicas, podrías setearlas acá.
-                    // (p.ej., frm.Tag = objetoUsuario; o propiedades específicas si existen)
-
-                    frm.ShowDialog(this);
-                }
-
-                // Post-edición: recargar o actualizar fila desde BD si corresponde
-                // RecargarUsuariosDesdeBD();
-                // AplicarFiltros();
-            }
-            else
-            {
-                // Diálogo simple de ejemplo para tocar algunos campos directamente (fallback)
-                using (var dlg = new EditInlineDialog(
-                    titulo: "Editar usuario",
-                    especialidad: SafeCell(row, new[] { "Especialidad", "especialidad" }),
-                    telefono: SafeCell(row, new[] { "Teléfono", "telefono", "Tel", "tel" }),
-                    estado: SafeCell(row, new[] { "Estado", "estado" })
-                ))
-                {
-                    if (dlg.ShowDialog(this) == DialogResult.OK)
+                    // Manejo seguro de especialidad
+                    int idEspecialidad = 0;
+                    if (dgUsuario.Rows[e.RowIndex].Cells["id_especialidad"].Value != DBNull.Value &&
+                        dgUsuario.Rows[e.RowIndex].Cells["id_especialidad"].Value != null)
                     {
-                        // Actualizar celdas visibles (persistencia en BD: hacelo en tu capa de datos)
-                        SetCell(row, new[] { "Especialidad", "especialidad" }, dlg.Especialidad);
-                        SetCell(row, new[] { "Teléfono", "telefono", "Tel", "tel" }, dlg.Telefono);
-                        SetCell(row, new[] { "Estado", "estado" }, dlg.Estado?.Trim());
+                        int.TryParse(dgUsuario.Rows[e.RowIndex].Cells["id_especialidad"].Value.ToString(), out idEspecialidad);
                     }
+
+                    FormModificarMedico formMedico = new FormModificarMedico(
+                        idUsuario, nombre, apellido, email, telefono, matricula, idEspecialidad, estado
+                    );
+
+                    if (formMedico.ShowDialog() == DialogResult.OK)
+                        CargarUsuarios();
+                }
+                else
+                {
+                    FormModificarUsuario formUsuario = new FormModificarUsuario(
+                        idUsuario, nombre, apellido, email, telefono, rol
+                    );
+
+                    if (formUsuario.ShowDialog() == DialogResult.OK)
+                        CargarUsuarios();
                 }
             }
-        }
 
-        private void EliminarFilaConConfirmacion()
-        {
-            if (dgUsuario.CurrentRow == null) return;
-
-            int idUsuario = Convert.ToInt32(dgUsuario.CurrentRow.Cells["id_usuario"].Value);
-            string nombre = dgUsuario.CurrentRow.Cells["nombre"].Value.ToString();
-            string apellido = dgUsuario.CurrentRow.Cells["apellido"].Value.ToString();
-            string rol = dgUsuario.CurrentRow.Cells["Rol"].Value.ToString();
-
-            DialogResult result = MessageBox.Show(
-                $"¿Está seguro que desea dar de baja al usuario {nombre} {apellido} ({rol})?",
-                "Confirmar eliminación",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
+            // ===== Botón Eliminar =====
+            if (columnName == "Eliminar")
             {
-                using (SqlConnection conexion = Conexion.GetConnection())
+                DialogResult result = MessageBox.Show("¿Está seguro de eliminar este usuario?",
+                                                      "Confirmación",
+                                                      MessageBoxButtons.YesNo,
+                                                      MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
                 {
-                    conexion.Open();
-                    string query = "";
-
-                    if (rol == "Paciente")
-                        query = "UPDATE Paciente SET estado = 'Inactivo' WHERE id_usuario = @id";
-                    else if (rol == "Profesional")
-                        query = "UPDATE Profesional SET estado = 'Inactivo' WHERE id_usuario = @id";
-                    else if (rol == "Recepcionista")
-                        query = "UPDATE Recepcionista SET estado = 'Inactivo' WHERE id_usuario = @id";
-
-                    if (!string.IsNullOrEmpty(query))
+                    using (SqlConnection conexion = Conexion.GetConnection())
                     {
-                        using (SqlCommand cmd = new SqlCommand(query, conexion))
-                        {
-                            cmd.Parameters.AddWithValue("@id", idUsuario);
-                            cmd.ExecuteNonQuery();
-                        }
+                        conexion.Open();
+                        string query = "UPDATE Usuario SET id_estado = 2 WHERE id_usuario = @id";
+                        SqlCommand cmd = new SqlCommand(query, conexion);
+                        cmd.Parameters.AddWithValue("@id", idUsuario);
+                        cmd.ExecuteNonQuery();
                     }
+
+                    MessageBox.Show("Usuario eliminado correctamente.",
+                                    "Éxito",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+
+                    CargarUsuarios();
                 }
-
-                MessageBox.Show($"{nombre} {apellido} ha sido dado de baja (Inactivo).");
-                CargarUsuarios(); // refresca la grilla
             }
-        }
 
-
-        private string SafeCell(DataGridViewRow row, string[] posiblesNombres)
-        {
-            // Busca una celda por header/name/dataproperty y devuelve su texto
-            foreach (DataGridViewColumn col in dgUsuario.Columns)
+            // ===== Botón Restaurar =====
+            if (columnName == "Restaurar")
             {
-                string name = (col.Name ?? "");
-                string header = (col.HeaderText ?? "");
-                string prop = (col.DataPropertyName ?? "");
-
-                if (posiblesNombres.Any(n =>
-                        string.Equals(n, name, StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(n, header, StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(n, prop, StringComparison.OrdinalIgnoreCase)))
+                DialogResult result = MessageBox.Show("¿Desea restaurar este usuario?",
+                                                      "Confirmación",
+                                                      MessageBoxButtons.YesNo,
+                                                      MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
                 {
-                    return row.Cells[col.Index].Value?.ToString() ?? "";
-                }
-            }
-            return "";
-        }
+                    using (SqlConnection conexion = Conexion.GetConnection())
+                    {
+                        conexion.Open();
+                        string query = "UPDATE Usuario SET id_estado = 1 WHERE id_usuario = @id";
+                        SqlCommand cmd = new SqlCommand(query, conexion);
+                        cmd.Parameters.AddWithValue("@id", idUsuario);
+                        cmd.ExecuteNonQuery();
+                    }
 
-        private void SetCell(DataGridViewRow row, string[] posiblesNombres, string value)
-        {
-            foreach (DataGridViewColumn col in dgUsuario.Columns)
-            {
-                string name = (col.Name ?? "");
-                string header = (col.HeaderText ?? "");
-                string prop = (col.DataPropertyName ?? "");
+                    MessageBox.Show("Usuario restaurado correctamente.",
+                                    "Éxito",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
 
-                if (posiblesNombres.Any(n =>
-                        string.Equals(n, name, StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(n, header, StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(n, prop, StringComparison.OrdinalIgnoreCase)))
-                {
-                    row.Cells[col.Index].Value = value ?? "";
-                    return;
+                    CargarUsuarios();
                 }
             }
         }
 
 
-    }
-
-    // ===== Diálogo simple inline para edición mínima (fallback si no está FormUsuario) =====
-    internal class EditInlineDialog : Form
-    {
-        private TextBox txtEspecialidad;
-        private TextBox txtTelefono;
-        private ComboBox cbEstado;
-        private Button btnOK;
-        private Button btnCancel;
-
-        public string Especialidad => txtEspecialidad.Text;
-        public string Telefono => txtTelefono.Text;
-        public string Estado => cbEstado.SelectedItem?.ToString();
-
-        public EditInlineDialog(string titulo, string especialidad, string telefono, string estado)
+        private void btAgregarUsuario_Click(object sender, EventArgs e)
         {
-            this.Text = titulo;
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.StartPosition = FormStartPosition.CenterParent;
-            this.ClientSize = new System.Drawing.Size(360, 220);
-
-            var lblEsp = new Label { Text = "Especialidad:", Left = 15, Top = 20, Width = 100 };
-            txtEspecialidad = new TextBox { Left = 120, Top = 18, Width = 210, Text = especialidad ?? "" };
-
-            var lblTel = new Label { Text = "Teléfono:", Left = 15, Top = 60, Width = 100 };
-            txtTelefono = new TextBox { Left = 120, Top = 58, Width = 210, Text = telefono ?? "" };
-
-            var lblEst = new Label { Text = "Estado:", Left = 15, Top = 100, Width = 100 };
-            cbEstado = new ComboBox { Left = 120, Top = 98, Width = 210, DropDownStyle = ComboBoxStyle.DropDownList };
-            cbEstado.Items.AddRange(new object[] { "Activo", "Inactivo" });
-            if (!string.IsNullOrWhiteSpace(estado))
-            {
-                var normalized = estado.Trim();
-                int idx = cbEstado.Items.Cast<object>()
-                              .ToList()
-                              .FindIndex(x => string.Equals(x.ToString(), normalized, StringComparison.OrdinalIgnoreCase));
-                cbEstado.SelectedIndex = (idx >= 0) ? idx : 0;
-            }
-            else cbEstado.SelectedIndex = 0;
-
-            btnOK = new Button { Text = "Guardar", Left = 120, Width = 100, Top = 150, DialogResult = DialogResult.OK };
-            btnCancel = new Button { Text = "Cancelar", Left = 230, Width = 100, Top = 150, DialogResult = DialogResult.Cancel };
-
-            btnOK.Click += (s, e) =>
-            {
-                // Confirmación previa de guardado
-                var r = MessageBox.Show("¿Confirmar cambios?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (r == DialogResult.Yes) this.DialogResult = DialogResult.OK; else this.DialogResult = DialogResult.None;
-            };
-
-            this.Controls.AddRange(new Control[] { lblEsp, txtEspecialidad, lblTel, txtTelefono, lblEst, cbEstado, btnOK, btnCancel });
-            this.AcceptButton = btnOK;
-            this.CancelButton = btnCancel;
+            FormUsuario frm = new FormUsuario();
+            frm.ShowDialog();
         }
     }
 }

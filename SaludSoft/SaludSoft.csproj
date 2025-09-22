@@ -109,6 +109,12 @@
     <Compile Include="FormLogin.Designer.cs">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormModifiarMedico.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormModifiarMedico.Designer.cs">
+      <DependentUpon>FormModifiarMedico.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormModificarAgenda.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,6 +126,12 @@
     </Compile>
     <Compile Include="FormModificarPaciente.Designer.cs">
       <DependentUpon>FormModificarPaciente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormModificarUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormModificarUsuario.Designer.cs">
+      <DependentUpon>FormModificarUsuario.cs</DependentUpon>
     </Compile>
     <Compile Include="FormNuevaDisponibilidad.cs">
       <SubType>Form</SubType>
@@ -188,8 +200,14 @@
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormModifiarMedico.resx">
+      <DependentUpon>FormModifiarMedico.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormModificarPaciente.resx">
       <DependentUpon>FormModificarPaciente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormModificarUsuario.resx">
+      <DependentUpon>FormModificarUsuario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormNuevaDisponibilidad.resx">
       <DependentUpon>FormNuevaDisponibilidad.cs</DependentUpon>
