@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -18,6 +20,31 @@ namespace SaludSoft.Resources.Models
         public FormGestionUsuario()
         {
             InitializeComponent();
+            CargarUsuarios();
+        }
+
+        private void CargarUsuarios()
+        {
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                conexion.Open();
+
+                string queryUsuarios = @"
+                   SELECT id_usuario,
+                   nombre,
+                   apellido,
+                   email,
+                   telefono,
+                   id_rol
+                   FROM Usuario";
+
+                SqlDataAdapter daUsuarios = new SqlDataAdapter(queryUsuarios, conexion);
+                DataTable dtUsuarios = new DataTable();
+                daUsuarios.Fill(dtUsuarios);
+
+                // Cargar en DataGridView de Usuarios
+                dgUsuario.DataSource = dtUsuarios;
+            }
         }
 
         private void FormGestionUsuario_Load(object sender, EventArgs e)
@@ -164,7 +191,7 @@ namespace SaludSoft.Resources.Models
             }
             else if (e.ColumnIndex == _colEliminar)
             {
-                EliminarFilaConConfirmacion(e.RowIndex);
+                EliminarFilaConConfirmacion();
             }
         }
 
@@ -336,55 +363,47 @@ namespace SaludSoft.Resources.Models
             }
         }
 
-        private void EliminarFilaConConfirmacion(int rowIndex)
+        private void EliminarFilaConConfirmacion()
         {
-            if (rowIndex < 0 || rowIndex >= dgUsuario.Rows.Count) return;
-            var row = dgUsuario.Rows[rowIndex];
-            if (row.IsNewRow) return;
+            if (dgUsuario.CurrentRow == null) return;
 
-            // Identificador/nombre para mostrar
-            var nombre = SafeCell(row, new[] { "Nombre", "nombre" });
-            var apellido = SafeCell(row, new[] { "Apellido", "apellido" });
-            string etiqueta = (apellido + " " + nombre).Trim();
-            if (string.IsNullOrEmpty(etiqueta))
-                etiqueta = SafeCell(row, new[] { "Email", "email" });
+            int idUsuario = Convert.ToInt32(dgUsuario.CurrentRow.Cells["id_usuario"].Value);
+            string nombre = dgUsuario.CurrentRow.Cells["nombre"].Value.ToString();
+            string apellido = dgUsuario.CurrentRow.Cells["apellido"].Value.ToString();
+            string rol = dgUsuario.CurrentRow.Cells["Rol"].Value.ToString();
 
-            // Estado actual
-            string estadoActual = SafeCell(row, new[] { "Estado", "estado" }).Trim();
+            DialogResult result = MessageBox.Show(
+                $"¿Está seguro que desea dar de baja al usuario {nombre} {apellido} ({rol})?",
+                "Confirmar eliminación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
-            if (estadoActual.Equals("Inactivo", StringComparison.OrdinalIgnoreCase))
+            if (result == DialogResult.Yes)
             {
-                MessageBox.Show($"El usuario ya está Inactivo:\n\n{etiqueta}",
-                                "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+                using (SqlConnection conexion = Conexion.GetConnection())
+                {
+                    conexion.Open();
+                    string query = "";
 
-            // Confirmación previa
-            var rta = MessageBox.Show(
-                $"¿Confirma dar de BAJA (eliminación lógica) al usuario:\n\n{etiqueta}?\n\n" +
-                "Esto lo pasará a 'Inactivo' sin eliminarlo de la base de datos.",
-                "Confirmar baja lógica", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (rol == "Paciente")
+                        query = "UPDATE Paciente SET estado = 'Inactivo' WHERE id_usuario = @id";
+                    else if (rol == "Profesional")
+                        query = "UPDATE Profesional SET estado = 'Inactivo' WHERE id_usuario = @id";
+                    else if (rol == "Recepcionista")
+                        query = "UPDATE Recepcionista SET estado = 'Inactivo' WHERE id_usuario = @id";
 
-            if (rta != DialogResult.Yes) return;
+                    if (!string.IsNullOrEmpty(query))
+                    {
+                        using (SqlCommand cmd = new SqlCommand(query, conexion))
+                        {
+                            cmd.Parameters.AddWithValue("@id", idUsuario);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
 
-            try
-            {
-                // === ELIMINACIÓN LÓGICA 
-                // 1) Actualizar visualmente la grilla
-                SetCell(row, new[] { "Estado", "estado" }, "Inactivo");
-
-                
-
-                //  Reaplicar filtros por si estás viendo solo Activos:
-                AplicarFiltros();
-
-                MessageBox.Show("Usuario marcado como Inactivo (baja lógica).",
-                                "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("No se pudo aplicar la baja lógica. " + ex.Message,
-                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"{nombre} {apellido} ha sido dado de baja (Inactivo).");
+                CargarUsuarios(); // refresca la grilla
             }
         }
 

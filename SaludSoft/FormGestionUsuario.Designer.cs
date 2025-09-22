@@ -111,14 +111,14 @@
             this.colEspecialidad,
             this.colEditar,
             this.colEliminar});
-            this.dgUsuario.Location = new System.Drawing.Point(0, 174);
+            this.dgUsuario.Location = new System.Drawing.Point(10, 131);
             this.dgUsuario.MultiSelect = false;
             this.dgUsuario.Name = "dgUsuario";
             this.dgUsuario.ReadOnly = true;
             this.dgUsuario.RowHeadersVisible = false;
             this.dgUsuario.RowTemplate.Height = 40;
             this.dgUsuario.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgUsuario.Size = new System.Drawing.Size(984, 305);
+            this.dgUsuario.Size = new System.Drawing.Size(984, 369);
             this.dgUsuario.TabIndex = 1;
             this.dgUsuario.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgUsuario_CellContentClick);
             // 
@@ -210,7 +210,7 @@
             "Médico",
             "Recepcionista",
             "Administrador"});
-            this.cbTipo.Location = new System.Drawing.Point(384, 118);
+            this.cbTipo.Location = new System.Drawing.Point(377, 104);
             this.cbTipo.Name = "cbTipo";
             this.cbTipo.Size = new System.Drawing.Size(231, 21);
             this.cbTipo.TabIndex = 2;
@@ -218,7 +218,7 @@
             // btAgregarUsuario
             // 
             this.btAgregarUsuario.Image = global::SaludSoft.Properties.Resources.agregar_usuario;
-            this.btAgregarUsuario.Location = new System.Drawing.Point(882, 104);
+            this.btAgregarUsuario.Location = new System.Drawing.Point(909, 85);
             this.btAgregarUsuario.Name = "btAgregarUsuario";
             this.btAgregarUsuario.Size = new System.Drawing.Size(75, 46);
             this.btAgregarUsuario.TabIndex = 4;
@@ -231,7 +231,7 @@
             this.cbEstado.Items.AddRange(new object[] {
             "Activo",
             "Inactivo"});
-            this.cbEstado.Location = new System.Drawing.Point(630, 118);
+            this.cbEstado.Location = new System.Drawing.Point(633, 104);
             this.cbEstado.Name = "cbEstado";
             this.cbEstado.Size = new System.Drawing.Size(233, 21);
             this.cbEstado.TabIndex = 5;
