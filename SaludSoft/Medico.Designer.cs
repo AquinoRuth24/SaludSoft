@@ -45,6 +45,7 @@
             this.colCorreo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btBuscar = new System.Windows.Forms.Button();
+            this.lDNI = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgPacientes)).BeginInit();
@@ -139,7 +140,7 @@
             // 
             // tbBuscarPaciente
             // 
-            this.tbBuscarPaciente.Location = new System.Drawing.Point(444, 99);
+            this.tbBuscarPaciente.Location = new System.Drawing.Point(300, 94);
             this.tbBuscarPaciente.Name = "tbBuscarPaciente";
             this.tbBuscarPaciente.Size = new System.Drawing.Size(244, 20);
             this.tbBuscarPaciente.TabIndex = 3;
@@ -158,13 +159,13 @@
             this.colDni,
             this.colTel,
             this.colCorreo});
-            this.dgPacientes.Location = new System.Drawing.Point(206, 188);
+            this.dgPacientes.Location = new System.Drawing.Point(206, 153);
             this.dgPacientes.MultiSelect = false;
             this.dgPacientes.Name = "dgPacientes";
             this.dgPacientes.ReadOnly = true;
             this.dgPacientes.RowHeadersVisible = false;
             this.dgPacientes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgPacientes.Size = new System.Drawing.Size(763, 320);
+            this.dgPacientes.Size = new System.Drawing.Size(763, 195);
             this.dgPacientes.TabIndex = 4;
             // 
             // colId
@@ -216,17 +217,28 @@
             // btBuscar
             // 
             this.btBuscar.Image = global::SaludSoft.Properties.Resources.busqueda;
-            this.btBuscar.Location = new System.Drawing.Point(793, 92);
+            this.btBuscar.Location = new System.Drawing.Point(593, 81);
             this.btBuscar.Name = "btBuscar";
             this.btBuscar.Size = new System.Drawing.Size(75, 33);
             this.btBuscar.TabIndex = 5;
             this.btBuscar.UseVisualStyleBackColor = true;
+            // 
+            // lDNI
+            // 
+            this.lDNI.AutoSize = true;
+            this.lDNI.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lDNI.Location = new System.Drawing.Point(223, 93);
+            this.lDNI.Name = "lDNI";
+            this.lDNI.Size = new System.Drawing.Size(48, 19);
+            this.lDNI.TabIndex = 6;
+            this.lDNI.Text = "DNI: ";
             // 
             // Medico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1009, 511);
+            this.Controls.Add(this.lDNI);
             this.Controls.Add(this.btBuscar);
             this.Controls.Add(this.dgPacientes);
             this.Controls.Add(this.tbBuscarPaciente);
@@ -264,5 +276,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colTel;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCorreo;
         private System.Windows.Forms.Button btBuscar;
+        private System.Windows.Forms.Label lDNI;
     }
 }

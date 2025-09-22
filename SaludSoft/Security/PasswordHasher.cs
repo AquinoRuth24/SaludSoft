@@ -6,8 +6,8 @@ namespace SaludSoft.Security
 {
     public static class PasswordHasher
     {
-        // Retorna Base64 con: [v=1][iter(4)][salt(16)][hash(32)]
-        public static string Hash(string password, int iterations = 100_000)
+        // [v=1][iter(4 LE)][salt(16)][hash(32)]
+        public static string Hash(string password, int iterations = 150_000)
         {
             if (string.IsNullOrWhiteSpace(password)) return null;
 
@@ -23,27 +23,36 @@ namespace SaludSoft.Security
             }
             catch (MissingMethodException)
             {
-                // Fwk antiguos (usa HMACSHA1 por defecto)
                 using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations))
                     hash = pbkdf2.GetBytes(32);
             }
 
             var result = new byte[1 + 4 + salt.Length + hash.Length];
-            result[0] = 0x01;
-            BitConverter.GetBytes(iterations).CopyTo(result, 1);
+            result[0] = 0x01; // versión
+            BitConverter.GetBytes(iterations).CopyTo(result, 1); // little-endian
             Buffer.BlockCopy(salt, 0, result, 1 + 4, salt.Length);
             Buffer.BlockCopy(hash, 0, result, 1 + 4 + salt.Length, hash.Length);
             return Convert.ToBase64String(result);
         }
 
-        // Para login futuro: comparar password ingresada vs hash guardado
         public static bool Verify(string password, string storedBase64)
         {
-            if (string.IsNullOrEmpty(storedBase64)) return false;
-            var data = Convert.FromBase64String(storedBase64);
-            if (data.Length < 1 + 4 + 16 + 32) return false;
+            if (string.IsNullOrEmpty(storedBase64) || string.IsNullOrWhiteSpace(password))
+                return false;
+
+            byte[] data;
+            try { data = Convert.FromBase64String(storedBase64); }
+            catch { return false; }
+
+            if (data.Length < 1 + 4 + 16 + 32)
+                return false;
+
+            byte version = data[0];
+            if (version != 0x01)
+                return false; // (opcional) soportar versiones futuras
 
             int iterations = BitConverter.ToInt32(data, 1);
+            if (iterations <= 0) return false;
 
             var salt = new byte[16];
             Buffer.BlockCopy(data, 1 + 4, salt, 0, salt.Length);
@@ -62,7 +71,13 @@ namespace SaludSoft.Security
                 using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations))
                     calc = pbkdf2.GetBytes(32);
             }
+
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+            return CryptographicOperations.FixedTimeEquals(calc, storedHash);
+#else
+            // Fallback razonable
             return calc.SequenceEqual(storedHash);
+#endif
         }
     }
 }

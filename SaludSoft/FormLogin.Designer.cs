@@ -79,7 +79,7 @@
             this.lOlvidasteContraseña.AutoSize = true;
             this.lOlvidasteContraseña.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lOlvidasteContraseña.ForeColor = System.Drawing.Color.Red;
-            this.lOlvidasteContraseña.Location = new System.Drawing.Point(414, 468);
+            this.lOlvidasteContraseña.Location = new System.Drawing.Point(414, 437);
             this.lOlvidasteContraseña.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lOlvidasteContraseña.Name = "lOlvidasteContraseña";
             this.lOlvidasteContraseña.Size = new System.Drawing.Size(154, 17);
@@ -90,12 +90,12 @@
             // btIniciarSesion
             // 
             this.btIniciarSesion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btIniciarSesion.Font = new System.Drawing.Font("Comic Sans MS", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btIniciarSesion.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btIniciarSesion.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btIniciarSesion.Location = new System.Drawing.Point(429, 405);
+            this.btIniciarSesion.Location = new System.Drawing.Point(429, 352);
             this.btIniciarSesion.Margin = new System.Windows.Forms.Padding(2);
             this.btIniciarSesion.Name = "btIniciarSesion";
-            this.btIniciarSesion.Size = new System.Drawing.Size(139, 34);
+            this.btIniciarSesion.Size = new System.Drawing.Size(139, 48);
             this.btIniciarSesion.TabIndex = 4;
             this.btIniciarSesion.Text = "Iniciar Sesión";
             this.btIniciarSesion.UseVisualStyleBackColor = false;
@@ -103,20 +103,20 @@
             // 
             // tbContraseña
             // 
-            this.tbContraseña.Location = new System.Drawing.Point(469, 313);
+            this.tbContraseña.Location = new System.Drawing.Point(469, 278);
             this.tbContraseña.Margin = new System.Windows.Forms.Padding(2);
             this.tbContraseña.Name = "tbContraseña";
-            this.tbContraseña.Size = new System.Drawing.Size(99, 20);
+            this.tbContraseña.Size = new System.Drawing.Size(213, 20);
             this.tbContraseña.TabIndex = 5;
             this.tbContraseña.UseSystemPasswordChar = true;
             this.tbContraseña.TextChanged += new System.EventHandler(this.tbContraseña_TextChanged);
             // 
             // tbUsuario
             // 
-            this.tbUsuario.Location = new System.Drawing.Point(469, 270);
+            this.tbUsuario.Location = new System.Drawing.Point(469, 218);
             this.tbUsuario.Margin = new System.Windows.Forms.Padding(2);
             this.tbUsuario.Name = "tbUsuario";
-            this.tbUsuario.Size = new System.Drawing.Size(99, 20);
+            this.tbUsuario.Size = new System.Drawing.Size(213, 20);
             this.tbUsuario.TabIndex = 4;
             this.tbUsuario.TextChanged += new System.EventHandler(this.tbUsuario_TextChanged);
             // 
@@ -125,7 +125,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Comic Sans MS", 14F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.OliveDrab;
-            this.label4.Location = new System.Drawing.Point(371, 192);
+            this.label4.Location = new System.Drawing.Point(383, 146);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(263, 27);
@@ -135,11 +135,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(358, 270);
+            this.label1.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(358, 218);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(66, 19);
+            this.label1.Size = new System.Drawing.Size(81, 23);
             this.label1.TabIndex = 2;
             this.label1.Text = "Usuario :";
             this.label1.Click += new System.EventHandler(this.label1_Click);
@@ -147,12 +147,12 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Comic Sans MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label2.Location = new System.Drawing.Point(358, 313);
+            this.label2.Location = new System.Drawing.Point(330, 278);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 19);
+            this.label2.Size = new System.Drawing.Size(109, 23);
             this.label2.TabIndex = 3;
             this.label2.Text = "Contraseña :";
             this.label2.Click += new System.EventHandler(this.label2_Click);
@@ -163,7 +163,7 @@
             this.label3.Font = new System.Drawing.Font("Comic Sans MS", 36F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
                 | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.Green;
-            this.label3.Location = new System.Drawing.Point(374, 99);
+            this.label3.Location = new System.Drawing.Point(386, 36);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(260, 68);
