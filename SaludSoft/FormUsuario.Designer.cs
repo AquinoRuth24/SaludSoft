@@ -67,6 +67,9 @@
             this.btCancelar = new System.Windows.Forms.Button();
             this.btAgregar = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.gbAdmin = new System.Windows.Forms.GroupBox();
+            this.lContraAdmin = new System.Windows.Forms.Label();
+            this.tbContraAdmin = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.gbComun.SuspendLayout();
@@ -74,6 +77,7 @@
             this.gbMedico.SuspendLayout();
             this.gbRecepcionista.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.gbAdmin.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -524,12 +528,40 @@
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
+            // gbAdmin
+            // 
+            this.gbAdmin.Controls.Add(this.lContraAdmin);
+            this.gbAdmin.Controls.Add(this.tbContraAdmin);
+            this.gbAdmin.Location = new System.Drawing.Point(149, 253);
+            this.gbAdmin.Name = "gbAdmin";
+            this.gbAdmin.Size = new System.Drawing.Size(517, 82);
+            this.gbAdmin.TabIndex = 9;
+            this.gbAdmin.TabStop = false;
+            // 
+            // lContraAdmin
+            // 
+            this.lContraAdmin.AutoSize = true;
+            this.lContraAdmin.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lContraAdmin.Location = new System.Drawing.Point(118, 19);
+            this.lContraAdmin.Name = "lContraAdmin";
+            this.lContraAdmin.Size = new System.Drawing.Size(89, 19);
+            this.lContraAdmin.TabIndex = 1;
+            this.lContraAdmin.Text = "Contraseña: ";
+            // 
+            // tbContraAdmin
+            // 
+            this.tbContraAdmin.Location = new System.Drawing.Point(276, 19);
+            this.tbContraAdmin.Name = "tbContraAdmin";
+            this.tbContraAdmin.Size = new System.Drawing.Size(135, 20);
+            this.tbContraAdmin.TabIndex = 0;
+            // 
             // FormUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(669, 452);
+            this.Controls.Add(this.gbAdmin);
             this.Controls.Add(this.gbMedico);
             this.Controls.Add(this.gbRecepcionista);
             this.Controls.Add(this.btAgregar);
@@ -555,6 +587,8 @@
             this.gbRecepcionista.ResumeLayout(false);
             this.gbRecepcionista.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.gbAdmin.ResumeLayout(false);
+            this.gbAdmin.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -600,5 +634,8 @@
         private System.Windows.Forms.Label lContraseñaRecepcionista;
         private System.Windows.Forms.Button btCancelar;
         private System.Windows.Forms.Button btAgregar;
+        private System.Windows.Forms.GroupBox gbAdmin;
+        private System.Windows.Forms.Label lContraAdmin;
+        private System.Windows.Forms.TextBox tbContraAdmin;
     }
 }

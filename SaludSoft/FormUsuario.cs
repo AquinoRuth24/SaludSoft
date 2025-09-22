@@ -60,8 +60,7 @@ namespace SaludSoft.Resources
         {
             if (cbRol != null && cbRol.Items.Count == 0)
             {
-
-                cbRol.Items.AddRange(new object[] { "Paciente", "Médico", "Recepcionista" });
+                cbRol.Items.AddRange(new object[] { "Paciente", "Médico", "Recepcionista", "Administrador" });
                 cbRol.DropDownStyle = ComboBoxStyle.DropDownList;
             }
             if (cbRol != null && cbRol.SelectedIndex < 0) cbRol.SelectedIndex = 0;
@@ -109,8 +108,13 @@ namespace SaludSoft.Resources
                     FindCtl<GroupBox>("gbRecepcionista")?.BringToFront();
                     break;
 
-                    // case RolUsuario.Administrador: // <- Eliminado: no se permite
-                    //     break;
+                case RolUsuario.Administrador:
+                    // Si tenés un groupbox para admin, mostralo; si no, usá el común
+                    SetVisible("gbAdmin", true); // opcional
+                    ShowPwdFor("Administrador", true);
+                    ShowPwdFor("Admin", true);
+                    FindCtl<GroupBox>("gbAdmin")?.BringToFront();
+                    break;
             }
 
             this.PerformLayout();
@@ -152,11 +156,11 @@ namespace SaludSoft.Resources
             var rolDestino = (RolUsuario)(cbRol?.SelectedIndex ?? 0);
 
             // no permitir crear Administrador
-            if (rolDestino == RolUsuario.Administrador)
-            {
-                Msg("No está permitido crear usuarios con rol Administrador.");
-                return;
-            }
+           // if (rolDestino == RolUsuario.Administrador)
+            //{
+            //    Msg("No está permitido crear usuarios con rol Administrador.");
+             //   return;
+            //}
 
             if (!ValidarFormulario()) return;
 

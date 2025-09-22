@@ -249,5 +249,7 @@ WHERE u.email = @email;";
 
         private void tbUsuario_TextChanged(object sender, EventArgs e) { }
         private void tbContraseña_TextChanged(object sender, EventArgs e) { }
+
+
     }
 }
