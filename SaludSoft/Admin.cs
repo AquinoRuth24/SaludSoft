@@ -101,16 +101,6 @@ namespace SaludSoft
             };
         }
 
-        
-        private void btHistorial_Click(object sender, EventArgs e) { }
-        private void btCitasMes_Click(object sender, EventArgs e) { }
-        private void btTotalUsuario_Click(object sender, EventArgs e) { }
-        private void btMedicosActivos_Click(object sender, EventArgs e) { }
-        private void btEspecialidades_Click(object sender, EventArgs e) { }
-        private void btConsultoriosDisponibles_Click(object sender, EventArgs e) { }
-        private void btUsuario_Click(object sender, EventArgs e) { }
-        private void btMedicos_Click(object sender, EventArgs e) { }
-        private void btConsultorios_Click(object sender, EventArgs e) { }
-        private void btTurnos_Click(object sender, EventArgs e) { }
+   
     }
 }
