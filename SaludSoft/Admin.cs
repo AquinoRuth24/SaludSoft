@@ -101,6 +101,10 @@ namespace SaludSoft
             };
         }
 
-   
+        private void btEspecialidades_Click(object sender, EventArgs e)
+        {
+            Especialidades frm = new Especialidades();
+            frm.ShowDialog();
+        }
     }
 }

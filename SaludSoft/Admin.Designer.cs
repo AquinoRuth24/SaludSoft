@@ -38,11 +38,11 @@
             this.btGestionUsuario = new System.Windows.Forms.Button();
             this.lAdministrador = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.BPacienetes = new System.Windows.Forms.Button();
             this.btHistorial = new System.Windows.Forms.Button();
             this.btEspecialidades = new System.Windows.Forms.Button();
             this.btTurnosMes = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.BPacienetes = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -188,6 +188,18 @@
             this.panel3.Size = new System.Drawing.Size(889, 446);
             this.panel3.TabIndex = 3;
             // 
+            // BPacienetes
+            // 
+            this.BPacienetes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BPacienetes.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BPacienetes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BPacienetes.Location = new System.Drawing.Point(568, 233);
+            this.BPacienetes.Name = "BPacienetes";
+            this.BPacienetes.Size = new System.Drawing.Size(234, 122);
+            this.BPacienetes.TabIndex = 6;
+            this.BPacienetes.Text = "Pacientes";
+            this.BPacienetes.UseVisualStyleBackColor = false;
+            // 
             // btHistorial
             // 
             this.btHistorial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
@@ -216,6 +228,7 @@
             this.btEspecialidades.Text = "Especialidades ";
             this.btEspecialidades.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btEspecialidades.UseVisualStyleBackColor = false;
+            this.btEspecialidades.Click += new System.EventHandler(this.btEspecialidades_Click);
             // 
             // btTurnosMes
             // 
@@ -242,18 +255,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
-            // 
-            // BPacienetes
-            // 
-            this.BPacienetes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.BPacienetes.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BPacienetes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BPacienetes.Location = new System.Drawing.Point(567, 214);
-            this.BPacienetes.Name = "BPacienetes";
-            this.BPacienetes.Size = new System.Drawing.Size(234, 122);
-            this.BPacienetes.TabIndex = 6;
-            this.BPacienetes.Text = "Pacientes";
-            this.BPacienetes.UseVisualStyleBackColor = false;
             // 
             // Admin
             // 
