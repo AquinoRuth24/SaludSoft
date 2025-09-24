@@ -22,33 +22,11 @@ namespace SaludSoft
             }
         }
         // botones 
-        private void BInicioFormTurno_Click(object sender, EventArgs e)
-        {
-            SaludSoft frm = new SaludSoft();
-            frm.ShowDialog();
-            this.Close();
-        }
-
-        private void BPacientesFormTurno_Click(object sender, EventArgs e)
-        {
-            FormListaPacientes frm = new FormListaPacientes();
-            frm.ShowDialog();
-            this.Close();
-        }
-
         private void BVolver_Click(object sender, EventArgs e)
         {
            
             this.Close(); 
         }
-
-        private void BCerrarSesion_Click(object sender, EventArgs e)
-        {
-            FormLogin frm = new FormLogin();
-            frm.ShowDialog();
-            this.Close();
-        }
-
         private void TBBuscar_TextChanged(object sender, EventArgs e)
         {
             string filtro = TBBuscar.Text.Trim();
@@ -95,12 +73,6 @@ namespace SaludSoft
                     btnEditar.Text = "Modificar";
                     btnEditar.UseColumnTextForButtonValue = true;
                     dgvPacientes.Columns.Add(btnEditar);
-
-                    DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
-                    btnEliminar.Name = "Eliminar";
-                    btnEliminar.Text = "Eliminar";
-                    btnEliminar.UseColumnTextForButtonValue = true;
-                    dgvPacientes.Columns.Add(btnEliminar);
                 }
             }
         }
@@ -133,38 +105,6 @@ namespace SaludSoft
                     CargarPacientes();
                 }
 
-                // ELIMINAR
-                if (columnName == "Eliminar")
-                {
-                    int idPaciente = Convert.ToInt32(dgvPacientes.Rows[e.RowIndex].Cells["id_paciente"].Value);
-
-                    DialogResult result = MessageBox.Show("¿Está seguro de eliminar este paciente?",
-                                                          "Confirmación",
-                                                          MessageBoxButtons.YesNo,
-                                                          MessageBoxIcon.Warning);
-
-                    if (result == DialogResult.Yes)
-                    {
-                        using (SqlConnection conexion = Conexion.GetConnection())
-                        {
-                            conexion.Open();
-                            // baja logica del paciente 2 = inactivo
-                            string queryDelete = "UPDATE Paciente SET id_estado = 2 WHERE id_paciente = @id";
-
-                            SqlCommand cmd = new SqlCommand(queryDelete, conexion);
-                            cmd.Parameters.AddWithValue("@id", idPaciente);
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        MessageBox.Show("Paciente eliminado correctamente.",
-                                        "Éxito",
-                                        MessageBoxButtons.OK,
-                                        MessageBoxIcon.Information);
-
-                        // Actualiza la lista de pacientes
-                        CargarPacientes();
-                    }
-                }
             }
         }
 

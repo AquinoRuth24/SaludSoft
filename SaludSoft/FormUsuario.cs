@@ -1,9 +1,10 @@
-﻿using System;
+﻿using SaludSoft.Security; // Para PasswordHasher.Hash
+using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using SaludSoft.Security; // Para PasswordHasher.Hash
-using System.Data.SqlClient;
 
 namespace SaludSoft.Resources
 {
@@ -66,11 +67,38 @@ namespace SaludSoft.Resources
             }
             if (cbRol != null && cbRol.SelectedIndex < 0) cbRol.SelectedIndex = 0;
 
+            CargarEspecialidades();
             AplicarUIRol();
             this.AutoScaleMode = AutoScaleMode.Font;
         }
 
         private void cbRol_SelectedIndexChanged(object sender, EventArgs e) => AplicarUIRol();
+        // se carga las especialidades en el combo
+        private void CargarEspecialidades()
+        {
+            try
+            {
+                using (SqlConnection conexion = Conexion.GetConnection())
+                {
+                    conexion.Open();
+                    string query = "SELECT id_especialidad, nombre FROM Especialidad ORDER BY nombre";
+
+                    SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    CmbEspecialidades.DataSource = dt;
+                    CmbEspecialidades.DisplayMember = "nombre";     
+                    CmbEspecialidades.ValueMember = "id_especialidad"; 
+                    CmbEspecialidades.SelectedIndex = -1; 
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar especialidades: " + ex.Message,
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         // ------------------ Mostrar/Ocultar por Rol ------------------
         private void AplicarUIRol()
@@ -229,32 +257,19 @@ namespace SaludSoft.Resources
                     if (rolDestino == RolUsuario.Medico)
                     {
                         string matricula = GetTextAny("tbMatricula");
-                        string especialidad = GetTextAny("tbEspecialidadFormUsuario", "tbEspecialidad");
-                        string consultorio = GetTextAny("tbConsultorio");
 
-                        int idEspecialidad = 0;
-
-                        // Primero buscar id_especialidad
-                        using (SqlCommand cmdCheck = new SqlCommand(
-                            "SELECT TOP 1 id_especialidad FROM Especialidad WHERE nombre = @especialidad", conexion))
+                        if (CmbEspecialidades.SelectedValue == null)
                         {
-                            cmdCheck.Parameters.AddWithValue("@especialidad", especialidad);
-                            var result = cmdCheck.ExecuteScalar();
-
-                            if (result == null)
-                            {
-                                MessageBox.Show("La especialidad ingresada no existe. Verifique la entrada.",
-                                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return; // cancelar el guardado
-                            }
-
-                            idEspecialidad = Convert.ToInt32(result);
+                            MessageBox.Show("Debe seleccionar una especialidad.",
+                                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
                         }
 
-                        // Ahora sí, insertar en Profesional
+                        int idEspecialidad = Convert.ToInt32(CmbEspecialidades.SelectedValue);
+
                         string insertProfesional = @"
                           INSERT INTO Profesional (nombre, apellido, email, matricula, id_estado, id_especialidad)
-                          VALUES (@nombre, @apellido, @correo, @matricula, 1, @idEspecialidad);";
+                           VALUES (@nombre, @apellido, @correo, @matricula, 1, @idEspecialidad);";
 
                         using (SqlCommand cmd = new SqlCommand(insertProfesional, conexion))
                         {
@@ -266,7 +281,6 @@ namespace SaludSoft.Resources
 
                             cmd.ExecuteNonQuery();
                         }
-
                     }
 
                     MessageBox.Show("Usuario agregado correctamente en la base de datos.",

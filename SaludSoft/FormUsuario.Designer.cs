@@ -59,7 +59,6 @@
             this.tbMatricula = new System.Windows.Forms.TextBox();
             this.lContraseñaMedico = new System.Windows.Forms.Label();
             this.lMatricula = new System.Windows.Forms.Label();
-            this.tbEspecialidad = new System.Windows.Forms.TextBox();
             this.lEspecialidad = new System.Windows.Forms.Label();
             this.gbRecepcionista = new System.Windows.Forms.GroupBox();
             this.tbContraseñaRecep = new System.Windows.Forms.TextBox();
@@ -70,6 +69,7 @@
             this.gbAdmin = new System.Windows.Forms.GroupBox();
             this.lContraAdmin = new System.Windows.Forms.Label();
             this.tbContraAdmin = new System.Windows.Forms.TextBox();
+            this.CmbEspecialidades = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.gbComun.SuspendLayout();
@@ -386,13 +386,13 @@
             // 
             // gbMedico
             // 
+            this.gbMedico.Controls.Add(this.CmbEspecialidades);
             this.gbMedico.Controls.Add(this.tbContraseñaMedico);
             this.gbMedico.Controls.Add(this.tbMatricula);
             this.gbMedico.Controls.Add(this.lContraseñaMedico);
             this.gbMedico.Controls.Add(this.lMatricula);
-            this.gbMedico.Controls.Add(this.tbEspecialidad);
             this.gbMedico.Controls.Add(this.lEspecialidad);
-            this.gbMedico.Location = new System.Drawing.Point(146, 255);
+            this.gbMedico.Location = new System.Drawing.Point(141, 253);
             this.gbMedico.Margin = new System.Windows.Forms.Padding(2);
             this.gbMedico.Name = "gbMedico";
             this.gbMedico.Padding = new System.Windows.Forms.Padding(2);
@@ -438,14 +438,6 @@
             this.lMatricula.Size = new System.Drawing.Size(85, 20);
             this.lMatricula.TabIndex = 7;
             this.lMatricula.Text = "Matrícula: ";
-            // 
-            // tbEspecialidad
-            // 
-            this.tbEspecialidad.Location = new System.Drawing.Point(287, 8);
-            this.tbEspecialidad.Margin = new System.Windows.Forms.Padding(2);
-            this.tbEspecialidad.Name = "tbEspecialidad";
-            this.tbEspecialidad.Size = new System.Drawing.Size(127, 20);
-            this.tbEspecialidad.TabIndex = 8;
             // 
             // lEspecialidad
             // 
@@ -555,6 +547,15 @@
             this.tbContraAdmin.Size = new System.Drawing.Size(135, 20);
             this.tbContraAdmin.TabIndex = 0;
             // 
+            // CmbEspecialidades
+            // 
+            this.CmbEspecialidades.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CmbEspecialidades.FormattingEnabled = true;
+            this.CmbEspecialidades.Location = new System.Drawing.Point(293, 9);
+            this.CmbEspecialidades.Name = "CmbEspecialidades";
+            this.CmbEspecialidades.Size = new System.Drawing.Size(121, 26);
+            this.CmbEspecialidades.TabIndex = 9;
+            // 
             // FormUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -623,7 +624,6 @@
         private System.Windows.Forms.GroupBox gbMedico;
         private System.Windows.Forms.TextBox tbMatricula;
         private System.Windows.Forms.Label lMatricula;
-        private System.Windows.Forms.TextBox tbEspecialidad;
         private System.Windows.Forms.Label lEspecialidad;
         private System.Windows.Forms.RadioButton rbMasculino;
         private System.Windows.Forms.RadioButton rbFemenino;
@@ -637,5 +637,6 @@
         private System.Windows.Forms.GroupBox gbAdmin;
         private System.Windows.Forms.Label lContraAdmin;
         private System.Windows.Forms.TextBox tbContraAdmin;
+        private System.Windows.Forms.ComboBox CmbEspecialidades;
     }
 }

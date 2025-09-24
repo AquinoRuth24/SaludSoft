@@ -38,11 +38,12 @@
             this.btGestionUsuario = new System.Windows.Forms.Button();
             this.lAdministrador = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.BPacienetes = new System.Windows.Forms.Button();
+            this.PPacienetes = new System.Windows.Forms.Button();
             this.btHistorial = new System.Windows.Forms.Button();
             this.btEspecialidades = new System.Windows.Forms.Button();
             this.btTurnosMes = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.LContador = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -178,7 +179,8 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.panel3.Controls.Add(this.BPacienetes);
+            this.panel3.Controls.Add(this.LContador);
+            this.panel3.Controls.Add(this.PPacienetes);
             this.panel3.Controls.Add(this.btHistorial);
             this.panel3.Controls.Add(this.btEspecialidades);
             this.panel3.Controls.Add(this.btTurnosMes);
@@ -188,17 +190,18 @@
             this.panel3.Size = new System.Drawing.Size(889, 446);
             this.panel3.TabIndex = 3;
             // 
-            // BPacienetes
+            // PPacienetes
             // 
-            this.BPacienetes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.BPacienetes.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BPacienetes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BPacienetes.Location = new System.Drawing.Point(568, 233);
-            this.BPacienetes.Name = "BPacienetes";
-            this.BPacienetes.Size = new System.Drawing.Size(234, 122);
-            this.BPacienetes.TabIndex = 6;
-            this.BPacienetes.Text = "Pacientes";
-            this.BPacienetes.UseVisualStyleBackColor = false;
+            this.PPacienetes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.PPacienetes.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PPacienetes.Location = new System.Drawing.Point(558, 231);
+            this.PPacienetes.Name = "PPacienetes";
+            this.PPacienetes.Size = new System.Drawing.Size(234, 122);
+            this.PPacienetes.TabIndex = 6;
+            this.PPacienetes.Text = "Pacientes ";
+            this.PPacienetes.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.PPacienetes.UseVisualStyleBackColor = false;
+            this.PPacienetes.Click += new System.EventHandler(this.BPacienetes_Click);
             // 
             // btHistorial
             // 
@@ -256,6 +259,17 @@
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
+            // LContador
+            // 
+            this.LContador.AutoSize = true;
+            this.LContador.BackColor = System.Drawing.Color.Transparent;
+            this.LContador.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LContador.Location = new System.Drawing.Point(658, 296);
+            this.LContador.Name = "LContador";
+            this.LContador.Size = new System.Drawing.Size(35, 39);
+            this.LContador.TabIndex = 7;
+            this.LContador.Text = "0";
+            // 
             // Admin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -272,6 +286,7 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
@@ -293,6 +308,7 @@
         private System.Windows.Forms.Button btTurnosMes;
         private System.Windows.Forms.Button btEspecialidades;
         private System.Windows.Forms.Button btHistorial;
-        private System.Windows.Forms.Button BPacienetes;
+        private System.Windows.Forms.Button PPacienetes;
+        private System.Windows.Forms.Label LContador;
     }
 }

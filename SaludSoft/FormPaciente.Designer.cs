@@ -28,17 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPaciente));
-            this.PanelLogoPaciente = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.LabelRegistroPaciente = new System.Windows.Forms.Label();
-            this.PMenu = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.BCerrarSesion = new System.Windows.Forms.Button();
-            this.BDoctores = new System.Windows.Forms.Button();
-            this.BTurnos = new System.Windows.Forms.Button();
-            this.BPacientes = new System.Windows.Forms.Button();
-            this.BInicio = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.LPaciente = new System.Windows.Forms.Label();
             this.LTexto = new System.Windows.Forms.Label();
@@ -73,119 +63,20 @@
             this.LFechaConsulta = new System.Windows.Forms.Label();
             this.DTMHistorialInicial = new System.Windows.Forms.DateTimePicker();
             this.LHistorialInicial = new System.Windows.Forms.Label();
-            this.BAgenda = new System.Windows.Forms.Button();
-            this.PanelLogoPaciente.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.PMenu.SuspendLayout();
-            this.panel4.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // PanelLogoPaciente
-            // 
-            this.PanelLogoPaciente.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
-            this.PanelLogoPaciente.Controls.Add(this.pictureBox1);
-            this.PanelLogoPaciente.Location = new System.Drawing.Point(-5, -1);
-            this.PanelLogoPaciente.Name = "PanelLogoPaciente";
-            this.PanelLogoPaciente.Size = new System.Drawing.Size(154, 108);
-            this.PanelLogoPaciente.TabIndex = 0;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(17, 10);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(102, 75);
-            this.pictureBox1.TabIndex = 6;
-            this.pictureBox1.TabStop = false;
-            // 
             // LabelRegistroPaciente
             // 
             this.LabelRegistroPaciente.AutoSize = true;
             this.LabelRegistroPaciente.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelRegistroPaciente.Location = new System.Drawing.Point(243, 15);
+            this.LabelRegistroPaciente.Location = new System.Drawing.Point(359, 12);
             this.LabelRegistroPaciente.Name = "LabelRegistroPaciente";
             this.LabelRegistroPaciente.Size = new System.Drawing.Size(277, 26);
             this.LabelRegistroPaciente.TabIndex = 1;
             this.LabelRegistroPaciente.Text = "Registro de Nuevo Paciente";
-            // 
-            // PMenu
-            // 
-            this.PMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
-            this.PMenu.Controls.Add(this.BAgenda);
-            this.PMenu.Controls.Add(this.panel4);
-            this.PMenu.Controls.Add(this.BDoctores);
-            this.PMenu.Controls.Add(this.BTurnos);
-            this.PMenu.Controls.Add(this.BPacientes);
-            this.PMenu.Controls.Add(this.BInicio);
-            this.PMenu.Location = new System.Drawing.Point(-5, 94);
-            this.PMenu.Name = "PMenu";
-            this.PMenu.Size = new System.Drawing.Size(154, 438);
-            this.PMenu.TabIndex = 2;
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.BCerrarSesion);
-            this.panel4.Location = new System.Drawing.Point(3, 314);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(151, 124);
-            this.panel4.TabIndex = 9;
-            // 
-            // BCerrarSesion
-            // 
-            this.BCerrarSesion.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BCerrarSesion.Location = new System.Drawing.Point(20, 7);
-            this.BCerrarSesion.Name = "BCerrarSesion";
-            this.BCerrarSesion.Size = new System.Drawing.Size(108, 53);
-            this.BCerrarSesion.TabIndex = 6;
-            this.BCerrarSesion.Text = "Cerrar sesion";
-            this.BCerrarSesion.UseVisualStyleBackColor = true;
-            this.BCerrarSesion.Click += new System.EventHandler(this.BCerrarSesion_Click);
-            // 
-            // BDoctores
-            // 
-            this.BDoctores.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BDoctores.Location = new System.Drawing.Point(27, 182);
-            this.BDoctores.Name = "BDoctores";
-            this.BDoctores.Size = new System.Drawing.Size(92, 46);
-            this.BDoctores.TabIndex = 3;
-            this.BDoctores.Text = "Doctores";
-            this.BDoctores.UseVisualStyleBackColor = true;
-            // 
-            // BTurnos
-            // 
-            this.BTurnos.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BTurnos.Location = new System.Drawing.Point(23, 129);
-            this.BTurnos.Name = "BTurnos";
-            this.BTurnos.Size = new System.Drawing.Size(108, 37);
-            this.BTurnos.TabIndex = 4;
-            this.BTurnos.Text = "Turnos";
-            this.BTurnos.UseVisualStyleBackColor = true;
-            // 
-            // BPacientes
-            // 
-            this.BPacientes.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BPacientes.Location = new System.Drawing.Point(17, 76);
-            this.BPacientes.Name = "BPacientes";
-            this.BPacientes.Size = new System.Drawing.Size(114, 40);
-            this.BPacientes.TabIndex = 5;
-            this.BPacientes.Text = "Pacientes";
-            this.BPacientes.UseVisualStyleBackColor = true;
-            this.BPacientes.Click += new System.EventHandler(this.BPacientes_Click);
-            // 
-            // BInicio
-            // 
-            this.BInicio.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BInicio.Location = new System.Drawing.Point(27, 19);
-            this.BInicio.Name = "BInicio";
-            this.BInicio.Size = new System.Drawing.Size(92, 43);
-            this.BInicio.TabIndex = 2;
-            this.BInicio.Text = "Inicio";
-            this.BInicio.UseVisualStyleBackColor = true;
-            this.BInicio.Click += new System.EventHandler(this.BInicio_Click);
             // 
             // panel1
             // 
@@ -193,9 +84,9 @@
             this.panel1.Controls.Add(this.LPaciente);
             this.panel1.Controls.Add(this.LTexto);
             this.panel1.Controls.Add(this.LabelRegistroPaciente);
-            this.panel1.Location = new System.Drawing.Point(167, 7);
+            this.panel1.Location = new System.Drawing.Point(12, 7);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(805, 77);
+            this.panel1.Size = new System.Drawing.Size(960, 77);
             this.panel1.TabIndex = 3;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -203,7 +94,7 @@
             // 
             this.LPaciente.AutoSize = true;
             this.LPaciente.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LPaciente.Location = new System.Drawing.Point(138, 47);
+            this.LPaciente.Location = new System.Drawing.Point(244, 47);
             this.LPaciente.Name = "LPaciente";
             this.LPaciente.Size = new System.Drawing.Size(496, 21);
             this.LPaciente.TabIndex = 3;
@@ -279,7 +170,7 @@
             this.BRegistrar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
             this.BRegistrar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BRegistrar.ForeColor = System.Drawing.SystemColors.Control;
-            this.BRegistrar.Location = new System.Drawing.Point(715, 202);
+            this.BRegistrar.Location = new System.Drawing.Point(870, 216);
             this.BRegistrar.Name = "BRegistrar";
             this.BRegistrar.Size = new System.Drawing.Size(87, 36);
             this.BRegistrar.TabIndex = 6;
@@ -290,7 +181,7 @@
             // BEliminar
             // 
             this.BEliminar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BEliminar.Location = new System.Drawing.Point(590, 199);
+            this.BEliminar.Location = new System.Drawing.Point(744, 216);
             this.BEliminar.Name = "BEliminar";
             this.BEliminar.Size = new System.Drawing.Size(91, 36);
             this.BEliminar.TabIndex = 7;
@@ -376,9 +267,9 @@
             this.panel2.Controls.Add(this.LTelefono);
             this.panel2.Controls.Add(this.LCorreo);
             this.panel2.Controls.Add(this.RBFemenino);
-            this.panel2.Location = new System.Drawing.Point(167, 89);
+            this.panel2.Location = new System.Drawing.Point(12, 89);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(805, 199);
+            this.panel2.Size = new System.Drawing.Size(960, 199);
             this.panel2.TabIndex = 4;
             // 
             // LSexo
@@ -424,7 +315,7 @@
             // 
             this.LInfoPaciente.AutoSize = true;
             this.LInfoPaciente.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LInfoPaciente.Location = new System.Drawing.Point(285, 5);
+            this.LInfoPaciente.Location = new System.Drawing.Point(359, 10);
             this.LInfoPaciente.Name = "LInfoPaciente";
             this.LInfoPaciente.Size = new System.Drawing.Size(235, 25);
             this.LInfoPaciente.TabIndex = 8;
@@ -455,15 +346,15 @@
             this.panel3.Controls.Add(this.LFechaConsulta);
             this.panel3.Controls.Add(this.DTMHistorialInicial);
             this.panel3.Controls.Add(this.LHistorialInicial);
-            this.panel3.Location = new System.Drawing.Point(164, 294);
+            this.panel3.Location = new System.Drawing.Point(12, 294);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(808, 238);
+            this.panel3.Size = new System.Drawing.Size(960, 255);
             this.panel3.TabIndex = 9;
             // 
             // TBTratamiento
             // 
             this.TBTratamiento.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TBTratamiento.Location = new System.Drawing.Point(404, 70);
+            this.TBTratamiento.Location = new System.Drawing.Point(464, 70);
             this.TBTratamiento.Multiline = true;
             this.TBTratamiento.Name = "TBTratamiento";
             this.TBTratamiento.Size = new System.Drawing.Size(192, 112);
@@ -472,7 +363,7 @@
             // TBObservacion
             // 
             this.TBObservacion.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TBObservacion.Location = new System.Drawing.Point(624, 71);
+            this.TBObservacion.Location = new System.Drawing.Point(727, 71);
             this.TBObservacion.Multiline = true;
             this.TBObservacion.Name = "TBObservacion";
             this.TBObservacion.Size = new System.Drawing.Size(170, 112);
@@ -481,7 +372,7 @@
             // TBDiagnostico
             // 
             this.TBDiagnostico.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TBDiagnostico.Location = new System.Drawing.Point(162, 71);
+            this.TBDiagnostico.Location = new System.Drawing.Point(191, 71);
             this.TBDiagnostico.Multiline = true;
             this.TBDiagnostico.Name = "TBDiagnostico";
             this.TBDiagnostico.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -492,7 +383,7 @@
             // 
             this.LObservaciones.AutoSize = true;
             this.LObservaciones.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LObservaciones.Location = new System.Drawing.Point(642, 44);
+            this.LObservaciones.Location = new System.Drawing.Point(754, 44);
             this.LObservaciones.Name = "LObservaciones";
             this.LObservaciones.Size = new System.Drawing.Size(121, 23);
             this.LObservaciones.TabIndex = 5;
@@ -502,7 +393,7 @@
             // 
             this.LTratamiento.AutoSize = true;
             this.LTratamiento.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LTratamiento.Location = new System.Drawing.Point(438, 44);
+            this.LTratamiento.Location = new System.Drawing.Point(506, 44);
             this.LTratamiento.Name = "LTratamiento";
             this.LTratamiento.Size = new System.Drawing.Size(104, 23);
             this.LTratamiento.TabIndex = 4;
@@ -512,7 +403,7 @@
             // 
             this.LDiagnosticoInicial.AutoSize = true;
             this.LDiagnosticoInicial.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LDiagnosticoInicial.Location = new System.Drawing.Point(187, 44);
+            this.LDiagnosticoInicial.Location = new System.Drawing.Point(217, 44);
             this.LDiagnosticoInicial.Name = "LDiagnosticoInicial";
             this.LDiagnosticoInicial.Size = new System.Drawing.Size(152, 23);
             this.LDiagnosticoInicial.TabIndex = 3;
@@ -541,38 +432,22 @@
             // 
             this.LHistorialInicial.AutoSize = true;
             this.LHistorialInicial.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LHistorialInicial.Location = new System.Drawing.Point(314, 12);
+            this.LHistorialInicial.Location = new System.Drawing.Point(423, 10);
             this.LHistorialInicial.Name = "LHistorialInicial";
             this.LHistorialInicial.Size = new System.Drawing.Size(170, 25);
             this.LHistorialInicial.TabIndex = 0;
             this.LHistorialInicial.Text = "Historial Inicial";
             // 
-            // BAgenda
-            // 
-            this.BAgenda.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BAgenda.Location = new System.Drawing.Point(23, 264);
-            this.BAgenda.Name = "BAgenda";
-            this.BAgenda.Size = new System.Drawing.Size(98, 35);
-            this.BAgenda.TabIndex = 10;
-            this.BAgenda.Text = "Agenda";
-            this.BAgenda.UseVisualStyleBackColor = true;
-            // 
             // FormPaciente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(999, 534);
+            this.ClientSize = new System.Drawing.Size(999, 551);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.PMenu);
-            this.Controls.Add(this.PanelLogoPaciente);
             this.Name = "FormPaciente";
             this.Text = "FormPaciente";
-            this.PanelLogoPaciente.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.PMenu.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -584,15 +459,7 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel PanelLogoPaciente;
         private System.Windows.Forms.Label LabelRegistroPaciente;
-        private System.Windows.Forms.Panel PMenu;
-        private System.Windows.Forms.Button BDoctores;
-        private System.Windows.Forms.Button BTurnos;
-        private System.Windows.Forms.Button BPacientes;
-        private System.Windows.Forms.Button BInicio;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label LPaciente;
         private System.Windows.Forms.Label LTexto;
@@ -622,13 +489,10 @@
         private System.Windows.Forms.TextBox TBDiagnostico;
         private System.Windows.Forms.TextBox TBTratamiento;
         private System.Windows.Forms.TextBox TBObservacion;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Button BCerrarSesion;
         private System.Windows.Forms.Label LEstado;
         private System.Windows.Forms.ComboBox CMBEstadoPaciente;
         private System.Windows.Forms.Label LSexo;
         private System.Windows.Forms.RadioButton RBFemenino;
         private System.Windows.Forms.RadioButton RBMasculino;
-        private System.Windows.Forms.Button BAgenda;
     }
 }

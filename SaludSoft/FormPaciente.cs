@@ -264,26 +264,6 @@ namespace SaludSoft
             }
         }
 
-        private void BInicio_Click(object sender, EventArgs e)
-        {
-            SaludSoft frm = new SaludSoft();
-            frm.ShowDialog();
-            this.Close();
-        }
-
-        private void BPacientes_Click(object sender, EventArgs e)
-        {
-            FormListaPacientes frm = new FormListaPacientes();
-            frm.ShowDialog();
-            this.Close();
-        }
-
-        private void BCerrarSesion_Click(object sender, EventArgs e)
-        {
-            FormLogin frm = new FormLogin();
-            frm.ShowDialog();
-            this.Close();
-        }
-
+ 
     }
-}
+ }

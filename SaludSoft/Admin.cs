@@ -1,5 +1,6 @@
 ﻿using SaludSoft.Resources.Models;
 using System;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -9,7 +10,8 @@ namespace SaludSoft
     {
         public Admin()
         {
-            InitializeComponent(); 
+            InitializeComponent();
+            CargarCantidadPacientes();
         }
 
         
@@ -105,6 +107,27 @@ namespace SaludSoft
         {
             Especialidades frm = new Especialidades();
             frm.ShowDialog();
+        }
+
+        private void BPacienetes_Click(object sender, EventArgs e)
+        {
+            FormListaPacientes frm = new FormListaPacientes();
+            frm.ShowDialog();
+        }
+
+        private void CargarCantidadPacientes()
+        {
+            int cantidad = 0;
+
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                conexion.Open();
+                SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Paciente", conexion);
+                cantidad = (int)cmd.ExecuteScalar();
+            }
+
+            // Asignar el texto al botón o label
+            LContador.Text = $"{cantidad}";
         }
     }
 }

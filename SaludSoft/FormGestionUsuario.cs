@@ -201,7 +201,16 @@ namespace SaludSoft
         private void btAgregarUsuario_Click(object sender, EventArgs e)
         {
             FormUsuario frm = new FormUsuario();
-            frm.ShowDialog();
+
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                CargarUsuarios();
+            }
+        }
+
+        private void BVolver_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
