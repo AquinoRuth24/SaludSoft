@@ -38,12 +38,12 @@
             this.btGestionUsuario = new System.Windows.Forms.Button();
             this.lAdministrador = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.LContador = new System.Windows.Forms.Label();
             this.PPacienetes = new System.Windows.Forms.Button();
             this.btHistorial = new System.Windows.Forms.Button();
             this.btEspecialidades = new System.Windows.Forms.Button();
             this.btTurnosMes = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.LContador = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -52,6 +52,7 @@
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.panel1.Controls.Add(this.btCerrarSesion);
             this.panel1.Controls.Add(this.btBackup);
@@ -139,13 +140,15 @@
             // 
             // panel2
             // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.panel2.Controls.Add(this.btGestionUsuario);
             this.panel2.Controls.Add(this.lAdministrador);
-            this.panel2.Location = new System.Drawing.Point(145, -1);
+            this.panel2.Controls.Add(this.pictureBox1);
+            this.panel2.Location = new System.Drawing.Point(2, -1);
             this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(888, 55);
+            this.panel2.Size = new System.Drawing.Size(1031, 55);
             this.panel2.TabIndex = 2;
             // 
             // btGestionUsuario
@@ -169,7 +172,7 @@
             this.lAdministrador.BackColor = System.Drawing.Color.Transparent;
             this.lAdministrador.Font = new System.Drawing.Font("Comic Sans MS", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lAdministrador.ForeColor = System.Drawing.Color.Green;
-            this.lAdministrador.Location = new System.Drawing.Point(15, 10);
+            this.lAdministrador.Location = new System.Drawing.Point(279, 12);
             this.lAdministrador.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lAdministrador.Name = "lAdministrador";
             this.lAdministrador.Size = new System.Drawing.Size(200, 34);
@@ -178,6 +181,7 @@
             // 
             // panel3
             // 
+            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.panel3.Controls.Add(this.LContador);
             this.panel3.Controls.Add(this.PPacienetes);
@@ -189,6 +193,17 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(889, 446);
             this.panel3.TabIndex = 3;
+            // 
+            // LContador
+            // 
+            this.LContador.AutoSize = true;
+            this.LContador.BackColor = System.Drawing.Color.Transparent;
+            this.LContador.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LContador.Location = new System.Drawing.Point(658, 296);
+            this.LContador.Name = "LContador";
+            this.LContador.Size = new System.Drawing.Size(35, 39);
+            this.LContador.TabIndex = 7;
+            this.LContador.Text = "0";
             // 
             // PPacienetes
             // 
@@ -206,7 +221,7 @@
             // btHistorial
             // 
             this.btHistorial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btHistorial.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btHistorial.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btHistorial.Image = global::SaludSoft.Properties.Resources.expediente_del_paciente;
             this.btHistorial.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btHistorial.Location = new System.Drawing.Point(114, 233);
@@ -251,24 +266,13 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
-            this.pictureBox1.Location = new System.Drawing.Point(2, -1);
+            this.pictureBox1.Location = new System.Drawing.Point(2, 4);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(144, 49);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
-            // 
-            // LContador
-            // 
-            this.LContador.AutoSize = true;
-            this.LContador.BackColor = System.Drawing.Color.Transparent;
-            this.LContador.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LContador.Location = new System.Drawing.Point(658, 296);
-            this.LContador.Name = "LContador";
-            this.LContador.Size = new System.Drawing.Size(35, 39);
-            this.LContador.TabIndex = 7;
-            this.LContador.Text = "0";
             // 
             // Admin
             // 
@@ -277,7 +281,6 @@
             this.ClientSize = new System.Drawing.Size(1036, 499);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Admin";
