@@ -17,7 +17,9 @@ namespace SaludSoft
         {
             InitializeComponent();
             CargarConsultorios();
+            CargarTotales();
         }
+        // cargar datos 
         private void CargarConsultorios()
         {
             using (SqlConnection conexion = Conexion.GetConnection())
@@ -73,14 +75,55 @@ namespace SaludSoft
                 CMBConsultorio.ValueMember = "id_consultorio";
 
                 // Cargar profesionales
-                SqlDataAdapter daProf = new SqlDataAdapter("SELECT id_profesional, nombre + ' ' + apellido AS nombre FROM Profesional", conexion);
+                SqlDataAdapter daProf = new SqlDataAdapter(@"
+                   SELECT p.id_profesional, 
+                   p.nombre + ' ' + p.apellido + ' - ' + e.nombre AS profesional_especialidad
+                   FROM Profesional p
+                   INNER JOIN Especialidad e ON p.id_especialidad = e.id_especialidad
+                   INNER JOIN EstadoProfesional ep ON p.id_estado = ep.id_estado
+                   WHERE ep.descripcion = 'Activo'", conexion); 
                 DataTable dtProf = new DataTable();
                 daProf.Fill(dtProf);
                 CMBProfesional.DataSource = dtProf;
-                CMBProfesional.DisplayMember = "nombre";
+                CMBProfesional.DisplayMember = "profesional_especialidad";
                 CMBProfesional.ValueMember = "id_profesional";
             }
         }
+
+        private void CargarTotales()
+        {
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                conexion.Open();
+
+                // Total consultorios
+                SqlCommand cmdTotal = new SqlCommand("SELECT COUNT(*) FROM Consultorio", conexion);
+                int total = (int)cmdTotal.ExecuteScalar();
+
+                // Disponibles
+                SqlCommand cmdDisp = new SqlCommand(@"
+                 SELECT COUNT(*) 
+                 FROM Consultorio c
+                 WHERE c.id_consultorio NOT IN (
+                 SELECT id_consultorio 
+                 FROM Profesional_Consultorio
+                 WHERE GETDATE() BETWEEN vigencia_desde AND vigencia_hasta)", conexion);
+                int disponibles = (int)cmdDisp.ExecuteScalar();
+
+                // Asignados
+                SqlCommand cmdAsig = new SqlCommand(@"
+                  SELECT COUNT(DISTINCT id_consultorio)
+                  FROM Profesional_Consultorio
+                  WHERE GETDATE() BETWEEN vigencia_desde AND vigencia_hasta", conexion);
+                int asignados = (int)cmdAsig.ExecuteScalar();
+
+                // Mostrar en labels
+                LTotalConsultorios.Text = total.ToString();
+                LConsultoriosDisponibles.Text = disponibles.ToString();
+                LConsultoriosAsignados.Text = asignados.ToString();
+            }
+        }
+
         // Asignar Profesional_consultorio
         private void BAgregarProfesional_consultorio_Click(object sender, EventArgs e)
         {
@@ -119,6 +162,7 @@ namespace SaludSoft
             MessageBox.Show("Consultorio agregado con éxito.");
             GBAgregarConsultorio.Visible = false;
             CargarConsultorios();
+            CargarTotales();
         }
 
         // botones 

@@ -34,13 +34,13 @@
             this.DGWConsultorios_profesional = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
             this.LDescripcion = new System.Windows.Forms.Label();
-            this.LContador = new System.Windows.Forms.Label();
+            this.LTotalConsultorios = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.LConsultoriosDisponibles = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.LConsultoriosAsignados = new System.Windows.Forms.Label();
             this.BAgregarConsultorio = new System.Windows.Forms.Button();
             this.BAsignarProfesional = new System.Windows.Forms.Button();
             this.GBAgregarConsultorio = new System.Windows.Forms.GroupBox();
@@ -113,7 +113,7 @@
             // 
             this.panel2.BackColor = System.Drawing.Color.LightGreen;
             this.panel2.Controls.Add(this.LDescripcion);
-            this.panel2.Controls.Add(this.LContador);
+            this.panel2.Controls.Add(this.LTotalConsultorios);
             this.panel2.Location = new System.Drawing.Point(331, 86);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(186, 88);
@@ -131,21 +131,21 @@
             this.LDescripcion.Text = "Total Consultorios";
             this.LDescripcion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // LContador
+            // LTotalConsultorios
             // 
-            this.LContador.AutoSize = true;
-            this.LContador.Font = new System.Drawing.Font("Consolas", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LContador.Location = new System.Drawing.Point(76, 13);
-            this.LContador.Name = "LContador";
-            this.LContador.Size = new System.Drawing.Size(29, 32);
-            this.LContador.TabIndex = 0;
-            this.LContador.Text = "0";
+            this.LTotalConsultorios.AutoSize = true;
+            this.LTotalConsultorios.Font = new System.Drawing.Font("Consolas", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LTotalConsultorios.Location = new System.Drawing.Point(76, 13);
+            this.LTotalConsultorios.Name = "LTotalConsultorios";
+            this.LTotalConsultorios.Size = new System.Drawing.Size(29, 32);
+            this.LTotalConsultorios.TabIndex = 0;
+            this.LTotalConsultorios.Text = "0";
             // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.LightGreen;
             this.panel3.Controls.Add(this.label2);
-            this.panel3.Controls.Add(this.label3);
+            this.panel3.Controls.Add(this.LConsultoriosDisponibles);
             this.panel3.Location = new System.Drawing.Point(581, 86);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(193, 88);
@@ -163,21 +163,21 @@
             this.label2.Text = "Disponibles";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label3
+            // LConsultoriosDisponibles
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Consolas", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(84, 13);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 32);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "0";
+            this.LConsultoriosDisponibles.AutoSize = true;
+            this.LConsultoriosDisponibles.Font = new System.Drawing.Font("Consolas", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LConsultoriosDisponibles.Location = new System.Drawing.Point(84, 13);
+            this.LConsultoriosDisponibles.Name = "LConsultoriosDisponibles";
+            this.LConsultoriosDisponibles.Size = new System.Drawing.Size(29, 32);
+            this.LConsultoriosDisponibles.TabIndex = 0;
+            this.LConsultoriosDisponibles.Text = "0";
             // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.LightGreen;
             this.panel4.Controls.Add(this.label4);
-            this.panel4.Controls.Add(this.label5);
+            this.panel4.Controls.Add(this.LConsultoriosAsignados);
             this.panel4.Location = new System.Drawing.Point(811, 86);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(199, 88);
@@ -195,15 +195,15 @@
             this.label4.Text = "Asignados";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label5
+            // LConsultoriosAsignados
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Consolas", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(88, 13);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(29, 32);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "0";
+            this.LConsultoriosAsignados.AutoSize = true;
+            this.LConsultoriosAsignados.Font = new System.Drawing.Font("Consolas", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LConsultoriosAsignados.Location = new System.Drawing.Point(88, 13);
+            this.LConsultoriosAsignados.Name = "LConsultoriosAsignados";
+            this.LConsultoriosAsignados.Size = new System.Drawing.Size(29, 32);
+            this.LConsultoriosAsignados.TabIndex = 0;
+            this.LConsultoriosAsignados.Text = "0";
             // 
             // BAgregarConsultorio
             // 
@@ -340,7 +340,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(253, 16);
+            this.label7.Location = new System.Drawing.Point(239, 19);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(90, 18);
             this.label7.TabIndex = 5;
@@ -393,9 +393,9 @@
             // CMBProfesional
             // 
             this.CMBProfesional.FormattingEnabled = true;
-            this.CMBProfesional.Location = new System.Drawing.Point(246, 53);
+            this.CMBProfesional.Location = new System.Drawing.Point(222, 53);
             this.CMBProfesional.Name = "CMBProfesional";
-            this.CMBProfesional.Size = new System.Drawing.Size(121, 21);
+            this.CMBProfesional.Size = new System.Drawing.Size(161, 21);
             this.CMBProfesional.TabIndex = 3;
             // 
             // CMBConsultorio
@@ -465,13 +465,13 @@
         private System.Windows.Forms.DataGridView DGWConsultorios_profesional;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label LDescripcion;
-        private System.Windows.Forms.Label LContador;
+        private System.Windows.Forms.Label LTotalConsultorios;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label LConsultoriosDisponibles;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label LConsultoriosAsignados;
         private System.Windows.Forms.Button BAgregarConsultorio;
         private System.Windows.Forms.Button BAsignarProfesional;
         private System.Windows.Forms.GroupBox GBAgregarConsultorio;
