@@ -129,5 +129,11 @@ namespace SaludSoft
             // Asignar el texto al botón o label
             LContador.Text = $"{cantidad}";
         }
+
+        private void btConsultorios_Click(object sender, EventArgs e)
+        {
+            FormConsultorio frm = new FormConsultorio();
+            frm.ShowDialog();
+        }
     }
 }

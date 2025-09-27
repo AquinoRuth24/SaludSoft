@@ -85,6 +85,12 @@
     <Compile Include="FormAgenda.Designer.cs">
       <DependentUpon>FormAgenda.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormConsultorio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormConsultorio.Designer.cs">
+      <DependentUpon>FormConsultorio.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormEditarHistorial.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -199,6 +205,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAgenda.resx">
       <DependentUpon>FormAgenda.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormConsultorio.resx">
+      <DependentUpon>FormConsultorio.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormEditarHistorial.resx">
       <DependentUpon>FormEditarHistorial.cs</DependentUpon>

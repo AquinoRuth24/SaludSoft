@@ -38,12 +38,12 @@
             this.btGestionUsuario = new System.Windows.Forms.Button();
             this.lAdministrador = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.LContador = new System.Windows.Forms.Label();
             this.PPacienetes = new System.Windows.Forms.Button();
             this.btHistorial = new System.Windows.Forms.Button();
             this.btEspecialidades = new System.Windows.Forms.Button();
             this.btTurnosMes = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.LContador = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -107,6 +107,7 @@
             this.btConsultorios.Text = "Consultorios";
             this.btConsultorios.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btConsultorios.UseVisualStyleBackColor = true;
+            this.btConsultorios.Click += new System.EventHandler(this.btConsultorios_Click);
             // 
             // btTurnos
             // 
@@ -190,6 +191,17 @@
             this.panel3.Size = new System.Drawing.Size(889, 446);
             this.panel3.TabIndex = 3;
             // 
+            // LContador
+            // 
+            this.LContador.AutoSize = true;
+            this.LContador.BackColor = System.Drawing.Color.Transparent;
+            this.LContador.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LContador.Location = new System.Drawing.Point(658, 296);
+            this.LContador.Name = "LContador";
+            this.LContador.Size = new System.Drawing.Size(35, 39);
+            this.LContador.TabIndex = 7;
+            this.LContador.Text = "0";
+            // 
             // PPacienetes
             // 
             this.PPacienetes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
@@ -258,17 +270,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
-            // 
-            // LContador
-            // 
-            this.LContador.AutoSize = true;
-            this.LContador.BackColor = System.Drawing.Color.Transparent;
-            this.LContador.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LContador.Location = new System.Drawing.Point(658, 296);
-            this.LContador.Name = "LContador";
-            this.LContador.Size = new System.Drawing.Size(35, 39);
-            this.LContador.TabIndex = 7;
-            this.LContador.Text = "0";
             // 
             // Admin
             // 

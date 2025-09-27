@@ -1,0 +1,147 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace SaludSoft
+{
+    public partial class FormConsultorio : Form
+    {
+        public FormConsultorio()
+        {
+            InitializeComponent();
+            CargarConsultorios();
+        }
+        private void CargarConsultorios()
+        {
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                conexion.Open();
+
+                string query = @"
+                SELECT 
+                       c.nroConsultorio, 
+                       c.descripcion, 
+                       ISNULL(p.nombre + ' ' + p.apellido, '-') AS profesional,
+                       ISNULL(e.nombre, '-') AS especialidad,
+                       ISNULL(CONVERT(VARCHAR, pc.vigencia_desde, 103) + ' - ' + 
+                              CONVERT(VARCHAR, pc.vigencia_hasta, 103), '-') AS vigencia
+                FROM Consultorio c
+                LEFT JOIN Profesional_Consultorio pc ON c.id_consultorio = pc.id_consultorio
+                LEFT JOIN Profesional p ON pc.id_profesional = p.id_profesional
+                LEFT JOIN Especialidad e ON p.id_especialidad = e.id_especialidad";
+
+                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                DGWConsultorios_profesional.DataSource = null;
+                DGWConsultorios_profesional.Columns.Clear();
+                DGWConsultorios_profesional.DataSource = dt;
+
+                DGWConsultorios_profesional.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                DGWConsultorios_profesional.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+                // Botón Editar
+                DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
+                btnEditar.HeaderText = "Acciones";
+                btnEditar.Name = "Editar";
+                btnEditar.Text = " Editar";
+                btnEditar.UseColumnTextForButtonValue = true;
+                DGWConsultorios_profesional.Columns.Add(btnEditar);
+            }
+        }
+
+        private void CargarCombos()
+        {
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                conexion.Open();
+
+                // Cargar consultorios
+                SqlDataAdapter daCons = new SqlDataAdapter("SELECT id_consultorio, descripcion FROM Consultorio", conexion);
+                DataTable dtCons = new DataTable();
+                daCons.Fill(dtCons);
+                CMBConsultorio.DataSource = dtCons;
+                CMBConsultorio.DisplayMember = "descripcion";
+                CMBConsultorio.ValueMember = "id_consultorio";
+
+                // Cargar profesionales
+                SqlDataAdapter daProf = new SqlDataAdapter("SELECT id_profesional, nombre + ' ' + apellido AS nombre FROM Profesional", conexion);
+                DataTable dtProf = new DataTable();
+                daProf.Fill(dtProf);
+                CMBProfesional.DataSource = dtProf;
+                CMBProfesional.DisplayMember = "nombre";
+                CMBProfesional.ValueMember = "id_profesional";
+            }
+        }
+        // Asignar Profesional_consultorio
+        private void BAgregarProfesional_consultorio_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                conexion.Open();
+                string query = @"
+                INSERT INTO Profesional_Consultorio (id_profesional, id_consultorio, fecha, vigencia_desde, vigencia_hasta)
+                VALUES (@prof, @cons, GETDATE(), @desde, @hasta)";
+
+                SqlCommand cmd = new SqlCommand(query, conexion);
+                cmd.Parameters.AddWithValue("@prof", CMBProfesional.SelectedValue);
+                cmd.Parameters.AddWithValue("@cons", CMBConsultorio.SelectedValue);
+                cmd.Parameters.AddWithValue("@desde", DTPDesde.Value);
+                cmd.Parameters.AddWithValue("@hasta", DTPHasta.Value);
+                cmd.ExecuteNonQuery();
+            }
+
+            MessageBox.Show("Profesional asignado correctamente.");
+            GBAsignarProfesional.Visible = false;
+            CargarConsultorios();
+        }
+        // agregar consultorio
+        private void BAgregar_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                conexion.Open();
+                string query = "INSERT INTO Consultorio (nroConsultorio, descripcion) VALUES (@nro, @desc)";
+                SqlCommand cmd = new SqlCommand(query, conexion);
+                cmd.Parameters.AddWithValue("@nro", TBNroConsultorio.Text);
+                cmd.Parameters.AddWithValue("@desc", TBDescripcion.Text);
+                cmd.ExecuteNonQuery();
+            }
+
+            MessageBox.Show("Consultorio agregado con éxito.");
+            GBAgregarConsultorio.Visible = false;
+            CargarConsultorios();
+        }
+
+        // botones 
+        private void BVolver_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        private void BAsignarProfesional_Click_1(object sender, EventArgs e)
+        {
+            CargarCombos();
+            GBAsignarProfesional.Visible = true;
+        }
+        private void BCancelar_Click(object sender, EventArgs e)
+        {
+            GBAgregarConsultorio.Visible = false;
+        }
+        private void BCancelarProfesional_consultorio_Click(object sender, EventArgs e)
+        {
+            GBAsignarProfesional.Visible = false;
+        }
+        private void BAgregarConsultorio_Click(object sender, EventArgs e)
+        {
+            GBAgregarConsultorio.Visible = true;
+        }
+    }
+}
