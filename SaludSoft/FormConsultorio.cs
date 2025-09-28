@@ -51,6 +51,7 @@ namespace SaludSoft
                 DGWConsultorios_profesional.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 DGWConsultorios_profesional.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
+
                 // Botón Editar
                 DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
                 btnEditar.HeaderText = "Acciones";
