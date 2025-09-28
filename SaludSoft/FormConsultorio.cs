@@ -18,6 +18,8 @@ namespace SaludSoft
             InitializeComponent();
             CargarConsultorios();
             CargarTotales();
+
+            DGWConsultorios_profesional.CellClick += DGWConsultorios_profesional_CellClick;
         }
         // cargar datos 
         private void CargarConsultorios()
@@ -34,17 +36,16 @@ namespace SaludSoft
                        ISNULL(e.nombre, '-') AS especialidad,
                        ISNULL(CONVERT(VARCHAR, pc.vigencia_desde, 103) + ' - ' + 
                               CONVERT(VARCHAR, pc.vigencia_hasta, 103), '-') AS vigencia
-                FROM Consultorio c
-                LEFT JOIN Profesional_Consultorio pc ON c.id_consultorio = pc.id_consultorio
-                LEFT JOIN Profesional p ON pc.id_profesional = p.id_profesional
-                LEFT JOIN Especialidad e ON p.id_especialidad = e.id_especialidad";
+                 FROM Consultorio c
+                 LEFT JOIN Profesional_Consultorio pc ON c.id_consultorio = pc.id_consultorio
+                 LEFT JOIN Profesional p ON pc.id_profesional = p.id_profesional
+                 LEFT JOIN Especialidad e ON p.id_especialidad = e.id_especialidad";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
                 DGWConsultorios_profesional.DataSource = null;
-                DGWConsultorios_profesional.Columns.Clear();
                 DGWConsultorios_profesional.DataSource = dt;
 
                 DGWConsultorios_profesional.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -57,6 +58,14 @@ namespace SaludSoft
                 btnEditar.Text = " Editar";
                 btnEditar.UseColumnTextForButtonValue = true;
                 DGWConsultorios_profesional.Columns.Add(btnEditar);
+
+                // Botón Eliminar
+                DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
+                btnEliminar.HeaderText = "Acciones";
+                btnEliminar.Name = "Eliminar";
+                btnEliminar.Text = " Eliminar";
+                btnEliminar.UseColumnTextForButtonValue = true;
+                DGWConsultorios_profesional.Columns.Add(btnEliminar);
             }
         }
 
@@ -186,6 +195,107 @@ namespace SaludSoft
         private void BAgregarConsultorio_Click(object sender, EventArgs e)
         {
             GBAgregarConsultorio.Visible = true;
+        }
+
+        private void DGWConsultorios_profesional_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                // Botón Editar
+                if (DGWConsultorios_profesional.Columns[e.ColumnIndex].Name == "Editar")
+                {
+                    string nroCons = DGWConsultorios_profesional.Rows[e.RowIndex].Cells["nroConsultorio"].Value.ToString();
+                    string profesional = DGWConsultorios_profesional.Rows[e.RowIndex].Cells["profesional"].Value.ToString();
+
+                    if (profesional != "-")
+                    {
+                        // Cargar combos
+                        CargarCombos();
+                        GBAsignarProfesional.Visible = true;
+
+                        // Seleccionar consultorio
+                        CMBConsultorio.SelectedIndex = CMBConsultorio.FindStringExact(
+                            DGWConsultorios_profesional.Rows[e.RowIndex].Cells["descripcion"].Value.ToString()
+                        );
+
+                        // Seleccionar profesional
+                        CMBProfesional.SelectedIndex = CMBProfesional.FindString(profesional);
+
+                        // Fechas
+                        string vigencia = DGWConsultorios_profesional.Rows[e.RowIndex].Cells["vigencia"].Value.ToString();
+                        if (vigencia != "-")
+                        {
+                            string[] fechas = vigencia.Split('-');
+                            DTPDesde.Value = DateTime.Parse(fechas[0].Trim());
+                            DTPHasta.Value = DateTime.Parse(fechas[1].Trim());
+                        }
+                    }
+                }
+
+                // Botón Eliminar
+                if (DGWConsultorios_profesional.Columns[e.ColumnIndex].Name == "Eliminar")
+                {
+                    DialogResult result = MessageBox.Show("¿Seguro que desea eliminar esta asignación?",
+                        "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        using (SqlConnection conexion = Conexion.GetConnection())
+                        {
+                            conexion.Open();
+                            string query = @"
+                             DELETE FROM Profesional_Consultorio
+                             WHERE id_consultorio = (
+                             SELECT TOP 1 id_consultorio FROM Consultorio WHERE nroConsultorio = @nro)";
+                            SqlCommand cmd = new SqlCommand(query, conexion);
+                            cmd.Parameters.AddWithValue("@nro", DGWConsultorios_profesional.Rows[e.RowIndex].Cells["nroConsultorio"].Value);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        MessageBox.Show("Asignación eliminada correctamente.");
+                        CargarConsultorios();
+                        CargarTotales();
+                    }
+                }
+            }
+        }
+        // filtro de busqueda
+        private void BBuscar_Click(object sender, EventArgs e)
+        {
+            if (DGWConsultorios_profesional.DataSource != null)
+            {
+                DataTable dt = DGWConsultorios_profesional.DataSource as DataTable;
+                if (dt != null)
+                {
+                    string filtro = TBBuscar.Text.Trim();
+
+                    if (string.IsNullOrEmpty(filtro))
+                    {
+                        // Si no se escribió nada, mostramos todos
+                        dt.DefaultView.RowFilter = "";
+                    }
+                    else
+                    {
+                        // Filtro por nroConsultorio, descripcion, profesional o especialidad
+                        dt.DefaultView.RowFilter = string.Format(
+                            "Convert(nroConsultorio, 'System.String') LIKE '%{0}%' OR " +
+                            "descripcion LIKE '%{0}%' OR " +
+                            "profesional LIKE '%{0}%' OR " +
+                            "especialidad LIKE '%{0}%'",
+                            filtro.Replace("'", "''") 
+                        );
+                    }
+                }
+            }
+        }
+
+        private void BLimpiar_Click(object sender, EventArgs e)
+        {
+            TBBuscar.Clear();
+            if (DGWConsultorios_profesional.DataSource != null)
+            {
+                (DGWConsultorios_profesional.DataSource as DataTable).DefaultView.RowFilter = "";
+            }
         }
     }
 }

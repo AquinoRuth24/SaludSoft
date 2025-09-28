@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormConsultorio));
             this.panel1 = new System.Windows.Forms.Panel();
             this.BVolver = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -61,6 +62,10 @@
             this.CMBConsultorio = new System.Windows.Forms.ComboBox();
             this.DTPDesde = new System.Windows.Forms.DateTimePicker();
             this.DTPHasta = new System.Windows.Forms.DateTimePicker();
+            this.TBBuscar = new System.Windows.Forms.TextBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.BBuscar = new System.Windows.Forms.Button();
+            this.BLimpiar = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGWConsultorios_profesional)).BeginInit();
             this.panel2.SuspendLayout();
@@ -68,6 +73,7 @@
             this.panel4.SuspendLayout();
             this.GBAgregarConsultorio.SuspendLayout();
             this.GBAsignarProfesional.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -108,13 +114,14 @@
             this.DGWConsultorios_profesional.Name = "DGWConsultorios_profesional";
             this.DGWConsultorios_profesional.Size = new System.Drawing.Size(1044, 267);
             this.DGWConsultorios_profesional.TabIndex = 3;
+            this.DGWConsultorios_profesional.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGWConsultorios_profesional_CellClick);
             // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.LightGreen;
             this.panel2.Controls.Add(this.LDescripcion);
             this.panel2.Controls.Add(this.LTotalConsultorios);
-            this.panel2.Location = new System.Drawing.Point(331, 86);
+            this.panel2.Location = new System.Drawing.Point(26, 86);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(186, 88);
             this.panel2.TabIndex = 8;
@@ -146,7 +153,7 @@
             this.panel3.BackColor = System.Drawing.Color.LightGreen;
             this.panel3.Controls.Add(this.label2);
             this.panel3.Controls.Add(this.LConsultoriosDisponibles);
-            this.panel3.Location = new System.Drawing.Point(581, 86);
+            this.panel3.Location = new System.Drawing.Point(236, 86);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(193, 88);
             this.panel3.TabIndex = 9;
@@ -178,7 +185,7 @@
             this.panel4.BackColor = System.Drawing.Color.LightGreen;
             this.panel4.Controls.Add(this.label4);
             this.panel4.Controls.Add(this.LConsultoriosAsignados);
-            this.panel4.Location = new System.Drawing.Point(811, 86);
+            this.panel4.Location = new System.Drawing.Point(453, 86);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(199, 88);
             this.panel4.TabIndex = 10;
@@ -210,7 +217,7 @@
             this.BAgregarConsultorio.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.BAgregarConsultorio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BAgregarConsultorio.ForeColor = System.Drawing.Color.Black;
-            this.BAgregarConsultorio.Location = new System.Drawing.Point(22, 206);
+            this.BAgregarConsultorio.Location = new System.Drawing.Point(1, 187);
             this.BAgregarConsultorio.Name = "BAgregarConsultorio";
             this.BAgregarConsultorio.Size = new System.Drawing.Size(190, 43);
             this.BAgregarConsultorio.TabIndex = 11;
@@ -222,7 +229,7 @@
             // 
             this.BAsignarProfesional.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.BAsignarProfesional.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BAsignarProfesional.Location = new System.Drawing.Point(252, 206);
+            this.BAsignarProfesional.Location = new System.Drawing.Point(217, 187);
             this.BAsignarProfesional.Name = "BAsignarProfesional";
             this.BAsignarProfesional.Size = new System.Drawing.Size(166, 43);
             this.BAsignarProfesional.TabIndex = 12;
@@ -424,11 +431,55 @@
             this.DTPHasta.Size = new System.Drawing.Size(130, 28);
             this.DTPHasta.TabIndex = 0;
             // 
+            // TBBuscar
+            // 
+            this.TBBuscar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TBBuscar.Location = new System.Drawing.Point(756, 119);
+            this.TBBuscar.Name = "TBBuscar";
+            this.TBBuscar.Size = new System.Drawing.Size(276, 28);
+            this.TBBuscar.TabIndex = 15;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox2.Location = new System.Drawing.Point(658, 124);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(70, 23);
+            this.pictureBox2.TabIndex = 16;
+            this.pictureBox2.TabStop = false;
+            // 
+            // BBuscar
+            // 
+            this.BBuscar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BBuscar.Location = new System.Drawing.Point(804, 171);
+            this.BBuscar.Name = "BBuscar";
+            this.BBuscar.Size = new System.Drawing.Size(77, 28);
+            this.BBuscar.TabIndex = 18;
+            this.BBuscar.Text = "Buscar";
+            this.BBuscar.UseVisualStyleBackColor = true;
+            this.BBuscar.Click += new System.EventHandler(this.BBuscar_Click);
+            // 
+            // BLimpiar
+            // 
+            this.BLimpiar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BLimpiar.Location = new System.Drawing.Point(955, 171);
+            this.BLimpiar.Name = "BLimpiar";
+            this.BLimpiar.Size = new System.Drawing.Size(77, 28);
+            this.BLimpiar.TabIndex = 19;
+            this.BLimpiar.Text = "Limpiar";
+            this.BLimpiar.UseVisualStyleBackColor = true;
+            this.BLimpiar.Click += new System.EventHandler(this.BLimpiar_Click);
+            // 
             // FormConsultorio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1044, 532);
+            this.Controls.Add(this.BLimpiar);
+            this.Controls.Add(this.BBuscar);
+            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.TBBuscar);
             this.Controls.Add(this.GBAsignarProfesional);
             this.Controls.Add(this.GBAgregarConsultorio);
             this.Controls.Add(this.BAsignarProfesional);
@@ -453,7 +504,9 @@
             this.GBAgregarConsultorio.PerformLayout();
             this.GBAsignarProfesional.ResumeLayout(false);
             this.GBAsignarProfesional.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -492,5 +545,9 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button BAgregarProfesional_consultorio;
         private System.Windows.Forms.Button BCancelarProfesional_consultorio;
+        private System.Windows.Forms.TextBox TBBuscar;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Button BBuscar;
+        private System.Windows.Forms.Button BLimpiar;
     }
 }

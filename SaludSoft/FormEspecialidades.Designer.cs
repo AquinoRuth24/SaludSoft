@@ -37,8 +37,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.BAgregar = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.LContador = new System.Windows.Forms.Label();
             this.LDescripcion = new System.Windows.Forms.Label();
+            this.LContador = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVEspecialidad)).BeginInit();
             this.panel2.SuspendLayout();
@@ -121,7 +121,7 @@
             this.BAgregar.Name = "BAgregar";
             this.BAgregar.Size = new System.Drawing.Size(80, 35);
             this.BAgregar.TabIndex = 6;
-            this.BAgregar.Text = "Agegar";
+            this.BAgregar.Text = "Agregar";
             this.BAgregar.UseVisualStyleBackColor = false;
             this.BAgregar.Click += new System.EventHandler(this.BAgregar_Click);
             // 
@@ -135,16 +135,6 @@
             this.panel2.Size = new System.Drawing.Size(254, 88);
             this.panel2.TabIndex = 7;
             // 
-            // LContador
-            // 
-            this.LContador.AutoSize = true;
-            this.LContador.Font = new System.Drawing.Font("Consolas", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LContador.Location = new System.Drawing.Point(110, 19);
-            this.LContador.Name = "LContador";
-            this.LContador.Size = new System.Drawing.Size(29, 32);
-            this.LContador.TabIndex = 0;
-            this.LContador.Text = "0";
-            // 
             // LDescripcion
             // 
             this.LDescripcion.AutoSize = true;
@@ -156,6 +146,16 @@
             this.LDescripcion.TabIndex = 1;
             this.LDescripcion.Text = "Especialidades Registradas";
             this.LDescripcion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // LContador
+            // 
+            this.LContador.AutoSize = true;
+            this.LContador.Font = new System.Drawing.Font("Consolas", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LContador.Location = new System.Drawing.Point(110, 19);
+            this.LContador.Name = "LContador";
+            this.LContador.Size = new System.Drawing.Size(29, 32);
+            this.LContador.TabIndex = 0;
+            this.LContador.Text = "0";
             // 
             // Especialidades
             // 
