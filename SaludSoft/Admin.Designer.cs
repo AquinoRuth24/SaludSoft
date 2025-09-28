@@ -66,7 +66,6 @@
             // 
             // btBackup
             // 
-            this.btBackup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btBackup.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btBackup.Image = global::SaludSoft.Properties.Resources.monedas;
             this.btBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -82,7 +81,6 @@
             // 
             // btConsultorios
             // 
-            this.btConsultorios.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btConsultorios.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btConsultorios.Image = global::SaludSoft.Properties.Resources.construccion_de_casas;
             this.btConsultorios.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -98,7 +96,6 @@
             // 
             // btTurnos
             // 
-            this.btTurnos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btTurnos.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btTurnos.Image = global::SaludSoft.Properties.Resources.alt_de_inventario;
             this.btTurnos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -113,7 +110,6 @@
             // 
             // btInicio
             // 
-            this.btInicio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btInicio.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btInicio.Image = global::SaludSoft.Properties.Resources.hogar;
             this.btInicio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -203,6 +199,7 @@
             // 
             // LContador
             // 
+            this.LContador.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.LContador.AutoSize = true;
             this.LContador.BackColor = System.Drawing.Color.Transparent;
             this.LContador.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -214,6 +211,7 @@
             // 
             // PPacienetes
             // 
+            this.PPacienetes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.PPacienetes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.PPacienetes.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PPacienetes.Location = new System.Drawing.Point(558, 231);
@@ -227,6 +225,7 @@
             // 
             // btHistorial
             // 
+            this.btHistorial.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btHistorial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.btHistorial.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btHistorial.Image = global::SaludSoft.Properties.Resources.expediente_del_paciente;
@@ -241,6 +240,7 @@
             // 
             // btEspecialidades
             // 
+            this.btEspecialidades.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btEspecialidades.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.btEspecialidades.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btEspecialidades.Image = global::SaludSoft.Properties.Resources.libro_medico;
