@@ -13,6 +13,9 @@ namespace SaludSoft
 {
     public partial class FormConsultorio : Form
     {
+        // Para saber si estoy editando
+        private int? idAsignacionEditando = null;
+
         public FormConsultorio()
         {
             InitializeComponent();
@@ -21,6 +24,7 @@ namespace SaludSoft
 
             DGWConsultorios_profesional.CellClick += DGWConsultorios_profesional_CellClick;
         }
+
         // cargar datos 
         private void CargarConsultorios()
         {
@@ -29,16 +33,15 @@ namespace SaludSoft
                 conexion.Open();
 
                 string query = @"
-                SELECT 
-                       c.nroConsultorio, 
-                       c.descripcion, 
-                       ISNULL(p.nombre + ' ' + p.apellido, '-') AS profesional,
-                       ISNULL(e.nombre, '-') AS especialidad,
-                       ISNULL(CONVERT(VARCHAR, pc.vigencia_desde, 103) + ' - ' + 
-                              CONVERT(VARCHAR, pc.vigencia_hasta, 103), '-') AS vigencia
-                 FROM Consultorio c
-                 LEFT JOIN Profesional_Consultorio pc ON c.id_consultorio = pc.id_consultorio
-                 LEFT JOIN Profesional p ON pc.id_profesional = p.id_profesional
+                 SELECT 
+                  c.nroConsultorio, 
+                  c.descripcion, 
+                 ISNULL(p.nombre + ' ' + p.apellido, '-') AS profesional,
+                 ISNULL(e.nombre, '-') AS especialidad,
+                 ISNULL(CONVERT(VARCHAR, pc.vigencia_desde, 103)+ ' - ' + CONVERT(VARCHAR, pc.vigencia_hasta, 103), '-') AS vigencia 
+                 FROM Consultorio c 
+                 LEFT JOIN Profesional_Consultorio pc ON c.id_consultorio = pc.id_consultorio 
+                 LEFT JOIN Profesional p ON pc.id_profesional = p.id_profesional 
                  LEFT JOIN Especialidad e ON p.id_especialidad = e.id_especialidad";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
@@ -46,27 +49,33 @@ namespace SaludSoft
                 da.Fill(dt);
 
                 DGWConsultorios_profesional.DataSource = null;
+                DGWConsultorios_profesional.Columns.Clear();
                 DGWConsultorios_profesional.DataSource = dt;
 
                 DGWConsultorios_profesional.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 DGWConsultorios_profesional.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-
                 // Botón Editar
-                DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
-                btnEditar.HeaderText = "Acciones";
-                btnEditar.Name = "Editar";
-                btnEditar.Text = " Editar";
-                btnEditar.UseColumnTextForButtonValue = true;
-                DGWConsultorios_profesional.Columns.Add(btnEditar);
+                if (!DGWConsultorios_profesional.Columns.Contains("Editar"))
+                {
+                    DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
+                    btnEditar.HeaderText = "Acciones";
+                    btnEditar.Name = "Editar";
+                    btnEditar.Text = " Editar";
+                    btnEditar.UseColumnTextForButtonValue = true;
+                    DGWConsultorios_profesional.Columns.Add(btnEditar);
+                }
 
                 // Botón Eliminar
-                DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
-                btnEliminar.HeaderText = "Acciones";
-                btnEliminar.Name = "Eliminar";
-                btnEliminar.Text = " Eliminar";
-                btnEliminar.UseColumnTextForButtonValue = true;
-                DGWConsultorios_profesional.Columns.Add(btnEliminar);
+                if (!DGWConsultorios_profesional.Columns.Contains("Eliminar"))
+                {
+                    DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
+                    btnEliminar.HeaderText = "Acciones";
+                    btnEliminar.Name = "Eliminar";
+                    btnEliminar.Text = " Eliminar";
+                    btnEliminar.UseColumnTextForButtonValue = true;
+                    DGWConsultorios_profesional.Columns.Add(btnEliminar);
+                }
             }
         }
 
@@ -91,7 +100,7 @@ namespace SaludSoft
                    FROM Profesional p
                    INNER JOIN Especialidad e ON p.id_especialidad = e.id_especialidad
                    INNER JOIN EstadoProfesional ep ON p.id_estado = ep.id_estado
-                   WHERE ep.descripcion = 'Activo'", conexion); 
+                   WHERE ep.descripcion = 'Activo'", conexion);
                 DataTable dtProf = new DataTable();
                 daProf.Fill(dtProf);
                 CMBProfesional.DataSource = dtProf;
@@ -120,42 +129,76 @@ namespace SaludSoft
                  WHERE GETDATE() BETWEEN vigencia_desde AND vigencia_hasta)", conexion);
                 int disponibles = (int)cmdDisp.ExecuteScalar();
 
-                // Asignados
+                // Asignados (vigentes o futuras)
                 SqlCommand cmdAsig = new SqlCommand(@"
                   SELECT COUNT(DISTINCT id_consultorio)
                   FROM Profesional_Consultorio
-                  WHERE GETDATE() BETWEEN vigencia_desde AND vigencia_hasta", conexion);
+                  WHERE vigencia_hasta >= CAST(GETDATE() AS DATE)", conexion);
                 int asignados = (int)cmdAsig.ExecuteScalar();
 
-                // Mostrar en labels
+                // Mostrar
                 LTotalConsultorios.Text = total.ToString();
                 LConsultoriosDisponibles.Text = disponibles.ToString();
                 LConsultoriosAsignados.Text = asignados.ToString();
             }
         }
 
-        // Asignar Profesional_consultorio
+        // Agregar o Editar Profesional_consultorio
         private void BAgregarProfesional_consultorio_Click(object sender, EventArgs e)
         {
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 conexion.Open();
-                string query = @"
-                INSERT INTO Profesional_Consultorio (id_profesional, id_consultorio, fecha, vigencia_desde, vigencia_hasta)
-                VALUES (@prof, @cons, GETDATE(), @desde, @hasta)";
 
-                SqlCommand cmd = new SqlCommand(query, conexion);
-                cmd.Parameters.AddWithValue("@prof", CMBProfesional.SelectedValue);
-                cmd.Parameters.AddWithValue("@cons", CMBConsultorio.SelectedValue);
-                cmd.Parameters.AddWithValue("@desde", DTPDesde.Value);
-                cmd.Parameters.AddWithValue("@hasta", DTPHasta.Value);
-                cmd.ExecuteNonQuery();
+                if (idAsignacionEditando == null)
+                {
+                    // INSERTAR nuevo
+                    string query = @"
+                        INSERT INTO Profesional_Consultorio (id_profesional, id_consultorio, fecha, vigencia_desde, vigencia_hasta)
+                        VALUES (@prof, @cons, GETDATE(), @desde, @hasta)";
+
+                    SqlCommand cmd = new SqlCommand(query, conexion);
+                    cmd.Parameters.AddWithValue("@prof", CMBProfesional.SelectedValue);
+                    cmd.Parameters.AddWithValue("@cons", CMBConsultorio.SelectedValue);
+                    cmd.Parameters.AddWithValue("@desde", DTPDesde.Value);
+                    cmd.Parameters.AddWithValue("@hasta", DTPHasta.Value);
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("Profesional asignado correctamente.");
+                }
+                else
+                {
+                    // ACTUALIZAR existente
+                    string query = @"
+                        UPDATE pc
+                        SET id_profesional = @prof,
+                            vigencia_desde = @desde,
+                            vigencia_hasta = @hasta
+                        FROM Profesional_Consultorio pc
+                        INNER JOIN Consultorio c ON pc.id_consultorio = c.id_consultorio
+                        WHERE c.nroConsultorio = @nro";
+
+                    SqlCommand cmd = new SqlCommand(query, conexion);
+                    cmd.Parameters.AddWithValue("@prof", CMBProfesional.SelectedValue);
+                    cmd.Parameters.AddWithValue("@desde", DTPDesde.Value);
+                    cmd.Parameters.AddWithValue("@hasta", DTPHasta.Value);
+                    cmd.Parameters.AddWithValue("@nro", idAsignacionEditando);
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("Asignación actualizada correctamente.");
+                }
             }
 
-            MessageBox.Show("Profesional asignado correctamente.");
+            // Resetear interfaz
+            idAsignacionEditando = null;
+            BAgregarProfesional_consultorio.Text = "Agregar";
+            GBAsignarProfesional.Text = "Asignar consultorio";
+            CMBConsultorio.Enabled = true;
             GBAsignarProfesional.Visible = false;
             CargarConsultorios();
+            CargarTotales();
         }
+
         // agregar consultorio
         private void BAgregar_Click(object sender, EventArgs e)
         {
@@ -183,6 +226,10 @@ namespace SaludSoft
         private void BAsignarProfesional_Click_1(object sender, EventArgs e)
         {
             CargarCombos();
+            GBAsignarProfesional.Text = "Asignar consultorio";
+            BAgregarProfesional_consultorio.Text = "Agregar";
+            idAsignacionEditando = null;
+            CMBConsultorio.Enabled = true;
             GBAsignarProfesional.Visible = true;
         }
         private void BCancelar_Click(object sender, EventArgs e)
@@ -191,6 +238,10 @@ namespace SaludSoft
         }
         private void BCancelarProfesional_consultorio_Click(object sender, EventArgs e)
         {
+            idAsignacionEditando = null;
+            BAgregarProfesional_consultorio.Text = "Agregar";
+            GBAsignarProfesional.Text = "Asignar consultorio";
+            CMBConsultorio.Enabled = true;
             GBAsignarProfesional.Visible = false;
         }
         private void BAgregarConsultorio_Click(object sender, EventArgs e)
@@ -210,14 +261,20 @@ namespace SaludSoft
 
                     if (profesional != "-")
                     {
+                        // Guardar nro consultorio en edición
+                        idAsignacionEditando = Convert.ToInt32(nroCons);
+
                         // Cargar combos
                         CargarCombos();
                         GBAsignarProfesional.Visible = true;
+                        GBAsignarProfesional.Text = "Editar asignación";
+                        BAgregarProfesional_consultorio.Text = "Actualizar";
 
-                        // Seleccionar consultorio
+                        // Seleccionar consultorio (bloquearlo en edición)
                         CMBConsultorio.SelectedIndex = CMBConsultorio.FindStringExact(
                             DGWConsultorios_profesional.Rows[e.RowIndex].Cells["descripcion"].Value.ToString()
                         );
+                        CMBConsultorio.Enabled = false;
 
                         // Seleccionar profesional
                         CMBProfesional.SelectedIndex = CMBProfesional.FindString(profesional);
@@ -234,32 +291,23 @@ namespace SaludSoft
                 }
 
                 // Botón Eliminar
-                if (DGWConsultorios_profesional.Columns[e.ColumnIndex].Name == "Eliminar")
-                {
-                    DialogResult result = MessageBox.Show("¿Seguro que desea eliminar esta asignación?",
-                        "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-                    if (result == DialogResult.Yes)
-                    {
-                        using (SqlConnection conexion = Conexion.GetConnection())
-                        {
-                            conexion.Open();
-                            string query = @"
-                             DELETE FROM Profesional_Consultorio
-                             WHERE id_consultorio = (
-                             SELECT TOP 1 id_consultorio FROM Consultorio WHERE nroConsultorio = @nro)";
-                            SqlCommand cmd = new SqlCommand(query, conexion);
-                            cmd.Parameters.AddWithValue("@nro", DGWConsultorios_profesional.Rows[e.RowIndex].Cells["nroConsultorio"].Value);
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        MessageBox.Show("Asignación eliminada correctamente.");
-                        CargarConsultorios();
-                        CargarTotales();
-                    }
-                }
+                if (DGWConsultorios_profesional.Columns[e.ColumnIndex].Name == "Eliminar") 
+                { DialogResult result = 
+                        MessageBox.Show("¿Seguro que desea eliminar esta asignación?", "Confirmación",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning); if (result == DialogResult.Yes) {
+                  using (SqlConnection conexion = Conexion.GetConnection()){
+                         conexion.Open(); string query = @" 
+                           DELETE FROM Profesional_Consultorio 
+                           WHERE id_consultorio = ( SELECT TOP 1 id_consultorio FROM Consultorio WHERE nroConsultorio = @nro)"; 
+                          SqlCommand cmd = new SqlCommand(query, conexion);
+                          cmd.Parameters.AddWithValue
+                                ("@nro", DGWConsultorios_profesional.Rows[e.RowIndex].Cells["nroConsultorio"].Value); 
+                          cmd.ExecuteNonQuery(); } MessageBox.Show("Asignación eliminada correctamente.");
+                        CargarConsultorios(); 
+                        CargarTotales(); } }
             }
         }
+
         // filtro de busqueda
         private void BBuscar_Click(object sender, EventArgs e)
         {
@@ -272,18 +320,16 @@ namespace SaludSoft
 
                     if (string.IsNullOrEmpty(filtro))
                     {
-                        // Si no se escribió nada, mostramos todos
                         dt.DefaultView.RowFilter = "";
                     }
                     else
                     {
-                        // Filtro por nroConsultorio, descripcion, profesional o especialidad
                         dt.DefaultView.RowFilter = string.Format(
                             "Convert(nroConsultorio, 'System.String') LIKE '%{0}%' OR " +
                             "descripcion LIKE '%{0}%' OR " +
                             "profesional LIKE '%{0}%' OR " +
                             "especialidad LIKE '%{0}%'",
-                            filtro.Replace("'", "''") 
+                            filtro.Replace("'", "''")
                         );
                     }
                 }
