@@ -78,18 +78,27 @@ namespace SaludSoft
             this.Show();
             this.Activate();
         }
-        //corregir no cierra la ventana
         private void btCerrar_Click(object sender, EventArgs e)
         {
             // Ocultar panel de citas y volver a la vista principal del formulario
             pnlCitas.Visible = false;
 
-            // Si tenés un panel principal, mostrale:
-            // pnlHome.Visible = true;
-            // pnlHome.BringToFront();
 
             this.Show();
             this.WindowState = FormWindowState.Normal;
+            this.Activate();
+        }
+
+        private void btCerrar_Click_1(object sender, EventArgs e)
+        {
+            CerrarCitasUI();
+        }
+
+        private void CerrarCitasUI()
+        {
+            if (pnlCitas == null) return;
+            pnlCitas.Visible = false;
+            pnlCitas.SendToBack();
             this.Activate();
         }
     }

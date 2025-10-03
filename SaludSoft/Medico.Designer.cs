@@ -254,7 +254,7 @@
             this.pnlCitas.Controls.Add(this.lFecha);
             this.pnlCitas.Controls.Add(this.dateTimePicker1);
             this.pnlCitas.Controls.Add(this.panel3);
-            this.pnlCitas.Location = new System.Drawing.Point(184, 228);
+            this.pnlCitas.Location = new System.Drawing.Point(190, 215);
             this.pnlCitas.Name = "pnlCitas";
             this.pnlCitas.Size = new System.Drawing.Size(402, 260);
             this.pnlCitas.TabIndex = 7;
@@ -328,7 +328,7 @@
             // 
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.panel3.Controls.Add(this.btCerrar);
             this.panel3.Controls.Add(this.lCitas);
             this.panel3.Location = new System.Drawing.Point(0, 0);
@@ -346,6 +346,7 @@
             this.btCerrar.Size = new System.Drawing.Size(33, 30);
             this.btCerrar.TabIndex = 2;
             this.btCerrar.UseVisualStyleBackColor = false;
+            this.btCerrar.Click += new System.EventHandler(this.btCerrar_Click_1);
             // 
             // lCitas
             // 

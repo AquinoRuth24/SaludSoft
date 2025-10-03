@@ -29,5 +29,25 @@ namespace SaludSoft
                 //frm.ShowDialog();
             }
         }
+
+        private void btVolver_Click_1(object sender, EventArgs e)
+        {
+         
+            // Si fue abierto modal con Owner:
+            if (this.Owner is Medico m)
+            {
+                m.Show();
+                m.Activate();
+            }
+            else
+            {
+                // Fallback: buscar un Medico abierto
+                var medico = Application.OpenForms.OfType<Medico>().FirstOrDefault();
+                if (medico != null) { medico.Show(); medico.Activate(); }
+            }
+
+            this.Close(); // cierra FormHistorial
+        }
     }
-}
+    }
+
