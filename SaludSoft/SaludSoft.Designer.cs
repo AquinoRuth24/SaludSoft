@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaludSoft));
             this.PMenu = new System.Windows.Forms.Panel();
             this.BAgenda = new System.Windows.Forms.Button();
-            this.panel4 = new System.Windows.Forms.Panel();
             this.BCerrarSesion = new System.Windows.Forms.Button();
             this.BTurnos = new System.Windows.Forms.Button();
             this.BPacientes = new System.Windows.Forms.Button();
@@ -55,7 +54,6 @@
             this.PEspecialidades = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.PMenu.SuspendLayout();
-            this.panel4.SuspendLayout();
             this.PSuperior.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.PPacientes.SuspendLayout();
@@ -69,20 +67,22 @@
             // 
             // PMenu
             // 
-            this.PMenu.BackColor = System.Drawing.Color.DarkGreen;
+            this.PMenu.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.PMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.PMenu.Controls.Add(this.BCerrarSesion);
             this.PMenu.Controls.Add(this.BAgenda);
-            this.PMenu.Controls.Add(this.panel4);
             this.PMenu.Controls.Add(this.BTurnos);
             this.PMenu.Controls.Add(this.BPacientes);
             this.PMenu.Controls.Add(this.BInicio);
-            this.PMenu.Location = new System.Drawing.Point(2, 65);
+            this.PMenu.Location = new System.Drawing.Point(2, 72);
             this.PMenu.Name = "PMenu";
-            this.PMenu.Size = new System.Drawing.Size(120, 463);
+            this.PMenu.Size = new System.Drawing.Size(120, 453);
             this.PMenu.TabIndex = 0;
             // 
             // BAgenda
             // 
-            this.BAgenda.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BAgenda.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BAgenda.Location = new System.Drawing.Point(10, 253);
             this.BAgenda.Name = "BAgenda";
             this.BAgenda.Size = new System.Drawing.Size(98, 35);
@@ -91,28 +91,21 @@
             this.BAgenda.UseVisualStyleBackColor = true;
             this.BAgenda.Click += new System.EventHandler(this.BAgenda_Click);
             // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.BCerrarSesion);
-            this.panel4.Location = new System.Drawing.Point(3, 339);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(117, 124);
-            this.panel4.TabIndex = 11;
-            // 
             // BCerrarSesion
             // 
-            this.BCerrarSesion.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BCerrarSesion.Location = new System.Drawing.Point(3, 45);
+            this.BCerrarSesion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.BCerrarSesion.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BCerrarSesion.Location = new System.Drawing.Point(6, 381);
             this.BCerrarSesion.Name = "BCerrarSesion";
-            this.BCerrarSesion.Size = new System.Drawing.Size(108, 53);
+            this.BCerrarSesion.Size = new System.Drawing.Size(111, 55);
             this.BCerrarSesion.TabIndex = 6;
-            this.BCerrarSesion.Text = "Cerrar sesion";
+            this.BCerrarSesion.Text = "Cerrar Sesión";
             this.BCerrarSesion.UseVisualStyleBackColor = true;
             this.BCerrarSesion.Click += new System.EventHandler(this.BCerrarSesion_Click);
             // 
             // BTurnos
             // 
-            this.BTurnos.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BTurnos.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BTurnos.Location = new System.Drawing.Point(10, 179);
             this.BTurnos.Name = "BTurnos";
             this.BTurnos.Size = new System.Drawing.Size(92, 36);
@@ -122,8 +115,8 @@
             // 
             // BPacientes
             // 
-            this.BPacientes.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BPacientes.Location = new System.Drawing.Point(6, 115);
+            this.BPacientes.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BPacientes.Location = new System.Drawing.Point(6, 101);
             this.BPacientes.Name = "BPacientes";
             this.BPacientes.Size = new System.Drawing.Size(102, 40);
             this.BPacientes.TabIndex = 5;
@@ -133,8 +126,8 @@
             // 
             // BInicio
             // 
-            this.BInicio.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BInicio.Location = new System.Drawing.Point(10, 50);
+            this.BInicio.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BInicio.Location = new System.Drawing.Point(10, 21);
             this.BInicio.Name = "BInicio";
             this.BInicio.Size = new System.Drawing.Size(92, 43);
             this.BInicio.TabIndex = 2;
@@ -144,7 +137,9 @@
             // 
             // PSuperior
             // 
-            this.PSuperior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
+            this.PSuperior.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PSuperior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.PSuperior.Controls.Add(this.BNuevoPaciente);
             this.PSuperior.Controls.Add(this.LRecepcionista);
             this.PSuperior.Controls.Add(this.Label);
@@ -158,12 +153,13 @@
             // 
             // BNuevoPaciente
             // 
+            this.BNuevoPaciente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BNuevoPaciente.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(106)))), ((int)(((byte)(32)))));
-            this.BNuevoPaciente.Font = new System.Drawing.Font("Microsoft YaHei", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BNuevoPaciente.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BNuevoPaciente.ForeColor = System.Drawing.Color.White;
-            this.BNuevoPaciente.Location = new System.Drawing.Point(819, 11);
+            this.BNuevoPaciente.Location = new System.Drawing.Point(779, 11);
             this.BNuevoPaciente.Name = "BNuevoPaciente";
-            this.BNuevoPaciente.Size = new System.Drawing.Size(102, 54);
+            this.BNuevoPaciente.Size = new System.Drawing.Size(120, 54);
             this.BNuevoPaciente.TabIndex = 5;
             this.BNuevoPaciente.Text = "+ Nuevo     Paciente";
             this.BNuevoPaciente.UseVisualStyleBackColor = false;
@@ -172,30 +168,35 @@
             // LRecepcionista
             // 
             this.LRecepcionista.AutoSize = true;
-            this.LRecepcionista.Font = new System.Drawing.Font("Microsoft YaHei UI", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LRecepcionista.Location = new System.Drawing.Point(108, 8);
+            this.LRecepcionista.Font = new System.Drawing.Font("Comic Sans MS", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LRecepcionista.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.LRecepcionista.Location = new System.Drawing.Point(139, 14);
             this.LRecepcionista.Name = "LRecepcionista";
-            this.LRecepcionista.Size = new System.Drawing.Size(209, 38);
+            this.LRecepcionista.Size = new System.Drawing.Size(169, 34);
             this.LRecepcionista.TabIndex = 4;
             this.LRecepcionista.Text = "Recepcionista";
             // 
             // Label
             // 
+            this.Label.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Label.AutoSize = true;
-            this.Label.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Label.Location = new System.Drawing.Point(424, 46);
             this.Label.Name = "Label";
-            this.Label.Size = new System.Drawing.Size(192, 19);
+            this.Label.Size = new System.Drawing.Size(206, 22);
             this.Label.TabIndex = 2;
             this.Label.Text = "Sistema de Gestión Médica";
             // 
             // LNombre
             // 
+            this.LNombre.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.LNombre.AutoSize = true;
-            this.LNombre.Font = new System.Drawing.Font("Candara", 18F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LNombre.Font = new System.Drawing.Font("Comic Sans MS", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LNombre.Location = new System.Drawing.Point(465, 8);
             this.LNombre.Name = "LNombre";
-            this.LNombre.Size = new System.Drawing.Size(110, 29);
+            this.LNombre.Size = new System.Drawing.Size(131, 34);
             this.LNombre.TabIndex = 3;
             this.LNombre.Text = "SaludSoft";
             // 
@@ -203,18 +204,21 @@
             // 
             this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(102, 75);
+            this.pictureBox1.Size = new System.Drawing.Size(120, 75);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
             // BNuevaCita
             // 
+            this.BNuevaCita.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BNuevaCita.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(106)))), ((int)(((byte)(32)))));
-            this.BNuevaCita.Font = new System.Drawing.Font("Microsoft YaHei", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BNuevaCita.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BNuevaCita.ForeColor = System.Drawing.Color.White;
-            this.BNuevaCita.Location = new System.Drawing.Point(697, 11);
+            this.BNuevaCita.Location = new System.Drawing.Point(661, 8);
             this.BNuevaCita.Name = "BNuevaCita";
             this.BNuevaCita.Size = new System.Drawing.Size(108, 54);
             this.BNuevaCita.TabIndex = 0;
@@ -227,6 +231,7 @@
             this.PPacientes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(249)))), ((int)(((byte)(240)))));
             this.PPacientes.Controls.Add(this.PPacientesHoy);
             this.PPacientes.Controls.Add(this.LPacientesHoy);
+            this.PPacientes.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PPacientes.Location = new System.Drawing.Point(171, 93);
             this.PPacientes.Name = "PPacientes";
             this.PPacientes.Size = new System.Drawing.Size(263, 100);
@@ -245,15 +250,16 @@
             // LPacientesHoy
             // 
             this.LPacientesHoy.AutoSize = true;
-            this.LPacientesHoy.Font = new System.Drawing.Font("Bookman Old Style", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LPacientesHoy.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LPacientesHoy.Location = new System.Drawing.Point(3, 6);
             this.LPacientesHoy.Name = "LPacientesHoy";
-            this.LPacientesHoy.Size = new System.Drawing.Size(115, 19);
+            this.LPacientesHoy.Size = new System.Drawing.Size(118, 23);
             this.LPacientesHoy.TabIndex = 0;
             this.LPacientesHoy.Text = "Pacientes Hoy";
             // 
             // PCitas
             // 
+            this.PCitas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PCitas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(243)))), ((int)(((byte)(235)))));
             this.PCitas.Controls.Add(this.pictureBox3);
             this.PCitas.Controls.Add(this.LTurnosProgramados);
@@ -275,15 +281,16 @@
             // LTurnosProgramados
             // 
             this.LTurnosProgramados.AutoSize = true;
-            this.LTurnosProgramados.Font = new System.Drawing.Font("Bookman Old Style", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LTurnosProgramados.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LTurnosProgramados.Location = new System.Drawing.Point(3, 6);
             this.LTurnosProgramados.Name = "LTurnosProgramados";
-            this.LTurnosProgramados.Size = new System.Drawing.Size(193, 19);
+            this.LTurnosProgramados.Size = new System.Drawing.Size(198, 23);
             this.LTurnosProgramados.TabIndex = 0;
             this.LTurnosProgramados.Text = "Turnos Programados hoy";
             // 
             // PDoctores
             // 
+            this.PDoctores.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.PDoctores.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(240)))), ((int)(((byte)(250)))));
             this.PDoctores.Controls.Add(this.pictureBox4);
             this.PDoctores.Controls.Add(this.LDoctores);
@@ -305,15 +312,16 @@
             // LDoctores
             // 
             this.LDoctores.AutoSize = true;
-            this.LDoctores.Font = new System.Drawing.Font("Bookman Old Style", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LDoctores.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LDoctores.Location = new System.Drawing.Point(18, 11);
             this.LDoctores.Name = "LDoctores";
-            this.LDoctores.Size = new System.Drawing.Size(171, 19);
+            this.LDoctores.Size = new System.Drawing.Size(177, 23);
             this.LDoctores.TabIndex = 0;
             this.LDoctores.Text = "Doctores  Disponibles";
             // 
             // PEspecialidades
             // 
+            this.PEspecialidades.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.PEspecialidades.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(240)))), ((int)(((byte)(250)))));
             this.PEspecialidades.Controls.Add(this.label5);
             this.PEspecialidades.Location = new System.Drawing.Point(171, 376);
@@ -324,10 +332,10 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Bookman Old Style", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(72, 11);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(120, 19);
+            this.label5.Size = new System.Drawing.Size(119, 23);
             this.label5.TabIndex = 0;
             this.label5.Text = "Especialidades";
             // 
@@ -345,7 +353,6 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.Name = "SaludSoft";
             this.PMenu.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
             this.PSuperior.ResumeLayout(false);
             this.PSuperior.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -388,7 +395,6 @@
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.Button BNuevoPaciente;
-        private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button BCerrarSesion;
         private System.Windows.Forms.Button BAgenda;
     }

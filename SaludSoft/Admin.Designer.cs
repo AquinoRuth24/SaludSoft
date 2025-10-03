@@ -143,6 +143,7 @@
             // 
             // btGestionUsuario
             // 
+            this.btGestionUsuario.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btGestionUsuario.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btGestionUsuario.Image = global::SaludSoft.Properties.Resources.agregar;
             this.btGestionUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
