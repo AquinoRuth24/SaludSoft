@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using SaludSoft.Security;
 
 namespace SaludSoft
 {
@@ -25,81 +26,46 @@ namespace SaludSoft
             });
             CBDiaSemana.SelectedIndex = 0;
 
-            CargarProfesionales();
+            CargarProfesionalConsultorio();
         }
 
-        private void CargarProfesionales()
+        // cargar en el combox los datos de la tabla Profesional_Consultorio
+        private void CargarProfesionalConsultorio()
         {
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 conexion.Open();
 
-                string query = @"SELECT id_profesional, nombre + ' ' + apellido AS Profesional 
-                                 FROM Profesional 
-                                 WHERE id_estado = 1"; // solo profesionales activos
-
-                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                string query = @"
+                 SELECT pc.id_profesional_consultorio,
+                   p.nombre + ' ' + p.apellido + ' - ' + c.descripcion AS ProfesionalConsultorio
+                 FROM Profesional_Consultorio pc
+                 INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
+                 INNER JOIN Consultorio c ON pc.id_consultorio = c.id_consultorio";
+        
+             SqlDataAdapter da = new SqlDataAdapter(query, conexion);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
-                CMBProfesional.DataSource = dt;
-                CMBProfesional.DisplayMember = "Profesional";
-                CMBProfesional.ValueMember = "id_profesional";
-
-                if (dt.Rows.Count > 0)
-                {
-                    CMBProfesional.SelectedIndex = 0;
-                    int idProfesional = Convert.ToInt32(CMBProfesional.SelectedValue);
-                    CargarConsultorios(idProfesional);
-                }
-                else
-                {
-                    CMBProfesional.SelectedIndex = -1;
-                    CMBConsultorio.DataSource = null;
-                }
-            }
-        }
-
-        private void CargarConsultorios(int idProfesional)
-        {
-            using (SqlConnection conexion = Conexion.GetConnection())
-            {
-                conexion.Open();
-
-                string query = @"SELECT pc.id_profesional_consultorio, 
-                                        c.descripcion AS Consultorio
-                                 FROM Profesional_Consultorio pc
-                                 INNER JOIN Consultorio c ON pc.id_consultorio = c.id_consultorio
-                                 WHERE pc.id_profesional = @idProfesional";
-
-                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
-                da.SelectCommand.Parameters.AddWithValue("@idProfesional", idProfesional);
-
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-
-                CMBConsultorio.DataSource = dt;
-                CMBConsultorio.DisplayMember = "Consultorio";
-                CMBConsultorio.ValueMember = "id_profesional_consultorio";
-                CMBConsultorio.SelectedIndex = -1;
-            }
-        }
-
-        private void CMBProfesional_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (int.TryParse(CMBProfesional.SelectedValue?.ToString(), out int idProfesional))
-            {
-                CargarConsultorios(idProfesional);
-            }
-            else
-            {
-                CMBConsultorio.DataSource = null;
+                CMBProfesional_consultorio.DataSource = dt;
+                CMBProfesional_consultorio.DisplayMember = "ProfesionalConsultorio";
+                CMBProfesional_consultorio.ValueMember = "id_profesional_consultorio";
+                CMBProfesional_consultorio.SelectedIndex = -1;
             }
         }
 
         private void BGuardar_Click(object sender, EventArgs e)
         {
-            if (CMBProfesional.SelectedValue == null || CMBConsultorio.SelectedValue == null)
+
+            if (!SesionActual.EstaLogueado)
+            {
+                MessageBox.Show("Debes iniciar sesión primero.");
+                return;
+            }
+
+            int idUsuario = SesionActual.IdUsuario;
+
+            if (CMBProfesional_consultorio.SelectedValue == null)
             {
                 MessageBox.Show("Debe seleccionar un profesional y un consultorio.",
                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -123,17 +89,45 @@ namespace SaludSoft
                 return;
             }
 
-            int idProfesionalConsultorio = Convert.ToInt32(CMBConsultorio.SelectedValue);
+            int idProfesionalConsultorio = Convert.ToInt32(CMBProfesional_consultorio.SelectedValue);
             string diaSemana = CBDiaSemana.SelectedItem.ToString();
             int intervalo = 30;
-
-            // id_usuario = recepcionista logueada (por ahora fijo en 1)
-            int idUsuario = 1;
 
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 conexion.Open();
+                string getConsultorio = @"SELECT id_consultorio FROM Profesional_Consultorio 
+                              WHERE id_profesional_consultorio = @idProfCons";
+                SqlCommand cmdGet = new SqlCommand(getConsultorio, conexion);
+                cmdGet.Parameters.AddWithValue("@idProfCons", idProfesionalConsultorio);
+                int idConsultorio = Convert.ToInt32(cmdGet.ExecuteScalar());
 
+                // Validar choque de horarios en el mismo consultorio y día
+                string checkQuery = @"
+                 SELECT COUNT(*) 
+                 FROM Agenda a
+                 INNER JOIN Profesional_Consultorio pc 
+                 ON a.id_profesional_consultorio = pc.id_profesional_consultorio
+                 WHERE pc.id_consultorio = @idConsultorio
+                 AND a.diaSemana = @diaSemana
+                 AND (a.horaInicio < @horaFin AND a.horaFin > @horaInicio)";
+
+                SqlCommand checkCmd = new SqlCommand(checkQuery, conexion);
+                checkCmd.Parameters.AddWithValue("@idConsultorio", idConsultorio);
+                checkCmd.Parameters.AddWithValue("@diaSemana", diaSemana);
+                checkCmd.Parameters.AddWithValue("@horaInicio", horaInicio);
+                checkCmd.Parameters.AddWithValue("@horaFin", horaFin);
+
+                int count = (int)checkCmd.ExecuteScalar();
+
+                if (count > 0)
+                {
+                    MessageBox.Show("El consultorio ya tiene otra disponibilidad en ese horario.",
+                                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // si no hay choque de horarios se inserta la nueva disponibilidad en la tabla agenda
                 string query = @"INSERT INTO Agenda 
                                 (id_usuario, id_profesional_consultorio, diaSemana, horaInicio, horaFin, intervalo)
                                 VALUES (@idUsuario, @idProfCons, @diaSemana, @horaInicio, @horaFin, @intervalo)";
@@ -165,6 +159,11 @@ namespace SaludSoft
             {
                 this.Close();
             }
+        }
+
+        private void BVolverAgenda_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

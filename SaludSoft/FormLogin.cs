@@ -64,7 +64,10 @@ namespace SaludSoft
                     tbContraseña.Focus();
                     return;
                 }
-
+                // guarda la sesion
+                SesionActual.IdUsuario = result.IdUsuario;
+                SesionActual.Nombre = result.Nombre;
+                SesionActual.Rol = result.Rol;
                 AbrirSegunRol(result.Rol, result.Nombre);
             }
             catch (Exception ex)

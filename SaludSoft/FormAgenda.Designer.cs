@@ -33,7 +33,6 @@
             this.BAgenda = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.BCerrarSesion = new System.Windows.Forms.Button();
-            this.BDoctores = new System.Windows.Forms.Button();
             this.BTurnos = new System.Windows.Forms.Button();
             this.BPacientes = new System.Windows.Forms.Button();
             this.BInicio = new System.Windows.Forms.Button();
@@ -44,6 +43,7 @@
             this.LabelGestionPaciente = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.BVolverAgenda = new System.Windows.Forms.Button();
             this.BNuevaDisponibilidad = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.LGestionAgenda = new System.Windows.Forms.Label();
@@ -55,7 +55,7 @@
             this.CMBConsultorio = new System.Windows.Forms.ComboBox();
             this.CMBProfesionales = new System.Windows.Forms.ComboBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.BVolverAgenda = new System.Windows.Forms.Button();
+            this.BDoctores = new System.Windows.Forms.Button();
             this.PMenu.SuspendLayout();
             this.panel4.SuspendLayout();
             this.PanelLogoPaciente.SuspendLayout();
@@ -108,16 +108,6 @@
             this.BCerrarSesion.TabIndex = 6;
             this.BCerrarSesion.Text = "Cerrar sesion";
             this.BCerrarSesion.UseVisualStyleBackColor = true;
-            // 
-            // BDoctores
-            // 
-            this.BDoctores.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BDoctores.Location = new System.Drawing.Point(27, 200);
-            this.BDoctores.Name = "BDoctores";
-            this.BDoctores.Size = new System.Drawing.Size(92, 46);
-            this.BDoctores.TabIndex = 3;
-            this.BDoctores.Text = "Doctores";
-            this.BDoctores.UseVisualStyleBackColor = true;
             // 
             // BTurnos
             // 
@@ -219,6 +209,17 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(865, 67);
             this.panel2.TabIndex = 5;
+            // 
+            // BVolverAgenda
+            // 
+            this.BVolverAgenda.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BVolverAgenda.Location = new System.Drawing.Point(15, 19);
+            this.BVolverAgenda.Name = "BVolverAgenda";
+            this.BVolverAgenda.Size = new System.Drawing.Size(77, 31);
+            this.BVolverAgenda.TabIndex = 8;
+            this.BVolverAgenda.Text = "<--Volver";
+            this.BVolverAgenda.UseVisualStyleBackColor = true;
+            this.BVolverAgenda.Click += new System.EventHandler(this.BVolverAgenda_Click);
             // 
             // BNuevaDisponibilidad
             // 
@@ -329,16 +330,15 @@
             this.pictureBox2.TabIndex = 11;
             this.pictureBox2.TabStop = false;
             // 
-            // BVolverAgenda
+            // BDoctores
             // 
-            this.BVolverAgenda.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BVolverAgenda.Location = new System.Drawing.Point(15, 19);
-            this.BVolverAgenda.Name = "BVolverAgenda";
-            this.BVolverAgenda.Size = new System.Drawing.Size(77, 31);
-            this.BVolverAgenda.TabIndex = 8;
-            this.BVolverAgenda.Text = "<--Volver";
-            this.BVolverAgenda.UseVisualStyleBackColor = true;
-            this.BVolverAgenda.Click += new System.EventHandler(this.BVolverAgenda_Click);
+            this.BDoctores.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BDoctores.Location = new System.Drawing.Point(27, 200);
+            this.BDoctores.Name = "BDoctores";
+            this.BDoctores.Size = new System.Drawing.Size(92, 46);
+            this.BDoctores.TabIndex = 3;
+            this.BDoctores.Text = "Doctores";
+            this.BDoctores.UseVisualStyleBackColor = true;
             // 
             // FormAgenda
             // 
@@ -373,7 +373,6 @@
         private System.Windows.Forms.Panel PMenu;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button BCerrarSesion;
-        private System.Windows.Forms.Button BDoctores;
         private System.Windows.Forms.Button BTurnos;
         private System.Windows.Forms.Button BPacientes;
         private System.Windows.Forms.Button BInicio;
@@ -397,5 +396,6 @@
         private System.Windows.Forms.ComboBox CMBProfesionales;
         private System.Windows.Forms.Button BAgenda;
         private System.Windows.Forms.Button BVolverAgenda;
+        private System.Windows.Forms.Button BDoctores;
     }
 }

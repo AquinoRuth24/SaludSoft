@@ -163,11 +163,11 @@ namespace SaludSoft
             {
                 //int idAgenda = Convert.ToInt32(DTVGAgenda.Rows[e.RowIndex].Cells["id_agenda"].Value);idAgenda
 
-                FormModificarAgenda frm = new FormModificarAgenda();
-                if (frm.ShowDialog() == DialogResult.OK)
-                {
-                    CargarAgenda();
-                }
+                //FormModificarAgenda frm = new FormModificarAgenda();
+               // if (frm.ShowDialog() == DialogResult.OK)
+                //{
+                  //  CargarAgenda();
+                //}
             }
         }
 
@@ -190,8 +190,8 @@ namespace SaludSoft
         private void BNuevaDisponibilidad_Click(object sender, EventArgs e)
         {
             FormNuevaDisponibilidad frm = new FormNuevaDisponibilidad();
-                // actualiza la agenda despues de agregar nueva disponbilidad
-                CargarAgenda();
+            frm.ShowDialog();
+            CargarAgenda();
         }
 
         private void BVolverAgenda_Click(object sender, EventArgs e)
