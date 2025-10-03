@@ -31,10 +31,10 @@
             this.btVolver = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.dgHistorial = new System.Windows.Forms.DataGridView();
             this.lDni = new System.Windows.Forms.Label();
             this.btBuscar = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tbBuscarDni = new System.Windows.Forms.TextBox();
             this.pnlOverlay = new System.Windows.Forms.Panel();
             this.gbDetalle = new System.Windows.Forms.GroupBox();
@@ -51,14 +51,15 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.lValorPaciente = new System.Windows.Forms.Label();
             this.lPaciente = new System.Windows.Forms.Label();
+            this.colIdHistorial = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDni = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPaciente = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDiagnostico = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTratamiento = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colVerHistorial = new System.Windows.Forms.DataGridViewButtonColumn();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgHistorial)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgHistorial)).BeginInit();
             this.pnlOverlay.SuspendLayout();
             this.gbDetalle.SuspendLayout();
             this.pnlBotones.SuspendLayout();
@@ -84,7 +85,7 @@
             this.panel2.Controls.Add(this.pictureBox1);
             this.panel2.Location = new System.Drawing.Point(0, 1);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1018, 74);
+            this.panel2.Size = new System.Drawing.Size(1015, 74);
             this.panel2.TabIndex = 2;
             // 
             // label1
@@ -99,6 +100,16 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Historia Clìnica ";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(138, 74);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            // 
             // dgHistorial
             // 
             this.dgHistorial.AllowUserToAddRows = false;
@@ -109,6 +120,7 @@
             this.dgHistorial.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgHistorial.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgHistorial.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colIdHistorial,
             this.colDni,
             this.colPaciente,
             this.colDiagnostico,
@@ -145,16 +157,6 @@
             this.btBuscar.TabIndex = 6;
             this.btBuscar.UseVisualStyleBackColor = true;
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(138, 74);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            // 
             // tbBuscarDni
             // 
             this.tbBuscarDni.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -170,7 +172,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlOverlay.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnlOverlay.Controls.Add(this.gbDetalle);
-            this.pnlOverlay.Location = new System.Drawing.Point(505, 149);
+            this.pnlOverlay.Location = new System.Drawing.Point(393, 149);
             this.pnlOverlay.Name = "pnlOverlay";
             this.pnlOverlay.Size = new System.Drawing.Size(465, 405);
             this.pnlOverlay.TabIndex = 8;
@@ -327,6 +329,11 @@
             this.lPaciente.TabIndex = 8;
             this.lPaciente.Text = "Paciente: ";
             // 
+            // colIdHistorial
+            // 
+            this.colIdHistorial.HeaderText = "Id_Historial";
+            this.colIdHistorial.Name = "colIdHistorial";
+            // 
             // colDni
             // 
             this.colDni.HeaderText = "DNI";
@@ -372,8 +379,8 @@
             this.Text = "FormHistorial";
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgHistorial)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgHistorial)).EndInit();
             this.pnlOverlay.ResumeLayout(false);
             this.gbDetalle.ResumeLayout(false);
             this.gbDetalle.PerformLayout();
@@ -407,6 +414,7 @@
         private System.Windows.Forms.Label lTrat;
         private System.Windows.Forms.Button btCancelar;
         private System.Windows.Forms.Button btAgregar;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colIdHistorial;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDni;
         private System.Windows.Forms.DataGridViewTextBoxColumn colPaciente;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDiagnostico;
