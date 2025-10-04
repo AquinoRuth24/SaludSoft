@@ -6,26 +6,27 @@ namespace SaludSoft
 {
     public partial class FormHistorial : Form
     {
+        enum ModoDetalle { Navegacion, Alta }
+        ModoDetalle _modo = ModoDetalle.Navegacion;
+
         public FormHistorial()
         {
             InitializeComponent();
 
-            // Aseguro eventos por código
+            // Eventos (una sola vez)
             this.Load += FormHistorial_Load;
             dgHistorial.CellContentClick += dgHistorial_CellContentClick;
-
-            if (btCancelar != null) btCancelar.Click += btCancelar_Click;
-            if (btVolver != null) btVolver.Click += btVolver_Click_1;
+            btCancelar.Click += btCancelar_Click;
+            btAgregar.Click += btAgregar_Click;
         }
 
         private void FormHistorial_Load(object sender, EventArgs e)
         {
-            // Grilla
             dgHistorial.MultiSelect = false;
             dgHistorial.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgHistorial.AutoGenerateColumns = false;
 
-            // Asegurar que la columna botón exista y tenga texto
+            // Asegurar botón "Ver"
             var colBtn = dgHistorial.Columns["colVerHistorial"] as DataGridViewButtonColumn;
             if (colBtn == null)
             {
@@ -45,17 +46,16 @@ namespace SaludSoft
                 colBtn.Text = "Ver";
             }
 
-            // Ocultar overlay/detalle al iniciar
+            // Oculto el detalle de inicio
             MostrarDetalle(false);
 
-            // --- FILAS DE EJEMPLO (sin BD) ---
+            // Datos de prueba (sin BD)
             dgHistorial.Rows.Clear();
-            // Asegúrate de tener estas columnas: colIdHistorial, colDni, colPaciente, colDiagnostico, colTratamiento
-            dgHistorial.Rows.Add(1, "37890123", "Gómez, Laura", "Resfrío común", "Reposo e hidratación", null);
+            dgHistorial.Rows.Add(1, "37890123", "Gómez, Laura", "Resfrío común", "Reposo", null);
             dgHistorial.Rows.Add(2, "40999888", "Pérez, Juan", "HTA controlada", "IECA", null);
         }
 
-        // Click en el botón "Ver" de la grilla
+        // === Click en la columna botón "Ver Historial" ===
         private void dgHistorial_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
@@ -65,52 +65,33 @@ namespace SaludSoft
                 var fila = dgHistorial.Rows[e.RowIndex];
                 CargarDetalleDesdeFila(fila);
                 MostrarDetalle(true);
+                SetModo(ModoDetalle.Navegacion); // sin cursor y solo lectura
             }
         }
 
+        // === Cargar datos al panel detalle desde la fila seleccionada ===
         private void CargarDetalleDesdeFila(DataGridViewRow fila)
         {
-            // Leer valores de la fila con los nombres EXACTOS de tus columnas
             string paciente = Convert.ToString(fila.Cells["colPaciente"]?.Value ?? "");
             string diagnostico = Convert.ToString(fila.Cells["colDiagnostico"]?.Value ?? "");
             string tratamiento = Convert.ToString(fila.Cells["colTratamiento"]?.Value ?? "");
-            // Sin columna de observaciones en la grilla -> lo dejamos vacío
-            string observ = "";
 
-            // Cargar controles del detalle con los nombres EXACTOS de tu diseñador
-            if (lValorPaciente != null)
-                lValorPaciente.Text = string.IsNullOrWhiteSpace(paciente) ? "--" : paciente;
+            lValorPaciente.Text = string.IsNullOrWhiteSpace(paciente) ? "--" : paciente;
 
-            if (dateTimePicker1 != null)
-            {
-                dateTimePicker1.Format = DateTimePickerFormat.Custom;
-                dateTimePicker1.CustomFormat = "dd/MM/yyyy";
-                dateTimePicker1.Value = DateTime.Today;
-            }
+            dateTimePicker1.Format = DateTimePickerFormat.Custom;
+            dateTimePicker1.CustomFormat = "dd/MM/yyyy";
+            dateTimePicker1.Value = DateTime.Today;
 
-            if (tbDiagnostico != null) tbDiagnostico.Text = diagnostico;
-            if (tbTrat != null) tbTrat.Text = tratamiento;
-            if (tbObserv != null) tbObserv.Text = observ;
+            tbDiagnostico.Text = diagnostico;
+            tbTrat.Text = tratamiento;
+            tbObserv.Text = string.Empty;
 
-            // Si querés guardar el id (por si luego guardás): lo pongo en Tag
-            if (gbDetalle != null)
-                gbDetalle.Tag = fila.Cells["colIdHistorial"]?.Value;
+            gbDetalle.Tag = fila.Cells["colIdHistorial"]?.Value; // opcional
         }
 
-        private void btCancelar_Click(object sender, EventArgs e)
-        {
-            // Limpieza ligera
-            if (tbDiagnostico != null) tbDiagnostico.Clear();
-            if (tbTrat != null) tbTrat.Clear();
-            if (tbObserv != null) tbObserv.Clear();
-            if (lValorPaciente != null) lValorPaciente.Text = "--";
-
-            MostrarDetalle(false);
-        }
-
+        // === Mostrar / ocultar overlay + detalle ===
         private void MostrarDetalle(bool mostrar)
         {
-            // Tenés un overlay con un groupbox adentro
             if (pnlOverlay != null)
             {
                 pnlOverlay.Visible = mostrar;
@@ -121,9 +102,102 @@ namespace SaludSoft
                 gbDetalle.Visible = mostrar;
                 if (mostrar) gbDetalle.BringToFront();
             }
+
+            if (mostrar && _modo == ModoDetalle.Navegacion)
+                this.ActiveControl = btAgregar; // evita cursor en textbox
         }
 
-        // Tu mismo volver
+        // === Modo de la UI (navegación vs alta) ===
+        private void SetModo(ModoDetalle modo)
+        {
+            _modo = modo;
+            bool editable = (modo == ModoDetalle.Alta);
+
+            tbDiagnostico.ReadOnly = !editable;
+            tbTrat.ReadOnly = !editable;
+            tbObserv.ReadOnly = !editable;
+
+            tbDiagnostico.TabStop = editable;
+            tbTrat.TabStop = editable;
+            tbObserv.TabStop = editable;
+
+            btAgregar.Text = editable ? "Guardar" : "Agregar";
+
+            if (!editable)
+            {
+                // sacar foco de los textbox
+                this.ActiveControl = btAgregar;
+            }
+            else
+            {
+                // limpiar para alta
+                tbDiagnostico.Clear();
+                tbTrat.Clear();
+                tbObserv.Clear();
+                dateTimePicker1.Value = DateTime.Today;
+                tbDiagnostico.Focus();
+            }
+        }
+
+        // === Click en Agregar / Guardar ===
+        private void btAgregar_Click(object sender, EventArgs e)
+        {
+            if (_modo != ModoDetalle.Alta)
+            {
+                SetModo(ModoDetalle.Alta);
+                return;
+            }
+
+            // Guardar en grilla (sin BD)
+            if (string.IsNullOrWhiteSpace(tbDiagnostico.Text))
+            {
+                MessageBox.Show("Completá el Diagnóstico.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tbDiagnostico.Focus();
+                return;
+            }
+
+            // Nuevo Id = max+1
+            int maxId = 0;
+            foreach (DataGridViewRow r in dgHistorial.Rows)
+            {
+                if (r.IsNewRow) continue;
+                if (int.TryParse(Convert.ToString(r.Cells["colIdHistorial"].Value), out int id))
+                    if (id > maxId) maxId = id;
+            }
+            int nuevoId = maxId + 1;
+
+            // DNI y Paciente del seleccionado (si hay)
+            string dni = "";
+            string paciente = lValorPaciente.Text;
+            if (dgHistorial.CurrentRow != null && !dgHistorial.CurrentRow.IsNewRow)
+                dni = Convert.ToString(dgHistorial.CurrentRow.Cells["colDni"].Value ?? "");
+
+            int idx = dgHistorial.Rows.Add();
+            var row = dgHistorial.Rows[idx];
+            row.Cells["colIdHistorial"].Value = nuevoId;
+            row.Cells["colDni"].Value = dni;
+            row.Cells["colPaciente"].Value = paciente;
+            row.Cells["colDiagnostico"].Value = tbDiagnostico.Text.Trim();
+            row.Cells["colTratamiento"].Value = tbTrat.Text.Trim();
+
+            SetModo(ModoDetalle.Navegacion);
+            MessageBox.Show("Historial agregado (en memoria).", "OK",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        // === Cancelar ===
+        private void btCancelar_Click(object sender, EventArgs e)
+        {
+            if (_modo == ModoDetalle.Alta)
+            {
+                SetModo(ModoDetalle.Navegacion);
+                return;
+            }
+            MostrarDetalle(false);
+        }
+
+        // === Volver (tu mismo handler existente) ===
         private void btVolver_Click_1(object sender, EventArgs e)
         {
             if (this.Owner is Medico m)

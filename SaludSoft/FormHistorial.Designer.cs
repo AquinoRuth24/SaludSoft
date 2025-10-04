@@ -79,6 +79,8 @@
             // 
             // panel2
             // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.panel2.Controls.Add(this.btVolver);
             this.panel2.Controls.Add(this.label1);
@@ -137,7 +139,6 @@
             // 
             // lDni
             // 
-            this.lDni.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lDni.AutoSize = true;
             this.lDni.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lDni.Location = new System.Drawing.Point(197, 90);
@@ -148,7 +149,6 @@
             // 
             // btBuscar
             // 
-            this.btBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btBuscar.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btBuscar.Image = global::SaludSoft.Properties.Resources.busqueda;
             this.btBuscar.Location = new System.Drawing.Point(686, 81);
@@ -159,7 +159,6 @@
             // 
             // tbBuscarDni
             // 
-            this.tbBuscarDni.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbBuscarDni.Location = new System.Drawing.Point(285, 94);
             this.tbBuscarDni.Name = "tbBuscarDni";
             this.tbBuscarDni.Size = new System.Drawing.Size(219, 20);
@@ -238,9 +237,10 @@
             // 
             // tbObserv
             // 
+            this.tbObserv.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbObserv.Location = new System.Drawing.Point(141, 185);
             this.tbObserv.Name = "tbObserv";
-            this.tbObserv.Size = new System.Drawing.Size(133, 34);
+            this.tbObserv.Size = new System.Drawing.Size(133, 30);
             this.tbObserv.TabIndex = 17;
             // 
             // lObserv
@@ -255,9 +255,10 @@
             // 
             // tbTrat
             // 
+            this.tbTrat.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbTrat.Location = new System.Drawing.Point(141, 145);
             this.tbTrat.Name = "tbTrat";
-            this.tbTrat.Size = new System.Drawing.Size(133, 34);
+            this.tbTrat.Size = new System.Drawing.Size(133, 30);
             this.tbTrat.TabIndex = 15;
             // 
             // lTrat
@@ -272,10 +273,11 @@
             // 
             // tbDiagnostico
             // 
+            this.tbDiagnostico.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbDiagnostico.Location = new System.Drawing.Point(141, 102);
             this.tbDiagnostico.Name = "tbDiagnostico";
             this.tbDiagnostico.ReadOnly = true;
-            this.tbDiagnostico.Size = new System.Drawing.Size(133, 34);
+            this.tbDiagnostico.Size = new System.Drawing.Size(133, 30);
             this.tbDiagnostico.TabIndex = 13;
             // 
             // lDiagnostico
