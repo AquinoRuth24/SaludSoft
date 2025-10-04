@@ -22,32 +22,6 @@ namespace SaludSoft
 
             DTVGAgenda.CellClick += DTVGAgenda_CellClick; // evento para botones
         }
-        // botones
-        private void BInicio_Click(object sender, EventArgs e)
-        {
-            SaludSoft frm = new SaludSoft();
-            frm.ShowDialog();
-        }
-
-        private void BPacientes_Click(object sender, EventArgs e)
-        {
-            FormListaPacientes frm = new FormListaPacientes();
-            frm.ShowDialog();
-        }
-
-        private void BCerrarSesion_Click(object sender, EventArgs e)
-        {
-            FormLogin frm = new FormLogin();
-            frm.ShowDialog();
-            this.Close();
-        }
-
-        private void BAgenda_Click(object sender, EventArgs e)
-        {
-            FormAgenda frm = new FormAgenda();
-            frm.ShowDialog();
-            this.Close();
-        }
         private void CargarProfesionales()
         {
             using (SqlConnection conexion = Conexion.GetConnection())
@@ -110,21 +84,22 @@ namespace SaludSoft
             {
                 conexion.Open();
                 string query = @"
-                    SELECT 
-                     a.id_agenda,
-                     a.diaSemana AS Disponibilidad,
-                      FORMAT(a.horaInicio, 'HH:mm') + ' - ' + FORMAT(a.horaFin, 'HH:mm') AS Horario,
-                       u.nombre + ' ' + u.apellido AS Recepcionista,
-                       p.nombre + ' ' + p.apellido AS Profesional,
-                       c.descripcion AS Consultorio
-                      FROM Agenda a
-                        INNER JOIN Usuario u ON a.id_usuario = u.id_usuario
-                        INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
-                        INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
-                        INNER JOIN Consultorio c ON pc.id_consultorio = c.id_consultorio
-                        WHERE (@idProfesional = 0 OR p.id_profesional = @idProfesional)
-                        AND (@idConsultorio = 0 OR c.id_consultorio = @idConsultorio)
-                       ORDER BY a.horaInicio";
+                 SELECT 
+                  a.id_agenda, 
+                  a.diaSemana AS Disponibilidad,
+                 CONVERT(varchar(5), a.horaInicio, 108) + ' - ' + CONVERT(varchar(5), a.horaFin, 108) AS Horario,
+                  u.nombre + ' ' + u.apellido AS Recepcionista,
+                  p.nombre + ' ' + p.apellido AS Profesional,
+                  c.nroConsultorio AS [Nro Consultorio],
+                  c.descripcion AS Consultorio
+                 FROM Agenda a
+                 INNER JOIN Usuario u ON a.id_usuario = u.id_usuario
+                 INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
+                 INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
+                 INNER JOIN Consultorio c ON pc.id_consultorio = c.id_consultorio
+                 WHERE (@idProfesional = 0 OR p.id_profesional = @idProfesional)
+                 AND (@idConsultorio = 0 OR c.id_consultorio = @idConsultorio)
+                 ORDER BY a.horaInicio";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
                 da.SelectCommand.Parameters.AddWithValue("@idProfesional", idProfesional);
@@ -136,38 +111,44 @@ namespace SaludSoft
 
                 DTVGAgenda.DataSource = dt;
 
+                if (DTVGAgenda.Columns.Contains("id_agenda"))
+                {
+                    DTVGAgenda.Columns["id_agenda"].Visible = false;
+                }
+
                 DTVGAgenda.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 DTVGAgenda.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 DTVGAgenda.AllowUserToAddRows = false;
 
-                ConfigurarGrid();
+                if (!DTVGAgenda.Columns.Contains("Editar"))
+                {
+                    DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
+                    btnEditar.HeaderText = "Editar";
+                    btnEditar.Name = "Editar";
+                    btnEditar.Text = "Modificar";
+                    btnEditar.UseColumnTextForButtonValue = true;
+                    DTVGAgenda.Columns.Add(btnEditar);
+                }
             }
-        }
 
-        private void ConfigurarGrid()
-        {
-            if (!DTVGAgenda.Columns.Contains("Editar"))
-            {
-                DataGridViewButtonColumn btnEditar = new DataGridViewButtonColumn();
-                btnEditar.HeaderText = "Acciones";
-                btnEditar.Name = "Editar";
-                btnEditar.Text = "Modificar";
-                btnEditar.UseColumnTextForButtonValue = true;
-                DTVGAgenda.Columns.Add(btnEditar);
-            }
+
         }
 
         private void DTVGAgenda_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && DTVGAgenda.Columns[e.ColumnIndex].Name == "Editar")
+            if (e.RowIndex >= 0)
             {
-                //int idAgenda = Convert.ToInt32(DTVGAgenda.Rows[e.RowIndex].Cells["id_agenda"].Value);idAgenda
+                // EDITAR
+                if (DTVGAgenda.Columns[e.ColumnIndex].Name == "Editar")
+                {
+                    int idAgenda = Convert.ToInt32(DTVGAgenda.Rows[e.RowIndex].Cells["id_agenda"].Value);
 
-                //FormModificarAgenda frm = new FormModificarAgenda();
-               // if (frm.ShowDialog() == DialogResult.OK)
-                //{
-                  //  CargarAgenda();
-                //}
+                    FormNuevaDisponibilidad frm = new FormNuevaDisponibilidad(idAgenda);
+                    if (frm.ShowDialog() == DialogResult.OK)
+                    {
+                        CargarAgenda();
+                    }
+                }
             }
         }
 
@@ -179,6 +160,7 @@ namespace SaludSoft
             }
         }
 
+        // botones
         private void BBuscar_Click(object sender, EventArgs e)
         {
             int idProfesional = Convert.ToInt32(CMBProfesionales.SelectedValue);
@@ -186,14 +168,14 @@ namespace SaludSoft
 
             CargarAgenda(idProfesional, idConsultorio);
         }
-
+    
         private void BNuevaDisponibilidad_Click(object sender, EventArgs e)
         {
             FormNuevaDisponibilidad frm = new FormNuevaDisponibilidad();
             frm.ShowDialog();
             CargarAgenda();
         }
-
+        
         private void BVolverAgenda_Click(object sender, EventArgs e)
         {
 

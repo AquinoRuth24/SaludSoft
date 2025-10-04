@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ namespace SaludSoft
         public SaludSoft()
         {
             InitializeComponent();
-            
+            CargarTotales();
 
         }
 
@@ -56,6 +57,41 @@ namespace SaludSoft
             FormAgenda frm = new FormAgenda();
             frm.ShowDialog();
             this.Close();
+        }
+
+        private void CargarTotales()
+        {
+
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                conexion.Open();
+
+                // Pacientes hoy (por ejemplo, registrados hoy)
+                SqlCommand cmdPacientes = new SqlCommand(
+                    "SELECT COUNT(*) FROM Paciente WHERE CAST(GETDATE() AS DATE) = CAST(GETDATE() AS DATE)", conexion);
+                int totalPacientes = (int)cmdPacientes.ExecuteScalar();
+
+                // Turnos programados hoy
+                SqlCommand cmdTurnos = new SqlCommand(
+                    "SELECT COUNT(*) FROM Turnos WHERE fecha = CAST(GETDATE() AS DATE)", conexion);
+                int totalTurnos = (int)cmdTurnos.ExecuteScalar();
+
+                // Especialidades
+                SqlCommand cmdEspecialidades = new SqlCommand(
+                    "SELECT COUNT(*) FROM Especialidad", conexion);
+                int totalEspecialidades = (int)cmdEspecialidades.ExecuteScalar();
+
+                // Doctores disponibles
+                SqlCommand cmdDoctores = new SqlCommand(
+                    "SELECT COUNT(*) FROM Profesional WHERE id_estado = 1", conexion);
+                int totalDoctores = (int)cmdDoctores.ExecuteScalar();
+
+                // Actualizamos los labels del formulario
+                LContadorPacientesHoy.Text = totalPacientes.ToString();
+                LContadorTurnosHoy.Text = totalTurnos.ToString();
+                LContadorEspecialidades.Text = totalEspecialidades.ToString();
+                LContadorDoctores.Text = totalDoctores.ToString();
+            }
         }
     }
 }

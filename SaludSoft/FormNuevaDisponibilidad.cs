@@ -8,6 +8,8 @@ namespace SaludSoft
 {
     public partial class FormNuevaDisponibilidad : Form
     {
+        private int? idAgendaEditando = null;  // para saber si estoy editando
+        private bool esEdicion = false;
         public FormNuevaDisponibilidad()
         {
             InitializeComponent();
@@ -27,6 +29,72 @@ namespace SaludSoft
             CBDiaSemana.SelectedIndex = 0;
 
             CargarProfesionalConsultorio();
+        }
+
+        // Constructor para editar una disponibilidad existente
+        public FormNuevaDisponibilidad(int idAgenda)
+        {
+            InitializeComponent();
+
+            esEdicion = true;
+            idAgendaEditando = idAgenda;
+
+            // Configuración de los pickers de hora
+            DTPHoraInicio.Format = DateTimePickerFormat.Time;
+            DTPHoraInicio.ShowUpDown = true;
+            DPTHoraFin.Format = DateTimePickerFormat.Time;
+            DPTHoraFin.ShowUpDown = true;
+
+            // Cargar días y combos
+            CBDiaSemana.Items.AddRange(new string[]
+            {
+             "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"
+            });
+
+            CargarProfesionalConsultorio();
+
+            CargarDatosAgenda(idAgenda);
+
+            // Cambiar textos del formulario
+            this.Text = "Editar Disponibilidad";
+            BGuardar.Text = "Actualizar";
+        }
+        // cargar datos de la agenda para editar
+        private void CargarDatosAgenda(int idAgenda)
+        {
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                conexion.Open();
+
+                string query = @"
+                 SELECT 
+                  a.diaSemana,
+                  a.horaInicio,
+                  a.horaFin,
+                  pc.id_profesional_consultorio
+                 FROM Agenda a
+                 INNER JOIN Profesional_Consultorio pc 
+                 ON a.id_profesional_consultorio = pc.id_profesional_consultorio
+                 WHERE a.id_agenda = @idAgenda";
+
+                SqlCommand cmd = new SqlCommand(query, conexion);
+                cmd.Parameters.AddWithValue("@idAgenda", idAgenda);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        CBDiaSemana.SelectedItem = reader["diaSemana"].ToString();
+                        DTPHoraInicio.Value = DateTime.Today.Add((TimeSpan)reader["horaInicio"]);
+                        DPTHoraFin.Value = DateTime.Today.Add((TimeSpan)reader["horaFin"]);
+
+                        CMBProfesional_consultorio.SelectedValue = Convert.ToInt32(reader["id_profesional_consultorio"]);
+                    }
+                }
+            }
+
+            // Bloquear cambio de profesional_consultorio al editar
+            CMBProfesional_consultorio.Enabled = false;
         }
 
         // cargar en el combox los datos de la tabla Profesional_Consultorio
@@ -127,24 +195,47 @@ namespace SaludSoft
                     return;
                 }
 
-                // si no hay choque de horarios se inserta la nueva disponibilidad en la tabla agenda
-                string query = @"INSERT INTO Agenda 
-                                (id_usuario, id_profesional_consultorio, diaSemana, horaInicio, horaFin, intervalo)
-                                VALUES (@idUsuario, @idProfCons, @diaSemana, @horaInicio, @horaFin, @intervalo)";
+                // INSERT o UPDATE según el modo
+                if (!esEdicion)
+                {
+                    string insertQuery = @"
+                     INSERT INTO Agenda 
+                     (id_usuario, id_profesional_consultorio, diaSemana, horaInicio, horaFin, intervalo)
+                     VALUES (@idUsuario, @idProfCons, @diaSemana, @horaInicio, @horaFin, @intervalo)";
 
-                SqlCommand cmd = new SqlCommand(query, conexion);
-                cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
-                cmd.Parameters.AddWithValue("@idProfCons", idProfesionalConsultorio);
-                cmd.Parameters.AddWithValue("@diaSemana", diaSemana);
-                cmd.Parameters.AddWithValue("@horaInicio", horaInicio);
-                cmd.Parameters.AddWithValue("@horaFin", horaFin);
-                cmd.Parameters.AddWithValue("@intervalo", intervalo);
+                    SqlCommand cmd = new SqlCommand(insertQuery, conexion);
+                    cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+                    cmd.Parameters.AddWithValue("@idProfCons", idProfesionalConsultorio);
+                    cmd.Parameters.AddWithValue("@diaSemana", diaSemana);
+                    cmd.Parameters.AddWithValue("@horaInicio", horaInicio);
+                    cmd.Parameters.AddWithValue("@horaFin", horaFin);
+                    cmd.Parameters.AddWithValue("@intervalo", intervalo);
+                    cmd.ExecuteNonQuery();
 
-                cmd.ExecuteNonQuery();
+                    MessageBox.Show("Disponibilidad guardada correctamente.",
+                                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    string updateQuery = @"
+                     UPDATE Agenda
+                     SET diaSemana = @diaSemana,
+                      horaInicio = @horaInicio,
+                      horaFin = @horaFin
+                     WHERE id_agenda = @idAgenda";
+
+                    SqlCommand cmd = new SqlCommand(updateQuery, conexion);
+                    cmd.Parameters.AddWithValue("@diaSemana", diaSemana);
+                    cmd.Parameters.AddWithValue("@horaInicio", horaInicio);
+                    cmd.Parameters.AddWithValue("@horaFin", horaFin);
+                    cmd.Parameters.AddWithValue("@idAgenda", idAgendaEditando);
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("Disponibilidad actualizada correctamente.",
+                                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
-
-            MessageBox.Show("Disponibilidad guardada correctamente.",
-                            "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
