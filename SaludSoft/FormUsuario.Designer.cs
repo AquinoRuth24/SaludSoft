@@ -29,9 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.btVolver = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lSubtitulo = new System.Windows.Forms.Label();
@@ -55,6 +53,7 @@
             this.tbEdad = new System.Windows.Forms.TextBox();
             this.lEdad = new System.Windows.Forms.Label();
             this.gbMedico = new System.Windows.Forms.GroupBox();
+            this.CmbEspecialidades = new System.Windows.Forms.ComboBox();
             this.tbContraseñaMedico = new System.Windows.Forms.TextBox();
             this.tbMatricula = new System.Windows.Forms.TextBox();
             this.lContraseñaMedico = new System.Windows.Forms.Label();
@@ -69,7 +68,6 @@
             this.gbAdmin = new System.Windows.Forms.GroupBox();
             this.lContraAdmin = new System.Windows.Forms.Label();
             this.tbContraAdmin = new System.Windows.Forms.TextBox();
-            this.CmbEspecialidades = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.gbComun.SuspendLayout();
@@ -82,31 +80,24 @@
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.btVolver);
             this.panel1.Location = new System.Drawing.Point(1, 57);
             this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(133, 395);
+            this.panel1.Size = new System.Drawing.Size(133, 461);
             this.panel1.TabIndex = 0;
-            // 
-            // panel3
-            // 
-            this.panel3.Location = new System.Drawing.Point(133, 2);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(525, 228);
-            this.panel3.TabIndex = 3;
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button2.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.Image = global::SaludSoft.Properties.Resources.circulo_marca_x;
             this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.Location = new System.Drawing.Point(2, 347);
+            this.button2.Location = new System.Drawing.Point(0, 408);
             this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(133, 37);
@@ -115,21 +106,6 @@
             this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Image = global::SaludSoft.Properties.Resources.hogar;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(14, 59);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(102, 41);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Inicio ";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // btVolver
             // 
@@ -146,21 +122,26 @@
             // 
             // panel2
             // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.panel2.Controls.Add(this.lSubtitulo);
             this.panel2.Controls.Add(this.lTitulo);
-            this.panel2.Location = new System.Drawing.Point(133, 0);
+            this.panel2.Controls.Add(this.pictureBox1);
+            this.panel2.Location = new System.Drawing.Point(1, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(534, 60);
+            this.panel2.Size = new System.Drawing.Size(938, 60);
             this.panel2.TabIndex = 2;
             // 
             // lSubtitulo
             // 
+            this.lSubtitulo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lSubtitulo.AutoSize = true;
             this.lSubtitulo.BackColor = System.Drawing.Color.Transparent;
             this.lSubtitulo.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lSubtitulo.Location = new System.Drawing.Point(143, 34);
+            this.lSubtitulo.Location = new System.Drawing.Point(345, 37);
             this.lSubtitulo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lSubtitulo.Name = "lSubtitulo";
             this.lSubtitulo.Size = new System.Drawing.Size(249, 20);
@@ -169,13 +150,15 @@
             // 
             // lTitulo
             // 
+            this.lTitulo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lTitulo.AutoSize = true;
             this.lTitulo.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lTitulo.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lTitulo.Location = new System.Drawing.Point(210, 6);
+            this.lTitulo.Font = new System.Drawing.Font("Comic Sans MS", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lTitulo.Location = new System.Drawing.Point(396, 9);
             this.lTitulo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lTitulo.Name = "lTitulo";
-            this.lTitulo.Size = new System.Drawing.Size(120, 23);
+            this.lTitulo.Size = new System.Drawing.Size(158, 29);
             this.lTitulo.TabIndex = 3;
             this.lTitulo.Text = "Nuevo Usuario";
             // 
@@ -195,7 +178,7 @@
             this.gbComun.Margin = new System.Windows.Forms.Padding(2);
             this.gbComun.Name = "gbComun";
             this.gbComun.Padding = new System.Windows.Forms.Padding(2);
-            this.gbComun.Size = new System.Drawing.Size(523, 139);
+            this.gbComun.Size = new System.Drawing.Size(584, 139);
             this.gbComun.TabIndex = 3;
             this.gbComun.TabStop = false;
             // 
@@ -292,6 +275,8 @@
             // 
             // gbPaciente
             // 
+            this.gbPaciente.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbPaciente.Controls.Add(this.rbMasculino);
             this.gbPaciente.Controls.Add(this.rbFemenino);
             this.gbPaciente.Controls.Add(this.lSexo);
@@ -299,11 +284,11 @@
             this.gbPaciente.Controls.Add(this.lDireccion);
             this.gbPaciente.Controls.Add(this.tbEdad);
             this.gbPaciente.Controls.Add(this.lEdad);
-            this.gbPaciente.Location = new System.Drawing.Point(147, 255);
+            this.gbPaciente.Location = new System.Drawing.Point(147, 267);
             this.gbPaciente.Margin = new System.Windows.Forms.Padding(2);
             this.gbPaciente.Name = "gbPaciente";
             this.gbPaciente.Padding = new System.Windows.Forms.Padding(2);
-            this.gbPaciente.Size = new System.Drawing.Size(520, 65);
+            this.gbPaciente.Size = new System.Drawing.Size(583, 95);
             this.gbPaciente.TabIndex = 5;
             this.gbPaciente.TabStop = false;
             this.gbPaciente.Visible = false;
@@ -325,7 +310,7 @@
             // 
             this.rbFemenino.AutoSize = true;
             this.rbFemenino.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbFemenino.Location = new System.Drawing.Point(406, 17);
+            this.rbFemenino.Location = new System.Drawing.Point(395, 14);
             this.rbFemenino.Margin = new System.Windows.Forms.Padding(2);
             this.rbFemenino.Name = "rbFemenino";
             this.rbFemenino.Size = new System.Drawing.Size(42, 24);
@@ -386,20 +371,31 @@
             // 
             // gbMedico
             // 
+            this.gbMedico.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbMedico.Controls.Add(this.CmbEspecialidades);
             this.gbMedico.Controls.Add(this.tbContraseñaMedico);
             this.gbMedico.Controls.Add(this.tbMatricula);
             this.gbMedico.Controls.Add(this.lContraseñaMedico);
             this.gbMedico.Controls.Add(this.lMatricula);
             this.gbMedico.Controls.Add(this.lEspecialidad);
-            this.gbMedico.Location = new System.Drawing.Point(141, 253);
+            this.gbMedico.Location = new System.Drawing.Point(147, 253);
             this.gbMedico.Margin = new System.Windows.Forms.Padding(2);
             this.gbMedico.Name = "gbMedico";
             this.gbMedico.Padding = new System.Windows.Forms.Padding(2);
-            this.gbMedico.Size = new System.Drawing.Size(520, 94);
+            this.gbMedico.Size = new System.Drawing.Size(584, 94);
             this.gbMedico.TabIndex = 6;
             this.gbMedico.TabStop = false;
             this.gbMedico.Visible = false;
+            // 
+            // CmbEspecialidades
+            // 
+            this.CmbEspecialidades.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CmbEspecialidades.FormattingEnabled = true;
+            this.CmbEspecialidades.Location = new System.Drawing.Point(293, 9);
+            this.CmbEspecialidades.Name = "CmbEspecialidades";
+            this.CmbEspecialidades.Size = new System.Drawing.Size(121, 26);
+            this.CmbEspecialidades.TabIndex = 9;
             // 
             // tbContraseñaMedico
             // 
@@ -452,13 +448,15 @@
             // 
             // gbRecepcionista
             // 
+            this.gbRecepcionista.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbRecepcionista.Controls.Add(this.tbContraseñaRecep);
             this.gbRecepcionista.Controls.Add(this.lContraseñaRecepcionista);
             this.gbRecepcionista.Location = new System.Drawing.Point(144, 277);
             this.gbRecepcionista.Margin = new System.Windows.Forms.Padding(2);
             this.gbRecepcionista.Name = "gbRecepcionista";
             this.gbRecepcionista.Padding = new System.Windows.Forms.Padding(2);
-            this.gbRecepcionista.Size = new System.Drawing.Size(523, 58);
+            this.gbRecepcionista.Size = new System.Drawing.Size(587, 58);
             this.gbRecepcionista.TabIndex = 7;
             this.gbRecepcionista.TabStop = false;
             this.gbRecepcionista.Visible = false;
@@ -485,12 +483,13 @@
             // 
             // btCancelar
             // 
-            this.btCancelar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btCancelar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btCancelar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.btCancelar.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btCancelar.Location = new System.Drawing.Point(411, 403);
+            this.btCancelar.Location = new System.Drawing.Point(775, 418);
             this.btCancelar.Margin = new System.Windows.Forms.Padding(2);
             this.btCancelar.Name = "btCancelar";
-            this.btCancelar.Size = new System.Drawing.Size(91, 33);
+            this.btCancelar.Size = new System.Drawing.Size(91, 39);
             this.btCancelar.TabIndex = 7;
             this.btCancelar.Text = "Cancelar";
             this.btCancelar.UseVisualStyleBackColor = false;
@@ -498,12 +497,13 @@
             // 
             // btAgregar
             // 
+            this.btAgregar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btAgregar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.btAgregar.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btAgregar.Location = new System.Drawing.Point(541, 404);
+            this.btAgregar.Location = new System.Drawing.Point(638, 418);
             this.btAgregar.Margin = new System.Windows.Forms.Padding(2);
             this.btAgregar.Name = "btAgregar";
-            this.btAgregar.Size = new System.Drawing.Size(92, 32);
+            this.btAgregar.Size = new System.Drawing.Size(92, 39);
             this.btAgregar.TabIndex = 8;
             this.btAgregar.Text = "Agregar ";
             this.btAgregar.UseVisualStyleBackColor = false;
@@ -512,13 +512,14 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
-            this.pictureBox1.Location = new System.Drawing.Point(1, 0);
+            this.pictureBox1.Location = new System.Drawing.Point(0, -2);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(133, 60);
+            this.pictureBox1.Size = new System.Drawing.Size(135, 60);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // gbAdmin
             // 
@@ -547,31 +548,21 @@
             this.tbContraAdmin.Size = new System.Drawing.Size(135, 20);
             this.tbContraAdmin.TabIndex = 0;
             // 
-            // CmbEspecialidades
-            // 
-            this.CmbEspecialidades.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CmbEspecialidades.FormattingEnabled = true;
-            this.CmbEspecialidades.Location = new System.Drawing.Point(293, 9);
-            this.CmbEspecialidades.Name = "CmbEspecialidades";
-            this.CmbEspecialidades.Size = new System.Drawing.Size(121, 26);
-            this.CmbEspecialidades.TabIndex = 9;
-            // 
             // FormUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(669, 452);
+            this.ClientSize = new System.Drawing.Size(938, 513);
+            this.Controls.Add(this.gbPaciente);
             this.Controls.Add(this.gbAdmin);
             this.Controls.Add(this.gbMedico);
             this.Controls.Add(this.gbRecepcionista);
             this.Controls.Add(this.btAgregar);
             this.Controls.Add(this.btCancelar);
-            this.Controls.Add(this.gbPaciente);
             this.Controls.Add(this.cbRol);
             this.Controls.Add(this.gbComun);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FormUsuario";
@@ -599,11 +590,9 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btVolver;
         private System.Windows.Forms.Label lSubtitulo;
         private System.Windows.Forms.Label lTitulo;
-        private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.GroupBox gbComun;
         private System.Windows.Forms.ComboBox cbRol;

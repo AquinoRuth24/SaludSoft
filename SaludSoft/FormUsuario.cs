@@ -562,5 +562,10 @@ namespace SaludSoft.Resources
             foreach (var nud in this.Controls.OfType<NumericUpDown>())
                 nud.Value = nud.Minimum;
         }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
