@@ -27,20 +27,22 @@ namespace SaludSoft
                 conexion.Open();
 
                 string query = @"
-                 SELECT u.id_usuario, 
+                 SELECT 
+                  u.id_usuario, 
                   u.nombre, 
                   u.apellido, 
                   u.email, 
                   u.telefono, 
                   r.descripcion AS rol,
-                  e.id_estado,
-                  e.descripcion AS estado,
+                  eP.id_estado,
+                  eP.descripcion AS estado,
                   p.matricula, 
-                  p.id_especialidad
-                  FROM Usuario u
-                  INNER JOIN Rol r ON u.id_rol = r.id_rol
-                 INNER JOIN EstadoPaciente e ON u.id_estado = e.id_estado
-                 LEFT JOIN Profesional p ON p.id_usuario = u.id_usuario
+                  es.nombre AS especialidad
+                 FROM Usuario u
+                 INNER JOIN Rol r ON u.id_rol = r.id_rol
+                 INNER JOIN Estado eP ON u.id_estado = eP.id_estado
+                 LEFT JOIN Profesional p ON p.email = u.email
+                 LEFT JOIN Especialidad es ON p.id_especialidad = es.id_especialidad
                  WHERE u.nombre LIKE @filtro 
                  OR u.apellido LIKE @filtro 
                  OR u.email LIKE @filtro";
@@ -51,7 +53,7 @@ namespace SaludSoft
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
-                dgUsuario.DataSource = null; // limpiar primero
+                dgUsuario.DataSource = null;
                 dgUsuario.Columns.Clear();
                 dgUsuario.DataSource = dt;
 
@@ -67,7 +69,7 @@ namespace SaludSoft
                 btnEditar.UseColumnTextForButtonValue = true;
                 dgUsuario.Columns.Add(btnEditar);
 
-                // Botón Eliminar (solo para usuarios activos)
+                // Botón Eliminar
                 DataGridViewButtonColumn btnEliminar = new DataGridViewButtonColumn();
                 btnEliminar.HeaderText = "Eliminar";
                 btnEliminar.Name = "Eliminar";
@@ -75,7 +77,7 @@ namespace SaludSoft
                 btnEliminar.UseColumnTextForButtonValue = true;
                 dgUsuario.Columns.Add(btnEliminar);
 
-                // Botón Restaurar (solo para usuarios inactivos)
+                // Botón Restaurar
                 DataGridViewButtonColumn btnRestaurar = new DataGridViewButtonColumn();
                 btnRestaurar.HeaderText = "Restaurar";
                 btnRestaurar.Name = "Restaurar";
@@ -83,9 +85,9 @@ namespace SaludSoft
                 btnRestaurar.UseColumnTextForButtonValue = true;
                 dgUsuario.Columns.Add(btnRestaurar);
 
-                // Ocultar columnas sensibles
+                // Ocultar columnas innecesarias
+                if (dgUsuario.Columns.Contains("id_usuario")) dgUsuario.Columns["id_usuario"].Visible = false;
                 if (dgUsuario.Columns.Contains("matricula")) dgUsuario.Columns["matricula"].Visible = false;
-                if (dgUsuario.Columns.Contains("idEspecialidad")) dgUsuario.Columns["idEspecialidad"].Visible = false;
                 if (dgUsuario.Columns.Contains("id_estado")) dgUsuario.Columns["id_estado"].Visible = false;
             }
         }

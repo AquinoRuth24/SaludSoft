@@ -62,7 +62,7 @@ namespace SaludSoft.Resources
             if (cbRol != null && cbRol.Items.Count == 0)
             {
 
-                cbRol.Items.AddRange(new object[] { "Paciente", "Médico", "Recepcionista" });
+                cbRol.Items.AddRange(new object[] { "Paciente", "Médico", "Recepcionista","Administrador" });
                 cbRol.DropDownStyle = ComboBoxStyle.DropDownList;
             }
             if (cbRol != null && cbRol.SelectedIndex < 0) cbRol.SelectedIndex = 0;
@@ -137,8 +137,11 @@ namespace SaludSoft.Resources
                     FindCtl<GroupBox>("gbRecepcionista")?.BringToFront();
                     break;
 
-                    // case RolUsuario.Administrador: // <- Eliminado: no se permite
-                    //     break;
+                case RolUsuario.Administrador:
+                    SetVisible("gbAdmin", true); // si tenés un grupo o controles de admin
+                    ShowPwdFor("Administrador", true);
+                    FindCtl<GroupBox>("gbAdmin")?.BringToFront();
+                    break;
             }
 
             this.PerformLayout();
@@ -180,17 +183,17 @@ namespace SaludSoft.Resources
             var rolDestino = (RolUsuario)(cbRol?.SelectedIndex ?? 0);
 
             // no permitir crear Administrador
-            if (rolDestino == RolUsuario.Administrador)
-            {
-                Msg("No está permitido crear usuarios con rol Administrador.");
-                return;
-            }
+            //if (rolDestino == RolUsuario.Administrador)
+            //{
+              //  Msg("No está permitido crear usuarios con rol Administrador.");
+                //return;
+            //}
 
             if (!ValidarFormulario()) return;
 
             // Comunes
             string nombre = GetText("tbNombre");
-            string apellido = GetText("tbApellido");
+            string apellido = GetText("tbApellido"); 
             string dni = GetText("tbDni");
             string direccion = GetText("tbDireccion");
             string correo = GetText("tbCorreo");
@@ -349,12 +352,12 @@ namespace SaludSoft.Resources
                 var esp = GetTextAny("tbEspecialidadFormUsuario", "tbEspecialidad");
                 if (!string.IsNullOrWhiteSpace(esp) && !Regex.IsMatch(esp, SOLO_LETRAS)) { Msg("Especialidad: solo letras y espacios"); return false; }
             }
-            else if (rol == RolUsuario.Administrador)
-            {
+            //else if (rol == RolUsuario.Administrador)
+            //{
                 // No debería alcanzarse porque no se permite Administrador en UI ni al guardar
-                Msg("No está permitido crear usuarios con rol Administrador.");
-                return false;
-            }
+              //  Msg("No está permitido crear usuarios con rol Administrador.");
+                //return false;
+            //}
 
             // Sexo: si tenés rbMasculino / rbFemenino, exige uno
             if (rol == RolUsuario.Paciente)
@@ -518,8 +521,9 @@ namespace SaludSoft.Resources
                 case RolUsuario.Medico:
                     return FindCtl<TextBox>("tbContrasenaMedico") ?? FindCtl<TextBox>("tbContraseñaMedico");
                 case RolUsuario.Administrador:
-                    // No debería usarse ya, pero por si acaso devolvemos null para bloquear validación
-                    return null;
+                    return FindCtl<TextBox>("tbContraAdmin")
+                    ?? FindCtl<TextBox>("tbContraAdmin")
+                     ?? FindCtl<TextBox>("tbContraAdmin");
                 case RolUsuario.Recepcionista:
                     return FindCtl<TextBox>("tbContrasenaRecep") ?? FindCtl<TextBox>("tbContraseñaRecep")
                            ?? FindCtl<TextBox>("tbContrasenaRecepcionista") ?? FindCtl<TextBox>("tbContraseñaRecepcionista");

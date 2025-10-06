@@ -34,6 +34,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.lSubtitulo = new System.Windows.Forms.Label();
             this.lTitulo = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.gbComun = new System.Windows.Forms.GroupBox();
             this.tbTelefono = new System.Windows.Forms.TextBox();
             this.lTelefono = new System.Windows.Forms.Label();
@@ -64,17 +65,16 @@
             this.lContraseñaRecepcionista = new System.Windows.Forms.Label();
             this.btCancelar = new System.Windows.Forms.Button();
             this.btAgregar = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.gbAdmin = new System.Windows.Forms.GroupBox();
             this.lContraAdmin = new System.Windows.Forms.Label();
             this.tbContraAdmin = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.gbComun.SuspendLayout();
             this.gbPaciente.SuspendLayout();
             this.gbMedico.SuspendLayout();
             this.gbRecepcionista.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.gbAdmin.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -161,6 +161,18 @@
             this.lTitulo.Size = new System.Drawing.Size(158, 29);
             this.lTitulo.TabIndex = 3;
             this.lTitulo.Text = "Nuevo Usuario";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
+            this.pictureBox1.Location = new System.Drawing.Point(0, -2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(135, 60);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // gbComun
             // 
@@ -265,7 +277,8 @@
             this.cbRol.Items.AddRange(new object[] {
             "Paciente",
             "Médico",
-            "Recepcionista"});
+            "Recepcionista",
+            "Administrador"});
             this.cbRol.Location = new System.Drawing.Point(147, 72);
             this.cbRol.Margin = new System.Windows.Forms.Padding(2);
             this.cbRol.Name = "cbRol";
@@ -509,23 +522,11 @@
             this.btAgregar.UseVisualStyleBackColor = false;
             this.btAgregar.Click += new System.EventHandler(this.btAgregar_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
-            this.pictureBox1.Location = new System.Drawing.Point(0, -2);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(135, 60);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
             // gbAdmin
             // 
             this.gbAdmin.Controls.Add(this.lContraAdmin);
             this.gbAdmin.Controls.Add(this.tbContraAdmin);
-            this.gbAdmin.Location = new System.Drawing.Point(149, 253);
+            this.gbAdmin.Location = new System.Drawing.Point(162, 253);
             this.gbAdmin.Name = "gbAdmin";
             this.gbAdmin.Size = new System.Drawing.Size(517, 82);
             this.gbAdmin.TabIndex = 9;
@@ -570,6 +571,7 @@
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.gbComun.ResumeLayout(false);
             this.gbComun.PerformLayout();
             this.gbPaciente.ResumeLayout(false);
@@ -578,7 +580,6 @@
             this.gbMedico.PerformLayout();
             this.gbRecepcionista.ResumeLayout(false);
             this.gbRecepcionista.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.gbAdmin.ResumeLayout(false);
             this.gbAdmin.PerformLayout();
             this.ResumeLayout(false);
