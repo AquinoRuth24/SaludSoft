@@ -176,7 +176,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnIzquierdo.Controls.Add(this.gbSeleccionarFecha);
-            this.pnIzquierdo.Location = new System.Drawing.Point(12, 175);
+            this.pnIzquierdo.Location = new System.Drawing.Point(9, 158);
             this.pnIzquierdo.Name = "pnIzquierdo";
             this.pnIzquierdo.Size = new System.Drawing.Size(508, 231);
             this.pnIzquierdo.TabIndex = 8;
@@ -206,9 +206,10 @@
             // 
             // pnlDerecho
             // 
-            this.pnlDerecho.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlDerecho.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlDerecho.Controls.Add(this.gbFranjaHoraria);
-            this.pnlDerecho.Location = new System.Drawing.Point(526, 175);
+            this.pnlDerecho.Location = new System.Drawing.Point(523, 158);
             this.pnlDerecho.Name = "pnlDerecho";
             this.pnlDerecho.Size = new System.Drawing.Size(502, 231);
             this.pnlDerecho.TabIndex = 9;
@@ -221,7 +222,7 @@
             this.gbFranjaHoraria.Controls.Add(this.btSobreturno);
             this.gbFranjaHoraria.Location = new System.Drawing.Point(16, 16);
             this.gbFranjaHoraria.Name = "gbFranjaHoraria";
-            this.gbFranjaHoraria.Size = new System.Drawing.Size(468, 198);
+            this.gbFranjaHoraria.Size = new System.Drawing.Size(440, 198);
             this.gbFranjaHoraria.TabIndex = 0;
             this.gbFranjaHoraria.TabStop = false;
             // 
@@ -233,7 +234,7 @@
             this.flpFranjas.AutoScroll = true;
             this.flpFranjas.Location = new System.Drawing.Point(20, 61);
             this.flpFranjas.Name = "flpFranjas";
-            this.flpFranjas.Size = new System.Drawing.Size(430, 79);
+            this.flpFranjas.Size = new System.Drawing.Size(402, 79);
             this.flpFranjas.TabIndex = 2;
             // 
             // lDisponibles
@@ -241,7 +242,7 @@
             this.lDisponibles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lDisponibles.AutoSize = true;
             this.lDisponibles.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lDisponibles.Location = new System.Drawing.Point(44, 16);
+            this.lDisponibles.Location = new System.Drawing.Point(16, 16);
             this.lDisponibles.Name = "lDisponibles";
             this.lDisponibles.Size = new System.Drawing.Size(126, 19);
             this.lDisponibles.TabIndex = 1;
@@ -254,13 +255,14 @@
             this.btSobreturno.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btSobreturno.Image = global::SaludSoft.Properties.Resources.agregar;
             this.btSobreturno.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btSobreturno.Location = new System.Drawing.Point(355, 9);
+            this.btSobreturno.Location = new System.Drawing.Point(316, 9);
             this.btSobreturno.Name = "btSobreturno";
-            this.btSobreturno.Size = new System.Drawing.Size(113, 33);
+            this.btSobreturno.Size = new System.Drawing.Size(124, 33);
             this.btSobreturno.TabIndex = 0;
             this.btSobreturno.Text = "Sobreturno";
             this.btSobreturno.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btSobreturno.UseVisualStyleBackColor = false;
+            this.btSobreturno.Click += new System.EventHandler(this.btSobreturno_Click);
             // 
             // gbTurnosDia
             // 
@@ -268,7 +270,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbTurnosDia.Controls.Add(this.DTVGAgenda);
             this.gbTurnosDia.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbTurnosDia.Location = new System.Drawing.Point(12, 412);
+            this.gbTurnosDia.Location = new System.Drawing.Point(9, 395);
             this.gbTurnosDia.Name = "gbTurnosDia";
             this.gbTurnosDia.Size = new System.Drawing.Size(1016, 100);
             this.gbTurnosDia.TabIndex = 10;
@@ -286,7 +288,7 @@
             dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             dataGridViewCellStyle9.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.White;
             dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.DTVGAgenda.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
