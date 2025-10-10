@@ -28,11 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel2 = new System.Windows.Forms.Panel();
             this.BVolverAgenda = new System.Windows.Forms.Button();
-            this.BNuevaDisponibilidad = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.LGestionAgenda = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -72,7 +71,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.panel2.Controls.Add(this.BVolverAgenda);
-            this.panel2.Controls.Add(this.BNuevaDisponibilidad);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.LGestionAgenda);
             this.panel2.Location = new System.Drawing.Point(0, 1);
@@ -91,18 +89,6 @@
             this.BVolverAgenda.UseVisualStyleBackColor = true;
             this.BVolverAgenda.Click += new System.EventHandler(this.BVolverAgenda_Click);
             // 
-            // BNuevaDisponibilidad
-            // 
-            this.BNuevaDisponibilidad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BNuevaDisponibilidad.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BNuevaDisponibilidad.Location = new System.Drawing.Point(824, 8);
-            this.BNuevaDisponibilidad.Name = "BNuevaDisponibilidad";
-            this.BNuevaDisponibilidad.Size = new System.Drawing.Size(186, 52);
-            this.BNuevaDisponibilidad.TabIndex = 3;
-            this.BNuevaDisponibilidad.Text = "Nueva Disponibilidad";
-            this.BNuevaDisponibilidad.UseVisualStyleBackColor = true;
-            this.BNuevaDisponibilidad.Click += new System.EventHandler(this.BNuevaDisponibilidad_Click);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -117,7 +103,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LGestionAgenda.AutoSize = true;
             this.LGestionAgenda.Font = new System.Drawing.Font("Comic Sans MS", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LGestionAgenda.Location = new System.Drawing.Point(362, 18);
+            this.LGestionAgenda.Location = new System.Drawing.Point(414, 18);
             this.LGestionAgenda.Name = "LGestionAgenda";
             this.LGestionAgenda.Size = new System.Drawing.Size(205, 29);
             this.LGestionAgenda.TabIndex = 1;
@@ -284,14 +270,14 @@
             this.DTVGAgenda.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DTVGAgenda.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DTVGAgenda.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DTVGAgenda.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.DTVGAgenda.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DTVGAgenda.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colFechaHora,
@@ -312,9 +298,9 @@
             // 
             // colFechaHora
             // 
-            dataGridViewCellStyle10.Format = "f";
-            dataGridViewCellStyle10.NullValue = null;
-            this.colFechaHora.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle2.Format = "f";
+            dataGridViewCellStyle2.NullValue = null;
+            this.colFechaHora.DefaultCellStyle = dataGridViewCellStyle2;
             this.colFechaHora.HeaderText = "Fecha/hora";
             this.colFechaHora.Name = "colFechaHora";
             this.colFechaHora.ReadOnly = true;
@@ -391,7 +377,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label LGestionAgenda;
-        private System.Windows.Forms.Button BNuevaDisponibilidad;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button BBuscar;
         private System.Windows.Forms.Label LProfesional;

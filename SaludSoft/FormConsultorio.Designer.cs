@@ -66,6 +66,7 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.BBuscar = new System.Windows.Forms.Button();
             this.BLimpiar = new System.Windows.Forms.Button();
+            this.BNuevaDisponibilidad = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGWConsultorios_profesional)).BeginInit();
             this.panel2.SuspendLayout();
@@ -471,11 +472,24 @@
             this.BLimpiar.UseVisualStyleBackColor = true;
             this.BLimpiar.Click += new System.EventHandler(this.BLimpiar_Click);
             // 
+            // BNuevaDisponibilidad
+            // 
+            this.BNuevaDisponibilidad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BNuevaDisponibilidad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BNuevaDisponibilidad.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BNuevaDisponibilidad.Location = new System.Drawing.Point(409, 187);
+            this.BNuevaDisponibilidad.Name = "BNuevaDisponibilidad";
+            this.BNuevaDisponibilidad.Size = new System.Drawing.Size(186, 43);
+            this.BNuevaDisponibilidad.TabIndex = 4;
+            this.BNuevaDisponibilidad.Text = "Nueva Disponibilidad";
+            this.BNuevaDisponibilidad.UseVisualStyleBackColor = false;
+            // 
             // FormConsultorio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1044, 532);
+            this.Controls.Add(this.BNuevaDisponibilidad);
             this.Controls.Add(this.BLimpiar);
             this.Controls.Add(this.BBuscar);
             this.Controls.Add(this.pictureBox2);
@@ -549,5 +563,6 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Button BBuscar;
         private System.Windows.Forms.Button BLimpiar;
+        private System.Windows.Forms.Button BNuevaDisponibilidad;
     }
 }

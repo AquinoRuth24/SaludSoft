@@ -504,21 +504,13 @@ namespace SaludSoft
             }
         }
 
-        // =================== BOTONES EXISTENTES ===================
-
-        private void BNuevaDisponibilidad_Click(object sender, EventArgs e)
-        {
-            var frm = new FormNuevaDisponibilidad();
-            frm.ShowDialog();
-            CargarAgenda();
-        }
-
+        // BOTONES EXISTENTES 
         private void BVolverAgenda_Click(object sender, EventArgs e) => this.Close();
         private void BBuscar_Click_1(object sender, EventArgs e) { }
         private void gbSeleccionarFecha_Enter(object sender, EventArgs e) { }
         private void btSobreturno_Click(object sender, EventArgs e) { }
 
-        // =================== HELPERS (VALIDACIÓN/BD) ===================
+        //HELPERS (VALIDACIÓN/BD) 
 
         /// <summary>Valida formato de DNI (numérico de 7 a 9 dígitos).</summary>
         private bool EsDniValido(string dni)
@@ -584,7 +576,7 @@ namespace SaludSoft
         }
     }
 
-    // =================== VIEWMODEL PARA LA GRILLA ===================
+    //  VIEWMODEL PARA LA GRILLA 
 
     /// <summary>Modelo de datos para mostrar turnos en la grilla.</summary>
     public class TurnoVM
