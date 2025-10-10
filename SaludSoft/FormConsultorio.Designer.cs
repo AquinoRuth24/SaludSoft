@@ -39,18 +39,6 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.LConsultoriosDisponibles = new System.Windows.Forms.Label();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.LConsultoriosAsignados = new System.Windows.Forms.Label();
-            this.BAgregarConsultorio = new System.Windows.Forms.Button();
-            this.BAsignarProfesional = new System.Windows.Forms.Button();
-            this.GBAgregarConsultorio = new System.Windows.Forms.GroupBox();
-            this.BCancelar = new System.Windows.Forms.Button();
-            this.BAgregar = new System.Windows.Forms.Button();
-            this.TBDescripcion = new System.Windows.Forms.TextBox();
-            this.TBNroConsultorio = new System.Windows.Forms.TextBox();
-            this.LConsultorio = new System.Windows.Forms.Label();
-            this.LDescripcionConsul = new System.Windows.Forms.Label();
             this.GBAsignarProfesional = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -62,19 +50,43 @@
             this.CMBConsultorio = new System.Windows.Forms.ComboBox();
             this.DTPDesde = new System.Windows.Forms.DateTimePicker();
             this.DTPHasta = new System.Windows.Forms.DateTimePicker();
+            this.GBAgregarConsultorio = new System.Windows.Forms.GroupBox();
+            this.BCancelar = new System.Windows.Forms.Button();
+            this.BAgregar = new System.Windows.Forms.Button();
+            this.TBDescripcion = new System.Windows.Forms.TextBox();
+            this.TBNroConsultorio = new System.Windows.Forms.TextBox();
+            this.LConsultorio = new System.Windows.Forms.Label();
+            this.LDescripcionConsul = new System.Windows.Forms.Label();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.LConsultoriosAsignados = new System.Windows.Forms.Label();
+            this.BAgregarConsultorio = new System.Windows.Forms.Button();
+            this.BAsignarProfesional = new System.Windows.Forms.Button();
             this.TBBuscar = new System.Windows.Forms.TextBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.BBuscar = new System.Windows.Forms.Button();
             this.BLimpiar = new System.Windows.Forms.Button();
             this.BNuevaDisponibilidad = new System.Windows.Forms.Button();
+            this.GBNuevaDisponibilidad = new System.Windows.Forms.GroupBox();
+            this.BGuardarDisponibilidad = new System.Windows.Forms.Button();
+            this.BCancelarDisponibilidad = new System.Windows.Forms.Button();
+            this.DPTHoraFin = new System.Windows.Forms.DateTimePicker();
+            this.LHoraFin = new System.Windows.Forms.Label();
+            this.LHoraInicio = new System.Windows.Forms.Label();
+            this.DTPHoraInicio = new System.Windows.Forms.DateTimePicker();
+            this.LDia = new System.Windows.Forms.Label();
+            this.LProfesionales = new System.Windows.Forms.Label();
+            this.CBDiaSemana = new System.Windows.Forms.ComboBox();
+            this.CMBProfesional_consultorio = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGWConsultorios_profesional)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.panel4.SuspendLayout();
-            this.GBAgregarConsultorio.SuspendLayout();
             this.GBAsignarProfesional.SuspendLayout();
+            this.GBAgregarConsultorio.SuspendLayout();
+            this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.GBNuevaDisponibilidad.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -95,7 +107,6 @@
             this.BVolver.Size = new System.Drawing.Size(75, 44);
             this.BVolver.TabIndex = 1;
             this.BVolver.UseVisualStyleBackColor = true;
-            this.BVolver.Click += new System.EventHandler(this.BVolver_Click);
             // 
             // label1
             // 
@@ -154,6 +165,8 @@
             this.panel3.BackColor = System.Drawing.Color.LightGreen;
             this.panel3.Controls.Add(this.label2);
             this.panel3.Controls.Add(this.LConsultoriosDisponibles);
+            this.panel3.Controls.Add(this.GBAsignarProfesional);
+            this.panel3.Controls.Add(this.GBAgregarConsultorio);
             this.panel3.Location = new System.Drawing.Point(236, 86);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(193, 88);
@@ -181,140 +194,6 @@
             this.LConsultoriosDisponibles.TabIndex = 0;
             this.LConsultoriosDisponibles.Text = "0";
             // 
-            // panel4
-            // 
-            this.panel4.BackColor = System.Drawing.Color.LightGreen;
-            this.panel4.Controls.Add(this.label4);
-            this.panel4.Controls.Add(this.LConsultoriosAsignados);
-            this.panel4.Location = new System.Drawing.Point(453, 86);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(199, 88);
-            this.panel4.TabIndex = 10;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Constantia", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(66, 61);
-            this.label4.Name = "label4";
-            this.label4.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label4.Size = new System.Drawing.Size(80, 19);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "Asignados";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // LConsultoriosAsignados
-            // 
-            this.LConsultoriosAsignados.AutoSize = true;
-            this.LConsultoriosAsignados.Font = new System.Drawing.Font("Consolas", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LConsultoriosAsignados.Location = new System.Drawing.Point(88, 13);
-            this.LConsultoriosAsignados.Name = "LConsultoriosAsignados";
-            this.LConsultoriosAsignados.Size = new System.Drawing.Size(29, 32);
-            this.LConsultoriosAsignados.TabIndex = 0;
-            this.LConsultoriosAsignados.Text = "0";
-            // 
-            // BAgregarConsultorio
-            // 
-            this.BAgregarConsultorio.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.BAgregarConsultorio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BAgregarConsultorio.ForeColor = System.Drawing.Color.Black;
-            this.BAgregarConsultorio.Location = new System.Drawing.Point(1, 187);
-            this.BAgregarConsultorio.Name = "BAgregarConsultorio";
-            this.BAgregarConsultorio.Size = new System.Drawing.Size(190, 43);
-            this.BAgregarConsultorio.TabIndex = 11;
-            this.BAgregarConsultorio.Text = "+ Agegar Consultorio";
-            this.BAgregarConsultorio.UseVisualStyleBackColor = false;
-            this.BAgregarConsultorio.Click += new System.EventHandler(this.BAgregarConsultorio_Click);
-            // 
-            // BAsignarProfesional
-            // 
-            this.BAsignarProfesional.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.BAsignarProfesional.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BAsignarProfesional.Location = new System.Drawing.Point(217, 187);
-            this.BAsignarProfesional.Name = "BAsignarProfesional";
-            this.BAsignarProfesional.Size = new System.Drawing.Size(166, 43);
-            this.BAsignarProfesional.TabIndex = 12;
-            this.BAsignarProfesional.Text = "+ Asignar Profesional";
-            this.BAsignarProfesional.UseVisualStyleBackColor = false;
-            this.BAsignarProfesional.Click += new System.EventHandler(this.BAsignarProfesional_Click_1);
-            // 
-            // GBAgregarConsultorio
-            // 
-            this.GBAgregarConsultorio.BackColor = System.Drawing.Color.LightGreen;
-            this.GBAgregarConsultorio.Controls.Add(this.BCancelar);
-            this.GBAgregarConsultorio.Controls.Add(this.BAgregar);
-            this.GBAgregarConsultorio.Controls.Add(this.TBDescripcion);
-            this.GBAgregarConsultorio.Controls.Add(this.TBNroConsultorio);
-            this.GBAgregarConsultorio.Controls.Add(this.LConsultorio);
-            this.GBAgregarConsultorio.Controls.Add(this.LDescripcionConsul);
-            this.GBAgregarConsultorio.Location = new System.Drawing.Point(190, 282);
-            this.GBAgregarConsultorio.Name = "GBAgregarConsultorio";
-            this.GBAgregarConsultorio.Size = new System.Drawing.Size(389, 212);
-            this.GBAgregarConsultorio.TabIndex = 13;
-            this.GBAgregarConsultorio.TabStop = false;
-            this.GBAgregarConsultorio.Visible = false;
-            // 
-            // BCancelar
-            // 
-            this.BCancelar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.BCancelar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BCancelar.Location = new System.Drawing.Point(166, 177);
-            this.BCancelar.Name = "BCancelar";
-            this.BCancelar.Size = new System.Drawing.Size(93, 29);
-            this.BCancelar.TabIndex = 5;
-            this.BCancelar.Text = "Cancelar";
-            this.BCancelar.UseVisualStyleBackColor = false;
-            this.BCancelar.Click += new System.EventHandler(this.BCancelar_Click);
-            // 
-            // BAgregar
-            // 
-            this.BAgregar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.BAgregar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BAgregar.Location = new System.Drawing.Point(295, 177);
-            this.BAgregar.Name = "BAgregar";
-            this.BAgregar.Size = new System.Drawing.Size(88, 29);
-            this.BAgregar.TabIndex = 4;
-            this.BAgregar.Text = "Agergar";
-            this.BAgregar.UseVisualStyleBackColor = false;
-            this.BAgregar.Click += new System.EventHandler(this.BAgregar_Click);
-            // 
-            // TBDescripcion
-            // 
-            this.TBDescripcion.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TBDescripcion.Location = new System.Drawing.Point(220, 47);
-            this.TBDescripcion.Multiline = true;
-            this.TBDescripcion.Name = "TBDescripcion";
-            this.TBDescripcion.Size = new System.Drawing.Size(153, 56);
-            this.TBDescripcion.TabIndex = 3;
-            // 
-            // TBNroConsultorio
-            // 
-            this.TBNroConsultorio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TBNroConsultorio.Location = new System.Drawing.Point(6, 63);
-            this.TBNroConsultorio.Name = "TBNroConsultorio";
-            this.TBNroConsultorio.Size = new System.Drawing.Size(123, 28);
-            this.TBNroConsultorio.TabIndex = 2;
-            // 
-            // LConsultorio
-            // 
-            this.LConsultorio.AutoSize = true;
-            this.LConsultorio.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LConsultorio.Location = new System.Drawing.Point(15, 19);
-            this.LConsultorio.Name = "LConsultorio";
-            this.LConsultorio.Size = new System.Drawing.Size(103, 18);
-            this.LConsultorio.TabIndex = 1;
-            this.LConsultorio.Text = "Nro Consultorio";
-            // 
-            // LDescripcionConsul
-            // 
-            this.LDescripcionConsul.AutoSize = true;
-            this.LDescripcionConsul.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LDescripcionConsul.Location = new System.Drawing.Point(260, 19);
-            this.LDescripcionConsul.Name = "LDescripcionConsul";
-            this.LDescripcionConsul.Size = new System.Drawing.Size(79, 18);
-            this.LDescripcionConsul.TabIndex = 0;
-            this.LDescripcionConsul.Text = "Descripcion";
-            // 
             // GBAsignarProfesional
             // 
             this.GBAsignarProfesional.Controls.Add(this.label8);
@@ -327,7 +206,7 @@
             this.GBAsignarProfesional.Controls.Add(this.CMBConsultorio);
             this.GBAsignarProfesional.Controls.Add(this.DTPDesde);
             this.GBAsignarProfesional.Controls.Add(this.DTPHasta);
-            this.GBAsignarProfesional.Location = new System.Drawing.Point(599, 282);
+            this.GBAsignarProfesional.Location = new System.Drawing.Point(173, 25);
             this.GBAsignarProfesional.Name = "GBAsignarProfesional";
             this.GBAsignarProfesional.Size = new System.Drawing.Size(389, 212);
             this.GBAsignarProfesional.TabIndex = 14;
@@ -384,7 +263,6 @@
             this.BAgregarProfesional_consultorio.TabIndex = 7;
             this.BAgregarProfesional_consultorio.Text = "Agergar";
             this.BAgregarProfesional_consultorio.UseVisualStyleBackColor = false;
-            this.BAgregarProfesional_consultorio.Click += new System.EventHandler(this.BAgregarProfesional_consultorio_Click);
             // 
             // BCancelarProfesional_consultorio
             // 
@@ -396,7 +274,6 @@
             this.BCancelarProfesional_consultorio.TabIndex = 6;
             this.BCancelarProfesional_consultorio.Text = "Cancelar";
             this.BCancelarProfesional_consultorio.UseVisualStyleBackColor = false;
-            this.BCancelarProfesional_consultorio.Click += new System.EventHandler(this.BCancelarProfesional_consultorio_Click);
             // 
             // CMBProfesional
             // 
@@ -432,6 +309,136 @@
             this.DTPHasta.Size = new System.Drawing.Size(130, 28);
             this.DTPHasta.TabIndex = 0;
             // 
+            // GBAgregarConsultorio
+            // 
+            this.GBAgregarConsultorio.BackColor = System.Drawing.Color.LightGreen;
+            this.GBAgregarConsultorio.Controls.Add(this.BCancelar);
+            this.GBAgregarConsultorio.Controls.Add(this.BAgregar);
+            this.GBAgregarConsultorio.Controls.Add(this.TBDescripcion);
+            this.GBAgregarConsultorio.Controls.Add(this.TBNroConsultorio);
+            this.GBAgregarConsultorio.Controls.Add(this.LConsultorio);
+            this.GBAgregarConsultorio.Controls.Add(this.LDescripcionConsul);
+            this.GBAgregarConsultorio.Location = new System.Drawing.Point(15, 13);
+            this.GBAgregarConsultorio.Name = "GBAgregarConsultorio";
+            this.GBAgregarConsultorio.Size = new System.Drawing.Size(389, 212);
+            this.GBAgregarConsultorio.TabIndex = 13;
+            this.GBAgregarConsultorio.TabStop = false;
+            this.GBAgregarConsultorio.Visible = false;
+            // 
+            // BCancelar
+            // 
+            this.BCancelar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BCancelar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BCancelar.Location = new System.Drawing.Point(166, 177);
+            this.BCancelar.Name = "BCancelar";
+            this.BCancelar.Size = new System.Drawing.Size(93, 29);
+            this.BCancelar.TabIndex = 5;
+            this.BCancelar.Text = "Cancelar";
+            this.BCancelar.UseVisualStyleBackColor = false;
+            // 
+            // BAgregar
+            // 
+            this.BAgregar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BAgregar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BAgregar.Location = new System.Drawing.Point(295, 177);
+            this.BAgregar.Name = "BAgregar";
+            this.BAgregar.Size = new System.Drawing.Size(88, 29);
+            this.BAgregar.TabIndex = 4;
+            this.BAgregar.Text = "Agergar";
+            this.BAgregar.UseVisualStyleBackColor = false;
+            // 
+            // TBDescripcion
+            // 
+            this.TBDescripcion.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TBDescripcion.Location = new System.Drawing.Point(220, 47);
+            this.TBDescripcion.Multiline = true;
+            this.TBDescripcion.Name = "TBDescripcion";
+            this.TBDescripcion.Size = new System.Drawing.Size(153, 56);
+            this.TBDescripcion.TabIndex = 3;
+            // 
+            // TBNroConsultorio
+            // 
+            this.TBNroConsultorio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TBNroConsultorio.Location = new System.Drawing.Point(6, 63);
+            this.TBNroConsultorio.Name = "TBNroConsultorio";
+            this.TBNroConsultorio.Size = new System.Drawing.Size(123, 28);
+            this.TBNroConsultorio.TabIndex = 2;
+            // 
+            // LConsultorio
+            // 
+            this.LConsultorio.AutoSize = true;
+            this.LConsultorio.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LConsultorio.Location = new System.Drawing.Point(15, 19);
+            this.LConsultorio.Name = "LConsultorio";
+            this.LConsultorio.Size = new System.Drawing.Size(103, 18);
+            this.LConsultorio.TabIndex = 1;
+            this.LConsultorio.Text = "Nro Consultorio";
+            // 
+            // LDescripcionConsul
+            // 
+            this.LDescripcionConsul.AutoSize = true;
+            this.LDescripcionConsul.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LDescripcionConsul.Location = new System.Drawing.Point(260, 19);
+            this.LDescripcionConsul.Name = "LDescripcionConsul";
+            this.LDescripcionConsul.Size = new System.Drawing.Size(79, 18);
+            this.LDescripcionConsul.TabIndex = 0;
+            this.LDescripcionConsul.Text = "Descripcion";
+            // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.Color.LightGreen;
+            this.panel4.Controls.Add(this.label4);
+            this.panel4.Controls.Add(this.LConsultoriosAsignados);
+            this.panel4.Location = new System.Drawing.Point(453, 86);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(199, 88);
+            this.panel4.TabIndex = 10;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Constantia", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(66, 61);
+            this.label4.Name = "label4";
+            this.label4.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.label4.Size = new System.Drawing.Size(80, 19);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Asignados";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // LConsultoriosAsignados
+            // 
+            this.LConsultoriosAsignados.AutoSize = true;
+            this.LConsultoriosAsignados.Font = new System.Drawing.Font("Consolas", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LConsultoriosAsignados.Location = new System.Drawing.Point(88, 13);
+            this.LConsultoriosAsignados.Name = "LConsultoriosAsignados";
+            this.LConsultoriosAsignados.Size = new System.Drawing.Size(29, 32);
+            this.LConsultoriosAsignados.TabIndex = 0;
+            this.LConsultoriosAsignados.Text = "0";
+            // 
+            // BAgregarConsultorio
+            // 
+            this.BAgregarConsultorio.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BAgregarConsultorio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BAgregarConsultorio.ForeColor = System.Drawing.Color.Black;
+            this.BAgregarConsultorio.Location = new System.Drawing.Point(1, 187);
+            this.BAgregarConsultorio.Name = "BAgregarConsultorio";
+            this.BAgregarConsultorio.Size = new System.Drawing.Size(190, 43);
+            this.BAgregarConsultorio.TabIndex = 11;
+            this.BAgregarConsultorio.Text = "+ Agegar Consultorio";
+            this.BAgregarConsultorio.UseVisualStyleBackColor = false;
+            // 
+            // BAsignarProfesional
+            // 
+            this.BAsignarProfesional.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BAsignarProfesional.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BAsignarProfesional.Location = new System.Drawing.Point(217, 187);
+            this.BAsignarProfesional.Name = "BAsignarProfesional";
+            this.BAsignarProfesional.Size = new System.Drawing.Size(166, 43);
+            this.BAsignarProfesional.TabIndex = 12;
+            this.BAsignarProfesional.Text = "+ Asignar Profesional";
+            this.BAsignarProfesional.UseVisualStyleBackColor = false;
+            // 
             // TBBuscar
             // 
             this.TBBuscar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -459,7 +466,6 @@
             this.BBuscar.TabIndex = 18;
             this.BBuscar.Text = "Buscar";
             this.BBuscar.UseVisualStyleBackColor = true;
-            this.BBuscar.Click += new System.EventHandler(this.BBuscar_Click);
             // 
             // BLimpiar
             // 
@@ -470,7 +476,6 @@
             this.BLimpiar.TabIndex = 19;
             this.BLimpiar.Text = "Limpiar";
             this.BLimpiar.UseVisualStyleBackColor = true;
-            this.BLimpiar.Click += new System.EventHandler(this.BLimpiar_Click);
             // 
             // BNuevaDisponibilidad
             // 
@@ -483,19 +488,139 @@
             this.BNuevaDisponibilidad.TabIndex = 4;
             this.BNuevaDisponibilidad.Text = "Nueva Disponibilidad";
             this.BNuevaDisponibilidad.UseVisualStyleBackColor = false;
+            this.BNuevaDisponibilidad.Click += new System.EventHandler(this.BNuevaDisponibilidad_Click);
+            // 
+            // GBNuevaDisponibilidad
+            // 
+            this.GBNuevaDisponibilidad.Controls.Add(this.BGuardarDisponibilidad);
+            this.GBNuevaDisponibilidad.Controls.Add(this.BCancelarDisponibilidad);
+            this.GBNuevaDisponibilidad.Controls.Add(this.DPTHoraFin);
+            this.GBNuevaDisponibilidad.Controls.Add(this.LHoraFin);
+            this.GBNuevaDisponibilidad.Controls.Add(this.LHoraInicio);
+            this.GBNuevaDisponibilidad.Controls.Add(this.DTPHoraInicio);
+            this.GBNuevaDisponibilidad.Controls.Add(this.LDia);
+            this.GBNuevaDisponibilidad.Controls.Add(this.LProfesionales);
+            this.GBNuevaDisponibilidad.Controls.Add(this.CBDiaSemana);
+            this.GBNuevaDisponibilidad.Controls.Add(this.CMBProfesional_consultorio);
+            this.GBNuevaDisponibilidad.Location = new System.Drawing.Point(395, 276);
+            this.GBNuevaDisponibilidad.Name = "GBNuevaDisponibilidad";
+            this.GBNuevaDisponibilidad.Size = new System.Drawing.Size(434, 195);
+            this.GBNuevaDisponibilidad.TabIndex = 20;
+            this.GBNuevaDisponibilidad.TabStop = false;
+            this.GBNuevaDisponibilidad.Visible = false;
+            // 
+            // BGuardarDisponibilidad
+            // 
+            this.BGuardarDisponibilidad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
+            this.BGuardarDisponibilidad.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BGuardarDisponibilidad.Location = new System.Drawing.Point(329, 152);
+            this.BGuardarDisponibilidad.Name = "BGuardarDisponibilidad";
+            this.BGuardarDisponibilidad.Size = new System.Drawing.Size(99, 36);
+            this.BGuardarDisponibilidad.TabIndex = 29;
+            this.BGuardarDisponibilidad.Text = "Guardar";
+            this.BGuardarDisponibilidad.UseVisualStyleBackColor = false;
+            this.BGuardarDisponibilidad.Click += new System.EventHandler(this.BGuardar_Click);
+            // 
+            // BCancelarDisponibilidad
+            // 
+            this.BCancelarDisponibilidad.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BCancelarDisponibilidad.Location = new System.Drawing.Point(215, 152);
+            this.BCancelarDisponibilidad.Name = "BCancelarDisponibilidad";
+            this.BCancelarDisponibilidad.Size = new System.Drawing.Size(97, 36);
+            this.BCancelarDisponibilidad.TabIndex = 28;
+            this.BCancelarDisponibilidad.Text = "Cancelar";
+            this.BCancelarDisponibilidad.UseVisualStyleBackColor = true;
+            this.BCancelarDisponibilidad.Click += new System.EventHandler(this.BCancelarDisponibilidad_Click);
+            // 
+            // DPTHoraFin
+            // 
+            this.DPTHoraFin.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DPTHoraFin.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.DPTHoraFin.Location = new System.Drawing.Point(127, 96);
+            this.DPTHoraFin.Name = "DPTHoraFin";
+            this.DPTHoraFin.ShowUpDown = true;
+            this.DPTHoraFin.Size = new System.Drawing.Size(102, 28);
+            this.DPTHoraFin.TabIndex = 27;
+            // 
+            // LHoraFin
+            // 
+            this.LHoraFin.AutoSize = true;
+            this.LHoraFin.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LHoraFin.Location = new System.Drawing.Point(10, 96);
+            this.LHoraFin.Name = "LHoraFin";
+            this.LHoraFin.Size = new System.Drawing.Size(74, 23);
+            this.LHoraFin.TabIndex = 26;
+            this.LHoraFin.Text = "Hora Fin";
+            // 
+            // LHoraInicio
+            // 
+            this.LHoraInicio.AutoSize = true;
+            this.LHoraInicio.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LHoraInicio.Location = new System.Drawing.Point(10, 58);
+            this.LHoraInicio.Name = "LHoraInicio";
+            this.LHoraInicio.Size = new System.Drawing.Size(94, 23);
+            this.LHoraInicio.TabIndex = 25;
+            this.LHoraInicio.Text = "Hora Inicio";
+            // 
+            // DTPHoraInicio
+            // 
+            this.DTPHoraInicio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DTPHoraInicio.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.DTPHoraInicio.Location = new System.Drawing.Point(124, 53);
+            this.DTPHoraInicio.Name = "DTPHoraInicio";
+            this.DTPHoraInicio.ShowUpDown = true;
+            this.DTPHoraInicio.Size = new System.Drawing.Size(105, 28);
+            this.DTPHoraInicio.TabIndex = 24;
+            // 
+            // LDia
+            // 
+            this.LDia.AutoSize = true;
+            this.LDia.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LDia.Location = new System.Drawing.Point(259, 50);
+            this.LDia.Name = "LDia";
+            this.LDia.Size = new System.Drawing.Size(146, 23);
+            this.LDia.TabIndex = 23;
+            this.LDia.Text = "Dia De La Semana:";
+            // 
+            // LProfesionales
+            // 
+            this.LProfesionales.AutoSize = true;
+            this.LProfesionales.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LProfesionales.Location = new System.Drawing.Point(252, 7);
+            this.LProfesionales.Name = "LProfesionales";
+            this.LProfesionales.Size = new System.Drawing.Size(106, 23);
+            this.LProfesionales.TabIndex = 22;
+            this.LProfesionales.Text = "Profesionales";
+            // 
+            // CBDiaSemana
+            // 
+            this.CBDiaSemana.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CBDiaSemana.FormattingEnabled = true;
+            this.CBDiaSemana.Location = new System.Drawing.Point(251, 96);
+            this.CBDiaSemana.Name = "CBDiaSemana";
+            this.CBDiaSemana.Size = new System.Drawing.Size(160, 28);
+            this.CBDiaSemana.TabIndex = 17;
+            // 
+            // CMBProfesional_consultorio
+            // 
+            this.CMBProfesional_consultorio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CMBProfesional_consultorio.FormattingEnabled = true;
+            this.CMBProfesional_consultorio.Location = new System.Drawing.Point(6, 7);
+            this.CMBProfesional_consultorio.Name = "CMBProfesional_consultorio";
+            this.CMBProfesional_consultorio.Size = new System.Drawing.Size(237, 28);
+            this.CMBProfesional_consultorio.TabIndex = 1;
             // 
             // FormConsultorio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1044, 532);
+            this.Controls.Add(this.GBNuevaDisponibilidad);
             this.Controls.Add(this.BNuevaDisponibilidad);
             this.Controls.Add(this.BLimpiar);
             this.Controls.Add(this.BBuscar);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.TBBuscar);
-            this.Controls.Add(this.GBAsignarProfesional);
-            this.Controls.Add(this.GBAgregarConsultorio);
             this.Controls.Add(this.BAsignarProfesional);
             this.Controls.Add(this.BAgregarConsultorio);
             this.Controls.Add(this.panel4);
@@ -512,13 +637,15 @@
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
-            this.GBAgregarConsultorio.ResumeLayout(false);
-            this.GBAgregarConsultorio.PerformLayout();
             this.GBAsignarProfesional.ResumeLayout(false);
             this.GBAsignarProfesional.PerformLayout();
+            this.GBAgregarConsultorio.ResumeLayout(false);
+            this.GBAgregarConsultorio.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.GBNuevaDisponibilidad.ResumeLayout(false);
+            this.GBNuevaDisponibilidad.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -564,5 +691,16 @@
         private System.Windows.Forms.Button BBuscar;
         private System.Windows.Forms.Button BLimpiar;
         private System.Windows.Forms.Button BNuevaDisponibilidad;
+        private System.Windows.Forms.GroupBox GBNuevaDisponibilidad;
+        private System.Windows.Forms.ComboBox CMBProfesional_consultorio;
+        private System.Windows.Forms.ComboBox CBDiaSemana;
+        private System.Windows.Forms.Label LProfesionales;
+        private System.Windows.Forms.Label LDia;
+        private System.Windows.Forms.DateTimePicker DTPHoraInicio;
+        private System.Windows.Forms.Label LHoraInicio;
+        private System.Windows.Forms.Label LHoraFin;
+        private System.Windows.Forms.DateTimePicker DPTHoraFin;
+        private System.Windows.Forms.Button BCancelarDisponibilidad;
+        private System.Windows.Forms.Button BGuardarDisponibilidad;
     }
 }
