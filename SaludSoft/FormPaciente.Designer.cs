@@ -70,17 +70,23 @@
             // 
             // LabelRegistroPaciente
             // 
+            this.LabelRegistroPaciente.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.LabelRegistroPaciente.AutoSize = true;
-            this.LabelRegistroPaciente.Font = new System.Drawing.Font("Microsoft YaHei UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelRegistroPaciente.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelRegistroPaciente.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.LabelRegistroPaciente.Location = new System.Drawing.Point(359, 12);
             this.LabelRegistroPaciente.Name = "LabelRegistroPaciente";
-            this.LabelRegistroPaciente.Size = new System.Drawing.Size(277, 26);
+            this.LabelRegistroPaciente.Size = new System.Drawing.Size(265, 27);
             this.LabelRegistroPaciente.TabIndex = 1;
             this.LabelRegistroPaciente.Text = "Registro de Nuevo Paciente";
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.panel1.Controls.Add(this.LPaciente);
             this.panel1.Controls.Add(this.LTexto);
             this.panel1.Controls.Add(this.LabelRegistroPaciente);
@@ -92,11 +98,13 @@
             // 
             // LPaciente
             // 
+            this.LPaciente.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.LPaciente.AutoSize = true;
-            this.LPaciente.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LPaciente.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LPaciente.Location = new System.Drawing.Point(244, 47);
             this.LPaciente.Name = "LPaciente";
-            this.LPaciente.Size = new System.Drawing.Size(496, 21);
+            this.LPaciente.Size = new System.Drawing.Size(552, 23);
             this.LPaciente.TabIndex = 3;
             this.LPaciente.Text = "Complete la información del paciente para crear su expediente médico";
             // 
@@ -110,6 +118,7 @@
             // 
             // TBEmail
             // 
+            this.TBEmail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.TBEmail.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TBEmail.Location = new System.Drawing.Point(587, 90);
             this.TBEmail.Name = "TBEmail";
@@ -119,6 +128,7 @@
             // 
             // TBDireccion
             // 
+            this.TBDireccion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.TBDireccion.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TBDireccion.Location = new System.Drawing.Point(510, 131);
             this.TBDireccion.Name = "TBDireccion";
@@ -127,6 +137,7 @@
             // 
             // TBTelefono
             // 
+            this.TBTelefono.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.TBTelefono.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TBTelefono.Location = new System.Drawing.Point(587, 48);
             this.TBTelefono.Name = "TBTelefono";
@@ -136,6 +147,7 @@
             // 
             // LDireccion
             // 
+            this.LDireccion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.LDireccion.AutoSize = true;
             this.LDireccion.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LDireccion.Location = new System.Drawing.Point(396, 134);
@@ -146,6 +158,7 @@
             // 
             // LCorreo
             // 
+            this.LCorreo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.LCorreo.AutoSize = true;
             this.LCorreo.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LCorreo.Location = new System.Drawing.Point(397, 93);
@@ -156,6 +169,7 @@
             // 
             // LTelefono
             // 
+            this.LTelefono.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.LTelefono.AutoSize = true;
             this.LTelefono.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LTelefono.Location = new System.Drawing.Point(397, 51);
@@ -167,12 +181,13 @@
             // 
             // BRegistrar
             // 
-            this.BRegistrar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(66)))));
-            this.BRegistrar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BRegistrar.ForeColor = System.Drawing.SystemColors.Control;
-            this.BRegistrar.Location = new System.Drawing.Point(870, 216);
+            this.BRegistrar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.BRegistrar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BRegistrar.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BRegistrar.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.BRegistrar.Location = new System.Drawing.Point(744, 202);
             this.BRegistrar.Name = "BRegistrar";
-            this.BRegistrar.Size = new System.Drawing.Size(87, 36);
+            this.BRegistrar.Size = new System.Drawing.Size(101, 43);
             this.BRegistrar.TabIndex = 6;
             this.BRegistrar.Text = "Registrar";
             this.BRegistrar.UseVisualStyleBackColor = false;
@@ -180,13 +195,15 @@
             // 
             // BEliminar
             // 
-            this.BEliminar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BEliminar.Location = new System.Drawing.Point(744, 216);
+            this.BEliminar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.BEliminar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.BEliminar.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BEliminar.Location = new System.Drawing.Point(866, 202);
             this.BEliminar.Name = "BEliminar";
-            this.BEliminar.Size = new System.Drawing.Size(91, 36);
+            this.BEliminar.Size = new System.Drawing.Size(91, 43);
             this.BEliminar.TabIndex = 7;
             this.BEliminar.Text = "Cancelar";
-            this.BEliminar.UseVisualStyleBackColor = true;
+            this.BEliminar.UseVisualStyleBackColor = false;
             this.BEliminar.Click += new System.EventHandler(this.BEliminar_Click);
             // 
             // LNombre
@@ -248,6 +265,9 @@
             // 
             // panel2
             // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
             this.panel2.Controls.Add(this.LSexo);
             this.panel2.Controls.Add(this.RBMasculino);
@@ -274,6 +294,7 @@
             // 
             // LSexo
             // 
+            this.LSexo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.LSexo.AutoSize = true;
             this.LSexo.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LSexo.Location = new System.Drawing.Point(406, 170);
@@ -284,6 +305,7 @@
             // 
             // RBMasculino
             // 
+            this.RBMasculino.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.RBMasculino.AutoSize = true;
             this.RBMasculino.Location = new System.Drawing.Point(520, 170);
             this.RBMasculino.Name = "RBMasculino";
@@ -314,15 +336,17 @@
             // LInfoPaciente
             // 
             this.LInfoPaciente.AutoSize = true;
-            this.LInfoPaciente.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LInfoPaciente.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LInfoPaciente.Location = new System.Drawing.Point(359, 10);
             this.LInfoPaciente.Name = "LInfoPaciente";
-            this.LInfoPaciente.Size = new System.Drawing.Size(235, 25);
+            this.LInfoPaciente.Size = new System.Drawing.Size(199, 26);
             this.LInfoPaciente.TabIndex = 8;
-            this.LInfoPaciente.Text = "Informacion Personal";
+            this.LInfoPaciente.Text = "Informaciòn Personal";
+            this.LInfoPaciente.Click += new System.EventHandler(this.LInfoPaciente_Click);
             // 
             // RBFemenino
             // 
+            this.RBFemenino.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.RBFemenino.AutoSize = true;
             this.RBFemenino.Location = new System.Drawing.Point(607, 170);
             this.RBFemenino.Name = "RBFemenino";
@@ -334,6 +358,8 @@
             // 
             // panel3
             // 
+            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
             this.panel3.Controls.Add(this.TBTratamiento);
             this.panel3.Controls.Add(this.BRegistrar);
@@ -430,11 +456,13 @@
             // 
             // LHistorialInicial
             // 
+            this.LHistorialInicial.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.LHistorialInicial.AutoSize = true;
-            this.LHistorialInicial.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LHistorialInicial.Location = new System.Drawing.Point(423, 10);
+            this.LHistorialInicial.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LHistorialInicial.Location = new System.Drawing.Point(359, 9);
             this.LHistorialInicial.Name = "LHistorialInicial";
-            this.LHistorialInicial.Size = new System.Drawing.Size(170, 25);
+            this.LHistorialInicial.Size = new System.Drawing.Size(145, 26);
             this.LHistorialInicial.TabIndex = 0;
             this.LHistorialInicial.Text = "Historial Inicial";
             // 
