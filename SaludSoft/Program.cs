@@ -20,9 +20,9 @@ namespace SaludSoft
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new FormLogin());
             //Application.Run(new SaludSoft());
-            Application.Run(new Admin());
+            //Application.Run(new Admin());
             //Application.Run(new Medico());
-            //Application.Run(new FormAgenda());
+           Application.Run(new FormAgenda());
 
         }
     }

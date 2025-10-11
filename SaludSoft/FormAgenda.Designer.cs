@@ -35,7 +35,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.LGestionAgenda = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.BBuscar = new System.Windows.Forms.Button();
             this.LProfesional = new System.Windows.Forms.Label();
             this.CMBProfesionales = new System.Windows.Forms.ComboBox();
             this.pnIzquierdo = new System.Windows.Forms.Panel();
@@ -114,7 +113,6 @@
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BackColor = System.Drawing.Color.White;
-            this.panel3.Controls.Add(this.BBuscar);
             this.panel3.Controls.Add(this.LProfesional);
             this.panel3.Controls.Add(this.CMBProfesionales);
             this.panel3.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -122,18 +120,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1041, 69);
             this.panel3.TabIndex = 7;
-            // 
-            // BBuscar
-            // 
-            this.BBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BBuscar.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BBuscar.Image = global::SaludSoft.Properties.Resources.busqueda;
-            this.BBuscar.Location = new System.Drawing.Point(581, 27);
-            this.BBuscar.Name = "BBuscar";
-            this.BBuscar.Size = new System.Drawing.Size(73, 34);
-            this.BBuscar.TabIndex = 18;
-            this.BBuscar.UseVisualStyleBackColor = true;
-            this.BBuscar.Click += new System.EventHandler(this.BBuscar_Click_1);
             // 
             // LProfesional
             // 
@@ -378,7 +364,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label LGestionAgenda;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button BBuscar;
         private System.Windows.Forms.Label LProfesional;
         private System.Windows.Forms.ComboBox CMBProfesionales;
         private System.Windows.Forms.Button BVolverAgenda;
