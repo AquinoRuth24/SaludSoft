@@ -51,8 +51,8 @@
             this.DTPDesde = new System.Windows.Forms.DateTimePicker();
             this.DTPHasta = new System.Windows.Forms.DateTimePicker();
             this.GBAgregarConsultorio = new System.Windows.Forms.GroupBox();
-            this.BCancelar = new System.Windows.Forms.Button();
-            this.BAgregar = new System.Windows.Forms.Button();
+            this.BCancelarConsultorio = new System.Windows.Forms.Button();
+            this.BGuardarConsultorio = new System.Windows.Forms.Button();
             this.TBDescripcion = new System.Windows.Forms.TextBox();
             this.TBNroConsultorio = new System.Windows.Forms.TextBox();
             this.LConsultorio = new System.Windows.Forms.Label();
@@ -107,6 +107,7 @@
             this.BVolver.Size = new System.Drawing.Size(75, 44);
             this.BVolver.TabIndex = 1;
             this.BVolver.UseVisualStyleBackColor = true;
+            this.BVolver.Click += new System.EventHandler(this.BVolver_Click);
             // 
             // label1
             // 
@@ -165,8 +166,6 @@
             this.panel3.BackColor = System.Drawing.Color.LightGreen;
             this.panel3.Controls.Add(this.label2);
             this.panel3.Controls.Add(this.LConsultoriosDisponibles);
-            this.panel3.Controls.Add(this.GBAsignarProfesional);
-            this.panel3.Controls.Add(this.GBAgregarConsultorio);
             this.panel3.Location = new System.Drawing.Point(236, 86);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(193, 88);
@@ -206,7 +205,7 @@
             this.GBAsignarProfesional.Controls.Add(this.CMBConsultorio);
             this.GBAsignarProfesional.Controls.Add(this.DTPDesde);
             this.GBAsignarProfesional.Controls.Add(this.DTPHasta);
-            this.GBAsignarProfesional.Location = new System.Drawing.Point(173, 25);
+            this.GBAsignarProfesional.Location = new System.Drawing.Point(390, 264);
             this.GBAsignarProfesional.Name = "GBAsignarProfesional";
             this.GBAsignarProfesional.Size = new System.Drawing.Size(389, 212);
             this.GBAsignarProfesional.TabIndex = 14;
@@ -274,6 +273,7 @@
             this.BCancelarProfesional_consultorio.TabIndex = 6;
             this.BCancelarProfesional_consultorio.Text = "Cancelar";
             this.BCancelarProfesional_consultorio.UseVisualStyleBackColor = false;
+            this.BCancelarProfesional_consultorio.Click += new System.EventHandler(this.BCancelarProfesional_consultorio_Click);
             // 
             // CMBProfesional
             // 
@@ -312,40 +312,42 @@
             // GBAgregarConsultorio
             // 
             this.GBAgregarConsultorio.BackColor = System.Drawing.Color.LightGreen;
-            this.GBAgregarConsultorio.Controls.Add(this.BCancelar);
-            this.GBAgregarConsultorio.Controls.Add(this.BAgregar);
+            this.GBAgregarConsultorio.Controls.Add(this.BCancelarConsultorio);
+            this.GBAgregarConsultorio.Controls.Add(this.BGuardarConsultorio);
             this.GBAgregarConsultorio.Controls.Add(this.TBDescripcion);
             this.GBAgregarConsultorio.Controls.Add(this.TBNroConsultorio);
             this.GBAgregarConsultorio.Controls.Add(this.LConsultorio);
             this.GBAgregarConsultorio.Controls.Add(this.LDescripcionConsul);
-            this.GBAgregarConsultorio.Location = new System.Drawing.Point(15, 13);
+            this.GBAgregarConsultorio.Location = new System.Drawing.Point(1, 265);
             this.GBAgregarConsultorio.Name = "GBAgregarConsultorio";
             this.GBAgregarConsultorio.Size = new System.Drawing.Size(389, 212);
             this.GBAgregarConsultorio.TabIndex = 13;
             this.GBAgregarConsultorio.TabStop = false;
             this.GBAgregarConsultorio.Visible = false;
             // 
-            // BCancelar
+            // BCancelarConsultorio
             // 
-            this.BCancelar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.BCancelar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BCancelar.Location = new System.Drawing.Point(166, 177);
-            this.BCancelar.Name = "BCancelar";
-            this.BCancelar.Size = new System.Drawing.Size(93, 29);
-            this.BCancelar.TabIndex = 5;
-            this.BCancelar.Text = "Cancelar";
-            this.BCancelar.UseVisualStyleBackColor = false;
+            this.BCancelarConsultorio.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BCancelarConsultorio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BCancelarConsultorio.Location = new System.Drawing.Point(166, 177);
+            this.BCancelarConsultorio.Name = "BCancelarConsultorio";
+            this.BCancelarConsultorio.Size = new System.Drawing.Size(93, 29);
+            this.BCancelarConsultorio.TabIndex = 5;
+            this.BCancelarConsultorio.Text = "Cancelar";
+            this.BCancelarConsultorio.UseVisualStyleBackColor = false;
+            this.BCancelarConsultorio.Click += new System.EventHandler(this.BCancelarConsultorio_Click);
             // 
-            // BAgregar
+            // BGuardarConsultorio
             // 
-            this.BAgregar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.BAgregar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BAgregar.Location = new System.Drawing.Point(295, 177);
-            this.BAgregar.Name = "BAgregar";
-            this.BAgregar.Size = new System.Drawing.Size(88, 29);
-            this.BAgregar.TabIndex = 4;
-            this.BAgregar.Text = "Agergar";
-            this.BAgregar.UseVisualStyleBackColor = false;
+            this.BGuardarConsultorio.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BGuardarConsultorio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BGuardarConsultorio.Location = new System.Drawing.Point(295, 177);
+            this.BGuardarConsultorio.Name = "BGuardarConsultorio";
+            this.BGuardarConsultorio.Size = new System.Drawing.Size(88, 29);
+            this.BGuardarConsultorio.TabIndex = 4;
+            this.BGuardarConsultorio.Text = "Guardar";
+            this.BGuardarConsultorio.UseVisualStyleBackColor = false;
+            this.BGuardarConsultorio.Click += new System.EventHandler(this.BGuardarConsultorio_Click);
             // 
             // TBDescripcion
             // 
@@ -427,6 +429,7 @@
             this.BAgregarConsultorio.TabIndex = 11;
             this.BAgregarConsultorio.Text = "+ Agegar Consultorio";
             this.BAgregarConsultorio.UseVisualStyleBackColor = false;
+            this.BAgregarConsultorio.Click += new System.EventHandler(this.BAgregarConsultorio_Click);
             // 
             // BAsignarProfesional
             // 
@@ -438,6 +441,7 @@
             this.BAsignarProfesional.TabIndex = 12;
             this.BAsignarProfesional.Text = "+ Asignar Profesional";
             this.BAsignarProfesional.UseVisualStyleBackColor = false;
+            this.BAsignarProfesional.Click += new System.EventHandler(this.BAsignarProfesional_Click);
             // 
             // TBBuscar
             // 
@@ -466,6 +470,7 @@
             this.BBuscar.TabIndex = 18;
             this.BBuscar.Text = "Buscar";
             this.BBuscar.UseVisualStyleBackColor = true;
+            this.BBuscar.Click += new System.EventHandler(this.BBuscar_Click);
             // 
             // BLimpiar
             // 
@@ -476,6 +481,7 @@
             this.BLimpiar.TabIndex = 19;
             this.BLimpiar.Text = "Limpiar";
             this.BLimpiar.UseVisualStyleBackColor = true;
+            this.BLimpiar.Click += new System.EventHandler(this.BLimpiar_Click);
             // 
             // BNuevaDisponibilidad
             // 
@@ -502,7 +508,7 @@
             this.GBNuevaDisponibilidad.Controls.Add(this.LProfesionales);
             this.GBNuevaDisponibilidad.Controls.Add(this.CBDiaSemana);
             this.GBNuevaDisponibilidad.Controls.Add(this.CMBProfesional_consultorio);
-            this.GBNuevaDisponibilidad.Location = new System.Drawing.Point(395, 276);
+            this.GBNuevaDisponibilidad.Location = new System.Drawing.Point(598, 281);
             this.GBNuevaDisponibilidad.Name = "GBNuevaDisponibilidad";
             this.GBNuevaDisponibilidad.Size = new System.Drawing.Size(434, 195);
             this.GBNuevaDisponibilidad.TabIndex = 20;
@@ -617,6 +623,8 @@
             this.ClientSize = new System.Drawing.Size(1044, 532);
             this.Controls.Add(this.GBNuevaDisponibilidad);
             this.Controls.Add(this.BNuevaDisponibilidad);
+            this.Controls.Add(this.GBAgregarConsultorio);
+            this.Controls.Add(this.GBAsignarProfesional);
             this.Controls.Add(this.BLimpiar);
             this.Controls.Add(this.BBuscar);
             this.Controls.Add(this.pictureBox2);
@@ -670,8 +678,8 @@
         private System.Windows.Forms.Button BAsignarProfesional;
         private System.Windows.Forms.GroupBox GBAgregarConsultorio;
         private System.Windows.Forms.GroupBox GBAsignarProfesional;
-        private System.Windows.Forms.Button BCancelar;
-        private System.Windows.Forms.Button BAgregar;
+        private System.Windows.Forms.Button BCancelarConsultorio;
+        private System.Windows.Forms.Button BGuardarConsultorio;
         private System.Windows.Forms.TextBox TBDescripcion;
         private System.Windows.Forms.TextBox TBNroConsultorio;
         private System.Windows.Forms.Label LConsultorio;
