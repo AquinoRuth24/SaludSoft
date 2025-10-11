@@ -1,150 +1,156 @@
-﻿using SaludSoft.Resources;        // Para abrir FormUsuario
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;       // Para Interaction.InputBox
+using Microsoft.VisualBasic;   // Interaction.InputBox
+// using SaludSoft.Resources; // ← ya no hace falta si solo se usaba para FormUsuario
 
 namespace SaludSoft
 {
-   
+    /// <summary>
+    /// Agenda de turnos:
+    /// - Filtro por profesional (opcional consultorio).
+    /// - Calendario diario con franjas horarias (08:00–18:30, paso 30').
+    /// - Botón de “Sobreturno” para habilitar 12:00, 12:30 y 19:00 y permitir superposiciones.
+    /// - Alta rápida desde franja (DNI → buscar/crear paciente → motivo → guardar).
+    /// - Edición/cancelación/reprogramación desde grilla.
+    /// </summary>
     public partial class FormAgenda : Form
     {
-        //CAMPOS
+        // ====== CAMPOS ======
 
-        //Inicio de la franja base (08:00)
+        // Franja base 08:00–18:30 cada 30'
         private readonly TimeSpan _inicio = new TimeSpan(8, 0, 0);
-        //Fin de la franja base (18:30)
         private readonly TimeSpan _fin = new TimeSpan(18, 30, 0);
-        //Intervalo entre turnos en minutos
         private readonly int _saltoMin = 30;
 
-        //Turnos programados del día seleccionado
+        // Turnos del día seleccionado
         private List<TurnoVM> _turnosDia = new List<TurnoVM>();
 
-        //Fecha actualmente seleccionada en el calendario
+        // Fecha seleccionada en el calendario
         private DateTime _diaSeleccionado = DateTime.Today;
 
-        //Si true, habilita sobreturno y muestra franjas extra
+        // Si true, habilita sobreturno y muestra franjas extra
         private bool _sobreturnoActivo = false;
 
-        // CONSTRUCTOR
-        //Inicializa el formulario, carga combos, configura grilla y pinta franjas
+        // ====== CTOR ======
         public FormAgenda()
         {
             InitializeComponent();
 
             // Datos base
             CargarProfesionales();
-            CargarConsultorios();
-            CargarAgenda();
+            CargarConsultorios();   // opcional, si tu UI usa consultorios
+            CargarAgenda();         // disponibilidad (referencia/visual)
 
-            // UI de turnos
+            // UI turnos
             ConfigurarDTVGAgenda();
             WireEventosAgenda();
 
             _diaSeleccionado = DateTime.Today;
-            mcFecha.SetDate(_diaSeleccionado);
+            if (mcFecha != null) mcFecha.SetDate(_diaSeleccionado);
 
             CargarTurnosDelDia();
             RefrescarFranjas();
         }
 
-        // CARGAS INICIALES
+        // ====== CARGAS INICIALES ======
 
-        //Carga el combo de profesionales (incluye opción "Todos")
+        /// <summary>Carga el combo de profesionales (agrega “Todos”).</summary>
         private void CargarProfesionales()
         {
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 conexion.Open();
-                string query = @"SELECT id_profesional, nombre + ' ' + apellido AS Profesional 
-                                 FROM Profesional 
-                                 WHERE id_estado = 1";
+                string query = @"
+                    SELECT id_profesional, nombre + ' ' + apellido AS Profesional
+                    FROM Profesional
+                    WHERE id_estado = 1";
 
-                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
-                DataTable dt = new DataTable();
+                var da = new SqlDataAdapter(query, conexion);
+                var dt = new DataTable();
                 da.Fill(dt);
 
-                // Opción "Todos"
-                DataRow row = dt.NewRow();
+                var row = dt.NewRow();
                 row["id_profesional"] = 0;
                 row["Profesional"] = "Todos los profesionales";
                 dt.Rows.InsertAt(row, 0);
 
-                CMBProfesionales.DataSource = dt;
-                CMBProfesionales.DisplayMember = "Profesional";
-                CMBProfesionales.ValueMember = "id_profesional";
+                if (CMBProfesionales != null)
+                {
+                    CMBProfesionales.DataSource = dt;
+                    CMBProfesionales.DisplayMember = "Profesional";
+                    CMBProfesionales.ValueMember = "id_profesional";
+                }
             }
         }
 
-        //Carga consultorios asociados
+        //Carga consultorios asociados al profesional 
         private void CargarConsultorios(int idProfesional = 0)
         {
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 conexion.Open();
-                string query = @"SELECT c.id_consultorio, c.descripcion AS Consultorio
-                                 FROM Consultorio c
-                                 WHERE EXISTS (
-                                   SELECT 1 FROM Profesional_Consultorio pc 
-                                   WHERE pc.id_consultorio = c.id_consultorio
-                                     AND (@idProfesional = 0 OR pc.id_profesional = @idProfesional)
-                                 )";
+                string query = @"
+                    SELECT c.id_consultorio, c.descripcion AS Consultorio
+                    FROM Consultorio c
+                    WHERE EXISTS (
+                        SELECT 1
+                        FROM Profesional_Consultorio pc
+                        WHERE pc.id_consultorio = c.id_consultorio
+                          AND (@idProfesional = 0 OR pc.id_profesional = @idProfesional)
+                    )";
 
-                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                var da = new SqlDataAdapter(query, conexion);
                 da.SelectCommand.Parameters.AddWithValue("@idProfesional", idProfesional);
-                DataTable dt = new DataTable();
+                var dt = new DataTable();
                 da.Fill(dt);
-
-                // Opción "Todos"
-                DataRow row = dt.NewRow();
-                row["id_consultorio"] = 0;
-                row["Consultorio"] = "Todos los consultorios";
-                dt.Rows.InsertAt(row, 0);
             }
         }
 
-        //Carga disponibilidad
+        //Consulta disponibilidad general 
         private void CargarAgenda(int idProfesional = 0, int idConsultorio = 0, DateTime? fecha = null)
         {
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 conexion.Open();
                 string query = @"
-                 SELECT a.id_agenda, a.diaSemana AS Disponibilidad,
-                        CONVERT(varchar(5), a.horaInicio, 108) + ' - ' + CONVERT(varchar(5), a.horaFin, 108) AS Horario,
-                        u.nombre + ' ' + u.apellido AS Recepcionista,
-                        p.nombre + ' ' + p.apellido AS Profesional,
-                        c.nroConsultorio AS [Nro Consultorio], c.descripcion AS Consultorio
-                 FROM Agenda a
-                 INNER JOIN Usuario u ON a.id_usuario = u.id_usuario
-                 INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
-                 INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
-                 INNER JOIN Consultorio c ON pc.id_consultorio = c.id_consultorio
-                 WHERE (@idProfesional = 0 OR p.id_profesional = @idProfesional)
-                   AND (@idConsultorio = 0 OR c.id_consultorio = @idConsultorio)
-                 ORDER BY a.horaInicio";
+                    SELECT a.id_agenda, a.diaSemana AS Disponibilidad,
+                           CONVERT(varchar(5), a.horaInicio, 108) + ' - ' + CONVERT(varchar(5), a.horaFin, 108) AS Horario,
+                           u.nombre + ' ' + u.apellido AS Recepcionista,
+                           p.nombre + ' ' + p.apellido AS Profesional,
+                           c.nroConsultorio AS [Nro Consultorio],
+                           c.descripcion AS Consultorio
+                    FROM Agenda a
+                    INNER JOIN Usuario u ON a.id_usuario = u.id_usuario
+                    INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
+                    INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
+                    INNER JOIN Consultorio c ON pc.id_consultorio = c.id_consultorio
+                    WHERE (@idProfesional = 0 OR p.id_profesional = @idProfesional)
+                      AND (@idConsultorio = 0 OR c.id_consultorio = @idConsultorio)
+                    ORDER BY a.horaInicio";
 
-                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                var da = new SqlDataAdapter(query, conexion);
                 da.SelectCommand.Parameters.AddWithValue("@idProfesional", idProfesional);
                 da.SelectCommand.Parameters.AddWithValue("@idConsultorio", idConsultorio);
                 da.SelectCommand.Parameters.AddWithValue("@fecha", (object)fecha ?? DBNull.Value);
 
-                DataTable dt = new DataTable();
+                var dt = new DataTable();
                 da.Fill(dt);
-                // dt contiene disponibilidad 
+                // Si querés mostrarlo en alguna grilla, bindealo acá.
             }
         }
 
-        // GRILLA DE TURNOS
+        // ====== GRILLA DE TURNOS ======
 
-        //Configura el DataGridView y agrega columnas de acción
+        /// <summary>Configura la grilla de agenda y agrega columnas de acción.</summary>
         private void ConfigurarDTVGAgenda()
         {
+            if (DTVGAgenda == null) return;
+
             DTVGAgenda.AutoGenerateColumns = false;
             DTVGAgenda.ReadOnly = true;
             DTVGAgenda.AllowUserToAddRows = false;
@@ -154,15 +160,18 @@ namespace SaludSoft
             DTVGAgenda.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             DTVGAgenda.EnableHeadersVisualStyles = false;
 
-            // Mapear propiedades del ViewModel
-            colFechaHora.DataPropertyName = nameof(TurnoVM.FechaHora);
-            colFechaHora.DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
-            colPaciente.DataPropertyName = nameof(TurnoVM.Paciente);
-            colProfesional.DataPropertyName = nameof(TurnoVM.Profesional);
-            colMotivo.DataPropertyName = nameof(TurnoVM.Motivo);
-            colEstado.DataPropertyName = nameof(TurnoVM.Estado);
+            // Mapear columnas existentes en el diseñador
+            if (colFechaHora != null)
+            {
+                colFechaHora.DataPropertyName = nameof(TurnoVM.FechaHora);
+                colFechaHora.DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+            }
+            if (colPaciente != null) colPaciente.DataPropertyName = nameof(TurnoVM.Paciente);
+            if (colProfesional != null) colProfesional.DataPropertyName = nameof(TurnoVM.Profesional);
+            if (colMotivo != null) colMotivo.DataPropertyName = nameof(TurnoVM.Motivo);
+            if (colEstado != null) colEstado.DataPropertyName = nameof(TurnoVM.Estado);
 
-            // Botones de acción
+            // Botones de acción (si no existen)
             if (!DTVGAgenda.Columns.OfType<DataGridViewButtonColumn>().Any(c => c.Name == "colEditar"))
             {
                 DTVGAgenda.Columns.Add(new DataGridViewButtonColumn
@@ -187,40 +196,49 @@ namespace SaludSoft
             DTVGAgenda.CellContentClick += DTVGAgenda_CellContentClick;
         }
 
-        //Une eventos de calendario, combo y botón de Sobreturno
+        /// <summary>Une eventos de calendario, combos y botón Sobreturno.</summary>
         private void WireEventosAgenda()
         {
-            mcFecha.MaxSelectionCount = 1;
-
-            mcFecha.DateSelected += (s, a) =>
+            if (mcFecha != null)
             {
-                _diaSeleccionado = a.Start.Date;
-                CargarTurnosDelDia();
-                RefrescarFranjas();
-            };
+                mcFecha.MaxSelectionCount = 1;
+                mcFecha.DateSelected += (s, a) =>
+                {
+                    _diaSeleccionado = a.Start.Date;
+                    CargarTurnosDelDia();
+                    RefrescarFranjas();
+                };
+            }
 
-            CMBProfesionales.SelectedIndexChanged += (s, a) =>
+            if (CMBProfesionales != null)
             {
-                if (int.TryParse(CMBProfesionales.SelectedValue?.ToString(), out int idProf))
-                    CargarConsultorios(idProf);
+                CMBProfesionales.SelectedIndexChanged += (s, a) =>
+                {
+                    if (int.TryParse(CMBProfesionales.SelectedValue?.ToString(), out int idProf))
+                        CargarConsultorios(idProf);
 
-                CargarTurnosDelDia();
-                RefrescarFranjas();
-            };
+                    CargarTurnosDelDia();
+                    RefrescarFranjas();
+                };
+            }
 
-            btSobreturno.Click += (s, a) =>
+            if (btSobreturno != null)
             {
-                _sobreturnoActivo = !_sobreturnoActivo;
-                btSobreturno.Text = _sobreturnoActivo ? "Sobreturno" : "Sobreturno";
-                RefrescarFranjas();
-            };
+                btSobreturno.Click += (s, a) =>
+                {
+                    _sobreturnoActivo = !_sobreturnoActivo;
+                    btSobreturno.Text = "Sobreturno"; // texto fijo
+                    RefrescarFranjas();
+                };
+            }
         }
 
-        //Carga los turnos del día según profesional y fecha
+        /// <summary>Carga los turnos del día según profesional seleccionado.</summary>
         private void CargarTurnosDelDia()
         {
             int idProfesional = 0;
-            int.TryParse(CMBProfesionales.SelectedValue?.ToString(), out idProfesional);
+            if (CMBProfesionales != null)
+                int.TryParse(CMBProfesionales.SelectedValue?.ToString(), out idProfesional);
 
             try
             {
@@ -241,61 +259,63 @@ namespace SaludSoft
                           AND (@idProfesional = 0 OR t.id_profesional = @idProfesional)
                         ORDER BY t.fecha_hora";
 
-                    using (var da = new SqlDataAdapter(sql, conexion))
+                    var da = new SqlDataAdapter(sql, conexion);
+                    da.SelectCommand.Parameters.AddWithValue("@fecha", _diaSeleccionado.Date);
+                    da.SelectCommand.Parameters.AddWithValue("@idProfesional", idProfesional);
+
+                    var dt = new DataTable();
+                    da.Fill(dt);
+
+                    _turnosDia = dt.AsEnumerable().Select(r => new TurnoVM
                     {
-                        da.SelectCommand.Parameters.AddWithValue("@fecha", _diaSeleccionado.Date);
-                        da.SelectCommand.Parameters.AddWithValue("@idProfesional", idProfesional);
-
-                        var dt = new DataTable();
-                        da.Fill(dt);
-
-                        _turnosDia = dt.AsEnumerable().Select(r => new TurnoVM
-                        {
-                            IdTurno = r.Field<int>("IdTurno"),
-                            FechaHora = r.Field<DateTime>("FechaHora"),
-                            Paciente = r.Field<string>("Paciente"),
-                            Profesional = r.Field<string>("Profesional"),
-                            Motivo = r.Field<string>("Motivo"),
-                            Estado = r.Field<string>("Estado")
-                        }).ToList();
-                    }
+                        IdTurno = r.Field<int>("IdTurno"),
+                        FechaHora = r.Field<DateTime>("FechaHora"),
+                        Paciente = r.Field<string>("Paciente"),
+                        Profesional = r.Field<string>("Profesional"),
+                        Motivo = r.Field<string>("Motivo"),
+                        Estado = r.Field<string>("Estado")
+                    }).ToList();
                 }
             }
             catch
             {
-                //Sacar,es de prueba
+                // Datos mock si la BD no está disponible
                 var d = _diaSeleccionado.Date;
+                string profTxt = CMBProfesionales?.Text ?? "Profesional";
                 _turnosDia = new List<TurnoVM>
                 {
-                    new TurnoVM{ IdTurno=1, FechaHora=d.AddHours(8),   Paciente="Juan Pérez",  Profesional=CMBProfesionales.Text, Motivo="Control", Estado="Confirmado" },
-                    new TurnoVM{ IdTurno=2, FechaHora=d.AddHours(9.5), Paciente="María Gómez", Profesional=CMBProfesionales.Text, Motivo="Dolor",   Estado="Pendiente" }
+                    new TurnoVM{ IdTurno=1, FechaHora=d.AddHours(8),   Paciente="Juan Pérez",  Profesional=profTxt, Motivo="Control", Estado="Confirmado" },
+                    new TurnoVM{ IdTurno=2, FechaHora=d.AddHours(9.5), Paciente="María Gómez", Profesional=profTxt, Motivo="Dolor",   Estado="Pendiente" }
                 };
             }
 
-            DTVGAgenda.DataSource = null;
-            DTVGAgenda.DataSource = _turnosDia;
+            if (DTVGAgenda != null)
+            {
+                DTVGAgenda.DataSource = null;
+                DTVGAgenda.DataSource = _turnosDia;
+            }
         }
 
-        // FRANJAS HORARIAS
+        // ====== FRANJAS HORARIAS ======
 
-        //
-        // Dibuja botones de franjas:
-        // Base: 08:00–18:30 cada 30' (sin 12:00 ni 12:30).
-        // Si Sobreturno ON, agrega únicamente 12:00, 12:30 y 19:00.
-        //
+        /// <summary>
+        /// Dibuja los botones de franjas:
+        /// - Base: 08:00–18:30 cada 30' (sin 12:00 ni 12:30).
+        /// - Sobreturno ON: agrega 12:00, 12:30 y 19:00 y permite superposición.
+        /// </summary>
         private void RefrescarFranjas()
         {
+            if (flpFranjas == null) return;
+
             flpFranjas.SuspendLayout();
             flpFranjas.Controls.Clear();
 
             int total = 0, libres = 0;
 
-            // Franja base sin 12:00 / 12:30
+            // Base sin 12:00 / 12:30
             for (var t = _inicio; t <= _fin; t = t.Add(TimeSpan.FromMinutes(_saltoMin)))
             {
-                if (t == new TimeSpan(12, 0, 0) || t == new TimeSpan(12, 30, 0))
-                    continue;
-
+                if (t == new TimeSpan(12, 0, 0) || t == new TimeSpan(12, 30, 0)) continue;
                 AgregarBotonFranja(t, false, ref total, ref libres);
             }
 
@@ -307,13 +327,17 @@ namespace SaludSoft
                 AgregarBotonFranja(new TimeSpan(19, 0, 0), true, ref total, ref libres);
             }
 
-            lDisponibles.Text = $"{libres} de {total} disponibles";
+            if (lDisponibles != null)
+                lDisponibles.Text = $"{libres} de {total} disponibles";
+
             flpFranjas.ResumeLayout();
         }
 
-        //Crea un botón para una hora dada y lo agrega al FlowLayoutPanel
+        /// <summary>Crea un botón para una hora dada y lo agrega al FlowLayoutPanel.</summary>
         private void AgregarBotonFranja(TimeSpan hora, bool esExtraSobreturno, ref int total, ref int libres)
         {
+            if (flpFranjas == null) return;
+
             total++;
 
             var fh = _diaSeleccionado.Date + hora;
@@ -325,32 +349,32 @@ namespace SaludSoft
                 Tag = fh,
                 AutoSize = true,
                 FlatStyle = FlatStyle.Flat,
-                FlatAppearance = { BorderSize = 0 },
                 Margin = new Padding(6),
                 Padding = new Padding(10, 6, 10, 6),
                 BackColor = ocupado ? Color.FromArgb(233, 236, 239)
                                     : (esExtraSobreturno ? Color.WhiteSmoke : Color.White),
-                // En base: si está ocupado, habilitá solo con sobreturno; en extras también permitimos superposición
+                // En base: si está ocupado, habilitar solo con sobreturno; en extras permitir superposición
                 Enabled = !ocupado || _sobreturnoActivo
             };
+            b.FlatAppearance.BorderSize = 0;
             b.Click += ClickFranja;
 
             if (!ocupado) libres++;
             flpFranjas.Controls.Add(b);
         }
 
-        // ALTA DESDE FRANJA
+        // ====== ALTA DESDE FRANJA ======
 
-      
-        // Maneja el click en una franja: pide DNI del paciente, valida/crea paciente si no existe
-        // y registra el turno. Aplica validaciones de profesional, fecha futura, DNI y motivo.
-        //
+        /// <summary>
+        /// Click en una franja: pide DNI, valida/crea paciente (abre FormPaciente si no existe),
+        /// pide motivo y registra el turno (evita duplicados salvo sobreturno).
+        /// </summary>
         private void ClickFranja(object sender, EventArgs e)
         {
             var btn = (Button)sender;
             var fechaHora = (DateTime)btn.Tag;
 
-            // No reservar en el pasado (se tolera 1 min por reloj del sistema)
+            // No reservar en el pasado (tolerancia 1 min)
             if (fechaHora < DateTime.Now.AddMinutes(-1))
             {
                 MessageBox.Show("No podés reservar turnos en el pasado.", "Agenda",
@@ -359,7 +383,7 @@ namespace SaludSoft
             }
 
             // Profesional seleccionado
-            if (!int.TryParse(CMBProfesionales.SelectedValue?.ToString(), out int idProfesional) || idProfesional == 0)
+            if (!int.TryParse(CMBProfesionales?.SelectedValue?.ToString(), out int idProfesional) || idProfesional == 0)
             {
                 MessageBox.Show("Seleccioná un profesional antes de reservar.", "Agenda",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -384,7 +408,7 @@ namespace SaludSoft
                 return;
             }
 
-            // Buscar paciente por DNI; si no existe, ofrecer crear
+            // Buscar paciente; si no existe, abrir FormPaciente (no FormUsuario)
             int? idPaciente = GetPacienteIdPorDni(dni);
             if (idPaciente == null)
             {
@@ -392,13 +416,13 @@ namespace SaludSoft
                                         "Paciente no encontrado", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (r == DialogResult.Yes)
                 {
-                    using (var frm = new FormUsuario())
+                    using (var frm = new FormPaciente())
                     {
-                        
-                        frm.ShowDialog();
+                        frm.StartPosition = FormStartPosition.CenterParent;
+                        frm.ShowDialog(this);
                     }
 
-                    // Reintentar búsqueda de paciente
+                    // Reintentar búsqueda
                     idPaciente = GetPacienteIdPorDni(dni);
                     if (idPaciente == null)
                     {
@@ -409,11 +433,11 @@ namespace SaludSoft
                 }
                 else
                 {
-                    return; // canceló alta de paciente
+                    return; // canceló alta
                 }
             }
 
-            // Motivo de consulta
+            // Motivo
             string motivo = Interaction.InputBox("Motivo de la consulta:", "Reservar Turno", "");
             if (string.IsNullOrWhiteSpace(motivo) || motivo.Trim().Length < 3)
             {
@@ -422,7 +446,7 @@ namespace SaludSoft
                 return;
             }
 
-            // Si NO hay sobreturno, evitar duplicado exacto del mismo profesional/hora
+            // Evitar duplicado exacto si no hay sobreturno
             if (!_sobreturnoActivo && ExisteTurnoMismoHorario(idProfesional, fechaHora))
             {
                 MessageBox.Show("Ese profesional ya tiene un turno en ese horario.", "Agenda",
@@ -430,7 +454,7 @@ namespace SaludSoft
                 return;
             }
 
-            // Guardar turno
+            // Guardar
             try
             {
                 InsertarTurnoBD(idProfesional, idPaciente.Value, fechaHora, motivo, _sobreturnoActivo);
@@ -449,13 +473,12 @@ namespace SaludSoft
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        //ACCIONES DE LA GRILLA 
+        // ====== ACCIONES DE LA GRILLA ======
 
-        //
-        //Editar estado/motivo o cancelar/reprogramar desde la grilla
+        /// <summary>Editar estado/motivo o cancelar/reprogramar desde la grilla.</summary>
         private void DTVGAgenda_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0) return;
+            if (e.RowIndex < 0 || DTVGAgenda == null) return;
 
             var colName = DTVGAgenda.Columns[e.ColumnIndex].Name;
             if (colName != "colEditar" && colName != "colCancelar") return;
@@ -482,7 +505,7 @@ namespace SaludSoft
 
                 if (r == DialogResult.Yes)
                 {
-                    // TODO: UPDATE estado='Cancelado' en BD
+                    // TODO: UPDATE estado='Cancelado'
                     turno.Estado = "Cancelado";
                     DTVGAgenda.Refresh();
                     RefrescarFranjas();
@@ -504,13 +527,13 @@ namespace SaludSoft
             }
         }
 
-        // BOTONES EXISTENTES 
+        // ====== BOTONES EXISTENTES (si están en el diseñador) ======
         private void BVolverAgenda_Click(object sender, EventArgs e) => this.Close();
         private void BBuscar_Click_1(object sender, EventArgs e) { }
         private void gbSeleccionarFecha_Enter(object sender, EventArgs e) { }
         private void btSobreturno_Click(object sender, EventArgs e) { }
 
-        //HELPERS (VALIDACIÓN/BD) 
+        // ====== HELPERS VALIDACIÓN/BD ======
 
         /// <summary>Valida formato de DNI (numérico de 7 a 9 dígitos).</summary>
         private bool EsDniValido(string dni)
@@ -537,8 +560,7 @@ namespace SaludSoft
         }
 
         /// <summary>
-        /// True si ya hay un turno para el mismo profesional en esa fecha/hora
-        /// (se excluyen los cancelados).
+        /// True si ya hay un turno para el mismo profesional en esa fecha/hora (excluye cancelados).
         /// </summary>
         private bool ExisteTurnoMismoHorario(int idProfesional, DateTime fechaHora)
         {
@@ -576,7 +598,7 @@ namespace SaludSoft
         }
     }
 
-    //  VIEWMODEL PARA LA GRILLA 
+    // ====== VIEWMODEL PARA LA GRILLA ======
 
     /// <summary>Modelo de datos para mostrar turnos en la grilla.</summary>
     public class TurnoVM

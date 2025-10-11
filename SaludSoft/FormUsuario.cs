@@ -571,5 +571,10 @@ namespace SaludSoft.Resources
         {
 
         }
+
+        private void lTelefono_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

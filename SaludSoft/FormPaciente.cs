@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace SaludSoft
 {
@@ -19,6 +16,28 @@ namespace SaludSoft
         {
             InitializeComponent();
             CargarEstadosPaciente();
+
+
+            TBDni.TextChanged += (s, e) =>
+            {
+                int sel = TBDni.SelectionStart;
+                string soloDigitos = new string(TBDni.Text.Where(char.IsDigit).ToArray());
+                if (soloDigitos.Length > 8) soloDigitos = soloDigitos.Substring(0, 8);
+
+                if (TBDni.Text != soloDigitos)
+                {
+                    TBDni.Text = soloDigitos;
+                    TBDni.SelectionStart = Math.Min(sel, TBDni.Text.Length);
+                }
+            };
+
+            TBTelefono.MaxLength = 15;  // Teléfono
+            //cursor en tbNombre al abrir el formulario
+            this.Shown += (s, e) =>
+            {
+                this.ActiveControl = TBNombre;
+                TBNombre.Focus();
+            };
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -49,14 +68,17 @@ namespace SaludSoft
                 using (SqlConnection conexion = Conexion.GetConnection())
                 {
                     conexion.Open();
-                    string query = "SELECT id_estado, descripcion FROM EstadoPaciente";
+
+                    // Usa la tabla nueva 'Estado'. Si en tu BD aún es 'EstadoPaciente', cambiá el FROM.
+                    string query = "SELECT id_estado, descripcion FROM Estado ORDER BY descripcion";
                     SqlDataAdapter da = new SqlDataAdapter(query, conexion);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
                     CMBEstadoPaciente.DataSource = dt;
-                    CMBEstadoPaciente.DisplayMember = "descripcion"; 
-                    CMBEstadoPaciente.ValueMember = "id_estado";     
+                    CMBEstadoPaciente.DisplayMember = "descripcion";
+                    CMBEstadoPaciente.ValueMember = "id_estado";
+                    CMBEstadoPaciente.SelectedIndex = -1;
                 }
             }
             catch (Exception ex)
@@ -72,15 +94,13 @@ namespace SaludSoft
         {
             try
             {
-                var addr = new MailAddress(email);
-                return addr.Address == email;
+                var addr = new MailAddress(email.Trim());
+                return addr.Address == email.Trim();
             }
-            catch
-            {
-                return false;
-            }
+            catch { return false; }
         }
-        // validacion de campos 
+
+        // ===== Validación simple antes de guardar =====
         private bool ValidarCampos()
         {
             if (string.IsNullOrWhiteSpace(TBNombre.Text) ||
@@ -92,6 +112,28 @@ namespace SaludSoft
                 CMBEstadoPaciente.SelectedValue == null)
             {
                 MessageBox.Show("Debe completar todos los campos.",
+                                "Validación",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return false;
+            }
+
+            // DNI 7-8 dígitos
+            string dni = TBDni.Text.Trim();
+            if (!(dni.Length == 7 || dni.Length == 8) || !Regex.IsMatch(dni, @"^\d+$"))
+            {
+                MessageBox.Show("DNI inválido. Debe tener 7 u 8 dígitos.",
+                                "Validación",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return false;
+            }
+
+            // Teléfono 8-15 dígitos
+            string tel = TBTelefono.Text.Trim();
+            if (tel.Length < 8 || tel.Length > 15 || !Regex.IsMatch(tel, @"^\d+$"))
+            {
+                MessageBox.Show("Teléfono inválido. Debe tener entre 8 y 15 dígitos.",
                                 "Validación",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning);
@@ -123,39 +165,33 @@ namespace SaludSoft
             TBObservacion.Clear();
 
             CMBEstadoPaciente.SelectedIndex = -1;
+            RBMasculino.Checked = false;
+            RBFemenino.Checked = false;
         }
 
-        // Validaciones de ingreso
+        // --- Handlers que el Designer espera (evitan el error) ---
         private void TBNombre_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && e.KeyChar != ' ')
-            {
                 e.Handled = true;
-            }
         }
 
         private void TBApellido_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && e.KeyChar != ' ')
-            {
                 e.Handled = true;
-            }
         }
 
         private void TBDni_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
-            {
                 e.Handled = true;
-            }
         }
 
         private void TBTelefono_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
-            {
                 e.Handled = true;
-            }
         }
 
         private void TBEmail_KeyPress(object sender, KeyPressEventArgs e)
@@ -170,7 +206,8 @@ namespace SaludSoft
                 e.Handled = true;
             }
         }
-        // botones 
+
+        // --- Botones ---
         private void BRegistrar_Click(object sender, EventArgs e)
         {
             if (!ValidarCampos())
@@ -199,10 +236,10 @@ namespace SaludSoft
                         }
                     }
 
-                    // Insertamos paciente (con estado seleccionado)
+                    // OJO: nombre de parámetro @Sexo coincide con AddWithValue("@Sexo", ...)
                     string queryPaciente = "INSERT INTO Paciente (nombre, apellido, dni, email, telefono, direccion, id_estado, sexo) " +
-                                           "VALUES (@Nombre, @Apellido, @Dni, @Email, @Telefono, @Direccion, @IdEstado,@sexo);" +
-                                            "SELECT SCOPE_IDENTITY();"; 
+                                           "VALUES (@Nombre, @Apellido, @Dni, @Email, @Telefono, @Direccion, @IdEstado, @Sexo);" +
+                                           "SELECT SCOPE_IDENTITY();";
 
                     int idPaciente;
                     using (SqlCommand cmd = new SqlCommand(queryPaciente, conexion))
@@ -219,7 +256,6 @@ namespace SaludSoft
                         idPaciente = Convert.ToInt32(cmd.ExecuteScalar());
                     }
 
-                    // Insertamos historial inicial
                     string queryHistorial = "INSERT INTO Historial (id_paciente, fechaConsulta, diagnostico, tratamiento, observaciones) " +
                                             "VALUES (@IdPaciente, @Fecha, @Diagnostico, @Tratamiento, @Observaciones)";
                     using (SqlCommand cmd = new SqlCommand(queryHistorial, conexion))
@@ -264,6 +300,6 @@ namespace SaludSoft
             }
         }
 
- 
+        private void LInfoPaciente_Click(object sender, EventArgs e) { }
     }
- }
+}
