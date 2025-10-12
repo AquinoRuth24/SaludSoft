@@ -80,11 +80,9 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.BGuardarDisponibe = new System.Windows.Forms.Button();
             this.BCancearDisponibilidad = new System.Windows.Forms.Button();
             this.CBDiasSemanas = new System.Windows.Forms.ComboBox();
-            this.CMBProfConsul = new System.Windows.Forms.ComboBox();
             this.DPTHoraInicio = new System.Windows.Forms.DateTimePicker();
             this.DTPHoraFin = new System.Windows.Forms.DateTimePicker();
             this.panel1.SuspendLayout();
@@ -214,7 +212,7 @@
             this.GBAsignarProfesional.Controls.Add(this.CMBConsultorio);
             this.GBAsignarProfesional.Controls.Add(this.DTPDesde);
             this.GBAsignarProfesional.Controls.Add(this.DTPHasta);
-            this.GBAsignarProfesional.Location = new System.Drawing.Point(290, 253);
+            this.GBAsignarProfesional.Location = new System.Drawing.Point(656, 205);
             this.GBAsignarProfesional.Name = "GBAsignarProfesional";
             this.GBAsignarProfesional.Size = new System.Drawing.Size(389, 212);
             this.GBAsignarProfesional.TabIndex = 14;
@@ -271,6 +269,7 @@
             this.BAgregarProfesional_consultorio.TabIndex = 7;
             this.BAgregarProfesional_consultorio.Text = "Agergar";
             this.BAgregarProfesional_consultorio.UseVisualStyleBackColor = false;
+            this.BAgregarProfesional_consultorio.Click += new System.EventHandler(this.BAgregarProfesional_consultorio_Click);
             // 
             // BCancelarProfesional_consultorio
             // 
@@ -344,7 +343,7 @@
             this.BCancelarConsultorio.TabIndex = 5;
             this.BCancelarConsultorio.Text = "Cancelar";
             this.BCancelarConsultorio.UseVisualStyleBackColor = false;
-            this.BCancelarConsultorio.Click += new System.EventHandler(this.BCancelarConsultorio_Click);
+            this.BCancelarConsultorio.Click += new System.EventHandler(this.BCancelar_Click);
             // 
             // BGuardarConsultorio
             // 
@@ -374,6 +373,7 @@
             this.TBNroConsultorio.Name = "TBNroConsultorio";
             this.TBNroConsultorio.Size = new System.Drawing.Size(123, 28);
             this.TBNroConsultorio.TabIndex = 2;
+            this.TBNroConsultorio.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TBNroConsultorio_KeyPress);
             // 
             // LConsultorio
             // 
@@ -450,7 +450,7 @@
             this.BAsignarProfesional.TabIndex = 12;
             this.BAsignarProfesional.Text = "+ Asignar Profesional";
             this.BAsignarProfesional.UseVisualStyleBackColor = false;
-            this.BAsignarProfesional.Click += new System.EventHandler(this.BAgregarProfesional_consultorio_Click);
+            this.BAsignarProfesional.Click += new System.EventHandler(this.BAsignarProfesional_Click_1);
             // 
             // TBBuscar
             // 
@@ -589,17 +589,15 @@
             this.GBDisponibilidad.Controls.Add(this.label10);
             this.GBDisponibilidad.Controls.Add(this.label6);
             this.GBDisponibilidad.Controls.Add(this.label5);
-            this.GBDisponibilidad.Controls.Add(this.label3);
             this.GBDisponibilidad.Controls.Add(this.BGuardarDisponibe);
             this.GBDisponibilidad.Controls.Add(this.BCancearDisponibilidad);
             this.GBDisponibilidad.Controls.Add(this.CBDiasSemanas);
-            this.GBDisponibilidad.Controls.Add(this.CMBProfConsul);
             this.GBDisponibilidad.Controls.Add(this.DPTHoraInicio);
             this.GBDisponibilidad.Controls.Add(this.DTPHoraFin);
-            this.GBDisponibilidad.Location = new System.Drawing.Point(679, 265);
+            this.GBDisponibilidad.Location = new System.Drawing.Point(396, 265);
             this.GBDisponibilidad.Name = "GBDisponibilidad";
             this.GBDisponibilidad.Size = new System.Drawing.Size(404, 212);
-            this.GBDisponibilidad.TabIndex = 20;
+            this.GBDisponibilidad.TabIndex = 22;
             this.GBDisponibilidad.TabStop = false;
             this.GBDisponibilidad.Visible = false;
             // 
@@ -633,16 +631,6 @@
             this.label5.TabIndex = 9;
             this.label5.Text = "Dia De la Semana";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(38, 24);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(162, 18);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Profesional Y Consultorio";
-            // 
             // BGuardarDisponibe
             // 
             this.BGuardarDisponibe.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
@@ -653,7 +641,7 @@
             this.BGuardarDisponibe.TabIndex = 7;
             this.BGuardarDisponibe.Text = "Guardar";
             this.BGuardarDisponibe.UseVisualStyleBackColor = false;
-            this.BGuardarDisponibe.Click += new System.EventHandler(this.BGuardarDisponibe_Click);
+            this.BGuardarDisponibe.Click += new System.EventHandler(this.BGuardarDisponibilidad_Click);
             // 
             // BCancearDisponibilidad
             // 
@@ -665,6 +653,7 @@
             this.BCancearDisponibilidad.TabIndex = 6;
             this.BCancearDisponibilidad.Text = "Cancelar";
             this.BCancearDisponibilidad.UseVisualStyleBackColor = false;
+            this.BCancearDisponibilidad.Click += new System.EventHandler(this.BCancelarDisponibilidad_Click);
             // 
             // CBDiasSemanas
             // 
@@ -674,15 +663,6 @@
             this.CBDiasSemanas.Name = "CBDiasSemanas";
             this.CBDiasSemanas.Size = new System.Drawing.Size(121, 28);
             this.CBDiasSemanas.TabIndex = 0;
-            // 
-            // CMBProfConsul
-            // 
-            this.CMBProfConsul.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CMBProfConsul.FormattingEnabled = true;
-            this.CMBProfConsul.Location = new System.Drawing.Point(256, 19);
-            this.CMBProfConsul.Name = "CMBProfConsul";
-            this.CMBProfConsul.Size = new System.Drawing.Size(121, 28);
-            this.CMBProfConsul.TabIndex = 1;
             // 
             // DPTHoraInicio
             // 
@@ -794,15 +774,13 @@
         private System.Windows.Forms.Button BCancelarDisponibilidad;
         private System.Windows.Forms.Button BGuardarDisponibilidad;
         private System.Windows.Forms.GroupBox GBDisponibilidad;
-        private System.Windows.Forms.ComboBox CBDiasSemanas;
-        private System.Windows.Forms.ComboBox CMBProfConsul;
-        private System.Windows.Forms.DateTimePicker DPTHoraInicio;
-        private System.Windows.Forms.DateTimePicker DTPHoraFin;
-        private System.Windows.Forms.Button BGuardarDisponibe;
-        private System.Windows.Forms.Button BCancearDisponibilidad;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button BGuardarDisponibe;
+        private System.Windows.Forms.Button BCancearDisponibilidad;
+        private System.Windows.Forms.ComboBox CBDiasSemanas;
+        private System.Windows.Forms.DateTimePicker DPTHoraInicio;
+        private System.Windows.Forms.DateTimePicker DTPHoraFin;
     }
 }
