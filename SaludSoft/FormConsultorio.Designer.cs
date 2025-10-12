@@ -66,8 +66,6 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.BBuscar = new System.Windows.Forms.Button();
             this.BLimpiar = new System.Windows.Forms.Button();
-            this.BNuevaDisponibilidad = new System.Windows.Forms.Button();
-            this.GBNuevaDisponibilidad = new System.Windows.Forms.GroupBox();
             this.BGuardarDisponibilidad = new System.Windows.Forms.Button();
             this.BCancelarDisponibilidad = new System.Windows.Forms.Button();
             this.DPTHoraFin = new System.Windows.Forms.DateTimePicker();
@@ -78,6 +76,17 @@
             this.LProfesionales = new System.Windows.Forms.Label();
             this.CBDiaSemana = new System.Windows.Forms.ComboBox();
             this.CMBProfesional_consultorio = new System.Windows.Forms.ComboBox();
+            this.GBDisponibilidad = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.BGuardarDisponibe = new System.Windows.Forms.Button();
+            this.BCancearDisponibilidad = new System.Windows.Forms.Button();
+            this.CBDiasSemanas = new System.Windows.Forms.ComboBox();
+            this.CMBProfConsul = new System.Windows.Forms.ComboBox();
+            this.DPTHoraInicio = new System.Windows.Forms.DateTimePicker();
+            this.DTPHoraFin = new System.Windows.Forms.DateTimePicker();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGWConsultorios_profesional)).BeginInit();
             this.panel2.SuspendLayout();
@@ -86,7 +95,7 @@
             this.GBAgregarConsultorio.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.GBNuevaDisponibilidad.SuspendLayout();
+            this.GBDisponibilidad.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -123,7 +132,7 @@
             // DGWConsultorios_profesional
             // 
             this.DGWConsultorios_profesional.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGWConsultorios_profesional.Location = new System.Drawing.Point(1, 265);
+            this.DGWConsultorios_profesional.Location = new System.Drawing.Point(-12, 253);
             this.DGWConsultorios_profesional.Name = "DGWConsultorios_profesional";
             this.DGWConsultorios_profesional.Size = new System.Drawing.Size(1044, 267);
             this.DGWConsultorios_profesional.TabIndex = 3;
@@ -205,7 +214,7 @@
             this.GBAsignarProfesional.Controls.Add(this.CMBConsultorio);
             this.GBAsignarProfesional.Controls.Add(this.DTPDesde);
             this.GBAsignarProfesional.Controls.Add(this.DTPHasta);
-            this.GBAsignarProfesional.Location = new System.Drawing.Point(390, 264);
+            this.GBAsignarProfesional.Location = new System.Drawing.Point(290, 253);
             this.GBAsignarProfesional.Name = "GBAsignarProfesional";
             this.GBAsignarProfesional.Size = new System.Drawing.Size(389, 212);
             this.GBAsignarProfesional.TabIndex = 14;
@@ -441,7 +450,7 @@
             this.BAsignarProfesional.TabIndex = 12;
             this.BAsignarProfesional.Text = "+ Asignar Profesional";
             this.BAsignarProfesional.UseVisualStyleBackColor = false;
-            this.BAsignarProfesional.Click += new System.EventHandler(this.BAsignarProfesional_Click);
+            this.BAsignarProfesional.Click += new System.EventHandler(this.BAgregarProfesional_consultorio_Click);
             // 
             // TBBuscar
             // 
@@ -483,60 +492,19 @@
             this.BLimpiar.UseVisualStyleBackColor = true;
             this.BLimpiar.Click += new System.EventHandler(this.BLimpiar_Click);
             // 
-            // BNuevaDisponibilidad
-            // 
-            this.BNuevaDisponibilidad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BNuevaDisponibilidad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.BNuevaDisponibilidad.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BNuevaDisponibilidad.Location = new System.Drawing.Point(409, 187);
-            this.BNuevaDisponibilidad.Name = "BNuevaDisponibilidad";
-            this.BNuevaDisponibilidad.Size = new System.Drawing.Size(186, 43);
-            this.BNuevaDisponibilidad.TabIndex = 4;
-            this.BNuevaDisponibilidad.Text = "Nueva Disponibilidad";
-            this.BNuevaDisponibilidad.UseVisualStyleBackColor = false;
-            this.BNuevaDisponibilidad.Click += new System.EventHandler(this.BNuevaDisponibilidad_Click);
-            // 
-            // GBNuevaDisponibilidad
-            // 
-            this.GBNuevaDisponibilidad.Controls.Add(this.BGuardarDisponibilidad);
-            this.GBNuevaDisponibilidad.Controls.Add(this.BCancelarDisponibilidad);
-            this.GBNuevaDisponibilidad.Controls.Add(this.DPTHoraFin);
-            this.GBNuevaDisponibilidad.Controls.Add(this.LHoraFin);
-            this.GBNuevaDisponibilidad.Controls.Add(this.LHoraInicio);
-            this.GBNuevaDisponibilidad.Controls.Add(this.DTPHoraInicio);
-            this.GBNuevaDisponibilidad.Controls.Add(this.LDia);
-            this.GBNuevaDisponibilidad.Controls.Add(this.LProfesionales);
-            this.GBNuevaDisponibilidad.Controls.Add(this.CBDiaSemana);
-            this.GBNuevaDisponibilidad.Controls.Add(this.CMBProfesional_consultorio);
-            this.GBNuevaDisponibilidad.Location = new System.Drawing.Point(598, 281);
-            this.GBNuevaDisponibilidad.Name = "GBNuevaDisponibilidad";
-            this.GBNuevaDisponibilidad.Size = new System.Drawing.Size(434, 195);
-            this.GBNuevaDisponibilidad.TabIndex = 20;
-            this.GBNuevaDisponibilidad.TabStop = false;
-            this.GBNuevaDisponibilidad.Visible = false;
-            // 
             // BGuardarDisponibilidad
             // 
-            this.BGuardarDisponibilidad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(242)))), ((int)(((byte)(224)))));
-            this.BGuardarDisponibilidad.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BGuardarDisponibilidad.Location = new System.Drawing.Point(329, 152);
+            this.BGuardarDisponibilidad.Location = new System.Drawing.Point(0, 0);
             this.BGuardarDisponibilidad.Name = "BGuardarDisponibilidad";
-            this.BGuardarDisponibilidad.Size = new System.Drawing.Size(99, 36);
-            this.BGuardarDisponibilidad.TabIndex = 29;
-            this.BGuardarDisponibilidad.Text = "Guardar";
-            this.BGuardarDisponibilidad.UseVisualStyleBackColor = false;
-            this.BGuardarDisponibilidad.Click += new System.EventHandler(this.BGuardar_Click);
+            this.BGuardarDisponibilidad.Size = new System.Drawing.Size(75, 23);
+            this.BGuardarDisponibilidad.TabIndex = 0;
             // 
             // BCancelarDisponibilidad
             // 
-            this.BCancelarDisponibilidad.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BCancelarDisponibilidad.Location = new System.Drawing.Point(215, 152);
+            this.BCancelarDisponibilidad.Location = new System.Drawing.Point(0, 0);
             this.BCancelarDisponibilidad.Name = "BCancelarDisponibilidad";
-            this.BCancelarDisponibilidad.Size = new System.Drawing.Size(97, 36);
-            this.BCancelarDisponibilidad.TabIndex = 28;
-            this.BCancelarDisponibilidad.Text = "Cancelar";
-            this.BCancelarDisponibilidad.UseVisualStyleBackColor = true;
-            this.BCancelarDisponibilidad.Click += new System.EventHandler(this.BCancelarDisponibilidad_Click);
+            this.BCancelarDisponibilidad.Size = new System.Drawing.Size(75, 23);
+            this.BCancelarDisponibilidad.TabIndex = 0;
             // 
             // DPTHoraFin
             // 
@@ -616,13 +584,130 @@
             this.CMBProfesional_consultorio.Size = new System.Drawing.Size(237, 28);
             this.CMBProfesional_consultorio.TabIndex = 1;
             // 
+            // GBDisponibilidad
+            // 
+            this.GBDisponibilidad.Controls.Add(this.label10);
+            this.GBDisponibilidad.Controls.Add(this.label6);
+            this.GBDisponibilidad.Controls.Add(this.label5);
+            this.GBDisponibilidad.Controls.Add(this.label3);
+            this.GBDisponibilidad.Controls.Add(this.BGuardarDisponibe);
+            this.GBDisponibilidad.Controls.Add(this.BCancearDisponibilidad);
+            this.GBDisponibilidad.Controls.Add(this.CBDiasSemanas);
+            this.GBDisponibilidad.Controls.Add(this.CMBProfConsul);
+            this.GBDisponibilidad.Controls.Add(this.DPTHoraInicio);
+            this.GBDisponibilidad.Controls.Add(this.DTPHoraFin);
+            this.GBDisponibilidad.Location = new System.Drawing.Point(679, 265);
+            this.GBDisponibilidad.Name = "GBDisponibilidad";
+            this.GBDisponibilidad.Size = new System.Drawing.Size(404, 212);
+            this.GBDisponibilidad.TabIndex = 20;
+            this.GBDisponibilidad.TabStop = false;
+            this.GBDisponibilidad.Visible = false;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(159, 100);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(61, 18);
+            this.label10.TabIndex = 11;
+            this.label10.Text = "Hora Fin";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(16, 100);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(78, 18);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Hora Inicio";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(54, 63);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(113, 18);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Dia De la Semana";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(38, 24);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(162, 18);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Profesional Y Consultorio";
+            // 
+            // BGuardarDisponibe
+            // 
+            this.BGuardarDisponibe.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BGuardarDisponibe.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BGuardarDisponibe.Location = new System.Drawing.Point(310, 177);
+            this.BGuardarDisponibe.Name = "BGuardarDisponibe";
+            this.BGuardarDisponibe.Size = new System.Drawing.Size(88, 29);
+            this.BGuardarDisponibe.TabIndex = 7;
+            this.BGuardarDisponibe.Text = "Guardar";
+            this.BGuardarDisponibe.UseVisualStyleBackColor = false;
+            this.BGuardarDisponibe.Click += new System.EventHandler(this.BGuardarDisponibe_Click);
+            // 
+            // BCancearDisponibilidad
+            // 
+            this.BCancearDisponibilidad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BCancearDisponibilidad.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BCancearDisponibilidad.Location = new System.Drawing.Point(199, 177);
+            this.BCancearDisponibilidad.Name = "BCancearDisponibilidad";
+            this.BCancearDisponibilidad.Size = new System.Drawing.Size(93, 29);
+            this.BCancearDisponibilidad.TabIndex = 6;
+            this.BCancearDisponibilidad.Text = "Cancelar";
+            this.BCancearDisponibilidad.UseVisualStyleBackColor = false;
+            // 
+            // CBDiasSemanas
+            // 
+            this.CBDiasSemanas.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CBDiasSemanas.FormattingEnabled = true;
+            this.CBDiasSemanas.Location = new System.Drawing.Point(256, 58);
+            this.CBDiasSemanas.Name = "CBDiasSemanas";
+            this.CBDiasSemanas.Size = new System.Drawing.Size(121, 28);
+            this.CBDiasSemanas.TabIndex = 0;
+            // 
+            // CMBProfConsul
+            // 
+            this.CMBProfConsul.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CMBProfConsul.FormattingEnabled = true;
+            this.CMBProfConsul.Location = new System.Drawing.Point(256, 19);
+            this.CMBProfConsul.Name = "CMBProfConsul";
+            this.CMBProfConsul.Size = new System.Drawing.Size(121, 28);
+            this.CMBProfConsul.TabIndex = 1;
+            // 
+            // DPTHoraInicio
+            // 
+            this.DPTHoraInicio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DPTHoraInicio.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.DPTHoraInicio.Location = new System.Drawing.Point(6, 134);
+            this.DPTHoraInicio.Name = "DPTHoraInicio";
+            this.DPTHoraInicio.Size = new System.Drawing.Size(102, 28);
+            this.DPTHoraInicio.TabIndex = 2;
+            // 
+            // DTPHoraFin
+            // 
+            this.DTPHoraFin.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DTPHoraFin.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.DTPHoraFin.Location = new System.Drawing.Point(143, 134);
+            this.DTPHoraFin.Name = "DTPHoraFin";
+            this.DTPHoraFin.Size = new System.Drawing.Size(102, 28);
+            this.DTPHoraFin.TabIndex = 3;
+            // 
             // FormConsultorio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1044, 532);
-            this.Controls.Add(this.GBNuevaDisponibilidad);
-            this.Controls.Add(this.BNuevaDisponibilidad);
+            this.Controls.Add(this.GBDisponibilidad);
             this.Controls.Add(this.GBAgregarConsultorio);
             this.Controls.Add(this.GBAsignarProfesional);
             this.Controls.Add(this.BLimpiar);
@@ -652,8 +737,8 @@
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.GBNuevaDisponibilidad.ResumeLayout(false);
-            this.GBNuevaDisponibilidad.PerformLayout();
+            this.GBDisponibilidad.ResumeLayout(false);
+            this.GBDisponibilidad.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -698,8 +783,6 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Button BBuscar;
         private System.Windows.Forms.Button BLimpiar;
-        private System.Windows.Forms.Button BNuevaDisponibilidad;
-        private System.Windows.Forms.GroupBox GBNuevaDisponibilidad;
         private System.Windows.Forms.ComboBox CMBProfesional_consultorio;
         private System.Windows.Forms.ComboBox CBDiaSemana;
         private System.Windows.Forms.Label LProfesionales;
@@ -710,5 +793,16 @@
         private System.Windows.Forms.DateTimePicker DPTHoraFin;
         private System.Windows.Forms.Button BCancelarDisponibilidad;
         private System.Windows.Forms.Button BGuardarDisponibilidad;
+        private System.Windows.Forms.GroupBox GBDisponibilidad;
+        private System.Windows.Forms.ComboBox CBDiasSemanas;
+        private System.Windows.Forms.ComboBox CMBProfConsul;
+        private System.Windows.Forms.DateTimePicker DPTHoraInicio;
+        private System.Windows.Forms.DateTimePicker DTPHoraFin;
+        private System.Windows.Forms.Button BGuardarDisponibe;
+        private System.Windows.Forms.Button BCancearDisponibilidad;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label3;
     }
 }
