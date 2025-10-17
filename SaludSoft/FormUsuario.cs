@@ -26,7 +26,7 @@ namespace SaludSoft.Resources
             WireSexoRadioButtons();
         }
 
-        // --- Helpers de validación reutilizables ---
+        // Helpers de validación reutilizables
         private bool Req(string name, string message)
         {
             var tb = FindCtl<TextBox>(name);
@@ -56,7 +56,7 @@ namespace SaludSoft.Resources
 
         private enum RolUsuario { Paciente = 0, Medico = 1, Recepcionista = 2, Administrador = 3 }
 
-        // ------------------ Load & Rol ------------------
+        // Load & Rol
         private void FormUsuario_Load(object sender, EventArgs e)
         {
             if (cbRol != null && cbRol.Items.Count == 0)
@@ -100,7 +100,7 @@ namespace SaludSoft.Resources
             }
         }
 
-        // ------------------ Mostrar/Ocultar por Rol ------------------
+        //Mostrar/Ocultar por Rol
         private void AplicarUIRol()
         {
             HideAllRoleGroups();
@@ -109,7 +109,6 @@ namespace SaludSoft.Resources
             ShowPwdFor("Medico", false);
             ShowPwdFor("Recep", false);
             ShowPwdFor("Recepcionista", false);
-            // (mantengo estas dos por seguridad aunque ya no se usen)
             ShowPwdFor("Administrador", false);
             ShowPwdFor("Admin", false);
 
@@ -138,7 +137,7 @@ namespace SaludSoft.Resources
                     break;
 
                 case RolUsuario.Administrador:
-                    SetVisible("gbAdmin", true); // si tenés un grupo o controles de admin
+                    SetVisible("gbAdmin", true); //grupo o controles de admin
                     ShowPwdFor("Administrador", true);
                     FindCtl<GroupBox>("gbAdmin")?.BringToFront();
                     break;
@@ -155,7 +154,7 @@ namespace SaludSoft.Resources
             SetVisible("gbAdmin", false); // por si existe en el form, que quede oculto
         }
 
-        // ------------------ Botones ------------------
+        //Botones
         private void button1_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
@@ -181,14 +180,7 @@ namespace SaludSoft.Resources
         private void btAgregar_Click(object sender, EventArgs e)
         {
             var rolDestino = (RolUsuario)(cbRol?.SelectedIndex ?? 0);
-
-            // no permitir crear Administrador
-            //if (rolDestino == RolUsuario.Administrador)
-            //{
-              //  Msg("No está permitido crear usuarios con rol Administrador.");
-                //return;
-            //}
-
+         
             if (!ValidarFormulario()) return;
 
             // Comunes
@@ -201,7 +193,7 @@ namespace SaludSoft.Resources
 
             string rolStr = cbRol?.Text ?? rolDestino.ToString();
 
-            // Contraseña -> HASH PBKDF2 (PasswordHasher)
+            // Contraseña PasswordHasher
             string pwPlano = GetPasswordForCurrentRole() ?? "";
             string passwordHash = string.IsNullOrWhiteSpace(pwPlano) ? null : PasswordHasher.Hash(pwPlano);
 
@@ -212,7 +204,7 @@ namespace SaludSoft.Resources
                 {
                     conexion.Open();
 
-                    // --- Insert en Usuario ---
+                    //Insert en Usuario
                     string insertUsuario = @"
                 INSERT INTO Usuario (nombre, apellido, contraseña, email, telefono, id_rol)
                 VALUES (@nombre, @apellido, @contraseña, @correo, @telefono, @idRol);
@@ -233,7 +225,7 @@ namespace SaludSoft.Resources
                         idUsuario = Convert.ToInt32(cmd.ExecuteScalar());
                     }
 
-                    // --- Insert extra si es Paciente ---
+                    //Insert extra si es Paciente
                     if (rolDestino == RolUsuario.Paciente)
                     {
                         string sexo = (FindCtl<RadioButton>("rbMasculino")?.Checked ?? false) ? "Masculino" : "Femenino";
@@ -256,7 +248,7 @@ namespace SaludSoft.Resources
                         }
                     }
 
-                    // --- Insert extra si es Médico ---
+                    //Insert extra si es Médico
                     if (rolDestino == RolUsuario.Medico)
                     {
                         string matricula = GetTextAny("tbMatricula");
@@ -306,7 +298,7 @@ namespace SaludSoft.Resources
             this.Close();
         }
 
-        // ------------------ Validación ------------------
+        //Validación
         private bool ValidarFormulario()
         {
             // Vacíos
@@ -352,14 +344,9 @@ namespace SaludSoft.Resources
                 var esp = GetTextAny("tbEspecialidadFormUsuario", "tbEspecialidad");
                 if (!string.IsNullOrWhiteSpace(esp) && !Regex.IsMatch(esp, SOLO_LETRAS)) { Msg("Especialidad: solo letras y espacios"); return false; }
             }
-            //else if (rol == RolUsuario.Administrador)
-            //{
-                // No debería alcanzarse porque no se permite Administrador en UI ni al guardar
-              //  Msg("No está permitido crear usuarios con rol Administrador.");
-                //return false;
-            //}
+            
 
-            // Sexo: si tenés rbMasculino / rbFemenino, exige uno
+            // Sexo: exige uno
             if (rol == RolUsuario.Paciente)
             {
                 var rbM = FindCtl<RadioButton>("rbMasculino");
@@ -573,6 +560,11 @@ namespace SaludSoft.Resources
         }
 
         private void lTelefono_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lSubtitulo_Click(object sender, EventArgs e)
         {
 
         }

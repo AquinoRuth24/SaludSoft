@@ -46,7 +46,9 @@
             this.lNombre = new System.Windows.Forms.Label();
             this.cbRol = new System.Windows.Forms.ComboBox();
             this.gbPaciente = new System.Windows.Forms.GroupBox();
+            this.tbDni = new System.Windows.Forms.TextBox();
             this.rbMasculino = new System.Windows.Forms.RadioButton();
+            this.lDni = new System.Windows.Forms.Label();
             this.rbFemenino = new System.Windows.Forms.RadioButton();
             this.lSexo = new System.Windows.Forms.Label();
             this.tbDireccion = new System.Windows.Forms.TextBox();
@@ -68,8 +70,6 @@
             this.gbAdmin = new System.Windows.Forms.GroupBox();
             this.lContraAdmin = new System.Windows.Forms.Label();
             this.tbContraAdmin = new System.Windows.Forms.TextBox();
-            this.lDni = new System.Windows.Forms.Label();
-            this.tbDni = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -149,6 +149,7 @@
             this.lSubtitulo.Size = new System.Drawing.Size(249, 20);
             this.lSubtitulo.TabIndex = 3;
             this.lSubtitulo.Text = "Ingrese los datos del nuevo usuario";
+            this.lSubtitulo.Click += new System.EventHandler(this.lSubtitulo_Click);
             // 
             // lTitulo
             // 
@@ -311,6 +312,13 @@
             this.gbPaciente.TabStop = false;
             this.gbPaciente.Visible = false;
             // 
+            // tbDni
+            // 
+            this.tbDni.Location = new System.Drawing.Point(167, 14);
+            this.tbDni.Name = "tbDni";
+            this.tbDni.Size = new System.Drawing.Size(137, 20);
+            this.tbDni.TabIndex = 11;
+            // 
             // rbMasculino
             // 
             this.rbMasculino.AutoSize = true;
@@ -323,6 +331,17 @@
             this.rbMasculino.TabStop = true;
             this.rbMasculino.Text = "M ";
             this.rbMasculino.UseVisualStyleBackColor = true;
+            // 
+            // lDni
+            // 
+            this.lDni.AutoSize = true;
+            this.lDni.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lDni.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lDni.Location = new System.Drawing.Point(107, 17);
+            this.lDni.Name = "lDni";
+            this.lDni.Size = new System.Drawing.Size(48, 19);
+            this.lDni.TabIndex = 10;
+            this.lDni.Text = "DNI: ";
             // 
             // rbFemenino
             // 
@@ -553,24 +572,6 @@
             this.tbContraAdmin.Name = "tbContraAdmin";
             this.tbContraAdmin.Size = new System.Drawing.Size(135, 20);
             this.tbContraAdmin.TabIndex = 0;
-            // 
-            // lDni
-            // 
-            this.lDni.AutoSize = true;
-            this.lDni.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lDni.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lDni.Location = new System.Drawing.Point(107, 17);
-            this.lDni.Name = "lDni";
-            this.lDni.Size = new System.Drawing.Size(48, 19);
-            this.lDni.TabIndex = 10;
-            this.lDni.Text = "DNI: ";
-            // 
-            // tbDni
-            // 
-            this.tbDni.Location = new System.Drawing.Point(167, 14);
-            this.tbDni.Name = "tbDni";
-            this.tbDni.Size = new System.Drawing.Size(137, 20);
-            this.tbDni.TabIndex = 11;
             // 
             // FormUsuario
             // 

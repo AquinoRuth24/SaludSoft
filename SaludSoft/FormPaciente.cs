@@ -169,7 +169,7 @@ namespace SaludSoft
                 DTMHistorialInicial.Value = DateTime.Today;
         }
 
-        // --- Handlers para restricciones de entrada ---
+        //Handlers para restricciones de entrada
         private void TBNombre_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && e.KeyChar != ' ')
@@ -203,7 +203,7 @@ namespace SaludSoft
             }
         }
 
-        // --- Botones ---
+        //Botones
         private void BRegistrar_Click(object sender, EventArgs e)
         {
             if (!ValidarCampos()) return;
@@ -317,5 +317,10 @@ namespace SaludSoft
         }
 
         private void LInfoPaciente_Click(object sender, EventArgs e) { }
+
+        private void LCorreo_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

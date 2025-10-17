@@ -166,6 +166,7 @@
             this.LCorreo.Size = new System.Drawing.Size(153, 23);
             this.LCorreo.TabIndex = 2;
             this.LCorreo.Text = "Correo Electronico:";
+            this.LCorreo.Click += new System.EventHandler(this.LCorreo_Click);
             // 
             // LTelefono
             // 

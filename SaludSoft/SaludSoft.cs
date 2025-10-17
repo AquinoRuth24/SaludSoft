@@ -34,11 +34,6 @@ namespace SaludSoft
             frm.ShowDialog();
         }
 
-        private void BInicio_Click(object sender, EventArgs e)
-        {
-            MostrarInicio();
-        }
-
         private void BPacientes_Click(object sender, EventArgs e)
         {
             FormListaPacientes frm = new FormListaPacientes();
@@ -80,16 +75,6 @@ namespace SaludSoft
             frm.ShowDialog();
         }
 
-        private void MostrarInicio()
-        {
-
-            // Refrescar contadores
-            CargarTotales();
-
-            // Asegura que la ventana esté visible y al frente
-            if (!this.Visible) this.Show();
-            this.Activate();
-        }
         private void CargarTotales()
         {
 
