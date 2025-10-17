@@ -17,13 +17,12 @@ namespace SaludSoft
             InitializeComponent();
             CargarEstadosPaciente();
 
-
+            // Solo números en DNI
             TBDni.TextChanged += (s, e) =>
             {
                 int sel = TBDni.SelectionStart;
                 string soloDigitos = new string(TBDni.Text.Where(char.IsDigit).ToArray());
                 if (soloDigitos.Length > 8) soloDigitos = soloDigitos.Substring(0, 8);
-
                 if (TBDni.Text != soloDigitos)
                 {
                     TBDni.Text = soloDigitos;
@@ -31,8 +30,9 @@ namespace SaludSoft
                 }
             };
 
-            TBTelefono.MaxLength = 15;  // Teléfono
-            //cursor en tbNombre al abrir el formulario
+            TBTelefono.MaxLength = 15;
+
+            
             this.Shown += (s, e) =>
             {
                 this.ActiveControl = TBNombre;
@@ -56,7 +56,6 @@ namespace SaludSoft
                 path.AddArc(rect.Right - d, rect.Bottom - d, d, d, 0, 90);
                 path.AddArc(rect.X, rect.Bottom - d, d, d, 90, 90);
                 path.CloseFigure();
-
                 panel1.Region = new Region(path);
             }
         }
@@ -68,8 +67,6 @@ namespace SaludSoft
                 using (SqlConnection conexion = Conexion.GetConnection())
                 {
                     conexion.Open();
-
-                    // Usa la tabla nueva 'Estado'. Si en tu BD aún es 'EstadoPaciente', cambiá el FROM.
                     string query = "SELECT id_estado, descripcion FROM Estado ORDER BY descripcion";
                     SqlDataAdapter da = new SqlDataAdapter(query, conexion);
                     DataTable dt = new DataTable();
@@ -84,9 +81,7 @@ namespace SaludSoft
             catch (Exception ex)
             {
                 MessageBox.Show("Error al cargar estados: " + ex.Message,
-                                "Error",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -100,7 +95,7 @@ namespace SaludSoft
             catch { return false; }
         }
 
-        // ===== Validación simple antes de guardar =====
+        // Validación simple antes de guardar
         private bool ValidarCampos()
         {
             if (string.IsNullOrWhiteSpace(TBNombre.Text) ||
@@ -109,9 +104,10 @@ namespace SaludSoft
                 string.IsNullOrWhiteSpace(TBTelefono.Text) ||
                 string.IsNullOrWhiteSpace(TBDireccion.Text) ||
                 string.IsNullOrWhiteSpace(TBEmail.Text) ||
-                CMBEstadoPaciente.SelectedValue == null)
+                CMBEstadoPaciente.SelectedValue == null ||
+                (!RBMasculino.Checked && !RBFemenino.Checked))
             {
-                MessageBox.Show("Debe completar todos los campos.",
+                MessageBox.Show("Debe completar todos los campos obligatorios (incluye sexo).",
                                 "Validación",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning);
@@ -167,33 +163,33 @@ namespace SaludSoft
             CMBEstadoPaciente.SelectedIndex = -1;
             RBMasculino.Checked = false;
             RBFemenino.Checked = false;
+
+            // Fecha sugerida = hoy
+            if (DTMHistorialInicial != null)
+                DTMHistorialInicial.Value = DateTime.Today;
         }
 
-        // --- Handlers que el Designer espera (evitan el error) ---
+        // --- Handlers para restricciones de entrada ---
         private void TBNombre_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && e.KeyChar != ' ')
                 e.Handled = true;
         }
-
         private void TBApellido_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && e.KeyChar != ' ')
                 e.Handled = true;
         }
-
         private void TBDni_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
                 e.Handled = true;
         }
-
         private void TBTelefono_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
                 e.Handled = true;
         }
-
         private void TBEmail_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetterOrDigit(e.KeyChar) &&
@@ -210,90 +206,110 @@ namespace SaludSoft
         // --- Botones ---
         private void BRegistrar_Click(object sender, EventArgs e)
         {
-            if (!ValidarCampos())
-                return;
+            if (!ValidarCampos()) return;
 
             try
             {
                 using (SqlConnection conexion = Conexion.GetConnection())
                 {
                     conexion.Open();
-
-                    string queryCheck = "SELECT COUNT(*) FROM Paciente WHERE dni = @Dni OR email = @Email";
-                    using (SqlCommand cmdCheck = new SqlCommand(queryCheck, conexion))
+                    using (var tx = conexion.BeginTransaction())
                     {
-                        cmdCheck.Parameters.AddWithValue("@Dni", int.Parse(TBDni.Text.Trim()));
-                        cmdCheck.Parameters.AddWithValue("@Email", TBEmail.Text.Trim());
-
-                        int existe = (int)cmdCheck.ExecuteScalar();
-                        if (existe > 0)
+                        try
                         {
-                            MessageBox.Show("El paciente con este DNI o Email ya está registrado.",
-                                            "Duplicado",
-                                            MessageBoxButtons.OK,
-                                            MessageBoxIcon.Warning);
-                            return;
+                            // Verificar duplicados (dni/email)
+                            string queryCheck = @"SELECT COUNT(*) FROM Paciente WHERE dni = @Dni OR email = @Email";
+                            using (SqlCommand cmdCheck = new SqlCommand(queryCheck, conexion, tx))
+                            {
+                                cmdCheck.Parameters.AddWithValue("@Dni", int.Parse(TBDni.Text.Trim()));
+                                cmdCheck.Parameters.AddWithValue("@Email", TBEmail.Text.Trim());
+                                int existe = (int)cmdCheck.ExecuteScalar();
+                                if (existe > 0)
+                                {
+                                    MessageBox.Show("El paciente con este DNI o Email ya está registrado.",
+                                                    "Duplicado",
+                                                    MessageBoxButtons.OK,
+                                                    MessageBoxIcon.Warning);
+                                    tx.Rollback();
+                                    return;
+                                }
+                            }
+
+                            //Insert Paciente
+                            string queryPaciente = @"
+                                INSERT INTO Paciente (nombre, apellido, dni, email, telefono, direccion, id_estado, sexo)
+                                VALUES (@Nombre, @Apellido, @Dni, @Email, @Telefono, @Direccion, @IdEstado, @Sexo);
+                                SELECT SCOPE_IDENTITY();";
+
+                            int idPaciente;
+                            using (SqlCommand cmd = new SqlCommand(queryPaciente, conexion, tx))
+                            {
+                                cmd.Parameters.AddWithValue("@Nombre", TBNombre.Text.Trim());
+                                cmd.Parameters.AddWithValue("@Apellido", TBApellido.Text.Trim());
+                                cmd.Parameters.AddWithValue("@Dni", int.Parse(TBDni.Text.Trim()));
+                                cmd.Parameters.AddWithValue("@Email", TBEmail.Text.Trim());
+                                cmd.Parameters.AddWithValue("@Telefono", TBTelefono.Text.Trim());
+                                cmd.Parameters.AddWithValue("@Direccion", TBDireccion.Text.Trim());
+                                cmd.Parameters.AddWithValue("@IdEstado", CMBEstadoPaciente.SelectedValue);
+                                cmd.Parameters.AddWithValue("@Sexo", RBMasculino.Checked ? "Masculino" : "Femenino");
+
+                                idPaciente = Convert.ToInt32(cmd.ExecuteScalar());
+                            }
+
+                            // Insert Historial inicial
+                            //    - diagnostico debe ir NULL si está vacío
+                            //    - fecha no puede ser futura por tu CHECK
+                            DateTime fecha = DTMHistorialInicial.Value.Date;
+                            if (fecha > DateTime.Today) fecha = DateTime.Today;
+
+                            string diag = TBDiagnostico.Text?.Trim();
+                            string trat = TBTratamiento.Text?.Trim();
+                            string obs = TBObservacion.Text?.Trim();
+
+                            string queryHistorial = @"
+                                INSERT INTO Historial (id_paciente, fechaConsulta, diagnostico, tratamiento, observaciones)
+                                VALUES (@IdPaciente, @Fecha, @Diagnostico, @Tratamiento, @Observaciones);";
+
+                            using (SqlCommand cmd = new SqlCommand(queryHistorial, conexion, tx))
+                            {
+                                cmd.Parameters.AddWithValue("@IdPaciente", idPaciente);
+                                cmd.Parameters.AddWithValue("@Fecha", fecha);
+                                cmd.Parameters.AddWithValue("@Diagnostico",
+                                    string.IsNullOrWhiteSpace(diag) ? (object)DBNull.Value : diag);
+                                cmd.Parameters.AddWithValue("@Tratamiento",
+                                    string.IsNullOrWhiteSpace(trat) ? (object)DBNull.Value : trat);
+                                cmd.Parameters.AddWithValue("@Observaciones",
+                                    string.IsNullOrWhiteSpace(obs) ? (object)DBNull.Value : obs);
+
+                                cmd.ExecuteNonQuery();
+                            }
+
+                            tx.Commit();
+                            MessageBox.Show("Paciente registrado correctamente.",
+                                            "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            LimpiarCampos();
+                            this.Close();
+                        }
+                        catch (Exception exTx)
+                        {
+                            tx.Rollback();
+                            MessageBox.Show("Error al registrar: " + exTx.Message,
+                                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
-
-                    // OJO: nombre de parámetro @Sexo coincide con AddWithValue("@Sexo", ...)
-                    string queryPaciente = "INSERT INTO Paciente (nombre, apellido, dni, email, telefono, direccion, id_estado, sexo) " +
-                                           "VALUES (@Nombre, @Apellido, @Dni, @Email, @Telefono, @Direccion, @IdEstado, @Sexo);" +
-                                           "SELECT SCOPE_IDENTITY();";
-
-                    int idPaciente;
-                    using (SqlCommand cmd = new SqlCommand(queryPaciente, conexion))
-                    {
-                        cmd.Parameters.AddWithValue("@Nombre", TBNombre.Text.Trim());
-                        cmd.Parameters.AddWithValue("@Apellido", TBApellido.Text.Trim());
-                        cmd.Parameters.AddWithValue("@Dni", int.Parse(TBDni.Text.Trim()));
-                        cmd.Parameters.AddWithValue("@Email", TBEmail.Text.Trim());
-                        cmd.Parameters.AddWithValue("@Telefono", TBTelefono.Text.Trim());
-                        cmd.Parameters.AddWithValue("@Direccion", TBDireccion.Text.Trim());
-                        cmd.Parameters.AddWithValue("@IdEstado", CMBEstadoPaciente.SelectedValue);
-                        cmd.Parameters.AddWithValue("@Sexo", RBMasculino.Checked ? "Masculino" : "Femenino");
-
-                        idPaciente = Convert.ToInt32(cmd.ExecuteScalar());
-                    }
-
-                    string queryHistorial = "INSERT INTO Historial (id_paciente, fechaConsulta, diagnostico, tratamiento, observaciones) " +
-                                            "VALUES (@IdPaciente, @Fecha, @Diagnostico, @Tratamiento, @Observaciones)";
-                    using (SqlCommand cmd = new SqlCommand(queryHistorial, conexion))
-                    {
-                        cmd.Parameters.AddWithValue("@IdPaciente", idPaciente);
-                        cmd.Parameters.AddWithValue("@Fecha", DTMHistorialInicial.Value);
-                        cmd.Parameters.AddWithValue("@Diagnostico", TBDiagnostico.Text.Trim());
-                        cmd.Parameters.AddWithValue("@Tratamiento", TBTratamiento.Text.Trim());
-                        cmd.Parameters.AddWithValue("@Observaciones", TBObservacion.Text.Trim());
-                        cmd.ExecuteNonQuery();
-                    }
                 }
-
-                MessageBox.Show("Paciente Registrado",
-                                "Éxito",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
-
-                LimpiarCampos();
-                this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al Registrar Paciente: " + ex.Message,
-                                "Error",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                MessageBox.Show("Error de conexión: " + ex.Message,
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void BEliminar_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("¿Desea cancelar el Registro?",
-                                          "Confirmar",
-                                          MessageBoxButtons.YesNo,
-                                          MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
+            if (MessageBox.Show("¿Desea cancelar el registro?", "Confirmar",
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 LimpiarCampos();
                 this.Close();
