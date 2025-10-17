@@ -18,6 +18,7 @@ namespace SaludSoft
             InitializeComponent();
             CargarTotales();
 
+
         }
 
         private void BNuevoPaciente_Click(object sender, EventArgs e)
@@ -29,14 +30,13 @@ namespace SaludSoft
 
         private void BNuevaCita_Click(object sender, EventArgs e)
         {
-            FormNuevoTurno frm = new FormNuevoTurno();
+            FormAgenda frm = new FormAgenda();
             frm.ShowDialog();
         }
 
         private void BInicio_Click(object sender, EventArgs e)
         {
-            SaludSoft frm = new SaludSoft();
-            frm.ShowDialog();
+            MostrarInicio();
         }
 
         private void BPacientes_Click(object sender, EventArgs e)
@@ -47,18 +47,49 @@ namespace SaludSoft
 
         private void BCerrarSesion_Click(object sender, EventArgs e)
         {
-            FormLogin frm = new FormLogin();
-            frm.ShowDialog();
-            this.Close();
+            var r = MessageBox.Show("¿Seguro que querés cerrar sesión?",
+                           "Confirmación",
+                           MessageBoxButtons.YesNo,
+                           MessageBoxIcon.Question);
+
+            if (r != DialogResult.Yes) return;
+
+            this.Hide(); // no queda visible
+
+            using (var login = new FormLogin())
+            {
+                var result = login.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    // Sesión nueva: volvés al principal
+                    this.Show();
+                    CargarTotales();
+                }
+                else
+                {
+
+                    this.Close();
+                }
+            }
         }
 
         private void BAgenda_Click(object sender, EventArgs e)
         {
             FormAgenda frm = new FormAgenda();
             frm.ShowDialog();
-            this.Close();
         }
 
+        private void MostrarInicio()
+        {
+
+            // Refrescar contadores
+            CargarTotales();
+
+            // Asegura que la ventana esté visible y al frente
+            if (!this.Visible) this.Show();
+            this.Activate();
+        }
         private void CargarTotales()
         {
 

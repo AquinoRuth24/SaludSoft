@@ -11,6 +11,7 @@ namespace SaludSoft
 {
     public partial class FormAgenda : Form
     {
+        private readonly Form _home;
         // Franjas base
         private readonly TimeSpan _manianaInicio = new TimeSpan(8, 0, 0);
         private readonly TimeSpan _manianaFin = new TimeSpan(11, 0, 0);
@@ -830,7 +831,11 @@ namespace SaludSoft
 
         //Botones
 
-        private void BVolverAgenda_Click(object sender, EventArgs e) => this.Close();
+        private void BVolverAgenda_Click(object sender, EventArgs e)
+        {
+            if (_home != null && !_home.IsDisposed) _home.Show();
+            this.Close();
+        }
         private void BBuscar_Click_1(object sender, EventArgs e) { }
         private void gbSeleccionarFecha_Enter(object sender, EventArgs e) { }
         private void btSobreturno_Click(object sender, EventArgs e) { }
