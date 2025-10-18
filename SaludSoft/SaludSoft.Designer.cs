@@ -29,7 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaludSoft));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.PMenu = new System.Windows.Forms.Panel();
             this.BCerrarSesion = new System.Windows.Forms.Button();
             this.BAgenda = new System.Windows.Forms.Button();
@@ -38,8 +39,6 @@
             this.PSuperior = new System.Windows.Forms.Panel();
             this.BNuevoPaciente = new System.Windows.Forms.Button();
             this.LRecepcionista = new System.Windows.Forms.Label();
-            this.Label = new System.Windows.Forms.Label();
-            this.LNombre = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.BNuevaCita = new System.Windows.Forms.Button();
             this.PPacientes = new System.Windows.Forms.Panel();
@@ -131,6 +130,7 @@
             this.BTurnos.TabIndex = 4;
             this.BTurnos.Text = "Turnos";
             this.BTurnos.UseVisualStyleBackColor = true;
+            this.BTurnos.Click += new System.EventHandler(this.BTurnos_Click);
             // 
             // BPacientes
             // 
@@ -150,8 +150,6 @@
             this.PSuperior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.PSuperior.Controls.Add(this.BNuevoPaciente);
             this.PSuperior.Controls.Add(this.LRecepcionista);
-            this.PSuperior.Controls.Add(this.Label);
-            this.PSuperior.Controls.Add(this.LNombre);
             this.PSuperior.Controls.Add(this.pictureBox1);
             this.PSuperior.Controls.Add(this.BNuevaCita);
             this.PSuperior.Location = new System.Drawing.Point(2, 1);
@@ -165,9 +163,9 @@
             this.BNuevoPaciente.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(106)))), ((int)(((byte)(32)))));
             this.BNuevoPaciente.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BNuevoPaciente.ForeColor = System.Drawing.Color.White;
-            this.BNuevoPaciente.Location = new System.Drawing.Point(779, 11);
+            this.BNuevoPaciente.Location = new System.Drawing.Point(779, 8);
             this.BNuevoPaciente.Name = "BNuevoPaciente";
-            this.BNuevoPaciente.Size = new System.Drawing.Size(120, 54);
+            this.BNuevoPaciente.Size = new System.Drawing.Size(113, 57);
             this.BNuevoPaciente.TabIndex = 5;
             this.BNuevoPaciente.Text = "+ Nuevo     Paciente";
             this.BNuevoPaciente.UseVisualStyleBackColor = false;
@@ -178,35 +176,11 @@
             this.LRecepcionista.AutoSize = true;
             this.LRecepcionista.Font = new System.Drawing.Font("Comic Sans MS", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LRecepcionista.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.LRecepcionista.Location = new System.Drawing.Point(139, 14);
+            this.LRecepcionista.Location = new System.Drawing.Point(199, 16);
             this.LRecepcionista.Name = "LRecepcionista";
             this.LRecepcionista.Size = new System.Drawing.Size(169, 34);
             this.LRecepcionista.TabIndex = 4;
             this.LRecepcionista.Text = "Recepcionista";
-            // 
-            // Label
-            // 
-            this.Label.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Label.AutoSize = true;
-            this.Label.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label.Location = new System.Drawing.Point(424, 46);
-            this.Label.Name = "Label";
-            this.Label.Size = new System.Drawing.Size(206, 22);
-            this.Label.TabIndex = 2;
-            this.Label.Text = "Sistema de Gestión Médica";
-            // 
-            // LNombre
-            // 
-            this.LNombre.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.LNombre.AutoSize = true;
-            this.LNombre.Font = new System.Drawing.Font("Comic Sans MS", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LNombre.Location = new System.Drawing.Point(465, 8);
-            this.LNombre.Name = "LNombre";
-            this.LNombre.Size = new System.Drawing.Size(131, 34);
-            this.LNombre.TabIndex = 3;
-            this.LNombre.Text = "SaludSoft";
             // 
             // pictureBox1
             // 
@@ -228,7 +202,7 @@
             this.BNuevaCita.ForeColor = System.Drawing.Color.White;
             this.BNuevaCita.Location = new System.Drawing.Point(661, 8);
             this.BNuevaCita.Name = "BNuevaCita";
-            this.BNuevaCita.Size = new System.Drawing.Size(108, 54);
+            this.BNuevaCita.Size = new System.Drawing.Size(108, 57);
             this.BNuevaCita.TabIndex = 0;
             this.BNuevaCita.Text = "+ Nuevo     Turno";
             this.BNuevaCita.UseVisualStyleBackColor = false;
@@ -236,7 +210,7 @@
             // 
             // PPacientes
             // 
-            this.PPacientes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(249)))), ((int)(((byte)(240)))));
+            this.PPacientes.BackColor = System.Drawing.Color.MediumSpringGreen;
             this.PPacientes.Controls.Add(this.LContadorPacientesHoy);
             this.PPacientes.Controls.Add(this.PPacientesHoy);
             this.PPacientes.Controls.Add(this.LPacientesHoy);
@@ -252,7 +226,7 @@
             this.LContadorPacientesHoy.AutoSize = true;
             this.LContadorPacientesHoy.BackColor = System.Drawing.Color.Transparent;
             this.LContadorPacientesHoy.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LContadorPacientesHoy.Location = new System.Drawing.Point(81, 51);
+            this.LContadorPacientesHoy.Location = new System.Drawing.Point(116, 44);
             this.LContadorPacientesHoy.Name = "LContadorPacientesHoy";
             this.LContadorPacientesHoy.Size = new System.Drawing.Size(35, 39);
             this.LContadorPacientesHoy.TabIndex = 9;
@@ -262,9 +236,9 @@
             // 
             this.PPacientesHoy.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PPacientesHoy.BackgroundImage")));
             this.PPacientesHoy.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.PPacientesHoy.Location = new System.Drawing.Point(184, 0);
+            this.PPacientesHoy.Location = new System.Drawing.Point(196, 0);
             this.PPacientesHoy.Name = "PPacientesHoy";
-            this.PPacientesHoy.Size = new System.Drawing.Size(76, 37);
+            this.PPacientesHoy.Size = new System.Drawing.Size(64, 37);
             this.PPacientesHoy.TabIndex = 8;
             this.PPacientesHoy.TabStop = false;
             // 
@@ -272,7 +246,7 @@
             // 
             this.LPacientesHoy.AutoSize = true;
             this.LPacientesHoy.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LPacientesHoy.Location = new System.Drawing.Point(21, 6);
+            this.LPacientesHoy.Location = new System.Drawing.Point(60, 6);
             this.LPacientesHoy.Name = "LPacientesHoy";
             this.LPacientesHoy.Size = new System.Drawing.Size(118, 23);
             this.LPacientesHoy.TabIndex = 0;
@@ -281,13 +255,13 @@
             // PCitas
             // 
             this.PCitas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.PCitas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(243)))), ((int)(((byte)(235)))));
+            this.PCitas.BackColor = System.Drawing.Color.MediumSpringGreen;
             this.PCitas.Controls.Add(this.LContadorTurnosHoy);
             this.PCitas.Controls.Add(this.pictureBox3);
             this.PCitas.Controls.Add(this.LTurnosProgramados);
             this.PCitas.Location = new System.Drawing.Point(634, 93);
             this.PCitas.Name = "PCitas";
-            this.PCitas.Size = new System.Drawing.Size(254, 111);
+            this.PCitas.Size = new System.Drawing.Size(260, 111);
             this.PCitas.TabIndex = 3;
             // 
             // LContadorTurnosHoy
@@ -296,7 +270,7 @@
             this.LContadorTurnosHoy.AutoSize = true;
             this.LContadorTurnosHoy.BackColor = System.Drawing.Color.Transparent;
             this.LContadorTurnosHoy.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LContadorTurnosHoy.Location = new System.Drawing.Point(102, 61);
+            this.LContadorTurnosHoy.Location = new System.Drawing.Point(123, 44);
             this.LContadorTurnosHoy.Name = "LContadorTurnosHoy";
             this.LContadorTurnosHoy.Size = new System.Drawing.Size(35, 39);
             this.LContadorTurnosHoy.TabIndex = 9;
@@ -325,13 +299,13 @@
             // PDoctores
             // 
             this.PDoctores.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.PDoctores.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(240)))), ((int)(((byte)(250)))));
+            this.PDoctores.BackColor = System.Drawing.Color.MediumSpringGreen;
             this.PDoctores.Controls.Add(this.LContadorDoctores);
             this.PDoctores.Controls.Add(this.pictureBox4);
             this.PDoctores.Controls.Add(this.LDoctores);
             this.PDoctores.Location = new System.Drawing.Point(634, 376);
             this.PDoctores.Name = "PDoctores";
-            this.PDoctores.Size = new System.Drawing.Size(264, 100);
+            this.PDoctores.Size = new System.Drawing.Size(260, 100);
             this.PDoctores.TabIndex = 4;
             this.PDoctores.Click += new System.EventHandler(this.PDoctores_Click);
             // 
@@ -341,7 +315,7 @@
             this.LContadorDoctores.AutoSize = true;
             this.LContadorDoctores.BackColor = System.Drawing.Color.Transparent;
             this.LContadorDoctores.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LContadorDoctores.Location = new System.Drawing.Point(95, 51);
+            this.LContadorDoctores.Location = new System.Drawing.Point(123, 51);
             this.LContadorDoctores.Name = "LContadorDoctores";
             this.LContadorDoctores.Size = new System.Drawing.Size(35, 39);
             this.LContadorDoctores.TabIndex = 8;
@@ -370,12 +344,12 @@
             // PEspecialidades
             // 
             this.PEspecialidades.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.PEspecialidades.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(240)))), ((int)(((byte)(250)))));
+            this.PEspecialidades.BackColor = System.Drawing.Color.MediumSpringGreen;
             this.PEspecialidades.Controls.Add(this.LContadorEspecialidades);
             this.PEspecialidades.Controls.Add(this.label5);
-            this.PEspecialidades.Location = new System.Drawing.Point(171, 376);
+            this.PEspecialidades.Location = new System.Drawing.Point(179, 376);
             this.PEspecialidades.Name = "PEspecialidades";
-            this.PEspecialidades.Size = new System.Drawing.Size(260, 100);
+            this.PEspecialidades.Size = new System.Drawing.Size(255, 100);
             this.PEspecialidades.TabIndex = 6;
             // 
             // LContadorEspecialidades
@@ -384,7 +358,7 @@
             this.LContadorEspecialidades.AutoSize = true;
             this.LContadorEspecialidades.BackColor = System.Drawing.Color.Transparent;
             this.LContadorEspecialidades.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LContadorEspecialidades.Location = new System.Drawing.Point(104, 51);
+            this.LContadorEspecialidades.Location = new System.Drawing.Point(117, 51);
             this.LContadorEspecialidades.Name = "LContadorEspecialidades";
             this.LContadorEspecialidades.Size = new System.Drawing.Size(35, 39);
             this.LContadorEspecialidades.TabIndex = 8;
@@ -402,7 +376,7 @@
             // 
             // pnlTurnos
             // 
-            this.pnlTurnos.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.pnlTurnos.BackColor = System.Drawing.Color.MediumSpringGreen;
             this.pnlTurnos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlTurnos.Controls.Add(this.LTurnosSemana);
             this.pnlTurnos.Controls.Add(this.lTitulo);
@@ -410,9 +384,9 @@
             this.pnlTurnos.Controls.Add(this.btnActualizarSemana);
             this.pnlTurnos.Controls.Add(this.btnVolver);
             this.pnlTurnos.Controls.Add(this.dgvTurnosSemana);
-            this.pnlTurnos.Location = new System.Drawing.Point(389, 233);
+            this.pnlTurnos.Location = new System.Drawing.Point(128, 199);
             this.pnlTurnos.Name = "pnlTurnos";
-            this.pnlTurnos.Size = new System.Drawing.Size(263, 100);
+            this.pnlTurnos.Size = new System.Drawing.Size(701, 147);
             this.pnlTurnos.TabIndex = 7;
             this.pnlTurnos.Visible = false;
             // 
@@ -422,11 +396,10 @@
             this.LTurnosSemana.AutoSize = true;
             this.LTurnosSemana.BackColor = System.Drawing.Color.Transparent;
             this.LTurnosSemana.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LTurnosSemana.Location = new System.Drawing.Point(98, 50);
+            this.LTurnosSemana.Location = new System.Drawing.Point(536, 97);
             this.LTurnosSemana.Name = "LTurnosSemana";
-            this.LTurnosSemana.Size = new System.Drawing.Size(35, 39);
+            this.LTurnosSemana.Size = new System.Drawing.Size(0, 39);
             this.LTurnosSemana.TabIndex = 12;
-            this.LTurnosSemana.Text = "0";
             // 
             // lTitulo
             // 
@@ -445,11 +418,12 @@
             this.dtpSemana.CustomFormat = "dd/MM/yyyy";
             this.dtpSemana.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpSemana.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpSemana.Location = new System.Drawing.Point(340, 256);
+            this.dtpSemana.Location = new System.Drawing.Point(226, 24);
             this.dtpSemana.Name = "dtpSemana";
             this.dtpSemana.ShowUpDown = true;
-            this.dtpSemana.Size = new System.Drawing.Size(0, 26);
+            this.dtpSemana.Size = new System.Drawing.Size(167, 26);
             this.dtpSemana.TabIndex = 8;
+            this.dtpSemana.ValueChanged += new System.EventHandler(this.dtpSemana_ValueChanged);
             // 
             // btnActualizarSemana
             // 
@@ -457,11 +431,12 @@
             this.btnActualizarSemana.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnActualizarSemana.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnActualizarSemana.Image = global::SaludSoft.Properties.Resources.actualizar;
-            this.btnActualizarSemana.Location = new System.Drawing.Point(473, 245);
+            this.btnActualizarSemana.Location = new System.Drawing.Point(417, 15);
             this.btnActualizarSemana.Name = "btnActualizarSemana";
             this.btnActualizarSemana.Size = new System.Drawing.Size(40, 37);
             this.btnActualizarSemana.TabIndex = 9;
             this.btnActualizarSemana.UseVisualStyleBackColor = false;
+            this.btnActualizarSemana.Click += new System.EventHandler(this.btnActualizarSemana_Click);
             // 
             // btnVolver
             // 
@@ -469,11 +444,12 @@
             this.btnVolver.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btnVolver.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnVolver.Image = global::SaludSoft.Properties.Resources.circulo_marca_x;
-            this.btnVolver.Location = new System.Drawing.Point(317, 218);
+            this.btnVolver.Location = new System.Drawing.Point(646, 3);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(50, 30);
             this.btnVolver.TabIndex = 10;
             this.btnVolver.UseVisualStyleBackColor = false;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
             // dgvTurnosSemana
             // 
@@ -482,14 +458,14 @@
             this.dgvTurnosSemana.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvTurnosSemana.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvTurnosSemana.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTurnosSemana.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvTurnosSemana.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTurnosSemana.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colFechaHora,
@@ -499,15 +475,24 @@
             this.colEstado,
             this.colEditar,
             this.colCancelar});
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTurnosSemana.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgvTurnosSemana.EnableHeadersVisualStyles = false;
-            this.dgvTurnosSemana.Location = new System.Drawing.Point(123, 228);
+            this.dgvTurnosSemana.Location = new System.Drawing.Point(18, 73);
             this.dgvTurnosSemana.MultiSelect = false;
             this.dgvTurnosSemana.Name = "dgvTurnosSemana";
             this.dgvTurnosSemana.ReadOnly = true;
             this.dgvTurnosSemana.RowHeadersVisible = false;
             this.dgvTurnosSemana.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTurnosSemana.Size = new System.Drawing.Size(216, 78);
+            this.dgvTurnosSemana.Size = new System.Drawing.Size(654, 40);
             this.dgvTurnosSemana.TabIndex = 11;
+            this.dgvTurnosSemana.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTurnosSemana_CellContentClick);
             // 
             // colFechaHora
             // 
@@ -557,6 +542,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(935, 523);
             this.Controls.Add(this.pnlTurnos);
             this.Controls.Add(this.PEspecialidades);
@@ -597,8 +583,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button BTurnos;
         private System.Windows.Forms.Button BPacientes;
-        private System.Windows.Forms.Label Label;
-        private System.Windows.Forms.Label LNombre;
         private System.Windows.Forms.Label LRecepcionista;
         private System.Windows.Forms.Panel PPacientes;
         private System.Windows.Forms.Label LPacientesHoy;
