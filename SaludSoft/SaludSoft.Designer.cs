@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaludSoft));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.PMenu = new System.Windows.Forms.Panel();
             this.BCerrarSesion = new System.Windows.Forms.Button();
             this.BAgenda = new System.Windows.Forms.Button();
@@ -40,27 +40,28 @@
             this.LRecepcionista = new System.Windows.Forms.Label();
             this.Label = new System.Windows.Forms.Label();
             this.LNombre = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.BNuevaCita = new System.Windows.Forms.Button();
             this.PPacientes = new System.Windows.Forms.Panel();
             this.LContadorPacientesHoy = new System.Windows.Forms.Label();
+            this.PPacientesHoy = new System.Windows.Forms.PictureBox();
             this.LPacientesHoy = new System.Windows.Forms.Label();
             this.PCitas = new System.Windows.Forms.Panel();
             this.LContadorTurnosHoy = new System.Windows.Forms.Label();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.LTurnosProgramados = new System.Windows.Forms.Label();
             this.PDoctores = new System.Windows.Forms.Panel();
             this.LContadorDoctores = new System.Windows.Forms.Label();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.LDoctores = new System.Windows.Forms.Label();
             this.PEspecialidades = new System.Windows.Forms.Panel();
             this.LContadorEspecialidades = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.pnlTurnos = new System.Windows.Forms.Panel();
+            this.LTurnosSemana = new System.Windows.Forms.Label();
             this.lTitulo = new System.Windows.Forms.Label();
             this.dtpSemana = new System.Windows.Forms.DateTimePicker();
             this.btnActualizarSemana = new System.Windows.Forms.Button();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.PPacientesHoy = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnVolver = new System.Windows.Forms.Button();
             this.dgvTurnosSemana = new System.Windows.Forms.DataGridView();
             this.colFechaHora = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -72,15 +73,15 @@
             this.colCancelar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.PMenu.SuspendLayout();
             this.PSuperior.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.PPacientes.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PPacientesHoy)).BeginInit();
             this.PCitas.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.PDoctores.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.PEspecialidades.SuspendLayout();
             this.pnlTurnos.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PPacientesHoy)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTurnosSemana)).BeginInit();
             this.SuspendLayout();
             // 
@@ -207,6 +208,18 @@
             this.LNombre.TabIndex = 3;
             this.LNombre.Text = "SaludSoft";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(120, 75);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            // 
             // BNuevaCita
             // 
             this.BNuevaCita.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -245,6 +258,16 @@
             this.LContadorPacientesHoy.TabIndex = 9;
             this.LContadorPacientesHoy.Text = "0";
             // 
+            // PPacientesHoy
+            // 
+            this.PPacientesHoy.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PPacientesHoy.BackgroundImage")));
+            this.PPacientesHoy.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.PPacientesHoy.Location = new System.Drawing.Point(184, 0);
+            this.PPacientesHoy.Name = "PPacientesHoy";
+            this.PPacientesHoy.Size = new System.Drawing.Size(76, 37);
+            this.PPacientesHoy.TabIndex = 8;
+            this.PPacientesHoy.TabStop = false;
+            // 
             // LPacientesHoy
             // 
             this.LPacientesHoy.AutoSize = true;
@@ -279,6 +302,16 @@
             this.LContadorTurnosHoy.TabIndex = 9;
             this.LContadorTurnosHoy.Text = "0";
             // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox3.BackgroundImage")));
+            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox3.Location = new System.Drawing.Point(202, 3);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(47, 53);
+            this.pictureBox3.TabIndex = 8;
+            this.pictureBox3.TabStop = false;
+            // 
             // LTurnosProgramados
             // 
             this.LTurnosProgramados.AutoSize = true;
@@ -300,6 +333,7 @@
             this.PDoctores.Name = "PDoctores";
             this.PDoctores.Size = new System.Drawing.Size(264, 100);
             this.PDoctores.TabIndex = 4;
+            this.PDoctores.Click += new System.EventHandler(this.PDoctores_Click);
             // 
             // LContadorDoctores
             // 
@@ -312,6 +346,16 @@
             this.LContadorDoctores.Size = new System.Drawing.Size(35, 39);
             this.LContadorDoctores.TabIndex = 8;
             this.LContadorDoctores.Text = "0";
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox4.BackgroundImage")));
+            this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox4.Location = new System.Drawing.Point(195, 3);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(65, 50);
+            this.pictureBox4.TabIndex = 1;
+            this.pictureBox4.TabStop = false;
             // 
             // LDoctores
             // 
@@ -360,16 +404,29 @@
             // 
             this.pnlTurnos.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.pnlTurnos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlTurnos.Controls.Add(this.LTurnosSemana);
             this.pnlTurnos.Controls.Add(this.lTitulo);
             this.pnlTurnos.Controls.Add(this.dtpSemana);
             this.pnlTurnos.Controls.Add(this.btnActualizarSemana);
             this.pnlTurnos.Controls.Add(this.btnVolver);
             this.pnlTurnos.Controls.Add(this.dgvTurnosSemana);
-            this.pnlTurnos.Location = new System.Drawing.Point(107, 138);
+            this.pnlTurnos.Location = new System.Drawing.Point(389, 233);
             this.pnlTurnos.Name = "pnlTurnos";
-            this.pnlTurnos.Size = new System.Drawing.Size(779, 160);
+            this.pnlTurnos.Size = new System.Drawing.Size(263, 100);
             this.pnlTurnos.TabIndex = 7;
             this.pnlTurnos.Visible = false;
+            // 
+            // LTurnosSemana
+            // 
+            this.LTurnosSemana.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.LTurnosSemana.AutoSize = true;
+            this.LTurnosSemana.BackColor = System.Drawing.Color.Transparent;
+            this.LTurnosSemana.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LTurnosSemana.Location = new System.Drawing.Point(98, 50);
+            this.LTurnosSemana.Name = "LTurnosSemana";
+            this.LTurnosSemana.Size = new System.Drawing.Size(35, 39);
+            this.LTurnosSemana.TabIndex = 12;
+            this.LTurnosSemana.Text = "0";
             // 
             // lTitulo
             // 
@@ -391,7 +448,7 @@
             this.dtpSemana.Location = new System.Drawing.Point(340, 256);
             this.dtpSemana.Name = "dtpSemana";
             this.dtpSemana.ShowUpDown = true;
-            this.dtpSemana.Size = new System.Drawing.Size(113, 26);
+            this.dtpSemana.Size = new System.Drawing.Size(0, 26);
             this.dtpSemana.TabIndex = 8;
             // 
             // btnActualizarSemana
@@ -406,55 +463,13 @@
             this.btnActualizarSemana.TabIndex = 9;
             this.btnActualizarSemana.UseVisualStyleBackColor = false;
             // 
-            // pictureBox4
-            // 
-            this.pictureBox4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox4.BackgroundImage")));
-            this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox4.Location = new System.Drawing.Point(195, 3);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(65, 50);
-            this.pictureBox4.TabIndex = 1;
-            this.pictureBox4.TabStop = false;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox3.BackgroundImage")));
-            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox3.Location = new System.Drawing.Point(202, 3);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(47, 53);
-            this.pictureBox3.TabIndex = 8;
-            this.pictureBox3.TabStop = false;
-            // 
-            // PPacientesHoy
-            // 
-            this.PPacientesHoy.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PPacientesHoy.BackgroundImage")));
-            this.PPacientesHoy.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.PPacientesHoy.Location = new System.Drawing.Point(184, 0);
-            this.PPacientesHoy.Name = "PPacientesHoy";
-            this.PPacientesHoy.Size = new System.Drawing.Size(76, 37);
-            this.PPacientesHoy.TabIndex = 8;
-            this.PPacientesHoy.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(120, 75);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
-            // 
             // btnVolver
             // 
             this.btnVolver.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnVolver.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btnVolver.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnVolver.Image = global::SaludSoft.Properties.Resources.circulo_marca_x;
-            this.btnVolver.Location = new System.Drawing.Point(833, 218);
+            this.btnVolver.Location = new System.Drawing.Point(317, 218);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(50, 30);
             this.btnVolver.TabIndex = 10;
@@ -467,14 +482,14 @@
             this.dgvTurnosSemana.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvTurnosSemana.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvTurnosSemana.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTurnosSemana.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvTurnosSemana.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTurnosSemana.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colFechaHora,
@@ -485,13 +500,13 @@
             this.colEditar,
             this.colCancelar});
             this.dgvTurnosSemana.EnableHeadersVisualStyles = false;
-            this.dgvTurnosSemana.Location = new System.Drawing.Point(123, 288);
+            this.dgvTurnosSemana.Location = new System.Drawing.Point(123, 228);
             this.dgvTurnosSemana.MultiSelect = false;
             this.dgvTurnosSemana.Name = "dgvTurnosSemana";
             this.dgvTurnosSemana.ReadOnly = true;
             this.dgvTurnosSemana.RowHeadersVisible = false;
             this.dgvTurnosSemana.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTurnosSemana.Size = new System.Drawing.Size(732, 78);
+            this.dgvTurnosSemana.Size = new System.Drawing.Size(216, 78);
             this.dgvTurnosSemana.TabIndex = 11;
             // 
             // colFechaHora
@@ -555,20 +570,20 @@
             this.PMenu.ResumeLayout(false);
             this.PSuperior.ResumeLayout(false);
             this.PSuperior.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.PPacientes.ResumeLayout(false);
             this.PPacientes.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PPacientesHoy)).EndInit();
             this.PCitas.ResumeLayout(false);
             this.PCitas.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.PDoctores.ResumeLayout(false);
             this.PDoctores.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.PEspecialidades.ResumeLayout(false);
             this.PEspecialidades.PerformLayout();
             this.pnlTurnos.ResumeLayout(false);
             this.pnlTurnos.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PPacientesHoy)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTurnosSemana)).EndInit();
             this.ResumeLayout(false);
 
@@ -616,6 +631,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colEstado;
         private System.Windows.Forms.DataGridViewButtonColumn colEditar;
         private System.Windows.Forms.DataGridViewButtonColumn colCancelar;
+        private System.Windows.Forms.Label LTurnosSemana;
     }
 }
 

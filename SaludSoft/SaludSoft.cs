@@ -20,7 +20,7 @@ namespace SaludSoft
 
 
         }
-
+        // botones del menu principal
         private void BNuevoPaciente_Click(object sender, EventArgs e)
         {
             // se instancia el formulario y se muestra 
@@ -75,6 +75,12 @@ namespace SaludSoft
             frm.ShowDialog();
         }
 
+        private void PDoctores_Click(object sender, EventArgs e)
+        {
+            FormListarProfesionales frm = new FormListarProfesionales();
+            frm.ShowDialog();
+        }
+
         private void CargarTotales()
         {
 
@@ -92,6 +98,15 @@ namespace SaludSoft
                     "SELECT COUNT(*) FROM Turnos WHERE fecha = CAST(GETDATE() AS DATE)", conexion);
                 int totalTurnos = (int)cmdTurnos.ExecuteScalar();
 
+                // turnos programados esta semana
+                SqlCommand cmdTurnosSemana = new SqlCommand(@"
+                 SELECT COUNT(*) 
+                 FROM Turnos 
+                 WHERE fecha >= DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS DATE))
+                 AND fecha < DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS DATE))
+                 ", conexion);
+                int totalTurnosSemana = (int)cmdTurnosSemana.ExecuteScalar();
+
                 // Especialidades
                 SqlCommand cmdEspecialidades = new SqlCommand(
                     "SELECT COUNT(*) FROM Especialidad", conexion);
@@ -105,9 +120,12 @@ namespace SaludSoft
                 // Actualizamos los labels del formulario
                 LContadorPacientesHoy.Text = totalPacientes.ToString();
                 LContadorTurnosHoy.Text = totalTurnos.ToString();
+                LTurnosSemana.Text = totalTurnosSemana.ToString();
                 LContadorEspecialidades.Text = totalEspecialidades.ToString();
                 LContadorDoctores.Text = totalDoctores.ToString();
             }
         }
+
+    
     }
 }
