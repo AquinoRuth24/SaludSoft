@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using SaludSoft;
 
 namespace SaludSoft.Resources
 {
@@ -65,10 +66,9 @@ namespace SaludSoft.Resources
                 cbRol.Items.AddRange(new object[] { "Paciente", "Médico", "Recepcionista","Administrador" });
                 cbRol.DropDownStyle = ComboBoxStyle.DropDownList;
             }
-            if (cbRol != null && cbRol.SelectedIndex < 0) cbRol.SelectedIndex = 0;
+            cbRol.SelectedIndex = -1;
 
             CargarEspecialidades();
-            AplicarUIRol();
             this.AutoScaleMode = AutoScaleMode.Font;
         }
 
@@ -117,11 +117,6 @@ namespace SaludSoft.Resources
             var rol = (RolUsuario)(cbRol?.SelectedIndex ?? 0);
             switch (rol)
             {
-                case RolUsuario.Paciente:
-                    SetVisible("gbPaciente", true);
-                    FindCtl<GroupBox>("gbPaciente")?.BringToFront();
-                    break;
-
                 case RolUsuario.Medico:
                     SetVisible("gbMedico", true);
                     ShowPwdFor("Medico", true);
@@ -140,6 +135,12 @@ namespace SaludSoft.Resources
                     SetVisible("gbAdmin", true); //grupo o controles de admin
                     ShowPwdFor("Administrador", true);
                     FindCtl<GroupBox>("gbAdmin")?.BringToFront();
+                    break;
+
+                case RolUsuario.Paciente:
+                    FormPaciente formPaciente = new FormPaciente();
+                    formPaciente.ShowDialog();
+                    cbRol.SelectedIndex = -1;  //deseleccionar el rol para evitar recargar
                     break;
             }
 

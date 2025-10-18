@@ -12,6 +12,7 @@ namespace SaludSoft
         {
             InitializeComponent();
             CargarCantidadPacientes();
+            CargarTurnosDelDia();
         }
 
         
@@ -114,7 +115,7 @@ namespace SaludSoft
             FormListaPacientes frm = new FormListaPacientes();
             frm.ShowDialog();
         }
-
+        // contadores 
         private void CargarCantidadPacientes()
         {
             int cantidad = 0;
@@ -128,6 +129,29 @@ namespace SaludSoft
 
             // Asignar el texto al botón o label
             LContador.Text = $"{cantidad}";
+        }
+
+        private void CargarTurnosDelDia()
+        {
+            int cantidadTurnos = 0;
+
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                conexion.Open();
+
+                // Obtenemos la cantidad de turnos cuya fecha sea HOY
+                string query = @"
+                 SELECT COUNT(*) 
+                 FROM Turnos 
+                 WHERE CONVERT(date, fecha) = CONVERT(date, GETDATE())
+                 AND estado IN ('Pendiente', 'Confirmado')";
+
+                using (SqlCommand cmd = new SqlCommand(query, conexion))
+                {
+                    cantidadTurnos = (int)cmd.ExecuteScalar();
+                }
+            }
+            LTurnosDelDia.Text = $"{cantidadTurnos}";
         }
 
         private void btConsultorios_Click(object sender, EventArgs e)

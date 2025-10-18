@@ -43,6 +43,7 @@
             this.btHistorial = new System.Windows.Forms.Button();
             this.btEspecialidades = new System.Windows.Forms.Button();
             this.btTurnosMes = new System.Windows.Forms.Button();
+            this.LTurnosDelDia = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel3.SuspendLayout();
@@ -187,6 +188,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.panel3.Controls.Add(this.LTurnosDelDia);
             this.panel3.Controls.Add(this.LContador);
             this.panel3.Controls.Add(this.PPacienetes);
             this.panel3.Controls.Add(this.btHistorial);
@@ -259,17 +261,29 @@
             // btTurnosMes
             // 
             this.btTurnosMes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btTurnosMes.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btTurnosMes.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btTurnosMes.Image = global::SaludSoft.Properties.Resources.CitasProgramadas;
-            this.btTurnosMes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btTurnosMes.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.btTurnosMes.Location = new System.Drawing.Point(114, 29);
             this.btTurnosMes.Margin = new System.Windows.Forms.Padding(2);
             this.btTurnosMes.Name = "btTurnosMes";
             this.btTurnosMes.Size = new System.Drawing.Size(223, 131);
             this.btTurnosMes.TabIndex = 2;
             this.btTurnosMes.Text = "Turnos del dia";
-            this.btTurnosMes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btTurnosMes.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btTurnosMes.UseVisualStyleBackColor = false;
+            // 
+            // LTurnosDelDia
+            // 
+            this.LTurnosDelDia.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.LTurnosDelDia.AutoSize = true;
+            this.LTurnosDelDia.BackColor = System.Drawing.Color.Transparent;
+            this.LTurnosDelDia.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LTurnosDelDia.Location = new System.Drawing.Point(202, 90);
+            this.LTurnosDelDia.Name = "LTurnosDelDia";
+            this.LTurnosDelDia.Size = new System.Drawing.Size(35, 39);
+            this.LTurnosDelDia.TabIndex = 8;
+            this.LTurnosDelDia.Text = "0";
             // 
             // Admin
             // 
@@ -306,5 +320,6 @@
         private System.Windows.Forms.Button btHistorial;
         private System.Windows.Forms.Button PPacienetes;
         private System.Windows.Forms.Label LContador;
+        private System.Windows.Forms.Label LTurnosDelDia;
     }
 }
