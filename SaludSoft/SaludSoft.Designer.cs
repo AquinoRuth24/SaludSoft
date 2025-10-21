@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaludSoft));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.PMenu = new System.Windows.Forms.Panel();
+            this.btnReportes = new System.Windows.Forms.Button();
             this.BCerrarSesion = new System.Windows.Forms.Button();
             this.BAgenda = new System.Windows.Forms.Button();
             this.BTurnos = new System.Windows.Forms.Button();
@@ -70,7 +71,7 @@
             this.colEstado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colEditar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.colCancelar = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.btnReportes = new System.Windows.Forms.Button();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.PMenu.SuspendLayout();
             this.PSuperior.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -83,6 +84,7 @@
             this.PEspecialidades.SuspendLayout();
             this.pnlTurnos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTurnosMes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // PMenu
@@ -100,6 +102,20 @@
             this.PMenu.Size = new System.Drawing.Size(120, 453);
             this.PMenu.TabIndex = 0;
             // 
+            // btnReportes
+            // 
+            this.btnReportes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnReportes.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReportes.Image = global::SaludSoft.Properties.Resources.archivo_de_edicion;
+            this.btnReportes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnReportes.Location = new System.Drawing.Point(7, 266);
+            this.btnReportes.Name = "btnReportes";
+            this.btnReportes.Size = new System.Drawing.Size(107, 40);
+            this.btnReportes.TabIndex = 8;
+            this.btnReportes.Text = "Reportes";
+            this.btnReportes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnReportes.UseVisualStyleBackColor = true;
+            // 
             // BCerrarSesion
             // 
             this.BCerrarSesion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -115,33 +131,42 @@
             // BAgenda
             // 
             this.BAgenda.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BAgenda.Location = new System.Drawing.Point(6, 239);
+            this.BAgenda.Image = global::SaludSoft.Properties.Resources.CitasProgramadas;
+            this.BAgenda.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BAgenda.Location = new System.Drawing.Point(7, 178);
             this.BAgenda.Name = "BAgenda";
-            this.BAgenda.Size = new System.Drawing.Size(98, 35);
+            this.BAgenda.Size = new System.Drawing.Size(107, 39);
             this.BAgenda.TabIndex = 8;
             this.BAgenda.Text = "Agenda";
+            this.BAgenda.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.BAgenda.UseVisualStyleBackColor = true;
             this.BAgenda.Click += new System.EventHandler(this.BAgenda_Click);
             // 
             // BTurnos
             // 
             this.BTurnos.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BTurnos.Location = new System.Drawing.Point(9, 137);
+            this.BTurnos.Image = global::SaludSoft.Properties.Resources.alt_de_inventario;
+            this.BTurnos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BTurnos.Location = new System.Drawing.Point(10, 91);
             this.BTurnos.Name = "BTurnos";
             this.BTurnos.Size = new System.Drawing.Size(92, 41);
             this.BTurnos.TabIndex = 4;
             this.BTurnos.Text = "Turnos";
+            this.BTurnos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.BTurnos.UseVisualStyleBackColor = true;
             this.BTurnos.Click += new System.EventHandler(this.BTurnos_Click);
             // 
             // BPacientes
             // 
             this.BPacientes.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BPacientes.Location = new System.Drawing.Point(6, 37);
+            this.BPacientes.Image = global::SaludSoft.Properties.Resources.usuario;
+            this.BPacientes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BPacientes.Location = new System.Drawing.Point(7, 18);
             this.BPacientes.Name = "BPacientes";
-            this.BPacientes.Size = new System.Drawing.Size(102, 40);
+            this.BPacientes.Size = new System.Drawing.Size(113, 40);
             this.BPacientes.TabIndex = 5;
             this.BPacientes.Text = "Pacientes";
+            this.BPacientes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.BPacientes.UseVisualStyleBackColor = true;
             this.BPacientes.Click += new System.EventHandler(this.BPacientes_Click);
             // 
@@ -217,9 +242,9 @@
             this.PPacientes.Controls.Add(this.PPacientesHoy);
             this.PPacientes.Controls.Add(this.LPacientesHoy);
             this.PPacientes.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PPacientes.Location = new System.Drawing.Point(171, 93);
+            this.PPacientes.Location = new System.Drawing.Point(137, 110);
             this.PPacientes.Name = "PPacientes";
-            this.PPacientes.Size = new System.Drawing.Size(263, 100);
+            this.PPacientes.Size = new System.Drawing.Size(375, 126);
             this.PPacientes.TabIndex = 2;
             // 
             // LContadorPacientesHoy
@@ -228,7 +253,7 @@
             this.LContadorPacientesHoy.AutoSize = true;
             this.LContadorPacientesHoy.BackColor = System.Drawing.Color.Transparent;
             this.LContadorPacientesHoy.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LContadorPacientesHoy.Location = new System.Drawing.Point(116, 44);
+            this.LContadorPacientesHoy.Location = new System.Drawing.Point(205, 67);
             this.LContadorPacientesHoy.Name = "LContadorPacientesHoy";
             this.LContadorPacientesHoy.Size = new System.Drawing.Size(35, 39);
             this.LContadorPacientesHoy.TabIndex = 9;
@@ -238,7 +263,7 @@
             // 
             this.PPacientesHoy.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PPacientesHoy.BackgroundImage")));
             this.PPacientesHoy.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.PPacientesHoy.Location = new System.Drawing.Point(196, 0);
+            this.PPacientesHoy.Location = new System.Drawing.Point(297, 6);
             this.PPacientesHoy.Name = "PPacientesHoy";
             this.PPacientesHoy.Size = new System.Drawing.Size(64, 37);
             this.PPacientesHoy.TabIndex = 8;
@@ -247,10 +272,11 @@
             // LPacientesHoy
             // 
             this.LPacientesHoy.AutoSize = true;
-            this.LPacientesHoy.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LPacientesHoy.Location = new System.Drawing.Point(60, 6);
+            this.LPacientesHoy.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LPacientesHoy.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.LPacientesHoy.Location = new System.Drawing.Point(92, 6);
             this.LPacientesHoy.Name = "LPacientesHoy";
-            this.LPacientesHoy.Size = new System.Drawing.Size(118, 23);
+            this.LPacientesHoy.Size = new System.Drawing.Size(142, 27);
             this.LPacientesHoy.TabIndex = 0;
             this.LPacientesHoy.Text = "Pacientes Hoy";
             // 
@@ -261,9 +287,9 @@
             this.PCitas.Controls.Add(this.LContadorTurnosHoy);
             this.PCitas.Controls.Add(this.pictureBox3);
             this.PCitas.Controls.Add(this.LTurnosProgramados);
-            this.PCitas.Location = new System.Drawing.Point(634, 93);
+            this.PCitas.Location = new System.Drawing.Point(554, 110);
             this.PCitas.Name = "PCitas";
-            this.PCitas.Size = new System.Drawing.Size(260, 111);
+            this.PCitas.Size = new System.Drawing.Size(369, 126);
             this.PCitas.TabIndex = 3;
             // 
             // LContadorTurnosHoy
@@ -272,7 +298,7 @@
             this.LContadorTurnosHoy.AutoSize = true;
             this.LContadorTurnosHoy.BackColor = System.Drawing.Color.Transparent;
             this.LContadorTurnosHoy.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LContadorTurnosHoy.Location = new System.Drawing.Point(123, 44);
+            this.LContadorTurnosHoy.Location = new System.Drawing.Point(166, 67);
             this.LContadorTurnosHoy.Name = "LContadorTurnosHoy";
             this.LContadorTurnosHoy.Size = new System.Drawing.Size(35, 39);
             this.LContadorTurnosHoy.TabIndex = 9;
@@ -282,19 +308,20 @@
             // 
             this.pictureBox3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox3.BackgroundImage")));
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox3.Location = new System.Drawing.Point(202, 3);
+            this.pictureBox3.Location = new System.Drawing.Point(319, 6);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(47, 53);
+            this.pictureBox3.Size = new System.Drawing.Size(47, 34);
             this.pictureBox3.TabIndex = 8;
             this.pictureBox3.TabStop = false;
             // 
             // LTurnosProgramados
             // 
             this.LTurnosProgramados.AutoSize = true;
-            this.LTurnosProgramados.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LTurnosProgramados.Location = new System.Drawing.Point(3, 6);
+            this.LTurnosProgramados.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LTurnosProgramados.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.LTurnosProgramados.Location = new System.Drawing.Point(60, 13);
             this.LTurnosProgramados.Name = "LTurnosProgramados";
-            this.LTurnosProgramados.Size = new System.Drawing.Size(198, 23);
+            this.LTurnosProgramados.Size = new System.Drawing.Size(236, 27);
             this.LTurnosProgramados.TabIndex = 0;
             this.LTurnosProgramados.Text = "Turnos Programados hoy";
             // 
@@ -305,9 +332,9 @@
             this.PDoctores.Controls.Add(this.LContadorDoctores);
             this.PDoctores.Controls.Add(this.pictureBox4);
             this.PDoctores.Controls.Add(this.LDoctores);
-            this.PDoctores.Location = new System.Drawing.Point(634, 376);
+            this.PDoctores.Location = new System.Drawing.Point(554, 338);
             this.PDoctores.Name = "PDoctores";
-            this.PDoctores.Size = new System.Drawing.Size(260, 100);
+            this.PDoctores.Size = new System.Drawing.Size(369, 138);
             this.PDoctores.TabIndex = 4;
             this.PDoctores.Click += new System.EventHandler(this.PDoctores_Click);
             // 
@@ -317,7 +344,7 @@
             this.LContadorDoctores.AutoSize = true;
             this.LContadorDoctores.BackColor = System.Drawing.Color.Transparent;
             this.LContadorDoctores.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LContadorDoctores.Location = new System.Drawing.Point(123, 51);
+            this.LContadorDoctores.Location = new System.Drawing.Point(166, 85);
             this.LContadorDoctores.Name = "LContadorDoctores";
             this.LContadorDoctores.Size = new System.Drawing.Size(35, 39);
             this.LContadorDoctores.TabIndex = 8;
@@ -325,9 +352,10 @@
             // 
             // pictureBox4
             // 
+            this.pictureBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox4.BackgroundImage")));
             this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox4.Location = new System.Drawing.Point(195, 3);
+            this.pictureBox4.Location = new System.Drawing.Point(301, 3);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(65, 50);
             this.pictureBox4.TabIndex = 1;
@@ -335,11 +363,12 @@
             // 
             // LDoctores
             // 
+            this.LDoctores.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.LDoctores.AutoSize = true;
-            this.LDoctores.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LDoctores.Location = new System.Drawing.Point(18, 11);
+            this.LDoctores.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LDoctores.Location = new System.Drawing.Point(87, 15);
             this.LDoctores.Name = "LDoctores";
-            this.LDoctores.Size = new System.Drawing.Size(177, 23);
+            this.LDoctores.Size = new System.Drawing.Size(209, 27);
             this.LDoctores.TabIndex = 0;
             this.LDoctores.Text = "Doctores  Disponibles";
             // 
@@ -347,20 +376,21 @@
             // 
             this.PEspecialidades.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.PEspecialidades.BackColor = System.Drawing.Color.PaleGreen;
+            this.PEspecialidades.Controls.Add(this.pictureBox2);
             this.PEspecialidades.Controls.Add(this.LContadorEspecialidades);
             this.PEspecialidades.Controls.Add(this.label5);
-            this.PEspecialidades.Location = new System.Drawing.Point(179, 376);
+            this.PEspecialidades.Location = new System.Drawing.Point(137, 338);
             this.PEspecialidades.Name = "PEspecialidades";
-            this.PEspecialidades.Size = new System.Drawing.Size(255, 100);
+            this.PEspecialidades.Size = new System.Drawing.Size(375, 138);
             this.PEspecialidades.TabIndex = 6;
             // 
             // LContadorEspecialidades
             // 
-            this.LContadorEspecialidades.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.LContadorEspecialidades.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.LContadorEspecialidades.AutoSize = true;
             this.LContadorEspecialidades.BackColor = System.Drawing.Color.Transparent;
             this.LContadorEspecialidades.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LContadorEspecialidades.Location = new System.Drawing.Point(117, 51);
+            this.LContadorEspecialidades.Location = new System.Drawing.Point(161, 85);
             this.LContadorEspecialidades.Name = "LContadorEspecialidades";
             this.LContadorEspecialidades.Size = new System.Drawing.Size(35, 39);
             this.LContadorEspecialidades.TabIndex = 8;
@@ -368,13 +398,17 @@
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(72, 11);
+            this.label5.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.label5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label5.Location = new System.Drawing.Point(114, 21);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(119, 23);
+            this.label5.Size = new System.Drawing.Size(143, 27);
             this.label5.TabIndex = 0;
             this.label5.Text = "Especialidades";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pnlTurnos
             // 
@@ -388,7 +422,7 @@
             this.pnlTurnos.Controls.Add(this.dtpSemana);
             this.pnlTurnos.Controls.Add(this.btnVolver);
             this.pnlTurnos.Controls.Add(this.dgvTurnosMes);
-            this.pnlTurnos.Location = new System.Drawing.Point(122, 92);
+            this.pnlTurnos.Location = new System.Drawing.Point(122, 82);
             this.pnlTurnos.Name = "pnlTurnos";
             this.pnlTurnos.Size = new System.Drawing.Size(811, 384);
             this.pnlTurnos.TabIndex = 7;
@@ -420,10 +454,11 @@
             // lTitulo
             // 
             this.lTitulo.AutoSize = true;
-            this.lTitulo.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lTitulo.Location = new System.Drawing.Point(12, 5);
+            this.lTitulo.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lTitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.lTitulo.Location = new System.Drawing.Point(3, 6);
             this.lTitulo.Name = "lTitulo";
-            this.lTitulo.Size = new System.Drawing.Size(126, 23);
+            this.lTitulo.Size = new System.Drawing.Size(151, 27);
             this.lTitulo.TabIndex = 7;
             this.lTitulo.Text = "Turnos del mes";
             // 
@@ -459,14 +494,14 @@
             this.dgvTurnosMes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvTurnosMes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvTurnosMes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTurnosMes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvTurnosMes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTurnosMes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colFechaHora,
@@ -490,9 +525,9 @@
             // 
             // colFechaHora
             // 
-            dataGridViewCellStyle6.Format = "g";
-            dataGridViewCellStyle6.NullValue = null;
-            this.colFechaHora.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle10.Format = "g";
+            dataGridViewCellStyle10.NullValue = null;
+            this.colFechaHora.DefaultCellStyle = dataGridViewCellStyle10;
             this.colFechaHora.HeaderText = "Fecha/Hora";
             this.colFechaHora.Name = "colFechaHora";
             this.colFechaHora.ReadOnly = true;
@@ -537,19 +572,17 @@
             this.colCancelar.Text = "Cancelar";
             this.colCancelar.UseColumnTextForButtonValue = true;
             // 
-            // btnReportes
+            // pictureBox2
             // 
-            this.btnReportes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReportes.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReportes.Image = global::SaludSoft.Properties.Resources.archivo_de_edicion;
-            this.btnReportes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnReportes.Location = new System.Drawing.Point(7, 317);
-            this.btnReportes.Name = "btnReportes";
-            this.btnReportes.Size = new System.Drawing.Size(107, 40);
-            this.btnReportes.TabIndex = 8;
-            this.btnReportes.Text = "Reportes";
-            this.btnReportes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnReportes.UseVisualStyleBackColor = true;
+            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox2.Image = global::SaludSoft.Properties.Resources.libro_medico;
+            this.pictureBox2.Location = new System.Drawing.Point(301, 10);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(60, 43);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 9;
+            this.pictureBox2.TabStop = false;
             // 
             // SaludSoft
             // 
@@ -584,6 +617,7 @@
             this.pnlTurnos.ResumeLayout(false);
             this.pnlTurnos.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTurnosMes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -630,6 +664,7 @@
         private System.Windows.Forms.DataGridViewButtonColumn colEditar;
         private System.Windows.Forms.DataGridViewButtonColumn colCancelar;
         private System.Windows.Forms.Button btnReportes;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
 
