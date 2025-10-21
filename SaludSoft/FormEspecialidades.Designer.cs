@@ -84,6 +84,7 @@
             this.DGVEspecialidad.ReadOnly = true;
             this.DGVEspecialidad.Size = new System.Drawing.Size(337, 426);
             this.DGVEspecialidad.TabIndex = 2;
+            this.DGVEspecialidad.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVEspecialidad_CellClick);
             // 
             // LNombre
             // 

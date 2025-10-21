@@ -37,6 +37,57 @@ namespace SaludSoft
             }
         }
 
+        private void MostrarProfesionalesDeEspecialidad(string nombreEspecialidad)
+        {
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                string query = @"
+                 SELECT p.nombre + ' ' + p.apellido AS Profesional
+                 FROM Profesional p
+                 INNER JOIN Especialidad e ON p.id_especialidad = e.id_especialidad
+                 WHERE e.nombre = @nombreEspecialidad";
+
+                SqlCommand cmd = new SqlCommand(query, conexion);
+                cmd.Parameters.AddWithValue("@nombreEspecialidad", nombreEspecialidad);
+
+                conexion.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                List<string> profesionales = new List<string>();
+
+                while (reader.Read())
+                {
+                    profesionales.Add(reader["Profesional"].ToString());
+                }
+
+                reader.Close();
+
+                if (profesionales.Count > 0)
+                {
+                    string lista = string.Join("\n", profesionales);
+                    MessageBox.Show($"Especialidad: {nombreEspecialidad}\n\nProfesionales:\n{lista}",
+                                    "Información del Profesional",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show($"No hay profesionales registrados para la especialidad: {nombreEspecialidad}",
+                                    "Información del Profesional",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                }
+            }
+        }
+        private void DGVEspecialidad_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                string nombreEspecialidad = DGVEspecialidad.Rows[e.RowIndex].Cells["nombre"].Value.ToString();
+                MostrarProfesionalesDeEspecialidad(nombreEspecialidad);
+            }
+        }
+
         // Función para normalizar el texto (quita acentos y pasa a minúsculas)
         private string Normalizar(string texto)
         {

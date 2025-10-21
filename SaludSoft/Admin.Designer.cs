@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Admin));
             this.btCerrarSesion = new System.Windows.Forms.Button();
             this.btBackup = new System.Windows.Forms.Button();
             this.btConsultorios = new System.Windows.Forms.Button();
@@ -38,12 +39,13 @@
             this.lAdministrador = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.LTurnosDelDia = new System.Windows.Forms.Label();
             this.LContador = new System.Windows.Forms.Label();
             this.PPacienetes = new System.Windows.Forms.Button();
             this.btHistorial = new System.Windows.Forms.Button();
             this.btEspecialidades = new System.Windows.Forms.Button();
             this.btTurnosMes = new System.Windows.Forms.Button();
-            this.LTurnosDelDia = new System.Windows.Forms.Label();
+            this.BReportes = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel3.SuspendLayout();
@@ -67,13 +69,13 @@
             // 
             // btBackup
             // 
-            this.btBackup.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btBackup.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btBackup.Image = global::SaludSoft.Properties.Resources.monedas;
             this.btBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btBackup.Location = new System.Drawing.Point(17, 348);
+            this.btBackup.Location = new System.Drawing.Point(11, 369);
             this.btBackup.Margin = new System.Windows.Forms.Padding(2);
             this.btBackup.Name = "btBackup";
-            this.btBackup.Size = new System.Drawing.Size(107, 36);
+            this.btBackup.Size = new System.Drawing.Size(129, 36);
             this.btBackup.TabIndex = 2;
             this.btBackup.Text = "Backup ";
             this.btBackup.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -82,10 +84,10 @@
             // 
             // btConsultorios
             // 
-            this.btConsultorios.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btConsultorios.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btConsultorios.Image = global::SaludSoft.Properties.Resources.construccion_de_casas;
             this.btConsultorios.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btConsultorios.Location = new System.Drawing.Point(7, 136);
+            this.btConsultorios.Location = new System.Drawing.Point(7, 144);
             this.btConsultorios.Margin = new System.Windows.Forms.Padding(2);
             this.btConsultorios.Name = "btConsultorios";
             this.btConsultorios.Size = new System.Drawing.Size(129, 45);
@@ -97,13 +99,13 @@
             // 
             // btTurnos
             // 
-            this.btTurnos.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btTurnos.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btTurnos.Image = global::SaludSoft.Properties.Resources.alt_de_inventario;
             this.btTurnos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btTurnos.Location = new System.Drawing.Point(17, 235);
+            this.btTurnos.Location = new System.Drawing.Point(7, 218);
             this.btTurnos.Margin = new System.Windows.Forms.Padding(2);
             this.btTurnos.Name = "btTurnos";
-            this.btTurnos.Size = new System.Drawing.Size(104, 40);
+            this.btTurnos.Size = new System.Drawing.Size(129, 40);
             this.btTurnos.TabIndex = 5;
             this.btTurnos.Text = "Turnos ";
             this.btTurnos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -111,13 +113,13 @@
             // 
             // btInicio
             // 
-            this.btInicio.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btInicio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btInicio.Image = global::SaludSoft.Properties.Resources.hogar;
             this.btInicio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btInicio.Location = new System.Drawing.Point(23, 55);
+            this.btInicio.Location = new System.Drawing.Point(7, 67);
             this.btInicio.Margin = new System.Windows.Forms.Padding(2);
             this.btInicio.Name = "btInicio";
-            this.btInicio.Size = new System.Drawing.Size(98, 38);
+            this.btInicio.Size = new System.Drawing.Size(129, 38);
             this.btInicio.TabIndex = 2;
             this.btInicio.Text = "Inicio ";
             this.btInicio.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -127,6 +129,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.panel2.Controls.Add(this.BReportes);
             this.panel2.Controls.Add(this.btCerrarSesion);
             this.panel2.Controls.Add(this.btGestionUsuario);
             this.panel2.Controls.Add(this.lAdministrador);
@@ -148,7 +151,7 @@
             this.btGestionUsuario.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btGestionUsuario.Image = global::SaludSoft.Properties.Resources.agregar;
             this.btGestionUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btGestionUsuario.Location = new System.Drawing.Point(687, 12);
+            this.btGestionUsuario.Location = new System.Drawing.Point(819, 11);
             this.btGestionUsuario.Margin = new System.Windows.Forms.Padding(2);
             this.btGestionUsuario.Name = "btGestionUsuario";
             this.btGestionUsuario.Size = new System.Drawing.Size(193, 32);
@@ -199,6 +202,18 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(890, 446);
             this.panel3.TabIndex = 3;
+            // 
+            // LTurnosDelDia
+            // 
+            this.LTurnosDelDia.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.LTurnosDelDia.AutoSize = true;
+            this.LTurnosDelDia.BackColor = System.Drawing.Color.Transparent;
+            this.LTurnosDelDia.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LTurnosDelDia.Location = new System.Drawing.Point(202, 90);
+            this.LTurnosDelDia.Name = "LTurnosDelDia";
+            this.LTurnosDelDia.Size = new System.Drawing.Size(35, 39);
+            this.LTurnosDelDia.TabIndex = 8;
+            this.LTurnosDelDia.Text = "0";
             // 
             // LContador
             // 
@@ -273,17 +288,18 @@
             this.btTurnosMes.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btTurnosMes.UseVisualStyleBackColor = false;
             // 
-            // LTurnosDelDia
+            // BReportes
             // 
-            this.LTurnosDelDia.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.LTurnosDelDia.AutoSize = true;
-            this.LTurnosDelDia.BackColor = System.Drawing.Color.Transparent;
-            this.LTurnosDelDia.Font = new System.Drawing.Font("Constantia", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LTurnosDelDia.Location = new System.Drawing.Point(202, 90);
-            this.LTurnosDelDia.Name = "LTurnosDelDia";
-            this.LTurnosDelDia.Size = new System.Drawing.Size(35, 39);
-            this.LTurnosDelDia.TabIndex = 8;
-            this.LTurnosDelDia.Text = "0";
+            this.BReportes.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BReportes.Image = ((System.Drawing.Image)(resources.GetObject("BReportes.Image")));
+            this.BReportes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BReportes.Location = new System.Drawing.Point(7, 295);
+            this.BReportes.Name = "BReportes";
+            this.BReportes.Size = new System.Drawing.Size(129, 40);
+            this.BReportes.TabIndex = 9;
+            this.BReportes.Text = "Reportes";
+            this.BReportes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.BReportes.UseVisualStyleBackColor = true;
             // 
             // Admin
             // 
@@ -321,5 +337,6 @@
         private System.Windows.Forms.Button PPacienetes;
         private System.Windows.Forms.Label LContador;
         private System.Windows.Forms.Label LTurnosDelDia;
+        private System.Windows.Forms.Button BReportes;
     }
 }
