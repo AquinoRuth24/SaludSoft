@@ -29,15 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Admin));
-            this.btCerrarSesion = new System.Windows.Forms.Button();
-            this.btBackup = new System.Windows.Forms.Button();
-            this.btConsultorios = new System.Windows.Forms.Button();
-            this.btTurnos = new System.Windows.Forms.Button();
-            this.btInicio = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.btGestionUsuario = new System.Windows.Forms.Button();
             this.lAdministrador = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.LTurnosDelDia = new System.Windows.Forms.Label();
             this.LContador = new System.Windows.Forms.Label();
@@ -46,85 +39,17 @@
             this.btEspecialidades = new System.Windows.Forms.Button();
             this.btTurnosMes = new System.Windows.Forms.Button();
             this.BReportes = new System.Windows.Forms.Button();
+            this.btCerrarSesion = new System.Windows.Forms.Button();
+            this.btGestionUsuario = new System.Windows.Forms.Button();
+            this.btBackup = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btInicio = new System.Windows.Forms.Button();
+            this.btTurnos = new System.Windows.Forms.Button();
+            this.btConsultorios = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // btCerrarSesion
-            // 
-            this.btCerrarSesion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btCerrarSesion.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btCerrarSesion.Image = global::SaludSoft.Properties.Resources.circulo_marca_x;
-            this.btCerrarSesion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btCerrarSesion.Location = new System.Drawing.Point(2, 435);
-            this.btCerrarSesion.Margin = new System.Windows.Forms.Padding(2);
-            this.btCerrarSesion.Name = "btCerrarSesion";
-            this.btCerrarSesion.Size = new System.Drawing.Size(139, 41);
-            this.btCerrarSesion.TabIndex = 2;
-            this.btCerrarSesion.Text = "Cerrar Sesión";
-            this.btCerrarSesion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btCerrarSesion.UseVisualStyleBackColor = true;
-            this.btCerrarSesion.Click += new System.EventHandler(this.btCerrarSesion_Click);
-            // 
-            // btBackup
-            // 
-            this.btBackup.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btBackup.Image = global::SaludSoft.Properties.Resources.monedas;
-            this.btBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btBackup.Location = new System.Drawing.Point(11, 369);
-            this.btBackup.Margin = new System.Windows.Forms.Padding(2);
-            this.btBackup.Name = "btBackup";
-            this.btBackup.Size = new System.Drawing.Size(129, 36);
-            this.btBackup.TabIndex = 2;
-            this.btBackup.Text = "Backup ";
-            this.btBackup.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btBackup.UseVisualStyleBackColor = true;
-            this.btBackup.Click += new System.EventHandler(this.btBackup_Click);
-            // 
-            // btConsultorios
-            // 
-            this.btConsultorios.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btConsultorios.Image = global::SaludSoft.Properties.Resources.construccion_de_casas;
-            this.btConsultorios.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btConsultorios.Location = new System.Drawing.Point(7, 144);
-            this.btConsultorios.Margin = new System.Windows.Forms.Padding(2);
-            this.btConsultorios.Name = "btConsultorios";
-            this.btConsultorios.Size = new System.Drawing.Size(129, 45);
-            this.btConsultorios.TabIndex = 2;
-            this.btConsultorios.Text = "Consultorios";
-            this.btConsultorios.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btConsultorios.UseVisualStyleBackColor = true;
-            this.btConsultorios.Click += new System.EventHandler(this.btConsultorios_Click);
-            // 
-            // btTurnos
-            // 
-            this.btTurnos.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btTurnos.Image = global::SaludSoft.Properties.Resources.alt_de_inventario;
-            this.btTurnos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btTurnos.Location = new System.Drawing.Point(7, 218);
-            this.btTurnos.Margin = new System.Windows.Forms.Padding(2);
-            this.btTurnos.Name = "btTurnos";
-            this.btTurnos.Size = new System.Drawing.Size(129, 40);
-            this.btTurnos.TabIndex = 5;
-            this.btTurnos.Text = "Turnos ";
-            this.btTurnos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btTurnos.UseVisualStyleBackColor = true;
-            // 
-            // btInicio
-            // 
-            this.btInicio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btInicio.Image = global::SaludSoft.Properties.Resources.hogar;
-            this.btInicio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btInicio.Location = new System.Drawing.Point(7, 67);
-            this.btInicio.Margin = new System.Windows.Forms.Padding(2);
-            this.btInicio.Name = "btInicio";
-            this.btInicio.Size = new System.Drawing.Size(129, 38);
-            this.btInicio.TabIndex = 2;
-            this.btInicio.Text = "Inicio ";
-            this.btInicio.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btInicio.UseVisualStyleBackColor = true;
-            this.btInicio.Click += new System.EventHandler(this.btInicio_Click);
             // 
             // panel2
             // 
@@ -145,22 +70,6 @@
             this.panel2.Size = new System.Drawing.Size(1036, 499);
             this.panel2.TabIndex = 2;
             // 
-            // btGestionUsuario
-            // 
-            this.btGestionUsuario.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btGestionUsuario.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btGestionUsuario.Image = global::SaludSoft.Properties.Resources.agregar;
-            this.btGestionUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btGestionUsuario.Location = new System.Drawing.Point(819, 11);
-            this.btGestionUsuario.Margin = new System.Windows.Forms.Padding(2);
-            this.btGestionUsuario.Name = "btGestionUsuario";
-            this.btGestionUsuario.Size = new System.Drawing.Size(193, 32);
-            this.btGestionUsuario.TabIndex = 3;
-            this.btGestionUsuario.Text = "Gestionar Usuario ";
-            this.btGestionUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btGestionUsuario.UseVisualStyleBackColor = true;
-            this.btGestionUsuario.Click += new System.EventHandler(this.btGestionUsuario_Click);
-            // 
             // lAdministrador
             // 
             this.lAdministrador.AutoSize = true;
@@ -173,17 +82,6 @@
             this.lAdministrador.Size = new System.Drawing.Size(200, 34);
             this.lAdministrador.TabIndex = 3;
             this.lAdministrador.Text = "Administrador  ";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
-            this.pictureBox1.Location = new System.Drawing.Point(2, 2);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(144, 49);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
             // 
             // panel3
             // 
@@ -300,6 +198,109 @@
             this.BReportes.Text = "Reportes";
             this.BReportes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.BReportes.UseVisualStyleBackColor = true;
+            this.BReportes.Click += new System.EventHandler(this.BReportes_Click);
+            // 
+            // btCerrarSesion
+            // 
+            this.btCerrarSesion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btCerrarSesion.Font = new System.Drawing.Font("Comic Sans MS", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btCerrarSesion.Image = global::SaludSoft.Properties.Resources.circulo_marca_x;
+            this.btCerrarSesion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btCerrarSesion.Location = new System.Drawing.Point(2, 435);
+            this.btCerrarSesion.Margin = new System.Windows.Forms.Padding(2);
+            this.btCerrarSesion.Name = "btCerrarSesion";
+            this.btCerrarSesion.Size = new System.Drawing.Size(139, 41);
+            this.btCerrarSesion.TabIndex = 2;
+            this.btCerrarSesion.Text = "Cerrar Sesión";
+            this.btCerrarSesion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btCerrarSesion.UseVisualStyleBackColor = true;
+            this.btCerrarSesion.Click += new System.EventHandler(this.btCerrarSesion_Click);
+            // 
+            // btGestionUsuario
+            // 
+            this.btGestionUsuario.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btGestionUsuario.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btGestionUsuario.Image = global::SaludSoft.Properties.Resources.agregar;
+            this.btGestionUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btGestionUsuario.Location = new System.Drawing.Point(819, 11);
+            this.btGestionUsuario.Margin = new System.Windows.Forms.Padding(2);
+            this.btGestionUsuario.Name = "btGestionUsuario";
+            this.btGestionUsuario.Size = new System.Drawing.Size(193, 32);
+            this.btGestionUsuario.TabIndex = 3;
+            this.btGestionUsuario.Text = "Gestionar Usuario ";
+            this.btGestionUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btGestionUsuario.UseVisualStyleBackColor = true;
+            this.btGestionUsuario.Click += new System.EventHandler(this.btGestionUsuario_Click);
+            // 
+            // btBackup
+            // 
+            this.btBackup.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btBackup.Image = global::SaludSoft.Properties.Resources.monedas;
+            this.btBackup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btBackup.Location = new System.Drawing.Point(11, 369);
+            this.btBackup.Margin = new System.Windows.Forms.Padding(2);
+            this.btBackup.Name = "btBackup";
+            this.btBackup.Size = new System.Drawing.Size(129, 36);
+            this.btBackup.TabIndex = 2;
+            this.btBackup.Text = "Backup ";
+            this.btBackup.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btBackup.UseVisualStyleBackColor = true;
+            this.btBackup.Click += new System.EventHandler(this.btBackup_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
+            this.pictureBox1.Location = new System.Drawing.Point(2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(144, 49);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            // 
+            // btInicio
+            // 
+            this.btInicio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btInicio.Image = global::SaludSoft.Properties.Resources.hogar;
+            this.btInicio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btInicio.Location = new System.Drawing.Point(7, 67);
+            this.btInicio.Margin = new System.Windows.Forms.Padding(2);
+            this.btInicio.Name = "btInicio";
+            this.btInicio.Size = new System.Drawing.Size(129, 38);
+            this.btInicio.TabIndex = 2;
+            this.btInicio.Text = "Inicio ";
+            this.btInicio.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btInicio.UseVisualStyleBackColor = true;
+            this.btInicio.Click += new System.EventHandler(this.btInicio_Click);
+            // 
+            // btTurnos
+            // 
+            this.btTurnos.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btTurnos.Image = global::SaludSoft.Properties.Resources.alt_de_inventario;
+            this.btTurnos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btTurnos.Location = new System.Drawing.Point(7, 218);
+            this.btTurnos.Margin = new System.Windows.Forms.Padding(2);
+            this.btTurnos.Name = "btTurnos";
+            this.btTurnos.Size = new System.Drawing.Size(129, 40);
+            this.btTurnos.TabIndex = 5;
+            this.btTurnos.Text = "Turnos ";
+            this.btTurnos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btTurnos.UseVisualStyleBackColor = true;
+            // 
+            // btConsultorios
+            // 
+            this.btConsultorios.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btConsultorios.Image = global::SaludSoft.Properties.Resources.construccion_de_casas;
+            this.btConsultorios.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btConsultorios.Location = new System.Drawing.Point(7, 144);
+            this.btConsultorios.Margin = new System.Windows.Forms.Padding(2);
+            this.btConsultorios.Name = "btConsultorios";
+            this.btConsultorios.Size = new System.Drawing.Size(129, 45);
+            this.btConsultorios.TabIndex = 2;
+            this.btConsultorios.Text = "Consultorios";
+            this.btConsultorios.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btConsultorios.UseVisualStyleBackColor = true;
+            this.btConsultorios.Click += new System.EventHandler(this.btConsultorios_Click);
             // 
             // Admin
             // 
@@ -313,9 +314,9 @@
             this.Text = "Admin";
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }

@@ -74,7 +74,11 @@ namespace SaludSoft
 
             MostrarYVolver(frm);
         }
-
+        private void BReportes_Click(object sender, EventArgs e)
+        {
+            FormEstadisticas frm = new FormEstadisticas();
+                frm.ShowDialog();
+        }
         private void btCerrarSesion_Click(object sender, EventArgs e)
         {
             var r = MessageBox.Show("¿Seguro que querés cerrar sesión?",
@@ -159,5 +163,7 @@ namespace SaludSoft
             FormConsultorio frm = new FormConsultorio();
             frm.ShowDialog();
         }
+
+     
     }
 }
