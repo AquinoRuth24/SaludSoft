@@ -19,8 +19,10 @@ namespace SaludSoft
             InitializeComponent();
             CargarGrafico();
             CargarRankingMedicosGrid();
+            CargarActividadTurnosGrid();
 
             DTGRankingMedicos.CellPainting += DTGRankingMedicos_CellPainting;
+            DTGActividadPorTurno.CellFormatting += DTGActividadTurnos_CellFormatting;
 
         }
 
@@ -194,5 +196,75 @@ namespace SaludSoft
         {
             this.Close();
         }
+        // cargar actividad por turnos
+        private void CargarActividadTurnosGrid()
+        {
+            string query = @"
+             SELECT 
+              e.nombre AS Especialidad,
+              t.estado AS Estado,
+             COUNT(t.id_turno) AS CantidadTurnos
+             FROM Turnos t
+             INNER JOIN Agenda a ON t.id_agenda = a.id_agenda
+             INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
+             INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
+             INNER JOIN Especialidad e ON p.id_especialidad = e.id_especialidad
+             WHERE t.fecha >= DATEADD(MONTH, -1, GETDATE())
+             GROUP BY e.nombre, t.estado
+             ORDER BY e.nombre, t.estado;";
+
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                DTGActividadPorTurno.DataSource = dt;
+
+                // Estilos visuales
+                DTGActividadPorTurno.EnableHeadersVisualStyles = false;
+                DTGActividadPorTurno.BorderStyle = BorderStyle.None;
+                DTGActividadPorTurno.ColumnHeadersDefaultCellStyle.BackColor = Color.White;
+                DTGActividadPorTurno.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                DTGActividadPorTurno.DefaultCellStyle.ForeColor = Color.Black;
+                DTGActividadPorTurno.DefaultCellStyle.BackColor = Color.White;
+                DTGActividadPorTurno.AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke;
+                DTGActividadPorTurno.DefaultCellStyle.SelectionBackColor = Color.FromArgb(180, 220, 180);
+                DTGActividadPorTurno.DefaultCellStyle.SelectionForeColor = Color.Black;
+                DTGActividadPorTurno.DefaultCellStyle.Font = new Font("Segoe UI", 9);
+                DTGActividadPorTurno.RowHeadersVisible = false;
+                DTGActividadPorTurno.AllowUserToAddRows = false;
+                DTGActividadPorTurno.ReadOnly = true;
+                DTGActividadPorTurno.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                DTGActividadPorTurno.GridColor = Color.White;
+
+                // Título de columnas
+                DTGActividadPorTurno.Columns["Especialidad"].HeaderText = "Especialidad";
+                DTGActividadPorTurno.Columns["Estado"].HeaderText = "Estado del Turno";
+                DTGActividadPorTurno.Columns["CantidadTurnos"].HeaderText = "Cantidad de Turnos";
+            }
+        }
+        // colorear filas segun el estado del turno
+        private void DTGActividadTurnos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (DTGActividadPorTurno.Columns["Estado"].Index == e.ColumnIndex && e.Value != null)
+            {
+                string estado = e.Value.ToString().ToLower();
+
+                if (estado.Contains("confirmado"))
+                {
+                    DTGActividadPorTurno.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(210, 250, 210); // verde claro
+                }
+                else if (estado.Contains("cancelado"))
+                {
+                    DTGActividadPorTurno.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(255, 220, 220); // rojo claro
+                }
+                else if (estado.Contains("pendiente"))
+                {
+                    DTGActividadPorTurno.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(255, 255, 200); // amarillo claro
+                }
+            }
+        }
+
     }
 }

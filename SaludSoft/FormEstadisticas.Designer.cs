@@ -32,25 +32,42 @@
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.DTGRankingMedicos = new System.Windows.Forms.DataGridView();
             this.BVolver = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.DTGRankingMedicos = new System.Windows.Forms.DataGridView();
             this.ChartEspecialidades = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.DTGActividadPorTurno = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DTGRankingMedicos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChartEspecialidades)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DTGActividadPorTurno)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.panel1.Controls.Add(this.DTGRankingMedicos);
             this.panel1.Controls.Add(this.BVolver);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(1, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1154, 79);
+            this.panel1.Size = new System.Drawing.Size(1128, 79);
             this.panel1.TabIndex = 1;
+            // 
+            // DTGRankingMedicos
+            // 
+            this.DTGRankingMedicos.BackgroundColor = System.Drawing.Color.LightGray;
+            this.DTGRankingMedicos.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.DTGRankingMedicos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DTGRankingMedicos.GridColor = System.Drawing.SystemColors.ActiveBorder;
+            this.DTGRankingMedicos.Location = new System.Drawing.Point(557, -102);
+            this.DTGRankingMedicos.Name = "DTGRankingMedicos";
+            this.DTGRankingMedicos.Size = new System.Drawing.Size(512, 316);
+            this.DTGRankingMedicos.TabIndex = 3;
+            this.DTGRankingMedicos.Visible = false;
             // 
             // BVolver
             // 
@@ -73,17 +90,6 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Reportes";
             // 
-            // DTGRankingMedicos
-            // 
-            this.DTGRankingMedicos.BackgroundColor = System.Drawing.Color.LightGray;
-            this.DTGRankingMedicos.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.DTGRankingMedicos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DTGRankingMedicos.GridColor = System.Drawing.SystemColors.ActiveBorder;
-            this.DTGRankingMedicos.Location = new System.Drawing.Point(595, 158);
-            this.DTGRankingMedicos.Name = "DTGRankingMedicos";
-            this.DTGRankingMedicos.Size = new System.Drawing.Size(512, 316);
-            this.DTGRankingMedicos.TabIndex = 3;
-            // 
             // ChartEspecialidades
             // 
             this.ChartEspecialidades.BackColor = System.Drawing.Color.DimGray;
@@ -94,7 +100,7 @@
             this.ChartEspecialidades.Cursor = System.Windows.Forms.Cursors.Default;
             legend1.Name = "Legend1";
             this.ChartEspecialidades.Legends.Add(legend1);
-            this.ChartEspecialidades.Location = new System.Drawing.Point(1, 158);
+            this.ChartEspecialidades.Location = new System.Drawing.Point(12, 198);
             this.ChartEspecialidades.Name = "ChartEspecialidades";
             this.ChartEspecialidades.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SeaGreen;
             series1.ChartArea = "ChartArea";
@@ -107,20 +113,32 @@
             // 
             // panel2
             // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BackColor = System.Drawing.Color.SeaGreen;
             this.panel2.Location = new System.Drawing.Point(12, 85);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1105, 57);
             this.panel2.TabIndex = 4;
             // 
+            // DTGActividadPorTurno
+            // 
+            this.DTGActividadPorTurno.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.DTGActividadPorTurno.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DTGActividadPorTurno.Location = new System.Drawing.Point(617, 198);
+            this.DTGActividadPorTurno.Name = "DTGActividadPorTurno";
+            this.DTGActividadPorTurno.Size = new System.Drawing.Size(474, 316);
+            this.DTGActividadPorTurno.TabIndex = 5;
+            this.DTGActividadPorTurno.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DTGActividadTurnos_CellFormatting);
+            // 
             // FormEstadisticas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1156, 749);
+            this.ClientSize = new System.Drawing.Size(1125, 564);
+            this.Controls.Add(this.DTGActividadPorTurno);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.DTGRankingMedicos);
             this.Controls.Add(this.ChartEspecialidades);
             this.Controls.Add(this.panel1);
             this.Name = "FormEstadisticas";
@@ -129,6 +147,7 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DTGRankingMedicos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChartEspecialidades)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DTGActividadPorTurno)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -141,5 +160,6 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart ChartEspecialidades;
         private System.Windows.Forms.DataGridView DTGRankingMedicos;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.DataGridView DTGActividadPorTurno;
     }
 }
