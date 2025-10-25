@@ -31,6 +31,9 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.panel1 = new System.Windows.Forms.Panel();
             this.DTGRankingMedicos = new System.Windows.Forms.DataGridView();
             this.BVolver = new System.Windows.Forms.Button();
@@ -38,10 +41,12 @@
             this.ChartEspecialidades = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel2 = new System.Windows.Forms.Panel();
             this.DTGActividadPorTurno = new System.Windows.Forms.DataGridView();
+            this.ChartTurnosPorEstado = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DTGRankingMedicos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChartEspecialidades)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DTGActividadPorTurno)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ChartTurnosPorEstado)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -54,7 +59,7 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(1, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1128, 79);
+            this.panel1.Size = new System.Drawing.Size(1080, 51);
             this.panel1.TabIndex = 1;
             // 
             // DTGRankingMedicos
@@ -63,7 +68,7 @@
             this.DTGRankingMedicos.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.DTGRankingMedicos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DTGRankingMedicos.GridColor = System.Drawing.SystemColors.ActiveBorder;
-            this.DTGRankingMedicos.Location = new System.Drawing.Point(557, -102);
+            this.DTGRankingMedicos.Location = new System.Drawing.Point(509, -62);
             this.DTGRankingMedicos.Name = "DTGRankingMedicos";
             this.DTGRankingMedicos.Size = new System.Drawing.Size(512, 316);
             this.DTGRankingMedicos.TabIndex = 3;
@@ -72,7 +77,7 @@
             // BVolver
             // 
             this.BVolver.Image = global::SaludSoft.Properties.Resources.angulo_izquierdo;
-            this.BVolver.Location = new System.Drawing.Point(12, 17);
+            this.BVolver.Location = new System.Drawing.Point(11, 3);
             this.BVolver.Name = "BVolver";
             this.BVolver.Size = new System.Drawing.Size(75, 44);
             this.BVolver.TabIndex = 1;
@@ -84,7 +89,7 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.White;
             this.label1.Font = new System.Drawing.Font("Comic Sans MS", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(541, 21);
+            this.label1.Location = new System.Drawing.Point(459, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(102, 29);
             this.label1.TabIndex = 1;
@@ -100,14 +105,14 @@
             this.ChartEspecialidades.Cursor = System.Windows.Forms.Cursors.Default;
             legend1.Name = "Legend1";
             this.ChartEspecialidades.Legends.Add(legend1);
-            this.ChartEspecialidades.Location = new System.Drawing.Point(12, 198);
+            this.ChartEspecialidades.Location = new System.Drawing.Point(49, 130);
             this.ChartEspecialidades.Name = "ChartEspecialidades";
             this.ChartEspecialidades.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SeaGreen;
             series1.ChartArea = "ChartArea";
             series1.Legend = "Legend1";
             series1.Name = "Especialidades";
             this.ChartEspecialidades.Series.Add(series1);
-            this.ChartEspecialidades.Size = new System.Drawing.Size(540, 316);
+            this.ChartEspecialidades.Size = new System.Drawing.Size(427, 262);
             this.ChartEspecialidades.TabIndex = 2;
             this.ChartEspecialidades.Text = "Especialidades";
             // 
@@ -116,27 +121,44 @@
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BackColor = System.Drawing.Color.SeaGreen;
-            this.panel2.Location = new System.Drawing.Point(12, 85);
+            this.panel2.Location = new System.Drawing.Point(8, 57);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1105, 57);
+            this.panel2.Size = new System.Drawing.Size(1057, 67);
             this.panel2.TabIndex = 4;
             // 
             // DTGActividadPorTurno
             // 
-            this.DTGActividadPorTurno.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.DTGActividadPorTurno.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DTGActividadPorTurno.Location = new System.Drawing.Point(617, 198);
+            this.DTGActividadPorTurno.Location = new System.Drawing.Point(576, 130);
             this.DTGActividadPorTurno.Name = "DTGActividadPorTurno";
-            this.DTGActividadPorTurno.Size = new System.Drawing.Size(474, 316);
+            this.DTGActividadPorTurno.Size = new System.Drawing.Size(474, 262);
             this.DTGActividadPorTurno.TabIndex = 5;
             this.DTGActividadPorTurno.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.DTGActividadTurnos_CellFormatting);
+            // 
+            // ChartTurnosPorEstado
+            // 
+            this.ChartTurnosPorEstado.BackColor = System.Drawing.Color.DimGray;
+            this.ChartTurnosPorEstado.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.Center;
+            chartArea2.Name = "ChartArea1";
+            this.ChartTurnosPorEstado.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.ChartTurnosPorEstado.Legends.Add(legend2);
+            this.ChartTurnosPorEstado.Location = new System.Drawing.Point(247, 398);
+            this.ChartTurnosPorEstado.Name = "ChartTurnosPorEstado";
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.ChartTurnosPorEstado.Series.Add(series2);
+            this.ChartTurnosPorEstado.Size = new System.Drawing.Size(521, 219);
+            this.ChartTurnosPorEstado.TabIndex = 6;
             // 
             // FormEstadisticas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1125, 564);
+            this.ClientSize = new System.Drawing.Size(1077, 617);
+            this.Controls.Add(this.ChartTurnosPorEstado);
             this.Controls.Add(this.DTGActividadPorTurno);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.ChartEspecialidades);
@@ -148,6 +170,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.DTGRankingMedicos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChartEspecialidades)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DTGActividadPorTurno)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ChartTurnosPorEstado)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -161,5 +184,6 @@
         private System.Windows.Forms.DataGridView DTGRankingMedicos;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DataGridView DTGActividadPorTurno;
+        private System.Windows.Forms.DataVisualization.Charting.Chart ChartTurnosPorEstado;
     }
 }

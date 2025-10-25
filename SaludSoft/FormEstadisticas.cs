@@ -20,6 +20,7 @@ namespace SaludSoft
             CargarGrafico();
             CargarRankingMedicosGrid();
             CargarActividadTurnosGrid();
+            CargarGraficoTurnosPorEstado();
 
             DTGRankingMedicos.CellPainting += DTGRankingMedicos_CellPainting;
             DTGActividadPorTurno.CellFormatting += DTGActividadTurnos_CellFormatting;
@@ -265,6 +266,78 @@ namespace SaludSoft
                 }
             }
         }
+        // grafico de tortas representa los turnos por su estado
+        private void CargarGraficoTurnosPorEstado()
+        {
+            string query = @"
+             SELECT 
+              t.estado AS Estado,
+             COUNT(t.id_turno) AS CantidadTurnos
+             FROM Turnos t
+             INNER JOIN Agenda a ON t.id_agenda = a.id_agenda
+             INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
+             INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
+             INNER JOIN Especialidad e ON p.id_especialidad = e.id_especialidad
+             WHERE t.fecha >= DATEADD(MONTH, -1, GETDATE())
+             GROUP BY t.estado
+             ORDER BY t.estado; ";
 
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                if (dt.Rows.Count == 0)
+                {
+                    MessageBox.Show("No hay datos para mostrar en el gráfico de torta.");
+                    return;
+                }
+
+                // Calcular total
+                int total = dt.AsEnumerable().Sum(r => r.Field<int>("CantidadTurnos"));
+
+                // Calcular porcentaje
+                dt.Columns.Add("Porcentaje", typeof(double));
+                foreach (DataRow row in dt.Rows)
+                {
+                    double cantidad = Convert.ToDouble(row["CantidadTurnos"]);
+                    row["Porcentaje"] = Math.Round((cantidad / total) * 100, 1);
+                }
+
+                // Configurar el gráfico
+                ChartTurnosPorEstado.Series.Clear();
+                Series serie = new Series("Turnos por Estado");
+                serie.ChartType = SeriesChartType.Pie;
+                serie.XValueMember = "Estado";
+                serie.YValueMembers = "CantidadTurnos";
+                serie.IsValueShownAsLabel = true;
+                serie.LabelForeColor = Color.Black;
+                serie.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+                serie["PieLabelStyle"] = "Outside";
+                serie["PieLineColor"] = "Gray";
+
+                // Colores personalizados
+                serie.Points.DataBind(dt.AsEnumerable(), "Estado", "CantidadTurnos", null);
+                string[] colores = { "#F44336", "#4CAF50","#FFEB3B" }; // rojo,verde,amarillo
+                for (int i = 0; i < serie.Points.Count; i++)
+                {
+                    serie.Points[i].Color = ColorTranslator.FromHtml(colores[i % colores.Length]);
+                    serie.Points[i].Label = $"{dt.Rows[i]["Estado"]} ({dt.Rows[i]["Porcentaje"]}%)";
+                }
+
+                ChartTurnosPorEstado.Series.Add(serie);
+
+                // Título y estilo general
+                ChartTurnosPorEstado.Titles.Clear();
+                ChartTurnosPorEstado.Titles.Add("Distribución de Turnos por Estado");
+                ChartTurnosPorEstado.Titles[0].Font = new Font("Segoe UI", 12, FontStyle.Bold);
+                ChartTurnosPorEstado.Titles[0].ForeColor = Color.FromArgb(40, 60, 40);
+
+       
+                ChartTurnosPorEstado.ChartAreas[0].BackColor = Color.WhiteSmoke;
+               
+            }
+        }
     }
 }
