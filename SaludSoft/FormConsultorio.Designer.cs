@@ -82,9 +82,9 @@
             this.label5 = new System.Windows.Forms.Label();
             this.BGuardarDisponibe = new System.Windows.Forms.Button();
             this.BCancearDisponibilidad = new System.Windows.Forms.Button();
-            this.CBDiasSemanas = new System.Windows.Forms.ComboBox();
             this.DPTHoraInicio = new System.Windows.Forms.DateTimePicker();
             this.DTPHoraFin = new System.Windows.Forms.DateTimePicker();
+            this.CLBDiasSemana = new System.Windows.Forms.CheckedListBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGWConsultorios_profesional)).BeginInit();
             this.panel2.SuspendLayout();
@@ -267,7 +267,7 @@
             this.BAgregarProfesional_consultorio.Name = "BAgregarProfesional_consultorio";
             this.BAgregarProfesional_consultorio.Size = new System.Drawing.Size(88, 29);
             this.BAgregarProfesional_consultorio.TabIndex = 7;
-            this.BAgregarProfesional_consultorio.Text = "Agergar";
+            this.BAgregarProfesional_consultorio.Text = "Agregar";
             this.BAgregarProfesional_consultorio.UseVisualStyleBackColor = false;
             this.BAgregarProfesional_consultorio.Click += new System.EventHandler(this.BAgregarProfesional_consultorio_Click);
             // 
@@ -436,7 +436,7 @@
             this.BAgregarConsultorio.Name = "BAgregarConsultorio";
             this.BAgregarConsultorio.Size = new System.Drawing.Size(190, 43);
             this.BAgregarConsultorio.TabIndex = 11;
-            this.BAgregarConsultorio.Text = "+ Agegar Consultorio";
+            this.BAgregarConsultorio.Text = "+ Agregar Consultorio";
             this.BAgregarConsultorio.UseVisualStyleBackColor = false;
             this.BAgregarConsultorio.Click += new System.EventHandler(this.BAgregarConsultorio_Click);
             // 
@@ -586,12 +586,12 @@
             // 
             // GBDisponibilidad
             // 
+            this.GBDisponibilidad.Controls.Add(this.CLBDiasSemana);
             this.GBDisponibilidad.Controls.Add(this.label10);
             this.GBDisponibilidad.Controls.Add(this.label6);
             this.GBDisponibilidad.Controls.Add(this.label5);
             this.GBDisponibilidad.Controls.Add(this.BGuardarDisponibe);
             this.GBDisponibilidad.Controls.Add(this.BCancearDisponibilidad);
-            this.GBDisponibilidad.Controls.Add(this.CBDiasSemanas);
             this.GBDisponibilidad.Controls.Add(this.DPTHoraInicio);
             this.GBDisponibilidad.Controls.Add(this.DTPHoraFin);
             this.GBDisponibilidad.Location = new System.Drawing.Point(396, 265);
@@ -655,15 +655,6 @@
             this.BCancearDisponibilidad.UseVisualStyleBackColor = false;
             this.BCancearDisponibilidad.Click += new System.EventHandler(this.BCancelarDisponibilidad_Click);
             // 
-            // CBDiasSemanas
-            // 
-            this.CBDiasSemanas.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CBDiasSemanas.FormattingEnabled = true;
-            this.CBDiasSemanas.Location = new System.Drawing.Point(256, 58);
-            this.CBDiasSemanas.Name = "CBDiasSemanas";
-            this.CBDiasSemanas.Size = new System.Drawing.Size(121, 28);
-            this.CBDiasSemanas.TabIndex = 0;
-            // 
             // DPTHoraInicio
             // 
             this.DPTHoraInicio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -681,6 +672,15 @@
             this.DTPHoraFin.Name = "DTPHoraFin";
             this.DTPHoraFin.Size = new System.Drawing.Size(102, 28);
             this.DTPHoraFin.TabIndex = 3;
+            // 
+            // CLBDiasSemana
+            // 
+            this.CLBDiasSemana.CheckOnClick = true;
+            this.CLBDiasSemana.FormattingEnabled = true;
+            this.CLBDiasSemana.Location = new System.Drawing.Point(235, 63);
+            this.CLBDiasSemana.Name = "CLBDiasSemana";
+            this.CLBDiasSemana.Size = new System.Drawing.Size(120, 19);
+            this.CLBDiasSemana.TabIndex = 12;
             // 
             // FormConsultorio
             // 
@@ -779,8 +779,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button BGuardarDisponibe;
         private System.Windows.Forms.Button BCancearDisponibilidad;
-        private System.Windows.Forms.ComboBox CBDiasSemanas;
         private System.Windows.Forms.DateTimePicker DPTHoraInicio;
         private System.Windows.Forms.DateTimePicker DTPHoraFin;
+        private System.Windows.Forms.CheckedListBox CLBDiasSemana;
     }
 }

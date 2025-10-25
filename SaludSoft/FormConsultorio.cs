@@ -215,12 +215,11 @@ namespace SaludSoft
         {
             idProfesionalConsultorioActual = idProfesionalConsultorio;
 
-            CBDiasSemanas.Items.Clear();
-            CBDiasSemanas.Items.AddRange(new string[]
+            CLBDiasSemana.Items.Clear();
+            CLBDiasSemana.Items.AddRange(new string[]
             {
-                "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"
+              "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"
             });
-            CBDiasSemanas.SelectedIndex = 0;
 
             DTPHoraInicio.Format = DateTimePickerFormat.Time;
             DTPHoraInicio.ShowUpDown = true;
@@ -232,22 +231,30 @@ namespace SaludSoft
 
         private void BGuardarDisponibilidad_Click(object sender, EventArgs e)
         {
+            if (CLBDiasSemana.CheckedItems.Count == 0)
+            {
+                MessageBox.Show("Debe seleccionar al menos un día.");
+                return;
+            }
+
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 conexion.Open();
 
-                string query = @"
+                foreach (var dia in CLBDiasSemana.CheckedItems)
+                {
+                    string query = @"
                 INSERT INTO Agenda (id_usuario, id_profesional_consultorio, diaSemana, horaInicio, horaFin)
                 VALUES (@usuario, @profCons, @dia, @inicio, @fin)";
 
-                SqlCommand cmd = new SqlCommand(query, conexion);
-                cmd.Parameters.AddWithValue("@usuario", Security.SesionActual.IdUsuario);
-                cmd.Parameters.AddWithValue("@profCons", idProfesionalConsultorioActual);
-                cmd.Parameters.AddWithValue("@dia", CBDiasSemanas.SelectedItem.ToString());
-                cmd.Parameters.AddWithValue("@inicio", DTPHoraInicio.Value.TimeOfDay);
-                cmd.Parameters.AddWithValue("@fin", DTPHoraFin.Value.TimeOfDay);
-
-                cmd.ExecuteNonQuery();
+                    SqlCommand cmd = new SqlCommand(query, conexion);
+                    cmd.Parameters.AddWithValue("@usuario", Security.SesionActual.IdUsuario);
+                    cmd.Parameters.AddWithValue("@profCons", idProfesionalConsultorioActual);
+                    cmd.Parameters.AddWithValue("@dia", dia.ToString());
+                    cmd.Parameters.AddWithValue("@inicio", DTPHoraInicio.Value.TimeOfDay);
+                    cmd.Parameters.AddWithValue("@fin", DTPHoraFin.Value.TimeOfDay);
+                    cmd.ExecuteNonQuery();
+                }
             }
 
             MessageBox.Show("Disponibilidad guardada correctamente.");

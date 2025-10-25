@@ -69,11 +69,11 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.White;
             this.label1.Font = new System.Drawing.Font("Comic Sans MS", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(419, 21);
+            this.label1.Location = new System.Drawing.Point(381, 21);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(204, 29);
+            this.label1.Size = new System.Drawing.Size(252, 29);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Gestión de Usuario";
+            this.label1.Text = "Gestión de Especialidad";
             // 
             // DGVEspecialidad
             // 
@@ -112,7 +112,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(166, 23);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Agergar Especialidad";
+            this.label3.Text = "Agregar Especialidad";
             // 
             // BAgregar
             // 
