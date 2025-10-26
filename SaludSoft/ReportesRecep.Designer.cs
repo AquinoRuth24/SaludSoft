@@ -37,7 +37,9 @@
             System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnVolver = new System.Windows.Forms.Button();
             this.lReportesMes = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lFechaPeriodo = new System.Windows.Forms.Label();
             this.dtpPeriodo = new System.Windows.Forms.DateTimePicker();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -72,9 +74,8 @@
             this.dtpHasta = new System.Windows.Forms.DateTimePicker();
             this.btnImprimir = new System.Windows.Forms.Button();
             this.btActualizar = new System.Windows.Forms.Button();
-            this.btnVolver = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -85,7 +86,6 @@
             this.gbTopMedicos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRankingMedicos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chTopMedicos)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -101,6 +101,17 @@
             this.panel1.Size = new System.Drawing.Size(895, 62);
             this.panel1.TabIndex = 0;
             // 
+            // btnVolver
+            // 
+            this.btnVolver.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnVolver.BackgroundImage = global::SaludSoft.Properties.Resources.angulo_izquierdo;
+            this.btnVolver.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnVolver.Location = new System.Drawing.Point(130, 19);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(44, 29);
+            this.btnVolver.TabIndex = 2;
+            this.btnVolver.UseVisualStyleBackColor = false;
+            // 
             // lReportesMes
             // 
             this.lReportesMes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -114,6 +125,16 @@
             this.lReportesMes.Size = new System.Drawing.Size(179, 29);
             this.lReportesMes.TabIndex = 1;
             this.lReportesMes.Text = "Reporte mensual";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(124, 62);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // lFechaPeriodo
             // 
@@ -278,13 +299,14 @@
             this.gbDetalle.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbDetalle.BackColor = System.Drawing.Color.LightGreen;
             this.gbDetalle.Controls.Add(this.chPieEstados);
             this.gbDetalle.Controls.Add(this.dgvDetalle);
             this.gbDetalle.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbDetalle.ForeColor = System.Drawing.Color.Green;
-            this.gbDetalle.Location = new System.Drawing.Point(12, 232);
+            this.gbDetalle.Location = new System.Drawing.Point(12, 229);
             this.gbDetalle.Name = "gbDetalle";
-            this.gbDetalle.Size = new System.Drawing.Size(870, 200);
+            this.gbDetalle.Size = new System.Drawing.Size(870, 191);
             this.gbDetalle.TabIndex = 7;
             this.gbDetalle.TabStop = false;
             this.gbDetalle.Text = "Detalle de Turnos Confirmados/Pendientes/Cancelados";
@@ -393,9 +415,9 @@
             this.gbTopMedicos.Controls.Add(this.chTopMedicos);
             this.gbTopMedicos.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbTopMedicos.ForeColor = System.Drawing.Color.Green;
-            this.gbTopMedicos.Location = new System.Drawing.Point(12, 232);
+            this.gbTopMedicos.Location = new System.Drawing.Point(13, 232);
             this.gbTopMedicos.Name = "gbTopMedicos";
-            this.gbTopMedicos.Size = new System.Drawing.Size(871, 245);
+            this.gbTopMedicos.Size = new System.Drawing.Size(871, 236);
             this.gbTopMedicos.TabIndex = 9;
             this.gbTopMedicos.TabStop = false;
             this.gbTopMedicos.Text = "Médicos con Más Consultas Realizadas este Mes";
@@ -415,7 +437,7 @@
             this.colEspec,
             this.colConsultas,
             this.colPorcentaje});
-            this.dgvRankingMedicos.Location = new System.Drawing.Point(20, 134);
+            this.dgvRankingMedicos.Location = new System.Drawing.Point(20, 152);
             this.dgvRankingMedicos.Name = "dgvRankingMedicos";
             this.dgvRankingMedicos.ReadOnly = true;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -428,7 +450,7 @@
             this.dgvRankingMedicos.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvRankingMedicos.RowHeadersVisible = false;
             this.dgvRankingMedicos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvRankingMedicos.Size = new System.Drawing.Size(845, 87);
+            this.dgvRankingMedicos.Size = new System.Drawing.Size(833, 78);
             this.dgvRankingMedicos.TabIndex = 1;
             // 
             // colPos
@@ -509,7 +531,7 @@
             this.btnImprimir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnImprimir.BackgroundImage = global::SaludSoft.Properties.Resources.impresora;
             this.btnImprimir.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnImprimir.Location = new System.Drawing.Point(802, 465);
+            this.btnImprimir.Location = new System.Drawing.Point(801, 474);
             this.btnImprimir.Name = "btnImprimir";
             this.btnImprimir.Size = new System.Drawing.Size(75, 35);
             this.btnImprimir.TabIndex = 12;
@@ -520,32 +542,11 @@
             this.btActualizar.BackgroundImage = global::SaludSoft.Properties.Resources.actualizar;
             this.btActualizar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btActualizar.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btActualizar.Location = new System.Drawing.Point(681, 77);
+            this.btActualizar.Location = new System.Drawing.Point(624, 72);
             this.btActualizar.Name = "btActualizar";
             this.btActualizar.Size = new System.Drawing.Size(39, 23);
             this.btActualizar.TabIndex = 3;
             this.btActualizar.UseVisualStyleBackColor = true;
-            // 
-            // btnVolver
-            // 
-            this.btnVolver.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnVolver.BackgroundImage = global::SaludSoft.Properties.Resources.angulo_izquierdo;
-            this.btnVolver.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnVolver.Location = new System.Drawing.Point(130, 19);
-            this.btnVolver.Name = "btnVolver";
-            this.btnVolver.Size = new System.Drawing.Size(44, 29);
-            this.btnVolver.TabIndex = 2;
-            this.btnVolver.UseVisualStyleBackColor = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::SaludSoft.Properties.Resources.logo1;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(124, 62);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
             // 
             // ReportesRecep
             // 
@@ -553,12 +554,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(895, 512);
+            this.Controls.Add(this.gbDetalle);
             this.Controls.Add(this.btnImprimir);
             this.Controls.Add(this.dtpHasta);
             this.Controls.Add(this.lFechaHasta);
             this.Controls.Add(this.gbTopMedicos);
             this.Controls.Add(this.tlKpis);
-            this.Controls.Add(this.gbDetalle);
             this.Controls.Add(this.btActualizar);
             this.Controls.Add(this.dtpPeriodo);
             this.Controls.Add(this.lFechaPeriodo);
@@ -567,6 +568,7 @@
             this.Text = "ReportesRecep";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
@@ -580,7 +582,6 @@
             this.gbTopMedicos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRankingMedicos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chTopMedicos)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lBackup = new System.Windows.Forms.Label();
             this.lBd = new System.Windows.Forms.Label();
             this.lRuta = new System.Windows.Forms.Label();
             this.cbBd = new System.Windows.Forms.ComboBox();
@@ -36,7 +37,6 @@
             this.btConectar = new System.Windows.Forms.Button();
             this.btRuta = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.lBackup = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,6 +49,17 @@
             this.panel1.Size = new System.Drawing.Size(800, 81);
             this.panel1.TabIndex = 0;
             // 
+            // lBackup
+            // 
+            this.lBackup.AutoSize = true;
+            this.lBackup.BackColor = System.Drawing.Color.White;
+            this.lBackup.Font = new System.Drawing.Font("Comic Sans MS", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lBackup.Location = new System.Drawing.Point(23, 21);
+            this.lBackup.Name = "lBackup";
+            this.lBackup.Size = new System.Drawing.Size(109, 34);
+            this.lBackup.TabIndex = 8;
+            this.lBackup.Text = "Back Up";
+            // 
             // lBd
             // 
             this.lBd.AutoSize = true;
@@ -58,6 +69,7 @@
             this.lBd.Size = new System.Drawing.Size(159, 27);
             this.lBd.TabIndex = 1;
             this.lBd.Text = "Base de datos: ";
+            this.lBd.Click += new System.EventHandler(this.lBd_Click);
             // 
             // lRuta
             // 
@@ -78,6 +90,7 @@
             this.cbBd.Name = "cbBd";
             this.cbBd.Size = new System.Drawing.Size(233, 21);
             this.cbBd.TabIndex = 3;
+            this.cbBd.SelectedIndexChanged += new System.EventHandler(this.cbBd_SelectedIndexChanged);
             // 
             // tbRuta
             // 
@@ -85,6 +98,7 @@
             this.tbRuta.Name = "tbRuta";
             this.tbRuta.Size = new System.Drawing.Size(233, 20);
             this.tbRuta.TabIndex = 4;
+            this.tbRuta.TextChanged += new System.EventHandler(this.tbRuta_TextChanged);
             // 
             // btConectar
             // 
@@ -96,6 +110,7 @@
             this.btConectar.TabIndex = 5;
             this.btConectar.Text = "Conectar";
             this.btConectar.UseVisualStyleBackColor = false;
+            this.btConectar.Click += new System.EventHandler(this.btConectar_Click);
             // 
             // btRuta
             // 
@@ -107,6 +122,7 @@
             this.btRuta.TabIndex = 6;
             this.btRuta.Text = "Ruta";
             this.btRuta.UseVisualStyleBackColor = false;
+            this.btRuta.Click += new System.EventHandler(this.btRuta_Click);
             // 
             // button1
             // 
@@ -118,17 +134,7 @@
             this.button1.TabIndex = 7;
             this.button1.Text = "BackUp";
             this.button1.UseVisualStyleBackColor = false;
-            // 
-            // lBackup
-            // 
-            this.lBackup.AutoSize = true;
-            this.lBackup.BackColor = System.Drawing.Color.White;
-            this.lBackup.Font = new System.Drawing.Font("Comic Sans MS", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lBackup.Location = new System.Drawing.Point(23, 21);
-            this.lBackup.Name = "lBackup";
-            this.lBackup.Size = new System.Drawing.Size(109, 34);
-            this.lBackup.TabIndex = 8;
-            this.lBackup.Text = "Back Up";
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Backup
             // 
