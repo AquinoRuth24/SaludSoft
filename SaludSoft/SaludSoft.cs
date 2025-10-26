@@ -567,5 +567,13 @@ ORDER BY fechaHora;";
                 return (o == null || o == DBNull.Value) ? 0 : Convert.ToInt32(o);
             }
         }
+
+        private void btnReportes_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            ReportesRecep frm = new ReportesRecep();
+            frm.ShowDialog();
+            this.Show();
+        }
     }
 }

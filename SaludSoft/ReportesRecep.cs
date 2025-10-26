@@ -1,17 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace SaludSoft
 {
     public partial class ReportesRecep : Form
     {
-        // ==== Colores ProgressBar (1=Verde, 2=Rojo, 3=Amarillo) ====
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
         private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
         private const uint PBM_SETSTATE = 0x0410 + 16;
@@ -33,7 +36,6 @@ namespace SaludSoft
             // Clicks de las 3 cards
             WireCardClicks();
 
-            // Estética del ranking
             dgvRankingMedicos.RowPostPaint += dgvRankingMedicos_RowPostPaint;
             dgvRankingMedicos.CellPainting += dgvRankingMedicos_CellPainting;
         }
@@ -56,28 +58,30 @@ namespace SaludSoft
             lFechaPeriodo.Text = "Fecha Desde:";
             lReportesMes.Text = "Reporte mensual";
 
-            //evitar duplicados en las grillas
             dgvDetalle.AutoGenerateColumns = false;
             dgvRankingMedicos.AutoGenerateColumns = false;
-
-            // Colores de barras (solo apariencia)
+          
             foreach (var pb in new[] { pbTurnosConfirmados, pbTP, progressBar1 })
             {
                 pb.Style = ProgressBarStyle.Continuous;
                 pb.MarqueeAnimationSpeed = 0;
             }
-            SetPBState(pbTurnosConfirmados, 1); // verde
-            SetPBState(pbTP, 3);                // amarillo
-            SetPBState(progressBar1, 2);        // rojo
+            SetPBState(pbTurnosConfirmados, 1); 
+            SetPBState(pbTP, 3);                
+            SetPBState(progressBar1, 2);        
 
             // Charts
             var caPie = EnsureChartArea(chPieEstados, "ca");
             var lgPie = EnsureLegend(chPieEstados, "lg");
             var sPie = EnsureSeries(chPieEstados, "Estados", SeriesChartType.Pie, caPie, lgPie);
             sPie.IsValueShownAsLabel = true;
+            sPie.LabelForeColor = Color.Black;
+            sPie.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
             sPie["PieLabelStyle"] = "Outside";
             sPie["PieLineColor"] = "Gray";
-            sPie.Label = "#VALX #PERCENT{P0}";
+            sPie.Label = "#VALX #PERCENT{P0}";    
+            sPie.LegendText = "#VALX";            
+
             chPieEstados.Legends[lgPie].Docking = Docking.Bottom;
             chPieEstados.Legends[lgPie].Alignment = StringAlignment.Center;
 
@@ -100,6 +104,11 @@ namespace SaludSoft
             _detalleVisible = true;
 
             RefrescarTodo();
+            ConfigurarPie();
+
+
+
+
         }
 
         // ===== RANGO FECHAS =====
@@ -218,45 +227,48 @@ namespace SaludSoft
             var (desde, hastaEx) = RangoActual();
 
             string sqlEstados = @"
-SELECT t.estado AS Estado, COUNT(*) AS Cant
-FROM dbo.Turnos t
-WHERE t.fecha >= @d AND t.fecha < @h
-GROUP BY t.estado;";
+            SELECT t.estado AS Estado, COUNT(*) AS Cant
+            FROM dbo.Turnos t
+            WHERE t.fecha >= @d AND t.fecha < @h
+            GROUP BY t.estado;";
 
-            string sqlTotal = @"
-SELECT COUNT(*) AS TotalMes
-FROM dbo.Turnos
-WHERE fecha >= @d AND fecha < @h;";
+                    string sqlTotal = @"
+            SELECT COUNT(*) AS TotalMes
+            FROM dbo.Turnos
+            WHERE fecha >= @d AND fecha < @h;";
 
-            var dtEstados = GetTable(sqlEstados, c => { c.Parameters.AddWithValue("@d", desde); c.Parameters.AddWithValue("@h", hastaEx); });
-            int total = GetTable(sqlTotal, c => { c.Parameters.AddWithValue("@d", desde); c.Parameters.AddWithValue("@h", hastaEx); })
-                        .AsEnumerable().Select(r => r.Field<int>("TotalMes")).DefaultIfEmpty(0).First();
+            var dtEstados = GetTable(sqlEstados, c => {
+                c.Parameters.AddWithValue("@d", desde);
+                c.Parameters.AddWithValue("@h", hastaEx);
+            });
 
-            int conf = dtEstados.AsEnumerable().Where(r => r.Field<string>("Estado").Equals("Confirmado", StringComparison.OrdinalIgnoreCase))
-                                               .Select(r => r.Field<int>("Cant")).DefaultIfEmpty(0).First();
-            int pend = dtEstados.AsEnumerable().Where(r => r.Field<string>("Estado").Equals("Pendiente", StringComparison.OrdinalIgnoreCase))
-                                               .Select(r => r.Field<int>("Cant")).DefaultIfEmpty(0).First();
-            int canc = dtEstados.AsEnumerable().Where(r => r.Field<string>("Estado").Equals("Cancelado", StringComparison.OrdinalIgnoreCase))
-                                               .Select(r => r.Field<int>("Cant")).DefaultIfEmpty(0).First();
+            int total = GetTable(sqlTotal, c => {
+                c.Parameters.AddWithValue("@d", desde);
+                c.Parameters.AddWithValue("@h", hastaEx);
+            }).AsEnumerable().Select(r => r.Field<int>("TotalMes")).DefaultIfEmpty(0).First();
 
+            // Obtener valores
+            int conf = dtEstados.AsEnumerable()
+                .Where(r => r.Field<string>("Estado").Equals("Confirmado", StringComparison.OrdinalIgnoreCase))
+                .Select(r => r.Field<int>("Cant")).DefaultIfEmpty(0).First();
+
+            int pend = dtEstados.AsEnumerable()
+                .Where(r => r.Field<string>("Estado").Equals("Pendiente", StringComparison.OrdinalIgnoreCase))
+                .Select(r => r.Field<int>("Cant")).DefaultIfEmpty(0).First();
+
+            int canc = dtEstados.AsEnumerable()
+                .Where(r => r.Field<string>("Estado").Equals("Cancelado", StringComparison.OrdinalIgnoreCase))
+                .Select(r => r.Field<int>("Cant")).DefaultIfEmpty(0).First();
+
+            // Actualizar KPI Cards
             SetCard(pbTurnosConfirmados, lbValor, lbTituloConfirmado, "Turnos Confirmados", conf, total, 1);
             SetCard(pbTP, lbValorTP, lbTurnosPendientes, "Turnos Pendientes", pend, total, 3);
             SetCard(progressBar1, lbValorTC, lbTurnosCancelados, "Turnos Cancelados", canc, total, 2);
 
-            var seriePie = EnsureSeries(chPieEstados, "Estados",
-                SeriesChartType.Pie,
-                EnsureChartArea(chPieEstados, "ca"),
-                EnsureLegend(chPieEstados, "lg"));
-            seriePie.Points.Clear();
+            LlenarPie(conf, pend, canc);
 
-            foreach (DataRow r in dtEstados.Rows)
-            {
-                var dp = new DataPoint { AxisLabel = r.Field<string>("Estado") };
-                dp.YValues = new[] { Convert.ToDouble(r.Field<int>("Cant")) };
-                dp.ToolTip = "#VALX: #VAL";
-                seriePie.Points.Add(dp);
-            }
         }
+
 
         private void SetCard(ProgressBar pb, Label lbNumero, Label lbTitulo, string titulo, int valor, int total, int colorState)
         {
@@ -289,19 +301,19 @@ WHERE fecha >= @d AND fecha < @h;";
             var (desde, hastaEx) = RangoActual();
 
             string sql = @"
-SELECT 
-    (pa.apellido + ', ' + pa.nombre)   AS Paciente,
-    (pr.apellido + ' ' + pr.nombre)    AS Profesional,
-    es.nombre                          AS Especialidad,
-    FORMAT(t.fecha,'dd/MM/yyyy HH:mm') AS [Fecha/Hora]
-FROM dbo.Turnos t
-INNER JOIN dbo.Paciente pa                ON pa.id_paciente = t.id_paciente
-INNER JOIN dbo.Agenda a                   ON a.id_agenda = t.id_agenda
-INNER JOIN dbo.Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
-INNER JOIN dbo.Profesional pr             ON pr.id_profesional = pc.id_profesional
-INNER JOIN dbo.Especialidad es            ON es.id_especialidad = pr.id_especialidad
-WHERE t.fecha >= @desde AND t.fecha < @hasta AND t.estado = @estado
-ORDER BY t.fecha;";
+            SELECT 
+                (pa.apellido + ', ' + pa.nombre)   AS Paciente,
+                (pr.apellido + ' ' + pr.nombre)    AS Profesional,
+                es.nombre                          AS Especialidad,
+                FORMAT(t.fecha,'dd/MM/yyyy HH:mm') AS [Fecha/Hora]
+            FROM dbo.Turnos t
+            INNER JOIN dbo.Paciente pa                ON pa.id_paciente = t.id_paciente
+            INNER JOIN dbo.Agenda a                   ON a.id_agenda = t.id_agenda
+            INNER JOIN dbo.Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
+            INNER JOIN dbo.Profesional pr             ON pr.id_profesional = pc.id_profesional
+            INNER JOIN dbo.Especialidad es            ON es.id_especialidad = pr.id_especialidad
+            WHERE t.fecha >= @desde AND t.fecha < @hasta AND t.estado = @estado
+            ORDER BY t.fecha;";
 
             var dt = GetTable(sql, c =>
             {
@@ -443,5 +455,325 @@ WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
                 e.Graphics.DrawString($"{pct}%", f, Brushes.DimGray, rect, sf);
             }
         }
+
+        // ==== LAYOUT SECCIONES====
+        private const int SPACING = 10; 
+
+   
+        private void LayoutSections()
+        {
+            
+            int y = tlKpis.Bottom + SPACING;
+
+           
+            if (_detalleVisible)
+            {
+                gbDetalle.Visible = true;
+                gbDetalle.Top = y;
+                y = gbDetalle.Bottom + SPACING;
+            }
+            else
+            {
+                gbDetalle.Visible = false;
+                
+            }
+
+            gbTopMedicos.Top = y;
+            y = gbTopMedicos.Bottom + SPACING;
+
+            
+            var btnImprimir = Controls.Find("btnImprimir", true).FirstOrDefault() as Control;
+            if (btnImprimir != null)
+            {
+               
+                btnImprimir.Top = y;
+                y = btnImprimir.Bottom + SPACING;
+            }
+
+           
+            if (AutoScroll)
+                AutoScrollMinSize = new Size(0, y + 20);
+        }
+
+        // ====== PIE CHART HELPERS ======
+        private void ConfigurarPie()
+        {
+            var ca = EnsureChartArea(chPieEstados, "ca");
+            var lg = EnsureLegend(chPieEstados, "lg");
+
+            var s = EnsureSeries(chPieEstados, "Estados", SeriesChartType.Pie, ca, lg);
+            s.IsValueShownAsLabel = true;
+            s.Label = "#PERCENT{P0}";          
+            s["PieLabelStyle"] = "Outside";    
+            s["PieLineColor"] = "Gray";        
+            s.LegendText = "#VALX";            
+
+           
+            chPieEstados.Legends[lg].Docking = Docking.Bottom;
+            chPieEstados.Legends[lg].Alignment = StringAlignment.Center;
+        }
+
+       
+        private void LlenarPie(int conf, int pend, int canc)
+        {
+            var s = chPieEstados.Series["Estados"];
+            s.Points.Clear();
+
+           
+            var verde = Color.FromArgb(38, 166, 91);   // Confirmados
+            var amarillo = Color.FromArgb(247, 202, 24);  // Pendientes
+            var rojo = Color.FromArgb(231, 76, 60);   // Cancelados
+
+            var data = new[]
+            {
+        ("Confirmados", conf, verde),
+        ("Pendientes",  pend, amarillo),
+        ("Cancelados",  canc, rojo)
+    };
+
+            int total = Math.Max(conf + pend + canc, 0);
+            foreach (var item in data)
+            {
+                int idx = s.Points.AddY(item.Item2); 
+                var p = s.Points[idx];               
+
+                p.AxisLabel = item.Item1;           
+                p.LegendText = item.Item1;           
+                p.Color = item.Item3;
+                p.Label = total == 0 ? "" : "#PERCENT{P0}";
+                p.ToolTip = $"{item.Item1}: {item.Item2} (#PERCENT{{P0}})";
+            }
+
+        }
+
+        private static int FindColumnIndex(DataGridView dgv, params string[] candidates)
+        {
+            if (dgv == null) return -1;
+            // por Name
+            for (int i = 0; i < dgv.Columns.Count; i++)
+                if (candidates.Any(c => string.Equals(dgv.Columns[i].Name, c, StringComparison.OrdinalIgnoreCase)))
+                    return i;
+            // por HeaderText
+            for (int i = 0; i < dgv.Columns.Count; i++)
+                if (candidates.Any(c => string.Equals(dgv.Columns[i].HeaderText, c, StringComparison.OrdinalIgnoreCase)))
+                    return i;
+            return -1;
+        }
+
+
+        private DataGridView TryGetGridByEstado(string estado)
+        {
+            estado = (estado ?? "").ToLowerInvariant(); // "confirmado" | "pendiente" | "cancelado"
+            foreach (Control c in this.Controls)
+            {
+                if (c is DataGridView dgv)
+                {
+                    string n = (dgv.Name ?? "").ToLowerInvariant();
+                    if (estado.StartsWith("conf") && n.Contains("confirm")) return dgv;
+                    if (estado.StartsWith("pend") && n.Contains("pend")) return dgv;
+                    if (estado.StartsWith("canc") && n.Contains("cancel")) return dgv;
+                }
+            }
+            return null;
+        }
+        private static string ColumnLetter(int colIndex)
+        {
+            string col = "";
+            while (colIndex > 0)
+            {
+                int mod = (colIndex - 1) % 26;
+                col = (char)('A' + mod) + col;
+                colIndex = (colIndex - mod) / 26;
+            }
+            return col;
+        }
+
+        
+        private (int conf, int pend, int canc) GetTotalsFromChartOrFallback()
+        {
+            int tConf = 0, tPend = 0, tCanc = 0;
+
+           
+            if (chPieEstados?.Series.Count > 0 && chPieEstados.Series[0].Points.Count > 0)
+            {
+                foreach (var p in chPieEstados.Series[0].Points)
+                {
+                    string lbl = (p.AxisLabel ?? p.LegendText ?? "").Trim().ToLowerInvariant();
+                    int val = (int)p.YValues.FirstOrDefault();
+
+                    if (lbl.Contains("confirm")) tConf = val;
+                    else if (lbl.Contains("pend")) tPend = val;
+                    else if (lbl.Contains("cancel")) tCanc = val;
+                }
+               
+                return (tConf, tPend, tCanc);
+            }
+
+            
+            int countGrid = dgvDetalle?.Rows.Cast<DataGridViewRow>().Count(r => !r.IsNewRow) ?? 0;
+            string estado = _estadoActual?.Trim() ?? "";
+            if (estado.StartsWith("conf", System.StringComparison.OrdinalIgnoreCase)) tConf = countGrid;
+            else if (estado.StartsWith("pend", System.StringComparison.OrdinalIgnoreCase)) tPend = countGrid;
+            else if (estado.StartsWith("canc", System.StringComparison.OrdinalIgnoreCase)) tCanc = countGrid;
+
+            return (tConf, tPend, tCanc);
+        }
+
+        private int DumpGrid(Excel.Worksheet ws, DataGridView dgv, int filaInicio, int colInicio)
+        {
+            if (dgv == null || dgv.Rows.Count == 0) return filaInicio;
+
+            // Cabeceras
+            for (int c = 0; c < dgv.Columns.Count; c++)
+            {
+                ws.Cells[filaInicio, colInicio + c] = dgv.Columns[c].HeaderText;
+                ((Excel.Range)ws.Cells[filaInicio, colInicio + c]).Font.Bold = true;
+            }
+            // Datos
+            int rOut = filaInicio + 1;
+            foreach (DataGridViewRow r in dgv.Rows)
+            {
+                if (r.IsNewRow) continue;
+                for (int c = 0; c < dgv.Columns.Count; c++)
+                    ws.Cells[rOut, colInicio + c] = r.Cells[c].Value?.ToString() ?? "";
+                rOut++;
+            }
+            ((Excel.Range)ws.Columns).AutoFit();
+            return rOut - 1;
+        }
+
+        private void btnImprimir_Click(object sender, EventArgs e)
+        {
+            Excel.Application app = null;
+            Excel.Workbook wb = null;
+            Excel.Worksheet ws1 = null, ws2 = null;
+            Excel.ChartObjects chartObjs1 = null, chartObjs2 = null;
+            Excel.ChartObject chPieObj = null, chColObj = null;
+
+            try
+            {
+                if ((dgvDetalle?.Rows.Count ?? 0) == 0 && (dgvRankingMedicos?.Rows.Count ?? 0) == 0)
+                {
+                    MessageBox.Show("No hay datos para exportar.", "Reportes",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                var (tConf, tPend, tCanc) = GetTotalsFromChartOrFallback();
+
+                app = new Excel.Application { Visible = false };
+                wb = app.Workbooks.Add(Type.Missing);
+
+                // -------- Hoja 1: Resumen + detalle (dgvDetalle) --------
+                ws1 = wb.ActiveSheet;
+                ws1.Name = "Turnos por Estado";
+
+                ws1.Cells[1, 1] = "Estado"; ws1.Cells[1, 2] = "Cantidad";
+                ((Excel.Range)ws1.Range["A1", "B1"]).Font.Bold = true;
+
+                ws1.Cells[2, 1] = "Confirmado"; ws1.Cells[2, 2] = tConf;
+                ws1.Cells[3, 1] = "Pendiente"; ws1.Cells[3, 2] = tPend;
+                ws1.Cells[4, 1] = "Cancelado"; ws1.Cells[4, 2] = tCanc;
+                ws1.Cells[5, 1] = "Total"; ws1.Cells[5, 2] = tConf + tPend + tCanc;
+                ((Excel.Range)ws1.Cells[5, 1]).Font.Bold = true;
+                ((Excel.Range)ws1.Cells[5, 2]).Font.Bold = true;
+
+                chartObjs1 = (Excel.ChartObjects)ws1.ChartObjects();
+                chPieObj = chartObjs1.Add(350, 0, 480, 320);
+                Excel.Chart chPie = chPieObj.Chart;
+                chPie.ChartType = Excel.XlChartType.xlPie;
+                chPie.SetSourceData(ws1.Range["A2", "B4"]);
+                chPie.HasTitle = true;
+                chPie.ChartTitle.Text = "Distribución de turnos";
+                chPie.HasLegend = true;
+                chPie.Legend.Position = Excel.XlLegendPosition.xlLegendPositionRight;
+                chPie.ApplyDataLabels(Excel.XlDataLabelsType.xlDataLabelsShowPercent);
+                chPie.SeriesCollection(1).ApplyDataLabels(Excel.XlDataLabelsType.xlDataLabelsShowValue);
+                chPie.SeriesCollection(1).DataLabels().ShowPercentage = true;
+                chPie.SeriesCollection(1).DataLabels().ShowValue = true;
+
+                int fila = 7;
+                ws1.Cells[fila, 1] = "Detalle de turnos";
+                ((Excel.Range)ws1.Cells[fila, 1]).Font.Bold = true;
+                fila++;
+                DumpGrid(ws1, dgvDetalle, fila, 1);
+
+                // -------- Hoja 2: Ranking Médicos (dgvRankingMedicos) --------
+                if (dgvRankingMedicos != null && dgvRankingMedicos.Rows.Count > 0)
+                {
+                    ws2 = wb.Sheets.Add(After: ws1);
+                    ws2.Name = "Ranking Médicos";
+
+                    int lastRow = DumpGrid(ws2, dgvRankingMedicos, 1, 1);
+
+                    
+                    int idxMedico = dgvRankingMedicos.Columns["colMedico"].Index + 1;
+                    int idxCant = dgvRankingMedicos.Columns["colConsultas"].Index + 1;
+
+                    string x1 = ColumnLetter(idxMedico) + "2";
+                    string x2 = ColumnLetter(idxMedico) + lastRow;
+                    string y1 = ColumnLetter(idxCant) + "2";
+                    string y2 = ColumnLetter(idxCant) + lastRow;
+
+                    chartObjs2 = (Excel.ChartObjects)ws2.ChartObjects();
+                    chColObj = chartObjs2.Add(350, 0, 520, 340);
+                    Excel.Chart chCol = chColObj.Chart;
+                    chCol.ChartType = Excel.XlChartType.xlColumnClustered;
+                    chCol.HasTitle = true;
+                    chCol.ChartTitle.Text = "Ranking de Médicos (cantidad de turnos)";
+                    chCol.SetSourceData(ws2.Range[$"{y1}:{y2}"]);
+                    chCol.SeriesCollection(1).XValues = ws2.Range[$"{x1}:{x2}"];
+                    chCol.Axes(Excel.XlAxisType.xlCategory).HasTitle = true;
+                    chCol.Axes(Excel.XlAxisType.xlCategory).AxisTitle.Text = "Médico";
+                    chCol.Axes(Excel.XlAxisType.xlValue).HasTitle = true;
+                    chCol.Axes(Excel.XlAxisType.xlValue).AxisTitle.Text = "Turnos";
+                    chCol.ApplyDataLabels();
+                }
+
+                string fileName = $"Reporte_SaludSoft_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+                string ruta = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
+                wb.SaveAs(ruta);
+
+                if (MessageBox.Show($"Reporte generado.\n¿Abrir en Excel para imprimir?\n\n{ruta}",
+                    "Excel", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    app.Visible = true;
+                }
+                else
+                {
+                    wb.Close(false);
+                    app.Quit();
+                }
+
+                MessageBox.Show("Archivo guardado en: " + ruta, "Éxito",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al generar el reporte: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                void Release(object o) { if (o != null) Marshal.ReleaseComObject(o); }
+                Release(chColObj); Release(chartObjs2);
+                Release(chPieObj); Release(chartObjs1);
+                Release(ws2); Release(ws1);
+                if (wb != null) { try { wb.Close(false); } catch { } Release(wb); }
+                if (app != null) { try { app.Quit(); } catch { } Release(app); }
+                GC.Collect(); GC.WaitForPendingFinalizers();
+            }
+        }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            // Cierra el formulario actual de reportes
+            this.Close();
+
+            // Reabre la ventana principal (SaludSoft)
+            Form menu = new SaludSoft();
+            menu.Show();
+        }
     }
 }
+
