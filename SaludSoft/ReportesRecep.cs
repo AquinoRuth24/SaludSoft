@@ -770,9 +770,6 @@ WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
             // Cierra el formulario actual de reportes
             this.Close();
 
-            // Reabre la ventana principal (SaludSoft)
-            Form menu = new SaludSoft();
-            menu.Show();
         }
     }
 }

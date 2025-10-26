@@ -19,10 +19,10 @@ namespace SaludSoft
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new FormLogin());
-            //Application.Run(new SaludSoft());
+            Application.Run(new SaludSoft());
             //Application.Run(new Admin());
             // Application.Run(new Backup());
-            Application.Run(new ReportesRecep());
+            //Application.Run(new ReportesRecep());
 
         }
     }
