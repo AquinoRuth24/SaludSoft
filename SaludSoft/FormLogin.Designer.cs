@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLogin));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btRehashear = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lOlvidasteContraseña = new System.Windows.Forms.Label();
             this.btIniciarSesion = new System.Windows.Forms.Button();
@@ -49,6 +50,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.panel1.Controls.Add(this.btRehashear);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.lOlvidasteContraseña);
             this.panel1.Controls.Add(this.btIniciarSesion);
@@ -64,6 +66,17 @@
             this.panel1.Size = new System.Drawing.Size(988, 509);
             this.panel1.TabIndex = 1;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // btRehashear
+            // 
+            this.btRehashear.Location = new System.Drawing.Point(764, 351);
+            this.btRehashear.Name = "btRehashear";
+            this.btRehashear.Size = new System.Drawing.Size(75, 26);
+            this.btRehashear.TabIndex = 8;
+            this.btRehashear.Text = "button1";
+            this.btRehashear.UseVisualStyleBackColor = true;
+            this.btRehashear.Visible = false;
+            this.btRehashear.Click += new System.EventHandler(this.btRehashear_Click);
             // 
             // pictureBox1
             // 
@@ -214,5 +227,6 @@
         private System.Windows.Forms.TextBox tbUsuario;
         private System.Windows.Forms.Label lOlvidasteContraseña;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button btRehashear;
     }
 }

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using SaludSoft.Security;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using SaludSoft.Security;
 
 namespace SaludSoft
 {
@@ -253,6 +254,61 @@ WHERE u.email = @email;";
         private void tbUsuario_TextChanged(object sender, EventArgs e) { }
         private void tbContraseña_TextChanged(object sender, EventArgs e) { }
 
+        private void btRehashear_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                RehashearUsuariosExistentes();
+                MessageBox.Show("Contraseñas rehasheadas correctamente.",
+                                "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al rehashear contraseñas:\n" + ex.Message,
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        public void LimpiarCampos()
+        {
+            tbUsuario.Clear();
+            tbContraseña.Clear();
+            tbUsuario.Focus();
+        }
+
+        public static void RehashearUsuariosExistentes()
+        {
+            const string selectSql = "SELECT id_usuario, contraseña FROM Usuario";
+
+            using (var cn = Conexion.GetConnection())
+            using (var selectCmd = new SqlCommand(selectSql, cn))
+            {
+                cn.Open();
+                using (var reader = selectCmd.ExecuteReader())
+                {
+                    var usuarios = new List<(int id, string pass)>();
+                    while (reader.Read())
+                    {
+                        int id = reader.GetInt32(0);
+                        string passPlano = reader.GetString(1);
+                        usuarios.Add((id, passPlano));
+                    }
+
+                    reader.Close();
+
+                    foreach (var (id, passPlano) in usuarios)
+                    {
+                        string hash = PasswordHasher.Hash(passPlano);
+
+                        using (var updateCmd = new SqlCommand("UPDATE Usuario SET contraseña = @hash WHERE id_usuario = @id", cn))
+                        {
+                            updateCmd.Parameters.AddWithValue("@hash", hash);
+                            updateCmd.Parameters.AddWithValue("@id", id);
+                            updateCmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+        }
 
     }
 }

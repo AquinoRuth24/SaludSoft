@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace SaludSoft
 {
@@ -13,118 +14,97 @@ namespace SaludSoft
         {
             InitializeComponent();
 
+            // Load
             this.Load += FormHistorial_Load;
 
+            // Grid
             dgHistorial.CellContentClick += dgHistorial_CellContentClick;
 
+            // Botones visor
             btAgregar.Click += btAgregar_Click;
             btCancelar.Click += btCancelar_Click;
             btCerrarDetalle.Click += btCerrarDetalle_Click;
 
+            // Búsqueda por DNI
             btLupaBuscar.Click += (s, e) => EjecutarBusquedaDni();
             tbBuscarDni.MaxLength = 8;
             tbBuscarDni.ImeMode = ImeMode.Disable;
-
-            tbBuscarDni.KeyDown += (s, e) =>
-            {
-                var tb = (TextBox)s;
-
-                // ENTER: valida y ejecuta búsqueda
-                if (e.KeyCode == Keys.Enter)
-                {
-                    e.SuppressKeyPress = true;
-                    string dni = new string(tb.Text.Where(char.IsDigit).ToArray());
-                    if (dni.Length == 0 || dni.Length > 8)
-                    {
-                        MessageBox.Show("Ingresá un DNI numérico de hasta 8 dígitos.", "Buscar",
-                                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return;
-                    }
-                    tb.Text = dni;                       // normaliza por si habían puntos/espacios
-                    tb.SelectionStart = tb.Text.Length;  // cursor al final
-                    EjecutarBusquedaDni();
-                    return;
-                }
-
-                // Permitir navegación/edición básica
-                if (e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete || e.KeyCode == Keys.Tab ||
-                    e.KeyCode == Keys.Left || e.KeyCode == Keys.Right || e.KeyCode == Keys.Home || e.KeyCode == Keys.End)
-                    return;
-
-                // Ctrl+C / Ctrl+X (permitidos)
-                if ((e.Control || e.Modifiers.HasFlag(Keys.Control)) &&
-                    (e.KeyCode == Keys.C || e.KeyCode == Keys.X))
-                    return;
-
-                // Ctrl+V: pegar solo dígitos y recortar a 8
-                if ((e.Control || e.Modifiers.HasFlag(Keys.Control)) && e.KeyCode == Keys.V)
-                {
-                    e.SuppressKeyPress = true;
-                    string clip = Clipboard.GetText() ?? "";
-                    string soloDigitos = new string(clip.Where(char.IsDigit).ToArray());
-
-                    int espacio = 8 - (tb.TextLength - tb.SelectionLength);
-                    if (espacio <= 0) return;
-
-                    if (soloDigitos.Length > espacio) soloDigitos = soloDigitos.Substring(0, espacio);
-
-                    int selStart = tb.SelectionStart;
-                    tb.Text = tb.Text.Remove(selStart, tb.SelectionLength).Insert(selStart, soloDigitos);
-                    tb.SelectionStart = selStart + soloDigitos.Length;
-                    return;
-                }
-
-                // Aceptar solo números (fila superior y numpad); bloquear lo demás
-                bool esNumeroFila = e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9 && !e.Shift;
-                bool esNumeroPad = e.KeyCode >= Keys.NumPad0 && e.KeyCode <= Keys.NumPad9;
-
-                if (esNumeroFila || esNumeroPad)
-                {
-                    // respetar el límite de 8 considerando selección
-                    int actuales = tb.TextLength - tb.SelectionLength;
-                    if (actuales >= 8) e.SuppressKeyPress = true;
-                    return;
-                }
-
-                e.SuppressKeyPress = true; // bloquea cualquier otra tecla
-            };
-
-
+            tbBuscarDni.KeyDown += TbBuscarDni_KeyDown;
         }
 
+        // ---------- Load ----------
         private void FormHistorial_Load(object sender, EventArgs e)
         {
-            dgHistorial.MultiSelect = false;
-            dgHistorial.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgHistorial.AutoGenerateColumns = false;
-
             AsegurarColumnas();
-
-            MostrarDetalle(false);
+            pnlOverlay.Visible = false;
             SetModo(ModoDetalle.Navegacion);
+            CargarEjemplos();
 
-            // Demo
-            dgHistorial.Rows.Clear();
-            dgHistorial.Rows.Add(1, "37890123", "Gómez, Laura", new DateTime(2025, 10, 1), "Resfrío común", "Reposo", "—", null);
-            dgHistorial.Rows.Add(2, "40999888", "Pérez, Juan", new DateTime(2025, 10, 2), "HTA controlada", "IECA", "—", null);
-            dgHistorial.Rows.Add(3, "37890123", "Gómez, Laura", new DateTime(2025, 10, 3), "Control", "Reposo activo", "—", null);
-
-            // Columnas del ListView (si no las agregaste en diseñador)
-            if (lvResumen.Columns.Count == 0)
-            {
-                lvResumen.View = View.Details;
-                lvResumen.FullRowSelect = true;
-                lvResumen.HideSelection = false;
-                lvResumen.Columns.Add("Fecha", 120);
-                lvResumen.Columns.Add("Diagnóstico", 220);
-                lvResumen.Columns.Add("Tratamiento", 180);
-                lvResumen.Columns.Add("Observaciones", 220);
-            }
+            //Ajuste automático de historial
+            ConfigurarWrapHistorial();
+            gbDetalle.Resize += (s, ev) => AjustarWrapHistorial();
+            pnlOverlay.Resize += (s, ev) => AjustarWrapHistorial();
         }
 
+        // ---------- Validación de DNI ----------
+        private void TbBuscarDni_KeyDown(object sender, KeyEventArgs e)
+        {
+            var tb = (TextBox)sender;
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                string dni = new string(tb.Text.Where(char.IsDigit).ToArray());
+                if (dni.Length == 0 || dni.Length > 8)
+                {
+                    MessageBox.Show("Ingresá un DNI numérico de hasta 8 dígitos.", "Buscar",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                tb.Text = dni;
+                tb.SelectionStart = tb.Text.Length;
+                EjecutarBusquedaDni();
+                return;
+            }
+
+            if (e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete || e.KeyCode == Keys.Tab ||
+                e.KeyCode == Keys.Left || e.KeyCode == Keys.Right || e.KeyCode == Keys.Home || e.KeyCode == Keys.End)
+                return;
+
+            if ((e.Control || e.Modifiers.HasFlag(Keys.Control)) && (e.KeyCode == Keys.C || e.KeyCode == Keys.X))
+                return;
+
+            if ((e.Control || e.Modifiers.HasFlag(Keys.Control)) && e.KeyCode == Keys.V)
+            {
+                e.SuppressKeyPress = true;
+                string clip = Clipboard.GetText() ?? "";
+                string solo = new string(clip.Where(char.IsDigit).ToArray());
+                int espacio = 8 - (tb.TextLength - tb.SelectionLength);
+                if (espacio <= 0) return;
+                if (solo.Length > espacio) solo = solo.Substring(0, espacio);
+
+                int sel = tb.SelectionStart;
+                tb.Text = tb.Text.Remove(sel, tb.SelectionLength).Insert(sel, solo);
+                tb.SelectionStart = sel + solo.Length;
+                return;
+            }
+
+            bool fila = e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9 && !e.Shift;
+            bool pad = e.KeyCode >= Keys.NumPad0 && e.KeyCode <= Keys.NumPad9;
+
+            if (fila || pad)
+            {
+                int actuales = tb.TextLength - tb.SelectionLength;
+                if (actuales >= 8) e.SuppressKeyPress = true;
+                return;
+            }
+
+            e.SuppressKeyPress = true;
+        }
+
+        // ---------- Columnas ----------
         private void AsegurarColumnas()
         {
-            // colFecha (oculta si no la tenés)
             if (dgHistorial.Columns["colFecha"] == null)
             {
                 var colFecha = new DataGridViewTextBoxColumn
@@ -137,7 +117,6 @@ namespace SaludSoft
                 dgHistorial.Columns.Insert(Math.Max(0, idx), colFecha);
             }
 
-            // colObservaciones (oculta)
             if (dgHistorial.Columns["colObservaciones"] == null)
             {
                 var colObs = new DataGridViewTextBoxColumn
@@ -149,7 +128,17 @@ namespace SaludSoft
                 dgHistorial.Columns.Add(colObs);
             }
 
-            // Botón Ver
+            if (dgHistorial.Columns["colHistorialTexto"] == null)
+            {
+                var colHist = new DataGridViewTextBoxColumn
+                {
+                    Name = "colHistorialTexto",
+                    HeaderText = "Historial",
+                    Visible = false
+                };
+                dgHistorial.Columns.Add(colHist);
+            }
+
             var colBtn = dgHistorial.Columns["colVerHistorial"] as DataGridViewButtonColumn;
             if (colBtn == null)
             {
@@ -176,7 +165,8 @@ namespace SaludSoft
             string input = (tbBuscarDni.Text ?? "").Trim();
             if (string.IsNullOrWhiteSpace(input))
             {
-                MessageBox.Show("Ingresá un DNI para buscar.", "Buscar", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Ingresá un DNI para buscar.", "Buscar",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 tbBuscarDni.Focus();
                 return;
             }
@@ -194,7 +184,8 @@ namespace SaludSoft
 
             if (filaMatch == null)
             {
-                MessageBox.Show("No se encontró historial para ese DNI.", "Buscar", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("No se encontró historial para ese DNI.", "Buscar",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -208,7 +199,7 @@ namespace SaludSoft
             MostrarDetalle(true);
         }
 
-        // ---------- Ver (lectura) ----------
+        // ---------- Click en “Ver” ----------
         private void dgHistorial_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
@@ -220,35 +211,26 @@ namespace SaludSoft
             MostrarDetalle(true);
         }
 
+        // ---------- Cargar visor ----------
         private void CargarDetalleDesdeFila(DataGridViewRow fila)
         {
             string paciente = Convert.ToString(fila.Cells["colPaciente"]?.Value ?? "");
-            string diagnostico = Convert.ToString(fila.Cells["colDiagnostico"]?.Value ?? "");
-            string tratamiento = Convert.ToString(fila.Cells["colTratamiento"]?.Value ?? "");
-            string observaciones = Convert.ToString(fila.Cells["colObservaciones"]?.Value ?? "");
             DateTime fecha = TryGetDate(fila.Cells["colFecha"]?.Value) ?? DateTime.Today;
 
             lValorPaciente.Text = string.IsNullOrWhiteSpace(paciente) ? "--" : paciente;
-
             lbFechaValor.Text = fecha.ToString("dd/MM/yyyy");
-            dateTimePicker1.Value = fecha;
-            dateTimePicker1.Format = DateTimePickerFormat.Custom;
-            dateTimePicker1.CustomFormat = "dd/MM/yyyy";
 
-            lbDiagValor.Text = string.IsNullOrWhiteSpace(diagnostico) ? "—" : diagnostico;
-            lbTratValor.Text = string.IsNullOrWhiteSpace(tratamiento) ? "—" : tratamiento;
-            lbObsValor.Text = string.IsNullOrWhiteSpace(observaciones) ? "—" : observaciones;
-
-            tbDiagnostico.Text = diagnostico;
-            tbTrat.Text = tratamiento;
-            tbObserv.Text = observaciones;
+            string histRaw = Convert.ToString(fila.Cells["colHistorialTexto"]?.Value ?? "");
+            lHistorial.Text = string.IsNullOrWhiteSpace(histRaw)
+                ? "—"
+                : FormatearHistorial(histRaw);
 
             gbDetalle.Tag = fila;
 
-            string dni = Convert.ToString(fila.Cells["colDni"]?.Value ?? "");
-            PoblarResumenPorDni(dni);
+            AjustarWrapHistorial();
         }
 
+        // ---------- Helpers ----------
         private DateTime? TryGetDate(object v)
         {
             if (v == null) return null;
@@ -257,146 +239,104 @@ namespace SaludSoft
             return null;
         }
 
-        private void PoblarResumenPorDni(string dni)
+        private string FormatearHistorial(string raw)
         {
-            lvResumen.BeginUpdate();
-            lvResumen.Items.Clear();
-
-            var filas = dgHistorial.Rows
-                .Cast<DataGridViewRow>()
-                .Where(r => !r.IsNewRow && Convert.ToString(r.Cells["colDni"].Value ?? "") == dni)
-                .Select(r => new
-                {
-                    Fecha = TryGetDate(r.Cells["colFecha"].Value) ?? DateTime.MinValue,
-                    Diagnostico = Convert.ToString(r.Cells["colDiagnostico"].Value ?? ""),
-                    Tratamiento = Convert.ToString(r.Cells["colTratamiento"].Value ?? ""),
-                    Observaciones = Convert.ToString(r.Cells["colObservaciones"].Value ?? "")
-                })
-                .OrderBy(x => x.Fecha)
-                .ToList();
-
-            foreach (var x in filas)
-            {
-                var item = new ListViewItem(x.Fecha == DateTime.MinValue ? "" : x.Fecha.ToString("dd/MM/yyyy"));
-                item.SubItems.Add(string.IsNullOrWhiteSpace(x.Diagnostico) ? "—" : x.Diagnostico);
-                item.SubItems.Add(string.IsNullOrWhiteSpace(x.Tratamiento) ? "—" : x.Tratamiento);
-                item.SubItems.Add(string.IsNullOrWhiteSpace(x.Observaciones) ? "—" : x.Observaciones);
-                lvResumen.Items.Add(item);
-            }
-
-            lvResumen.EndUpdate();
+            var lineas = raw.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select(l => "• " + l.Trim());
+            return string.Join(Environment.NewLine + Environment.NewLine, lineas);
         }
 
-        // ---------- Mostrar/Ocultar detalle ----------
+        private void ConfigurarWrapHistorial()
+        {
+            if (lHistorial == null) return;
+            lHistorial.AutoSize = false;
+            lHistorial.UseCompatibleTextRendering = true;
+            lHistorial .AutoEllipsis = false;
+            lHistorial.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            AjustarWrapHistorial();
+        }
+
+        private void AjustarWrapHistorial()
+        {
+            if (lHistorial == null || gbDetalle == null) return;
+
+            const int margenDerecho = 20;
+            int anchoDisponible = Math.Max(100, gbDetalle.ClientSize.Width - lHistorial.Left - margenDerecho);
+            lHistorial.Width = anchoDisponible;
+
+            Size medida = TextRenderer.MeasureText(
+                (lHistorial.Text ?? "") + " ",
+                    lHistorial.Font,
+                new Size(anchoDisponible, int.MaxValue),
+                TextFormatFlags.WordBreak | TextFormatFlags.TextBoxControl
+            );
+
+            lHistorial.Height = medida.Height;
+        }
+
+        // ---------- Mostrar/Ocultar visor ----------
         private void MostrarDetalle(bool mostrar)
         {
-            if (pnlOverlay != null)
+            pnlOverlay.Visible = mostrar;
+            gbDetalle.Visible = mostrar;
+            if (mostrar)
             {
-                pnlOverlay.Visible = mostrar;
-                if (mostrar) pnlOverlay.BringToFront();
-            }
-            if (gbDetalle != null)
-            {
-                gbDetalle.Visible = mostrar;
-                if (mostrar) gbDetalle.BringToFront();
-            }
-
-            if (mostrar && _modo == ModoDetalle.Navegacion)
+                pnlOverlay.BringToFront();
+                gbDetalle.BringToFront();
                 this.ActiveControl = btAgregar;
+            }
         }
 
         private void SetModo(ModoDetalle modo)
         {
             _modo = modo;
             bool editable = (modo == ModoDetalle.Alta);
-
             lbFechaValor.Visible = !editable;
             dateTimePicker1.Visible = editable;
-
-            tbDiagnostico.ReadOnly = !editable;
-            tbTrat.ReadOnly = !editable;
-            tbObserv.ReadOnly = !editable;
-
-            lbDiagValor.Visible = !editable;
-            lbTratValor.Visible = !editable;
-            lbObsValor.Visible = !editable;
-
-            tbDiagnostico.Visible = editable;
-            tbTrat.Visible = editable;
-            tbObserv.Visible = editable;
-
             btAgregar.Text = editable ? "Guardar" : "Agregar";
-
-            if (editable)
-            {
-                tbDiagnostico.Clear();
-                tbTrat.Clear();
-                tbObserv.Clear();
-                dateTimePicker1.Value = DateTime.Today;
-                tbDiagnostico.Focus();
-            }
-            else
-            {
-                this.ActiveControl = btAgregar;
-            }
+            if (!editable) this.ActiveControl = btAgregar;
         }
 
-        // ---------- Agregar / Guardar ----------
+        // ---------- Agregar ----------
         private void btAgregar_Click(object sender, EventArgs e)
         {
-            if (_modo != ModoDetalle.Alta)
-            {
-                SetModo(ModoDetalle.Alta);
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(tbDiagnostico.Text))
-            {
-                MessageBox.Show("Completá el Diagnóstico.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                tbDiagnostico.Focus();
-                return;
-            }
-
             var filaBase = gbDetalle.Tag as DataGridViewRow;
             if (filaBase == null)
             {
-                MessageBox.Show("No hay una fila seleccionada.", "Atención",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Seleccioná un paciente de la lista (columna 'Ver').", "Historial",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
             string dni = Convert.ToString(filaBase.Cells["colDni"].Value ?? "");
             string paciente = Convert.ToString(filaBase.Cells["colPaciente"].Value ?? "");
 
-            int maxId = 0;
-            foreach (DataGridViewRow r in dgHistorial.Rows)
+            using (var dlg = new FormEditarHistorial() { Owner = this, StartPosition = FormStartPosition.CenterParent })
             {
-                if (r.IsNewRow) continue;
-                if (int.TryParse(Convert.ToString(r.Cells["colIdHistorial"].Value), out int id))
-                    if (id > maxId) maxId = id;
+                dlg.InitContext(dni, paciente);
+
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    AgregarOActualizarConsulta(
+                        dni: dni,
+                        paciente: paciente,
+                        fecha: dlg.Fecha,
+                        diagnostico: dlg.Diagnostico,
+                        tratamiento: dlg.Tratamiento,
+                        observaciones: dlg.Observaciones
+                    );
+
+                    var fila = BuscarFilaPorDni(dni);
+                    if (fila != null)
+                    {
+                        CargarDetalleDesdeFila(fila);
+                        MostrarDetalle(true);
+                    }
+                }
             }
-            int nuevoId = maxId + 1;
-
-            int idx = dgHistorial.Rows.Add();
-            var row = dgHistorial.Rows[idx];
-            row.Cells["colIdHistorial"].Value = nuevoId;
-            row.Cells["colDni"].Value = dni;
-            row.Cells["colPaciente"].Value = paciente;
-            row.Cells["colFecha"].Value = dateTimePicker1.Value.Date;
-            row.Cells["colDiagnostico"].Value = tbDiagnostico.Text.Trim();
-            row.Cells["colTratamiento"].Value = tbTrat.Text.Trim();
-            row.Cells["colObservaciones"].Value = tbObserv.Text.Trim();
-
-            // Refrescar vista y quedarse en lectura para ver el historial completo
-            CargarDetalleDesdeFila(row);
-            SetModo(ModoDetalle.Navegacion);
-
-            // Si querés cerrar el panel después de guardar, descomentá:
-            // MostrarDetalle(false);
         }
 
-        // ---------- Cancelar / Cerrar ----------
+        // ---------- Cancelar ----------
         private void btCancelar_Click(object sender, EventArgs e)
         {
             if (_modo == ModoDetalle.Alta)
@@ -412,15 +352,101 @@ namespace SaludSoft
             MostrarDetalle(false);
         }
 
-        // ---------- Volver ----------
-        private void btVolver_Click_1(object sender, EventArgs e)
+        // ---------- Datos de ejemplo ----------
+        private void CargarEjemplos()
         {
-            if (this.Owner is Medico m) { m.Show(); m.Activate(); }
+            AgregarOActualizarConsulta(
+                dni: "12345678",
+                paciente: "Juan Pérez",
+                fecha: new DateTime(2025, 10, 19),
+                diagnostico: "Hipertensión arterial - Mejoría",
+                tratamiento: "Enalapril 10 mg y Amlodipino 5 mg",
+                observaciones: "Presión controlada. Sin síntomas. Continuar esquema."
+            );
+
+            AgregarOActualizarConsulta(
+                dni: "87654321",
+                paciente: "María Gómez",
+                fecha: new DateTime(2025, 09, 30),
+                diagnostico: "Gastritis aguda",
+                tratamiento: "Omeprazol 20 mg cada 24 h",
+                observaciones: "Dieta blanda. Revalorar en 15 días."
+            );
+        }
+
+        // ---------- Buscar fila ----------
+        private DataGridViewRow BuscarFilaPorDni(string dni)
+        {
+            string objetivo = new string((dni ?? "").Where(char.IsDigit).ToArray());
+            foreach (DataGridViewRow r in dgHistorial.Rows)
+            {
+                if (r.IsNewRow) continue;
+                string d = Convert.ToString(r.Cells["colDni"].Value ?? "");
+                d = new string(d.Where(char.IsDigit).ToArray());
+                if (d == objetivo) return r;
+            }
+            return null;
+        }
+
+        // ---------- Agregar o actualizar ----------
+        public void AgregarOActualizarConsulta(string dni, string paciente, DateTime fecha,
+                                       string diagnostico, string tratamiento, string observaciones)
+        {
+            var fila = BuscarFilaPorDni(dni);
+            if (fila == null)
+            {
+                int id = SiguienteId();
+                int idx = dgHistorial.Rows.Add();
+                fila = dgHistorial.Rows[idx];
+                fila.Cells["colIdHistorial"].Value = id;
+                fila.Cells["colDni"].Value = dni;
+                fila.Cells["colPaciente"].Value = paciente;
+            }
+
+            fila.Cells["colFecha"].Value = fecha;
+            fila.Cells["colDiagnostico"].Value = diagnostico;
+            fila.Cells["colTratamiento"].Value = tratamiento;
+            fila.Cells["colObservaciones"].Value = observaciones;
+
+            string prev = Convert.ToString(fila.Cells["colHistorialTexto"].Value ?? "");
+            string linea = $"{fecha:dd/MM/yyyy} — Diagnóstico: {diagnostico} | Tratamiento: {tratamiento} | Observación: {observaciones}";
+            fila.Cells["colHistorialTexto"].Value = string.IsNullOrWhiteSpace(prev)
+                ? linea
+                : (linea + Environment.NewLine + prev);
+        }
+
+        private int SiguienteId()
+        {
+            int max = 0;
+            foreach (DataGridViewRow r in dgHistorial.Rows)
+            {
+                if (r.IsNewRow) continue;
+                if (int.TryParse(Convert.ToString(r.Cells["colIdHistorial"].Value), out int v))
+                    if (v > max) max = v;
+            }
+            return max + 1;
+        }
+
+        private void btVolver_Click(object sender, EventArgs e)
+        {
+            // Si el formulario fue abierto desde Medico
+            if (this.Owner is Medico frmMedico)
+            {
+                frmMedico.Show();
+                frmMedico.Activate();
+            }
             else
             {
-                var medico = Application.OpenForms.OfType<Medico>().FirstOrDefault();
-                if (medico != null) { medico.Show(); medico.Activate(); }
+                // Si no tiene Owner, buscar si hay uno abierto
+                var abierto = Application.OpenForms.OfType<Medico>().FirstOrDefault();
+                if (abierto != null)
+                {
+                    abierto.Show();
+                    abierto.Activate();
+                }
             }
+
+            // Cierra el historial actual
             this.Close();
         }
     }

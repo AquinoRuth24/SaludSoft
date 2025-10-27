@@ -45,11 +45,11 @@
             this.tbBuscarDni = new System.Windows.Forms.TextBox();
             this.pnlOverlay = new System.Windows.Forms.Panel();
             this.gbDetalle = new System.Windows.Forms.GroupBox();
-            this.lvResumen = new System.Windows.Forms.ListView();
-            this.Fecha = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Diagnóstico = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Tratamiento = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Observaciones = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lValorHistorial = new System.Windows.Forms.Label();
+            this.lHistorial = new System.Windows.Forms.Label();
+            this.lValorObser = new System.Windows.Forms.Label();
+            this.lValorTrat = new System.Windows.Forms.Label();
+            this.lValorDiag = new System.Windows.Forms.Label();
             this.lbFechaValor = new System.Windows.Forms.Label();
             this.btCerrarDetalle = new System.Windows.Forms.Button();
             this.lbObsValor = new System.Windows.Forms.Label();
@@ -58,16 +58,13 @@
             this.pnlBotones = new System.Windows.Forms.Panel();
             this.btCancelar = new System.Windows.Forms.Button();
             this.btAgregar = new System.Windows.Forms.Button();
-            this.tbObserv = new System.Windows.Forms.TextBox();
-            this.lObserv = new System.Windows.Forms.Label();
-            this.tbTrat = new System.Windows.Forms.TextBox();
-            this.lTrat = new System.Windows.Forms.Label();
-            this.tbDiagnostico = new System.Windows.Forms.TextBox();
-            this.lDiagnostico = new System.Windows.Forms.Label();
             this.lFecha = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.lValorPaciente = new System.Windows.Forms.Label();
             this.lPaciente = new System.Windows.Forms.Label();
+            this.lObserv = new System.Windows.Forms.Label();
+            this.lTrat = new System.Windows.Forms.Label();
+            this.lDiagnostico = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgHistorial)).BeginInit();
@@ -86,7 +83,7 @@
             this.btVolver.Size = new System.Drawing.Size(48, 44);
             this.btVolver.TabIndex = 3;
             this.btVolver.UseVisualStyleBackColor = false;
-            this.btVolver.Click += new System.EventHandler(this.btVolver_Click_1);
+            this.btVolver.Click += new System.EventHandler(this.btVolver_Click);
             // 
             // panel2
             // 
@@ -140,12 +137,12 @@
             this.colDiagnostico,
             this.colTratamiento,
             this.colVerHistorial});
-            this.dgHistorial.Location = new System.Drawing.Point(87, 149);
+            this.dgHistorial.Location = new System.Drawing.Point(31, 149);
             this.dgHistorial.MultiSelect = false;
             this.dgHistorial.Name = "dgHistorial";
             this.dgHistorial.RowHeadersVisible = false;
             this.dgHistorial.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgHistorial.Size = new System.Drawing.Size(779, 402);
+            this.dgHistorial.Size = new System.Drawing.Size(965, 402);
             this.dgHistorial.TabIndex = 3;
             this.dgHistorial.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgHistorial_CellContentClick);
             // 
@@ -224,9 +221,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlOverlay.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnlOverlay.Controls.Add(this.gbDetalle);
-            this.pnlOverlay.Location = new System.Drawing.Point(393, 167);
+            this.pnlOverlay.Location = new System.Drawing.Point(31, 190);
             this.pnlOverlay.Name = "pnlOverlay";
-            this.pnlOverlay.Size = new System.Drawing.Size(473, 384);
+            this.pnlOverlay.Size = new System.Drawing.Size(965, 384);
             this.pnlOverlay.TabIndex = 8;
             this.pnlOverlay.Visible = false;
             // 
@@ -236,19 +233,17 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbDetalle.BackColor = System.Drawing.Color.Gainsboro;
-            this.gbDetalle.Controls.Add(this.lvResumen);
+            this.gbDetalle.Controls.Add(this.lValorHistorial);
+            this.gbDetalle.Controls.Add(this.lHistorial);
+            this.gbDetalle.Controls.Add(this.lValorObser);
+            this.gbDetalle.Controls.Add(this.lValorTrat);
+            this.gbDetalle.Controls.Add(this.lValorDiag);
             this.gbDetalle.Controls.Add(this.lbFechaValor);
             this.gbDetalle.Controls.Add(this.btCerrarDetalle);
             this.gbDetalle.Controls.Add(this.lbObsValor);
             this.gbDetalle.Controls.Add(this.lbTratValor);
             this.gbDetalle.Controls.Add(this.lbDiagValor);
             this.gbDetalle.Controls.Add(this.pnlBotones);
-            this.gbDetalle.Controls.Add(this.tbObserv);
-            this.gbDetalle.Controls.Add(this.lObserv);
-            this.gbDetalle.Controls.Add(this.tbTrat);
-            this.gbDetalle.Controls.Add(this.lTrat);
-            this.gbDetalle.Controls.Add(this.tbDiagnostico);
-            this.gbDetalle.Controls.Add(this.lDiagnostico);
             this.gbDetalle.Controls.Add(this.lFecha);
             this.gbDetalle.Controls.Add(this.dateTimePicker1);
             this.gbDetalle.Controls.Add(this.lValorPaciente);
@@ -257,52 +252,59 @@
                 | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbDetalle.Location = new System.Drawing.Point(18, 15);
             this.gbDetalle.Name = "gbDetalle";
-            this.gbDetalle.Size = new System.Drawing.Size(440, 352);
+            this.gbDetalle.Size = new System.Drawing.Size(932, 352);
             this.gbDetalle.TabIndex = 0;
             this.gbDetalle.TabStop = false;
             this.gbDetalle.Text = "Detalle Historial";
             this.gbDetalle.Visible = false;
             // 
-            // lvResumen
+            // lValorHistorial
             // 
-            this.lvResumen.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lValorHistorial.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvResumen.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Fecha,
-            this.Diagnóstico,
-            this.Tratamiento,
-            this.Observaciones});
-            this.lvResumen.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lvResumen.FullRowSelect = true;
-            this.lvResumen.GridLines = true;
-            this.lvResumen.HideSelection = false;
-            this.lvResumen.Location = new System.Drawing.Point(16, 216);
-            this.lvResumen.Name = "lvResumen";
-            this.lvResumen.ShowGroups = false;
-            this.lvResumen.Size = new System.Drawing.Size(421, 85);
-            this.lvResumen.TabIndex = 24;
-            this.lvResumen.UseCompatibleStateImageBehavior = false;
-            this.lvResumen.View = System.Windows.Forms.View.Details;
+            this.lValorHistorial.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lValorHistorial.Location = new System.Drawing.Point(28, 130);
+            this.lValorHistorial.Name = "lValorHistorial";
+            this.lValorHistorial.Size = new System.Drawing.Size(45, 18);
+            this.lValorHistorial.TabIndex = 28;
+            this.lValorHistorial.UseCompatibleTextRendering = true;
             // 
-            // Fecha
+            // lHistorial
             // 
-            this.Fecha.Text = "Fecha";
-            this.Fecha.Width = 120;
+            this.lHistorial.AutoSize = true;
+            this.lHistorial.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lHistorial.Location = new System.Drawing.Point(15, 87);
+            this.lHistorial.Name = "lHistorial";
+            this.lHistorial.Size = new System.Drawing.Size(75, 19);
+            this.lHistorial.TabIndex = 27;
+            this.lHistorial.Text = "Historial: ";
             // 
-            // Diagnóstico
+            // lValorObser
             // 
-            this.Diagnóstico.Text = "Diagnóstico";
-            this.Diagnóstico.Width = 220;
+            this.lValorObser.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lValorObser.Location = new System.Drawing.Point(800, 198);
+            this.lValorObser.Name = "lValorObser";
+            this.lValorObser.Size = new System.Drawing.Size(35, 13);
+            this.lValorObser.TabIndex = 26;
+            this.lValorObser.Visible = false;
             // 
-            // Tratamiento
+            // lValorTrat
             // 
-            this.Tratamiento.Text = "Tratamiento";
-            this.Tratamiento.Width = 180;
+            this.lValorTrat.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lValorTrat.Location = new System.Drawing.Point(828, 168);
+            this.lValorTrat.Name = "lValorTrat";
+            this.lValorTrat.Size = new System.Drawing.Size(35, 13);
+            this.lValorTrat.TabIndex = 25;
+            this.lValorTrat.Visible = false;
             // 
-            // Observaciones
+            // lValorDiag
             // 
-            this.Observaciones.Text = "Observaciones";
-            this.Observaciones.Width = 180;
+            this.lValorDiag.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lValorDiag.Location = new System.Drawing.Point(841, 133);
+            this.lValorDiag.Name = "lValorDiag";
+            this.lValorDiag.Size = new System.Drawing.Size(32, 10);
+            this.lValorDiag.TabIndex = 24;
+            this.lValorDiag.Visible = false;
             // 
             // lbFechaValor
             // 
@@ -318,7 +320,7 @@
             // 
             this.btCerrarDetalle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btCerrarDetalle.Image = global::SaludSoft.Properties.Resources.circulo_marca_x;
-            this.btCerrarDetalle.Location = new System.Drawing.Point(401, 0);
+            this.btCerrarDetalle.Location = new System.Drawing.Point(893, 0);
             this.btCerrarDetalle.Name = "btCerrarDetalle";
             this.btCerrarDetalle.Size = new System.Drawing.Size(31, 34);
             this.btCerrarDetalle.TabIndex = 22;
@@ -339,7 +341,7 @@
             // 
             this.lbTratValor.AutoSize = true;
             this.lbTratValor.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbTratValor.Location = new System.Drawing.Point(152, 145);
+            this.lbTratValor.Location = new System.Drawing.Point(822, 159);
             this.lbTratValor.Name = "lbTratValor";
             this.lbTratValor.Size = new System.Drawing.Size(0, 23);
             this.lbTratValor.TabIndex = 20;
@@ -349,7 +351,7 @@
             // 
             this.lbDiagValor.AutoSize = true;
             this.lbDiagValor.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbDiagValor.Location = new System.Drawing.Point(152, 105);
+            this.lbDiagValor.Location = new System.Drawing.Point(822, 125);
             this.lbDiagValor.Name = "lbDiagValor";
             this.lbDiagValor.Size = new System.Drawing.Size(0, 23);
             this.lbDiagValor.TabIndex = 19;
@@ -362,7 +364,7 @@
             this.pnlBotones.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlBotones.Location = new System.Drawing.Point(3, 260);
             this.pnlBotones.Name = "pnlBotones";
-            this.pnlBotones.Size = new System.Drawing.Size(434, 89);
+            this.pnlBotones.Size = new System.Drawing.Size(926, 89);
             this.pnlBotones.TabIndex = 18;
             // 
             // btCancelar
@@ -370,7 +372,7 @@
             this.btCancelar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btCancelar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.btCancelar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btCancelar.Location = new System.Drawing.Point(309, 33);
+            this.btCancelar.Location = new System.Drawing.Point(801, 33);
             this.btCancelar.Name = "btCancelar";
             this.btCancelar.Size = new System.Drawing.Size(94, 39);
             this.btCancelar.TabIndex = 1;
@@ -382,73 +384,18 @@
             this.btAgregar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btAgregar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.btAgregar.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btAgregar.Location = new System.Drawing.Point(189, 31);
+            this.btAgregar.Location = new System.Drawing.Point(681, 31);
             this.btAgregar.Name = "btAgregar";
             this.btAgregar.Size = new System.Drawing.Size(93, 43);
             this.btAgregar.TabIndex = 0;
             this.btAgregar.Text = "Agregar";
             this.btAgregar.UseVisualStyleBackColor = false;
             // 
-            // tbObserv
-            // 
-            this.tbObserv.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbObserv.Location = new System.Drawing.Point(141, 185);
-            this.tbObserv.Name = "tbObserv";
-            this.tbObserv.Size = new System.Drawing.Size(133, 30);
-            this.tbObserv.TabIndex = 17;
-            // 
-            // lObserv
-            // 
-            this.lObserv.AutoSize = true;
-            this.lObserv.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lObserv.Location = new System.Drawing.Point(15, 194);
-            this.lObserv.Name = "lObserv";
-            this.lObserv.Size = new System.Drawing.Size(109, 19);
-            this.lObserv.TabIndex = 16;
-            this.lObserv.Text = "Observaciones: ";
-            // 
-            // tbTrat
-            // 
-            this.tbTrat.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbTrat.Location = new System.Drawing.Point(141, 145);
-            this.tbTrat.Name = "tbTrat";
-            this.tbTrat.Size = new System.Drawing.Size(133, 30);
-            this.tbTrat.TabIndex = 15;
-            // 
-            // lTrat
-            // 
-            this.lTrat.AutoSize = true;
-            this.lTrat.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lTrat.Location = new System.Drawing.Point(15, 153);
-            this.lTrat.Name = "lTrat";
-            this.lTrat.Size = new System.Drawing.Size(97, 19);
-            this.lTrat.TabIndex = 14;
-            this.lTrat.Text = "Tratamiento: ";
-            // 
-            // tbDiagnostico
-            // 
-            this.tbDiagnostico.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbDiagnostico.Location = new System.Drawing.Point(141, 102);
-            this.tbDiagnostico.Name = "tbDiagnostico";
-            this.tbDiagnostico.ReadOnly = true;
-            this.tbDiagnostico.Size = new System.Drawing.Size(133, 30);
-            this.tbDiagnostico.TabIndex = 13;
-            // 
-            // lDiagnostico
-            // 
-            this.lDiagnostico.AutoSize = true;
-            this.lDiagnostico.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lDiagnostico.Location = new System.Drawing.Point(15, 117);
-            this.lDiagnostico.Name = "lDiagnostico";
-            this.lDiagnostico.Size = new System.Drawing.Size(92, 19);
-            this.lDiagnostico.TabIndex = 12;
-            this.lDiagnostico.Text = "Diagnóstico: ";
-            // 
             // lFecha
             // 
             this.lFecha.AutoSize = true;
             this.lFecha.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lFecha.Location = new System.Drawing.Point(15, 76);
+            this.lFecha.Location = new System.Drawing.Point(21, 68);
             this.lFecha.Name = "lFecha";
             this.lFecha.Size = new System.Drawing.Size(58, 19);
             this.lFecha.TabIndex = 11;
@@ -459,7 +406,7 @@
             this.dateTimePicker1.Enabled = false;
             this.dateTimePicker1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(79, 70);
+            this.dateTimePicker1.Location = new System.Drawing.Point(83, 52);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.ShowUpDown = true;
             this.dateTimePicker1.Size = new System.Drawing.Size(102, 26);
@@ -469,7 +416,7 @@
             // 
             this.lValorPaciente.AutoSize = true;
             this.lValorPaciente.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lValorPaciente.Location = new System.Drawing.Point(94, 43);
+            this.lValorPaciente.Location = new System.Drawing.Point(94, 30);
             this.lValorPaciente.Name = "lValorPaciente";
             this.lValorPaciente.Size = new System.Drawing.Size(25, 19);
             this.lValorPaciente.TabIndex = 9;
@@ -479,11 +426,44 @@
             // 
             this.lPaciente.AutoSize = true;
             this.lPaciente.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lPaciente.Location = new System.Drawing.Point(15, 43);
+            this.lPaciente.Location = new System.Drawing.Point(15, 30);
             this.lPaciente.Name = "lPaciente";
             this.lPaciente.Size = new System.Drawing.Size(73, 19);
             this.lPaciente.TabIndex = 8;
             this.lPaciente.Text = "Paciente: ";
+            // 
+            // lObserv
+            // 
+            this.lObserv.AutoSize = true;
+            this.lObserv.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lObserv.Location = new System.Drawing.Point(938, 301);
+            this.lObserv.Name = "lObserv";
+            this.lObserv.Size = new System.Drawing.Size(109, 19);
+            this.lObserv.TabIndex = 16;
+            this.lObserv.Text = "Observaciones: ";
+            this.lObserv.Visible = false;
+            // 
+            // lTrat
+            // 
+            this.lTrat.AutoSize = true;
+            this.lTrat.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lTrat.Location = new System.Drawing.Point(982, 292);
+            this.lTrat.Name = "lTrat";
+            this.lTrat.Size = new System.Drawing.Size(97, 19);
+            this.lTrat.TabIndex = 14;
+            this.lTrat.Text = "Tratamiento: ";
+            this.lTrat.Visible = false;
+            // 
+            // lDiagnostico
+            // 
+            this.lDiagnostico.AutoSize = true;
+            this.lDiagnostico.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lDiagnostico.Location = new System.Drawing.Point(987, 273);
+            this.lDiagnostico.Name = "lDiagnostico";
+            this.lDiagnostico.Size = new System.Drawing.Size(92, 19);
+            this.lDiagnostico.TabIndex = 12;
+            this.lDiagnostico.Text = "Diagnóstico: ";
+            this.lDiagnostico.Visible = false;
             // 
             // FormHistorial
             // 
@@ -497,6 +477,9 @@
             this.Controls.Add(this.lDni);
             this.Controls.Add(this.dgHistorial);
             this.Controls.Add(this.panel2);
+            this.Controls.Add(this.lDiagnostico);
+            this.Controls.Add(this.lTrat);
+            this.Controls.Add(this.lObserv);
             this.Name = "FormHistorial";
             this.Text = "FormHistorial";
             this.panel2.ResumeLayout(false);
@@ -526,13 +509,10 @@
         private System.Windows.Forms.Label lPaciente;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Label lValorPaciente;
-        private System.Windows.Forms.TextBox tbDiagnostico;
         private System.Windows.Forms.Label lDiagnostico;
         private System.Windows.Forms.Label lFecha;
         private System.Windows.Forms.Panel pnlBotones;
-        private System.Windows.Forms.TextBox tbObserv;
         private System.Windows.Forms.Label lObserv;
-        private System.Windows.Forms.TextBox tbTrat;
         private System.Windows.Forms.Label lTrat;
         private System.Windows.Forms.Button btCancelar;
         private System.Windows.Forms.Button btAgregar;
@@ -541,11 +521,6 @@
         private System.Windows.Forms.Button btCerrarDetalle;
         private System.Windows.Forms.Label lbObsValor;
         private System.Windows.Forms.Label lbFechaValor;
-        private System.Windows.Forms.ListView lvResumen;
-        private System.Windows.Forms.ColumnHeader Fecha;
-        private System.Windows.Forms.ColumnHeader Diagnóstico;
-        private System.Windows.Forms.ColumnHeader Tratamiento;
-        private System.Windows.Forms.ColumnHeader Observaciones;
         private System.Windows.Forms.DataGridViewTextBoxColumn colIdHistorial;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDni;
         private System.Windows.Forms.DataGridViewTextBoxColumn colPaciente;
@@ -553,5 +528,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colDiagnostico;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTratamiento;
         private System.Windows.Forms.DataGridViewButtonColumn colVerHistorial;
+        private System.Windows.Forms.Label lValorDiag;
+        private System.Windows.Forms.Label lValorObser;
+        private System.Windows.Forms.Label lValorTrat;
+        private System.Windows.Forms.Label lHistorial;
+        private System.Windows.Forms.Label lValorHistorial;
     }
 }
