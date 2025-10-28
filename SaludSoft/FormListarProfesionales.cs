@@ -48,7 +48,7 @@ namespace SaludSoft
                 SqlCommand cmd = new SqlCommand(query, conexion);
                 cmd.Parameters.AddWithValue("@filtro", $"%{filtro}%");
 
-                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 

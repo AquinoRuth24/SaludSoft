@@ -19,28 +19,27 @@ namespace SaludSoft
             InitializeComponent();
             CargarGrafico();
             CargarRankingMedicosGrid();
-            CargarActividadTurnosGrid();
-            CargarGraficoTurnosPorEstado();
+            CargarResumenCitas();
+            CargarEstadisticasGenerales();
 
             DTGRankingMedicos.CellPainting += DTGRankingMedicos_CellPainting;
-            DTGActividadPorTurno.CellFormatting += DTGActividadTurnos_CellFormatting;
 
         }
 
         private void CargarGrafico()
         {
             string query = @"
-                SELECT 
-                    e.nombre AS Especialidad,
-                    COUNT(t.id_turno) AS CantidadTurnos
-                FROM Turnos t
-                INNER JOIN Agenda a ON t.id_agenda = a.id_agenda
-                INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
-                INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
-                INNER JOIN Especialidad e ON p.id_especialidad = e.id_especialidad
-                WHERE t.fecha >= DATEADD(MONTH, -1, GETDATE())
-                GROUP BY e.nombre
-                ORDER BY CantidadTurnos DESC; ";
+             SELECT 
+             e.nombre AS Especialidad,
+             COUNT(t.id_turno) AS CantidadTurnos
+             FROM Turnos t
+             INNER JOIN Agenda a ON t.id_agenda = a.id_agenda
+             INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
+             INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
+             INNER JOIN Especialidad e ON p.id_especialidad = e.id_especialidad
+             WHERE t.fecha >= DATEADD(MONTH, -1, GETDATE())
+             GROUP BY e.nombre
+             ORDER BY CantidadTurnos DESC; ";
 
             using (SqlConnection conexion = Conexion.GetConnection())
             {
@@ -54,10 +53,8 @@ namespace SaludSoft
                     return;
                 }
 
-                // Calcular total de turnos
+                // Calcular total y porcentajes
                 int totalTurnos = dt.AsEnumerable().Sum(r => r.Field<int>("CantidadTurnos"));
-
-                // Agregar columna de porcentaje
                 dt.Columns.Add("Porcentaje", typeof(double));
                 foreach (DataRow row in dt.Rows)
                 {
@@ -65,51 +62,37 @@ namespace SaludSoft
                     row["Porcentaje"] = Math.Round((cantidad / totalTurnos) * 100, 1);
                 }
 
-                // Usar la configuración del diseñador
-                ChartEspecialidades.Series[0].XValueMember = "Especialidad";
-                ChartEspecialidades.Series[0].YValueMembers = "CantidadTurnos";
-                ChartEspecialidades.DataSource = dt;
-                ChartEspecialidades.DataBind();
+                // Configurar el gráfico de torta
+                ChartEspecialidades.Series.Clear();
+                Series serie = new Series("Turnos por Especialidad");
+                serie.ChartType = SeriesChartType.Pie;
+                serie.XValueMember = "Especialidad";
+                serie.YValueMembers = "CantidadTurnos";
+                serie.IsValueShownAsLabel = true;
+                serie.LabelForeColor = Color.FromArgb(90, 90, 150);
+                serie.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+                serie["PieLabelStyle"] = "Outside";
+                serie["PieLineColor"] = "Gray";
 
-                // Cambiar tipo a barras horizontales
-                ChartEspecialidades.Series[0].ChartType = SeriesChartType.Bar;
+                // Asignar colores tipo pastel
+                string[] colores = { "#9C8ADE", "#A9A4F0", "#BFB3FF", "#C9BFF8", "#D5CFFF", "#E0DBFF" };
+                serie.Points.DataBind(dt.AsEnumerable(), "Especialidad", "CantidadTurnos", null);
+                for (int i = 0; i < serie.Points.Count; i++)
+                {
+                    serie.Points[i].Color = ColorTranslator.FromHtml(colores[i % colores.Length]);
+                    serie.Points[i].Label = $"{dt.Rows[i]["Especialidad"]} {dt.Rows[i]["Porcentaje"]}%";
+                }
 
-                // Colores suaves tipo pastel
-                //ChartEspecialidades.Series[0].Color = Color.FromArgb(120, 200, 150); // verde suave
-                ChartEspecialidades.Palette = ChartColorPalette.None;
+                ChartEspecialidades.Series.Add(serie);
 
-                // Bordes redondeados y sin borde negro
-                ChartEspecialidades.Series[0].BorderWidth = 0;
-
-                // Ejes minimalistas
-                ChartEspecialidades.ChartAreas[0].AxisX.MajorGrid.LineColor = Color.LightGray;
-                ChartEspecialidades.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
-                ChartEspecialidades.ChartAreas[0].AxisX.LabelStyle.Font = new Font("Segoe UI", 9);
-                ChartEspecialidades.ChartAreas[0].AxisY.LabelStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-
-                // Leyenda fuera y título
-                ChartEspecialidades.Legends.Clear();
+                // Estilo general del gráfico
                 ChartEspecialidades.Titles.Clear();
-                ChartEspecialidades.Titles.Add("Citas por Especialidad");
-                ChartEspecialidades.Titles[0].Font = new Font("Segoe UI", 12, FontStyle.Bold);
-                ChartEspecialidades.Titles[0].ForeColor = Color.FromArgb(40, 60, 40);
+                ChartEspecialidades.Titles.Add("Turnos por Especialidad");
+                ChartEspecialidades.Titles[0].Font = new Font("Segoe UI", 11, FontStyle.Bold);
                 ChartEspecialidades.Titles[0].Alignment = ContentAlignment.TopLeft;
 
-                // Etiquetas dentro de las barras
-                foreach (var point in ChartEspecialidades.Series[0].Points)
-                {
-                    point.LabelForeColor = Color.Black;
-                    point.Font = new Font("Segoe UI", 9);
-                    point.LabelBackColor = Color.Transparent;
-                }
-
-                // Agregar porcentaje al label
-                for (int i = 0; i < ChartEspecialidades.Series[0].Points.Count; i++)
-                {
-                    DataPoint punto = ChartEspecialidades.Series[0].Points[i];
-                    double porcentaje = Convert.ToDouble(dt.Rows[i]["Porcentaje"]);
-                    punto.Label = $"{punto.YValues[0]} ({porcentaje}%)";
-                }
+                ChartEspecialidades.ChartAreas[0].BackColor = Color.White;
+                ChartEspecialidades.Legends.Clear();
             }
         }
         // cargar ranking de medicos
@@ -197,146 +180,154 @@ namespace SaludSoft
         {
             this.Close();
         }
-        // cargar actividad por turnos
-        private void CargarActividadTurnosGrid()
+        
+        private void CargarResumenCitas()
         {
             string query = @"
              SELECT 
-              e.nombre AS Especialidad,
-              t.estado AS Estado,
-             COUNT(t.id_turno) AS CantidadTurnos
+             SUM(CASE WHEN t.estado = 'Completado' THEN 1 ELSE 0 END) AS Completadas,
+             SUM(CASE WHEN t.estado = 'Cancelado' THEN 1 ELSE 0 END) AS Canceladas,
+             SUM(CASE WHEN t.estado = 'Pendiente' THEN 1 ELSE 0 END) AS Pendientes,
+             COUNT(*) AS Total
              FROM Turnos t
-             INNER JOIN Agenda a ON t.id_agenda = a.id_agenda
-             INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
-             INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
-             INNER JOIN Especialidad e ON p.id_especialidad = e.id_especialidad
-             WHERE t.fecha >= DATEADD(MONTH, -1, GETDATE())
-             GROUP BY e.nombre, t.estado
-             ORDER BY e.nombre, t.estado;";
+             WHERE t.fecha >= DATEADD(MONTH, -1, GETDATE());";
 
             using (SqlConnection conexion = Conexion.GetConnection())
             {
-                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
+                SqlCommand cmd = new SqlCommand(query, conexion);
+                conexion.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
 
-                DTGActividadPorTurno.DataSource = dt;
+                if (reader.Read())
+                {
+                    int completadas = Convert.ToInt32(reader["Completadas"]);
+                    int canceladas = Convert.ToInt32(reader["Canceladas"]);
+                    int pendientes = Convert.ToInt32(reader["Pendientes"]);
+                    int total = Convert.ToInt32(reader["Total"]);
 
-                // Estilos visuales
-                DTGActividadPorTurno.EnableHeadersVisualStyles = false;
-                DTGActividadPorTurno.BorderStyle = BorderStyle.None;
-                DTGActividadPorTurno.ColumnHeadersDefaultCellStyle.BackColor = Color.White;
-                DTGActividadPorTurno.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-                DTGActividadPorTurno.DefaultCellStyle.ForeColor = Color.Black;
-                DTGActividadPorTurno.DefaultCellStyle.BackColor = Color.White;
-                DTGActividadPorTurno.AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke;
-                DTGActividadPorTurno.DefaultCellStyle.SelectionBackColor = Color.FromArgb(180, 220, 180);
-                DTGActividadPorTurno.DefaultCellStyle.SelectionForeColor = Color.Black;
-                DTGActividadPorTurno.DefaultCellStyle.Font = new Font("Segoe UI", 9);
-                DTGActividadPorTurno.RowHeadersVisible = false;
-                DTGActividadPorTurno.AllowUserToAddRows = false;
-                DTGActividadPorTurno.ReadOnly = true;
-                DTGActividadPorTurno.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                DTGActividadPorTurno.GridColor = Color.White;
+                    reader.Close();
 
-                // Título de columnas
-                DTGActividadPorTurno.Columns["Especialidad"].HeaderText = "Especialidad";
-                DTGActividadPorTurno.Columns["Estado"].HeaderText = "Estado del Turno";
-                DTGActividadPorTurno.Columns["CantidadTurnos"].HeaderText = "Cantidad de Turnos";
+                    // Crear panel contenedor
+                    FlowLayoutPanel contenedor = new FlowLayoutPanel
+                    {
+                        Dock = DockStyle.Bottom,
+                        Width = 750,
+                        Height = 130,
+                        AutoSize = false,
+                        BackColor = Color.White,
+                        Padding = new Padding(15),
+                        FlowDirection = FlowDirection.LeftToRight,
+                        WrapContents = false,
+                        Margin = new Padding(0),
+                    };
+
+                    // Crear las tres tarjetas
+                    Panel tarjetaCompletadas = CrearTarjetaResumen(
+                        completadas.ToString(),
+                        "Citas Completadas",
+                        $"{(total > 0 ? Math.Round((double)completadas / total * 100, 1) : 0)}% del total",
+                        Color.FromArgb(220, 255, 230),
+                        Color.ForestGreen
+                    );
+
+                    Panel tarjetaCanceladas = CrearTarjetaResumen(
+                        canceladas.ToString(),
+                        "Citas Canceladas",
+                        $"{(total > 0 ? Math.Round((double)canceladas / total * 100, 1) : 0)}% del total",
+                        Color.FromArgb(255, 230, 230),
+                        Color.Firebrick
+                    );
+
+                    Panel tarjetaPendientes = CrearTarjetaResumen(
+                        pendientes.ToString(),
+                        "Citas Pendientes",
+                        "Próximas consultas programadas",
+                        Color.FromArgb(230, 240, 255),
+                        Color.RoyalBlue
+                    );
+
+                    // Agregar las tarjetas al contenedor
+                    contenedor.Controls.Add(tarjetaCompletadas);
+                    contenedor.Controls.Add(tarjetaCanceladas);
+                    contenedor.Controls.Add(tarjetaPendientes);
+
+                    // Posicionar el contenedor debajo del gráfico principal
+                    contenedor.Location = new Point(ChartEspecialidades.Left, ChartEspecialidades.Bottom + 20);
+
+                    // Centrar horizontalmente
+                    contenedor.Left = (this.ClientSize.Width - contenedor.Width) / 2;
+
+                    // Agregar al formulario
+                    this.Controls.Add(contenedor);
+                    contenedor.BringToFront();
+                }
             }
         }
-        // colorear filas segun el estado del turno
-        private void DTGActividadTurnos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+
+        // Método auxiliar para crear cada tarjeta
+        private Panel CrearTarjetaResumen(string valor, string titulo, string subtitulo, Color fondo, Color colorTexto)
         {
-            if (DTGActividadPorTurno.Columns["Estado"].Index == e.ColumnIndex && e.Value != null)
+            Panel panel = new Panel
             {
-                string estado = e.Value.ToString().ToLower();
+                Width = 220,
+                Height = 100,
+                BackColor = fondo,
+                Padding = new Padding(10),
+                Margin = new Padding(30, 10, 30, 10),
+            };
 
-                if (estado.Contains("confirmado"))
-                {
-                    DTGActividadPorTurno.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(210, 250, 210); // verde claro
-                }
-                else if (estado.Contains("cancelado"))
-                {
-                    DTGActividadPorTurno.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(255, 220, 220); // rojo claro
-                }
-                else if (estado.Contains("pendiente"))
-                {
-                    DTGActividadPorTurno.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(255, 255, 200); // amarillo claro
-                }
-            }
+            Label lblValor = new Label
+            {
+                Text = valor,
+                Font = new Font("Segoe UI", 20, FontStyle.Bold),
+                ForeColor = colorTexto,
+                Dock = DockStyle.Top,
+                Height = 40,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+
+            Label lblTitulo = new Label
+            {
+                Text = titulo,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = Color.Black,
+                Dock = DockStyle.Top,
+                Height = 20,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+
+            Label lblSubtitulo = new Label
+            {
+                Text = subtitulo,
+                Font = new Font("Segoe UI", 8, FontStyle.Regular),
+                ForeColor = Color.Gray,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+
+            panel.Controls.Add(lblSubtitulo);
+            panel.Controls.Add(lblTitulo);
+            panel.Controls.Add(lblValor);
+
+            return panel;
         }
-        // grafico de tortas representa los turnos por su estado
-        private void CargarGraficoTurnosPorEstado()
+        private void CargarEstadisticasGenerales()
         {
-            string query = @"
-             SELECT 
-              t.estado AS Estado,
-             COUNT(t.id_turno) AS CantidadTurnos
-             FROM Turnos t
-             INNER JOIN Agenda a ON t.id_agenda = a.id_agenda
-             INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
-             INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
-             INNER JOIN Especialidad e ON p.id_especialidad = e.id_especialidad
-             WHERE t.fecha >= DATEADD(MONTH, -1, GETDATE())
-             GROUP BY t.estado
-             ORDER BY t.estado; ";
-
             using (SqlConnection conexion = Conexion.GetConnection())
             {
-                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
+                conexion.Open();
 
-                if (dt.Rows.Count == 0)
-                {
-                    MessageBox.Show("No hay datos para mostrar en el gráfico de torta.");
-                    return;
-                }
+                // --- Total de turnos del mes ---
+                string queryTurnos = @"
+                 SELECT COUNT(*) 
+                 FROM Turnos 
+                 WHERE MONTH(fecha) = MONTH(GETDATE()) AND YEAR(fecha) = YEAR(GETDATE());";
 
-                // Calcular total
-                int total = dt.AsEnumerable().Sum(r => r.Field<int>("CantidadTurnos"));
+                SqlCommand cmdTurnos = new SqlCommand(queryTurnos, conexion);
+                int totalTurnos = Convert.ToInt32(cmdTurnos.ExecuteScalar());
 
-                // Calcular porcentaje
-                dt.Columns.Add("Porcentaje", typeof(double));
-                foreach (DataRow row in dt.Rows)
-                {
-                    double cantidad = Convert.ToDouble(row["CantidadTurnos"]);
-                    row["Porcentaje"] = Math.Round((cantidad / total) * 100, 1);
-                }
-
-                // Configurar el gráfico
-                ChartTurnosPorEstado.Series.Clear();
-                Series serie = new Series("Turnos por Estado");
-                serie.ChartType = SeriesChartType.Pie;
-                serie.XValueMember = "Estado";
-                serie.YValueMembers = "CantidadTurnos";
-                serie.IsValueShownAsLabel = true;
-                serie.LabelForeColor = Color.Black;
-                serie.Font = new Font("Segoe UI", 9, FontStyle.Bold);
-                serie["PieLabelStyle"] = "Outside";
-                serie["PieLineColor"] = "Gray";
-
-                // Colores personalizados
-                serie.Points.DataBind(dt.AsEnumerable(), "Estado", "CantidadTurnos", null);
-                string[] colores = { "#F44336", "#4CAF50","#FFEB3B" }; // rojo,verde,amarillo
-                for (int i = 0; i < serie.Points.Count; i++)
-                {
-                    serie.Points[i].Color = ColorTranslator.FromHtml(colores[i % colores.Length]);
-                    serie.Points[i].Label = $"{dt.Rows[i]["Estado"]} ({dt.Rows[i]["Porcentaje"]}%)";
-                }
-
-                ChartTurnosPorEstado.Series.Add(serie);
-
-                // Título y estilo general
-                ChartTurnosPorEstado.Titles.Clear();
-                ChartTurnosPorEstado.Titles.Add("Distribución de Turnos por Estado");
-                ChartTurnosPorEstado.Titles[0].Font = new Font("Segoe UI", 12, FontStyle.Bold);
-                ChartTurnosPorEstado.Titles[0].ForeColor = Color.FromArgb(40, 60, 40);
-
-       
-                ChartTurnosPorEstado.ChartAreas[0].BackColor = Color.WhiteSmoke;
-               
+                // Mostrar en las etiquetas
+                LContadorTurnos.Text = totalTurnos.ToString();
             }
         }
     }
