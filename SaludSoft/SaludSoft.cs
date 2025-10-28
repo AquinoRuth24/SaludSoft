@@ -570,7 +570,6 @@ ORDER BY fechaHora;";
 
         private void btnReportes_Click(object sender, EventArgs e)
         {
-            this.Hide();
             ReportesRecep frm = new ReportesRecep();
             frm.ShowDialog();
             this.Show();

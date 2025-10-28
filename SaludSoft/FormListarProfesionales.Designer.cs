@@ -72,6 +72,7 @@
             this.BVolver.TabIndex = 3;
             this.BVolver.Text = "<--Volver";
             this.BVolver.UseVisualStyleBackColor = true;
+            this.BVolver.Click += new System.EventHandler(this.BVolver_Click);
             // 
             // LTexto
             // 
@@ -118,6 +119,7 @@
             this.BBuscarProfesional.TabIndex = 12;
             this.BBuscarProfesional.Text = "Buscar";
             this.BBuscarProfesional.UseVisualStyleBackColor = true;
+            this.BBuscarProfesional.Click += new System.EventHandler(this.BBuscarProfesional_Click);
             // 
             // FormListarProfesionales
             // 

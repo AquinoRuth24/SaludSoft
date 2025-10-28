@@ -28,14 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnVolver = new System.Windows.Forms.Button();
             this.lReportesMes = new System.Windows.Forms.Label();
@@ -111,7 +111,7 @@
             this.btnVolver.Size = new System.Drawing.Size(44, 29);
             this.btnVolver.TabIndex = 2;
             this.btnVolver.UseVisualStyleBackColor = false;
-           // this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
             // lReportesMes
             // 
@@ -319,23 +319,23 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chPieEstados.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea9.BackColor = System.Drawing.Color.White;
-            chartArea9.BorderWidth = 0;
-            chartArea9.Name = "ChartArea1";
-            this.chPieEstados.ChartAreas.Add(chartArea9);
-            legend9.Alignment = System.Drawing.StringAlignment.Center;
-            legend9.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend9.Name = "Legend1";
-            this.chPieEstados.Legends.Add(legend9);
+            chartArea1.BackColor = System.Drawing.Color.White;
+            chartArea1.BorderWidth = 0;
+            chartArea1.Name = "ChartArea1";
+            this.chPieEstados.ChartAreas.Add(chartArea1);
+            legend1.Alignment = System.Drawing.StringAlignment.Center;
+            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend1.Name = "Legend1";
+            this.chPieEstados.Legends.Add(legend1);
             this.chPieEstados.Location = new System.Drawing.Point(653, 44);
             this.chPieEstados.Name = "chPieEstados";
-            series9.ChartArea = "ChartArea1";
-            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series9.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            series9.IsValueShownAsLabel = true;
-            series9.Legend = "Legend1";
-            series9.Name = "Estados";
-            this.chPieEstados.Series.Add(series9);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            series1.IsValueShownAsLabel = true;
+            series1.Legend = "Legend1";
+            series1.Name = "Estados";
+            this.chPieEstados.Series.Add(series1);
             this.chPieEstados.Size = new System.Drawing.Size(213, 150);
             this.chPieEstados.TabIndex = 1;
             this.chPieEstados.Text = "chart1";
@@ -384,10 +384,10 @@
             // 
             // colFechaHora
             // 
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.Format = "g";
-            dataGridViewCellStyle9.NullValue = null;
-            this.colFechaHora.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.Format = "g";
+            dataGridViewCellStyle1.NullValue = null;
+            this.colFechaHora.DefaultCellStyle = dataGridViewCellStyle1;
             this.colFechaHora.HeaderText = "Fecha/Hora";
             this.colFechaHora.Name = "colFechaHora";
             this.colFechaHora.ReadOnly = true;
@@ -450,14 +450,14 @@
             this.dgvRankingMedicos.Location = new System.Drawing.Point(20, 152);
             this.dgvRankingMedicos.Name = "dgvRankingMedicos";
             this.dgvRankingMedicos.ReadOnly = true;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRankingMedicos.RowHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRankingMedicos.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvRankingMedicos.RowHeadersVisible = false;
             this.dgvRankingMedicos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvRankingMedicos.Size = new System.Drawing.Size(833, 78);
@@ -502,19 +502,19 @@
             // 
             this.chTopMedicos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea10.AxisY.Interval = 1D;
-            chartArea10.AxisY.LabelStyle.Format = "N0";
-            chartArea10.Name = "caTop";
-            this.chTopMedicos.ChartAreas.Add(chartArea10);
-            legend10.Name = "lgTop";
-            this.chTopMedicos.Legends.Add(legend10);
+            chartArea2.AxisY.Interval = 1D;
+            chartArea2.AxisY.LabelStyle.Format = "N0";
+            chartArea2.Name = "caTop";
+            this.chTopMedicos.ChartAreas.Add(chartArea2);
+            legend2.Name = "lgTop";
+            this.chTopMedicos.Legends.Add(legend2);
             this.chTopMedicos.Location = new System.Drawing.Point(3, 20);
             this.chTopMedicos.Name = "chTopMedicos";
             this.chTopMedicos.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SemiTransparent;
-            series10.ChartArea = "caTop";
-            series10.Legend = "lgTop";
-            series10.Name = "Consultas";
-            this.chTopMedicos.Series.Add(series10);
+            series2.ChartArea = "caTop";
+            series2.Legend = "lgTop";
+            series2.Name = "Consultas";
+            this.chTopMedicos.Series.Add(series2);
             this.chTopMedicos.Size = new System.Drawing.Size(865, 132);
             this.chTopMedicos.TabIndex = 0;
             this.chTopMedicos.Text = "chart1";
@@ -549,7 +549,6 @@
             this.btnImprimir.Size = new System.Drawing.Size(75, 35);
             this.btnImprimir.TabIndex = 12;
             this.btnImprimir.UseVisualStyleBackColor = true;
-            //this.btnImprimir.Click += new System.EventHandler(this.btnImprimir_Click);
             // 
             // btActualizar
             // 

@@ -20,20 +20,33 @@ namespace SaludSoft
             ConfigurarGrilla();
         }
         // muestra los profesionales con nombre, apellido y su estado 
-        private void CargarProfesionalesActivos()
+        private void CargarProfesionalesActivos(string filtro = "")
         {
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 conexion.Open();
 
                 string query = @"
-                    SELECT 
-                        p.id_profesional,
-                        p.nombre AS Nombre,
-                        p.apellido AS Apellido,
-                        e.descripcion AS Estado
-                    FROM Profesional p
-                    INNER JOIN Estado e ON e.id_estado = p.id_estado";
+                 SELECT 
+                 p.id_profesional,
+                 p.nombre AS Nombre,
+                 p.apellido AS Apellido,
+                 c.nroConsultorio AS [N° Consultorio],
+                 e.nombre AS Especialidad,
+                 es.descripcion AS Estado
+                 FROM Profesional p
+                 INNER JOIN Estado es ON es.id_estado = p.id_estado
+                 INNER JOIN Especialidad e ON e.id_especialidad = p.id_especialidad
+                 INNER JOIN Profesional_Consultorio pc ON pc.id_profesional = p.id_profesional
+                 INNER JOIN Consultorio c ON c.id_consultorio = pc.id_consultorio
+                 WHERE 
+                  (p.nombre LIKE @filtro
+                  OR p.apellido LIKE @filtro
+                  OR e.nombre LIKE @filtro)
+                 ORDER BY p.apellido, p.nombre;";
+
+                SqlCommand cmd = new SqlCommand(query, conexion);
+                cmd.Parameters.AddWithValue("@filtro", $"%{filtro}%");
 
                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
                 DataTable dt = new DataTable();
@@ -110,6 +123,23 @@ namespace SaludSoft
                     DGProfesionales.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.DarkGreen;
                 }
             }
+        }
+        // botones de actividad 
+        private void BVolver_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void BBuscarProfesional_Click(object sender, EventArgs e)
+        {
+            string filtro = TBBuscarProfesional.Text.Trim();
+            CargarProfesionalesActivos(filtro);
+        }
+
+        private void BBuscarProfesional_TextChanged(object sender, EventArgs e)
+        {
+            string filtro = BBuscarProfesional.Text.Trim();
+            CargarProfesionalesActivos(filtro);
         }
     }
 }

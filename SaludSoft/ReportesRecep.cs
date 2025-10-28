@@ -641,6 +641,11 @@ WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
             ((Excel.Range)ws.Columns).AutoFit();
             return rOut - 1;
         }
+        // boton volver 
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
         /*private void btnImprimir_Click(object sender, EventArgs e)
         {
