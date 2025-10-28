@@ -642,7 +642,7 @@ WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
             return rOut - 1;
         }
 
-        private void btnImprimir_Click(object sender, EventArgs e)
+        /*private void btnImprimir_Click(object sender, EventArgs e)
         {
             Excel.Application app = null;
             Excel.Workbook wb = null;
@@ -770,7 +770,7 @@ WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
             // Cierra el formulario actual de reportes
             this.Close();
 
-        }
+        }*/
     }
 }
 

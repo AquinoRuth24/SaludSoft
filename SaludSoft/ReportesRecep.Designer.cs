@@ -111,7 +111,7 @@
             this.btnVolver.Size = new System.Drawing.Size(44, 29);
             this.btnVolver.TabIndex = 2;
             this.btnVolver.UseVisualStyleBackColor = false;
-            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
+           // this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
             // lReportesMes
             // 
@@ -549,7 +549,7 @@
             this.btnImprimir.Size = new System.Drawing.Size(75, 35);
             this.btnImprimir.TabIndex = 12;
             this.btnImprimir.UseVisualStyleBackColor = true;
-            this.btnImprimir.Click += new System.EventHandler(this.btnImprimir_Click);
+            //this.btnImprimir.Click += new System.EventHandler(this.btnImprimir_Click);
             // 
             // btActualizar
             // 
