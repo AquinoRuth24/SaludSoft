@@ -30,6 +30,8 @@ namespace SaludSoft
             tbBuscarDni.MaxLength = 8;
             tbBuscarDni.ImeMode = ImeMode.Disable;
             tbBuscarDni.KeyDown += TbBuscarDni_KeyDown;
+
+            
         }
 
         // ---------- Load ----------
@@ -427,27 +429,23 @@ namespace SaludSoft
             return max + 1;
         }
 
+        // Campo para evitar doble clic
+        private bool _cerrando = false;
+
         private void btVolver_Click(object sender, EventArgs e)
         {
-            // Si el formulario fue abierto desde Medico
-            if (this.Owner is Medico frmMedico)
-            {
-                frmMedico.Show();
-                frmMedico.Activate();
-            }
-            else
-            {
-                // Si no tiene Owner, buscar si hay uno abierto
-                var abierto = Application.OpenForms.OfType<Medico>().FirstOrDefault();
-                if (abierto != null)
-                {
-                    abierto.Show();
-                    abierto.Activate();
-                }
-            }
+            if (_cerrando) return;
+            _cerrando = true;
+            btVolver.Enabled = false;
 
-            // Cierra el historial actual
+            
+            this.DialogResult = DialogResult.OK;  
             this.Close();
         }
+
+        
+
+
+
     }
 }

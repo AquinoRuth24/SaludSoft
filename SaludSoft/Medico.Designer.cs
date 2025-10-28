@@ -172,7 +172,7 @@
             this.tbBuscarPaciente.Name = "tbBuscarPaciente";
             this.tbBuscarPaciente.Size = new System.Drawing.Size(244, 20);
             this.tbBuscarPaciente.TabIndex = 3;
-            this.tbBuscarPaciente.TextChanged += new System.EventHandler(this.tbBuscarPaciente_TextChanged);
+          //  this.tbBuscarPaciente.TextChanged += new System.EventHandler(this.tbBuscarPaciente_TextChanged);
             // 
             // dgPacientes
             // 
