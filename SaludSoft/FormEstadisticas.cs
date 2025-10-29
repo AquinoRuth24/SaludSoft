@@ -17,6 +17,11 @@ namespace SaludSoft
         public FormEstadisticas()
         {
             InitializeComponent();
+
+            // Establecer fechas por defecto ultimo mes
+            DTPDesde.Value = DateTime.Today.AddDays(-30);
+            DTPHasta.Value = DateTime.Today;
+
             CargarGrafico();
             CargarRankingMedicosGrid();
             CargarResumenCitas();
@@ -24,36 +29,40 @@ namespace SaludSoft
 
             DTGRankingMedicos.CellPainting += DTGRankingMedicos_CellPainting;
 
+            BFiltro.Click += BFiltro_Click;
+
         }
 
         private void CargarGrafico()
         {
             string query = @"
-             SELECT 
-             e.nombre AS Especialidad,
-             COUNT(t.id_turno) AS CantidadTurnos
-             FROM Turnos t
-             INNER JOIN Agenda a ON t.id_agenda = a.id_agenda
-             INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
-             INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
-             INNER JOIN Especialidad e ON p.id_especialidad = e.id_especialidad
-             WHERE t.fecha >= DATEADD(MONTH, -1, GETDATE())
-             GROUP BY e.nombre
-             ORDER BY CantidadTurnos DESC; ";
+    SELECT 
+        e.nombre AS Especialidad,
+        COUNT(t.id_turno) AS CantidadTurnos
+    FROM Turnos t
+    INNER JOIN Agenda a ON t.id_agenda = a.id_agenda
+    INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
+    INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
+    INNER JOIN Especialidad e ON p.id_especialidad = e.id_especialidad
+    WHERE t.fecha BETWEEN @fechaInicio AND @fechaFin
+    GROUP BY e.nombre
+    ORDER BY CantidadTurnos DESC;";
 
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                da.SelectCommand.Parameters.AddWithValue("@fechaInicio", DTPDesde.Value.Date);
+                da.SelectCommand.Parameters.AddWithValue("@fechaFin", DTPHasta.Value.Date);
+
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
                 if (dt.Rows.Count == 0)
                 {
-                    MessageBox.Show("No hay datos para mostrar en el último mes.");
+                    MessageBox.Show("No hay datos para mostrar en el rango seleccionado.");
                     return;
                 }
 
-                // Calcular total y porcentajes
                 int totalTurnos = dt.AsEnumerable().Sum(r => r.Field<int>("CantidadTurnos"));
                 dt.Columns.Add("Porcentaje", typeof(double));
                 foreach (DataRow row in dt.Rows)
@@ -62,19 +71,17 @@ namespace SaludSoft
                     row["Porcentaje"] = Math.Round((cantidad / totalTurnos) * 100, 1);
                 }
 
-                // Configurar el gráfico de torta
                 ChartEspecialidades.Series.Clear();
-                Series serie = new Series("Turnos por Especialidad");
-                serie.ChartType = SeriesChartType.Pie;
-                serie.XValueMember = "Especialidad";
-                serie.YValueMembers = "CantidadTurnos";
-                serie.IsValueShownAsLabel = true;
-                serie.LabelForeColor = Color.FromArgb(90, 90, 150);
-                serie.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+                Series serie = new Series("Turnos por Especialidad")
+                {
+                    ChartType = SeriesChartType.Pie,
+                    IsValueShownAsLabel = true,
+                    LabelForeColor = Color.FromArgb(90, 90, 150),
+                    Font = new Font("Segoe UI", 9, FontStyle.Bold)
+                };
                 serie["PieLabelStyle"] = "Outside";
                 serie["PieLineColor"] = "Gray";
 
-                // Asignar colores tipo pastel
                 string[] colores = { "#9C8ADE", "#A9A4F0", "#BFB3FF", "#C9BFF8", "#D5CFFF", "#E0DBFF" };
                 serie.Points.DataBind(dt.AsEnumerable(), "Especialidad", "CantidadTurnos", null);
                 for (int i = 0; i < serie.Points.Count; i++)
@@ -84,13 +91,10 @@ namespace SaludSoft
                 }
 
                 ChartEspecialidades.Series.Add(serie);
-
-                // Estilo general del gráfico
                 ChartEspecialidades.Titles.Clear();
                 ChartEspecialidades.Titles.Add("Turnos por Especialidad");
                 ChartEspecialidades.Titles[0].Font = new Font("Segoe UI", 11, FontStyle.Bold);
                 ChartEspecialidades.Titles[0].Alignment = ContentAlignment.TopLeft;
-
                 ChartEspecialidades.ChartAreas[0].BackColor = Color.White;
                 ChartEspecialidades.Legends.Clear();
             }
@@ -99,22 +103,25 @@ namespace SaludSoft
         private void CargarRankingMedicosGrid()
         {
             string query = @"
-             SELECT 
-              p.apellido + ', ' + p.nombre AS Medico,
-              e.nombre AS Especialidad,
-             COUNT(t.id_turno) AS CantidadTurnos
-             FROM Turnos t
-             INNER JOIN Agenda a ON t.id_agenda = a.id_agenda
-             INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
-             INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
-             INNER JOIN Especialidad e ON p.id_especialidad = e.id_especialidad
-             WHERE t.fecha >= DATEADD(MONTH, -1, GETDATE())
-             GROUP BY p.apellido, p.nombre, e.nombre
-             ORDER BY CantidadTurnos DESC;";
+    SELECT 
+        p.apellido + ', ' + p.nombre AS Medico,
+        e.nombre AS Especialidad,
+        COUNT(t.id_turno) AS CantidadTurnos
+    FROM Turnos t
+    INNER JOIN Agenda a ON t.id_agenda = a.id_agenda
+    INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
+    INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
+    INNER JOIN Especialidad e ON p.id_especialidad = e.id_especialidad
+    WHERE t.fecha BETWEEN @fechaInicio AND @fechaFin
+    GROUP BY p.apellido, p.nombre, e.nombre
+    ORDER BY CantidadTurnos DESC;";
 
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                da.SelectCommand.Parameters.AddWithValue("@fechaInicio", DTPDesde.Value.Date);
+                da.SelectCommand.Parameters.AddWithValue("@fechaFin", DTPHasta.Value.Date);
+
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
@@ -132,13 +139,12 @@ namespace SaludSoft
 
                 DTGRankingMedicos.DataSource = dtRanking;
 
-                //estilos
+                // estilos
                 DTGRankingMedicos.EnableHeadersVisualStyles = false;
                 DTGRankingMedicos.BorderStyle = BorderStyle.None;
-                DTGRankingMedicos.ColumnHeadersDefaultCellStyle.BackColor = Color.White;// columnas de encabezado
-                DTGRankingMedicos.DefaultCellStyle.ForeColor = Color.Black;// color de texto
+                DTGRankingMedicos.ColumnHeadersDefaultCellStyle.BackColor = Color.White;
+                DTGRankingMedicos.DefaultCellStyle.ForeColor = Color.Black;
                 DTGRankingMedicos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-
                 DTGRankingMedicos.DefaultCellStyle.BackColor = Color.White;
                 DTGRankingMedicos.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
                 DTGRankingMedicos.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
@@ -175,40 +181,45 @@ namespace SaludSoft
                 e.Handled = true;
             }
         }
-        // boton volver
-        private void BVolver_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-        
+        private FlowLayoutPanel contenedorResumen;
+
         private void CargarResumenCitas()
         {
             string query = @"
              SELECT 
-             SUM(CASE WHEN t.estado = 'Completado' THEN 1 ELSE 0 END) AS Completadas,
+             SUM(CASE WHEN t.estado = 'Confirmado' THEN 1 ELSE 0 END) AS Confirmados,
              SUM(CASE WHEN t.estado = 'Cancelado' THEN 1 ELSE 0 END) AS Canceladas,
              SUM(CASE WHEN t.estado = 'Pendiente' THEN 1 ELSE 0 END) AS Pendientes,
              COUNT(*) AS Total
              FROM Turnos t
-             WHERE t.fecha >= DATEADD(MONTH, -1, GETDATE());";
+             WHERE t.fecha BETWEEN @fechaInicio AND @fechaFin;";
 
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 SqlCommand cmd = new SqlCommand(query, conexion);
+                cmd.Parameters.AddWithValue("@fechaInicio", DTPDesde.Value.Date);
+                cmd.Parameters.AddWithValue("@fechaFin", DTPHasta.Value.Date);
                 conexion.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 if (reader.Read())
                 {
-                    int completadas = Convert.ToInt32(reader["Completadas"]);
+                    int completadas = Convert.ToInt32(reader["Confirmados"]);
                     int canceladas = Convert.ToInt32(reader["Canceladas"]);
                     int pendientes = Convert.ToInt32(reader["Pendientes"]);
                     int total = Convert.ToInt32(reader["Total"]);
 
                     reader.Close();
 
-                    // Crear panel contenedor
-                    FlowLayoutPanel contenedor = new FlowLayoutPanel
+                    //Eliminar el contenedor anterior si ya existe
+                    if (contenedorResumen != null && this.Controls.Contains(contenedorResumen))
+                    {
+                        this.Controls.Remove(contenedorResumen);
+                        contenedorResumen.Dispose();
+                    }
+
+                    // Crear el nuevo contenedor
+                    contenedorResumen = new FlowLayoutPanel
                     {
                         Dock = DockStyle.Bottom,
                         Width = 750,
@@ -222,9 +233,9 @@ namespace SaludSoft
                     };
 
                     // Crear las tres tarjetas
-                    Panel tarjetaCompletadas = CrearTarjetaResumen(
+                    Panel tarjetaConfirmadas = CrearTarjetaResumen(
                         completadas.ToString(),
-                        "Citas Completadas",
+                        "Citas Confirmadas",
                         $"{(total > 0 ? Math.Round((double)completadas / total * 100, 1) : 0)}% del total",
                         Color.FromArgb(220, 255, 230),
                         Color.ForestGreen
@@ -247,19 +258,16 @@ namespace SaludSoft
                     );
 
                     // Agregar las tarjetas al contenedor
-                    contenedor.Controls.Add(tarjetaCompletadas);
-                    contenedor.Controls.Add(tarjetaCanceladas);
-                    contenedor.Controls.Add(tarjetaPendientes);
+                    contenedorResumen.Controls.Add(tarjetaConfirmadas);
+                    contenedorResumen.Controls.Add(tarjetaCanceladas);
+                    contenedorResumen.Controls.Add(tarjetaPendientes);
 
-                    // Posicionar el contenedor debajo del gráfico principal
-                    contenedor.Location = new Point(ChartEspecialidades.Left, ChartEspecialidades.Bottom + 20);
+                    // Posicionar el contenedor
+                    contenedorResumen.Location = new Point(ChartEspecialidades.Left, ChartEspecialidades.Bottom + 20);
+                    contenedorResumen.Left = (this.ClientSize.Width - contenedorResumen.Width) / 2;
 
-                    // Centrar horizontalmente
-                    contenedor.Left = (this.ClientSize.Width - contenedor.Width) / 2;
-
-                    // Agregar al formulario
-                    this.Controls.Add(contenedor);
-                    contenedor.BringToFront();
+                    this.Controls.Add(contenedorResumen);
+                    contenedorResumen.BringToFront();
                 }
             }
         }
@@ -317,18 +325,42 @@ namespace SaludSoft
             {
                 conexion.Open();
 
-                // --- Total de turnos del mes ---
                 string queryTurnos = @"
                  SELECT COUNT(*) 
                  FROM Turnos 
-                 WHERE MONTH(fecha) = MONTH(GETDATE()) AND YEAR(fecha) = YEAR(GETDATE());";
+                 WHERE fecha BETWEEN @fechaInicio AND @fechaFin;";
 
                 SqlCommand cmdTurnos = new SqlCommand(queryTurnos, conexion);
+                cmdTurnos.Parameters.AddWithValue("@fechaInicio", DTPDesde.Value.Date);
+                cmdTurnos.Parameters.AddWithValue("@fechaFin", DTPHasta.Value.Date);
+
                 int totalTurnos = Convert.ToInt32(cmdTurnos.ExecuteScalar());
 
                 // Mostrar en las etiquetas
                 LContadorTurnos.Text = totalTurnos.ToString();
             }
+        }
+        // botones de accion
+        private void BFiltro_Click(object sender, EventArgs e)
+        {
+            if (DTPDesde.Value.Date > DTPHasta.Value.Date)
+            {
+                MessageBox.Show("La fecha de inicio no puede ser mayor que la fecha de fin.");
+                return;
+            }
+
+            // Limpiar antes de recargar
+            ChartEspecialidades.Series.Clear();
+            DTGRankingMedicos.DataSource = null;
+
+            CargarGrafico();
+            CargarRankingMedicosGrid();
+            CargarResumenCitas();
+            CargarEstadisticasGenerales();
+        }
+        private void BVolver_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
