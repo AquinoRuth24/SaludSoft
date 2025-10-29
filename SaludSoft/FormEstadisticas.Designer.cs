@@ -28,29 +28,37 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.DTGRankingMedicos = new System.Windows.Forms.DataGridView();
             this.BVolver = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.DTGRankingMedicos = new System.Windows.Forms.DataGridView();
             this.ChartEspecialidades = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.BPacientes = new System.Windows.Forms.Button();
+            this.Turnos = new System.Windows.Forms.Button();
+            this.BMedico = new System.Windows.Forms.Button();
+            this.lFechaHasta = new System.Windows.Forms.Label();
+            this.lFechaPeriodo = new System.Windows.Forms.Label();
             this.BFiltro = new System.Windows.Forms.Button();
             this.DTPHasta = new System.Windows.Forms.DateTimePicker();
             this.DTPDesde = new System.Windows.Forms.DateTimePicker();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.GBContadorTurnos = new System.Windows.Forms.GroupBox();
             this.filtro = new System.Windows.Forms.Label();
             this.LContadorTurnos = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.lFechaPeriodo = new System.Windows.Forms.Label();
-            this.lFechaHasta = new System.Windows.Forms.Label();
+            this.GBMedicos = new System.Windows.Forms.GroupBox();
+            this.GBPacientes = new System.Windows.Forms.GroupBox();
+            this.DTGDetalleMedico = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DTGRankingMedicos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChartEspecialidades)).BeginInit();
             this.panel2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.GBContadorTurnos.SuspendLayout();
+            this.GBMedicos.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DTGDetalleMedico)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -58,25 +66,12 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.panel1.Controls.Add(this.DTGRankingMedicos);
             this.panel1.Controls.Add(this.BVolver);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(1, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1080, 51);
             this.panel1.TabIndex = 1;
-            // 
-            // DTGRankingMedicos
-            // 
-            this.DTGRankingMedicos.BackgroundColor = System.Drawing.Color.LightGray;
-            this.DTGRankingMedicos.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.DTGRankingMedicos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DTGRankingMedicos.GridColor = System.Drawing.SystemColors.ActiveBorder;
-            this.DTGRankingMedicos.Location = new System.Drawing.Point(509, -62);
-            this.DTGRankingMedicos.Name = "DTGRankingMedicos";
-            this.DTGRankingMedicos.Size = new System.Drawing.Size(512, 316);
-            this.DTGRankingMedicos.TabIndex = 3;
-            this.DTGRankingMedicos.Visible = false;
             // 
             // BVolver
             // 
@@ -99,24 +94,39 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Reportes";
             // 
+            // DTGRankingMedicos
+            // 
+            this.DTGRankingMedicos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DTGRankingMedicos.BackgroundColor = System.Drawing.Color.LightGray;
+            this.DTGRankingMedicos.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.DTGRankingMedicos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DTGRankingMedicos.GridColor = System.Drawing.SystemColors.ActiveBorder;
+            this.DTGRankingMedicos.Location = new System.Drawing.Point(64, 19);
+            this.DTGRankingMedicos.Name = "DTGRankingMedicos";
+            this.DTGRankingMedicos.Size = new System.Drawing.Size(970, 245);
+            this.DTGRankingMedicos.TabIndex = 3;
+            // 
             // ChartEspecialidades
             // 
+            this.ChartEspecialidades.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ChartEspecialidades.BackColor = System.Drawing.Color.DimGray;
             this.ChartEspecialidades.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.Center;
             this.ChartEspecialidades.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.DashDot;
-            chartArea2.Name = "ChartArea";
-            this.ChartEspecialidades.ChartAreas.Add(chartArea2);
+            chartArea3.Name = "ChartArea";
+            this.ChartEspecialidades.ChartAreas.Add(chartArea3);
             this.ChartEspecialidades.Cursor = System.Windows.Forms.Cursors.Default;
-            legend2.Name = "Legend1";
-            this.ChartEspecialidades.Legends.Add(legend2);
-            this.ChartEspecialidades.Location = new System.Drawing.Point(352, 130);
+            legend3.Name = "Legend1";
+            this.ChartEspecialidades.Legends.Add(legend3);
+            this.ChartEspecialidades.Location = new System.Drawing.Point(291, 130);
             this.ChartEspecialidades.Name = "ChartEspecialidades";
             this.ChartEspecialidades.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SeaGreen;
-            series2.ChartArea = "ChartArea";
-            series2.Legend = "Legend1";
-            series2.Name = "Especialidades";
-            this.ChartEspecialidades.Series.Add(series2);
-            this.ChartEspecialidades.Size = new System.Drawing.Size(427, 262);
+            series3.ChartArea = "ChartArea";
+            series3.Legend = "Legend1";
+            series3.Name = "Especialidades";
+            this.ChartEspecialidades.Series.Add(series3);
+            this.ChartEspecialidades.Size = new System.Drawing.Size(510, 301);
             this.ChartEspecialidades.TabIndex = 2;
             this.ChartEspecialidades.Text = "Especialidades";
             // 
@@ -125,6 +135,9 @@
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BackColor = System.Drawing.Color.SeaGreen;
+            this.panel2.Controls.Add(this.BPacientes);
+            this.panel2.Controls.Add(this.Turnos);
+            this.panel2.Controls.Add(this.BMedico);
             this.panel2.Controls.Add(this.lFechaHasta);
             this.panel2.Controls.Add(this.lFechaPeriodo);
             this.panel2.Controls.Add(this.BFiltro);
@@ -135,11 +148,65 @@
             this.panel2.Size = new System.Drawing.Size(1057, 67);
             this.panel2.TabIndex = 4;
             // 
+            // BPacientes
+            // 
+            this.BPacientes.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BPacientes.Location = new System.Drawing.Point(240, 13);
+            this.BPacientes.Name = "BPacientes";
+            this.BPacientes.Size = new System.Drawing.Size(97, 40);
+            this.BPacientes.TabIndex = 14;
+            this.BPacientes.Text = "Pacientes";
+            this.BPacientes.UseVisualStyleBackColor = true;
+            this.BPacientes.Click += new System.EventHandler(this.BPacientes_Click);
+            // 
+            // Turnos
+            // 
+            this.Turnos.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Turnos.Location = new System.Drawing.Point(15, 13);
+            this.Turnos.Name = "Turnos";
+            this.Turnos.Size = new System.Drawing.Size(93, 40);
+            this.Turnos.TabIndex = 13;
+            this.Turnos.Text = "Turnos";
+            this.Turnos.UseVisualStyleBackColor = true;
+            this.Turnos.Click += new System.EventHandler(this.Turnos_Click);
+            // 
+            // BMedico
+            // 
+            this.BMedico.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BMedico.Location = new System.Drawing.Point(125, 13);
+            this.BMedico.Name = "BMedico";
+            this.BMedico.Size = new System.Drawing.Size(97, 40);
+            this.BMedico.TabIndex = 12;
+            this.BMedico.Text = "Medicos";
+            this.BMedico.UseVisualStyleBackColor = true;
+            this.BMedico.Click += new System.EventHandler(this.BMedico_Click);
+            // 
+            // lFechaHasta
+            // 
+            this.lFechaHasta.AutoSize = true;
+            this.lFechaHasta.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lFechaHasta.Location = new System.Drawing.Point(640, 25);
+            this.lFechaHasta.Name = "lFechaHasta";
+            this.lFechaHasta.Size = new System.Drawing.Size(115, 23);
+            this.lFechaHasta.TabIndex = 11;
+            this.lFechaHasta.Text = "Fecha Hasta:";
+            // 
+            // lFechaPeriodo
+            // 
+            this.lFechaPeriodo.AutoSize = true;
+            this.lFechaPeriodo.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lFechaPeriodo.Location = new System.Drawing.Point(400, 24);
+            this.lFechaPeriodo.Name = "lFechaPeriodo";
+            this.lFechaPeriodo.Size = new System.Drawing.Size(123, 23);
+            this.lFechaPeriodo.TabIndex = 3;
+            this.lFechaPeriodo.Text = "Fecha Desde: ";
+            // 
             // BFiltro
             // 
-            this.BFiltro.Location = new System.Drawing.Point(891, 25);
+            this.BFiltro.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BFiltro.Location = new System.Drawing.Point(888, 22);
             this.BFiltro.Name = "BFiltro";
-            this.BFiltro.Size = new System.Drawing.Size(75, 23);
+            this.BFiltro.Size = new System.Drawing.Size(75, 31);
             this.BFiltro.TabIndex = 2;
             this.BFiltro.Text = "Filtrar";
             this.BFiltro.UseVisualStyleBackColor = true;
@@ -148,7 +215,7 @@
             // 
             this.DTPHasta.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DTPHasta.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.DTPHasta.Location = new System.Drawing.Point(752, 24);
+            this.DTPHasta.Location = new System.Drawing.Point(761, 26);
             this.DTPHasta.Name = "DTPHasta";
             this.DTPHasta.Size = new System.Drawing.Size(109, 22);
             this.DTPHasta.TabIndex = 1;
@@ -157,22 +224,22 @@
             // 
             this.DTPDesde.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DTPDesde.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.DTPDesde.Location = new System.Drawing.Point(529, 23);
+            this.DTPDesde.Location = new System.Drawing.Point(529, 25);
             this.DTPDesde.Name = "DTPDesde";
             this.DTPDesde.Size = new System.Drawing.Size(105, 22);
             this.DTPDesde.TabIndex = 0;
             // 
-            // groupBox1
+            // GBContadorTurnos
             // 
-            this.groupBox1.BackColor = System.Drawing.SystemColors.Window;
-            this.groupBox1.Controls.Add(this.filtro);
-            this.groupBox1.Controls.Add(this.LContadorTurnos);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(44, 139);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 100);
-            this.groupBox1.TabIndex = 5;
-            this.groupBox1.TabStop = false;
+            this.GBContadorTurnos.BackColor = System.Drawing.SystemColors.Window;
+            this.GBContadorTurnos.Controls.Add(this.filtro);
+            this.GBContadorTurnos.Controls.Add(this.LContadorTurnos);
+            this.GBContadorTurnos.Controls.Add(this.label2);
+            this.GBContadorTurnos.Location = new System.Drawing.Point(44, 139);
+            this.GBContadorTurnos.Name = "GBContadorTurnos";
+            this.GBContadorTurnos.Size = new System.Drawing.Size(200, 100);
+            this.GBContadorTurnos.TabIndex = 5;
+            this.GBContadorTurnos.TabStop = false;
             // 
             // filtro
             // 
@@ -198,39 +265,57 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(37, 11);
+            this.label2.Location = new System.Drawing.Point(37, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(129, 23);
             this.label2.TabIndex = 7;
             this.label2.Text = "Total De Turnos";
             // 
-            // lFechaPeriodo
+            // GBMedicos
             // 
-            this.lFechaPeriodo.AutoSize = true;
-            this.lFechaPeriodo.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lFechaPeriodo.Location = new System.Drawing.Point(409, 21);
-            this.lFechaPeriodo.Name = "lFechaPeriodo";
-            this.lFechaPeriodo.Size = new System.Drawing.Size(123, 23);
-            this.lFechaPeriodo.TabIndex = 3;
-            this.lFechaPeriodo.Text = "Fecha Desde: ";
+            this.GBMedicos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GBMedicos.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.GBMedicos.Controls.Add(this.DTGDetalleMedico);
+            this.GBMedicos.Controls.Add(this.DTGRankingMedicos);
+            this.GBMedicos.Location = new System.Drawing.Point(1, 130);
+            this.GBMedicos.Name = "GBMedicos";
+            this.GBMedicos.Size = new System.Drawing.Size(1080, 490);
+            this.GBMedicos.TabIndex = 6;
+            this.GBMedicos.TabStop = false;
+            this.GBMedicos.Visible = false;
             // 
-            // lFechaHasta
+            // GBPacientes
             // 
-            this.lFechaHasta.AutoSize = true;
-            this.lFechaHasta.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lFechaHasta.Location = new System.Drawing.Point(640, 23);
-            this.lFechaHasta.Name = "lFechaHasta";
-            this.lFechaHasta.Size = new System.Drawing.Size(115, 23);
-            this.lFechaHasta.TabIndex = 11;
-            this.lFechaHasta.Text = "Fecha Hasta:";
+            this.GBPacientes.Location = new System.Drawing.Point(0, 130);
+            this.GBPacientes.Name = "GBPacientes";
+            this.GBPacientes.Size = new System.Drawing.Size(1080, 515);
+            this.GBPacientes.TabIndex = 5;
+            this.GBPacientes.TabStop = false;
+            this.GBPacientes.Visible = false;
+            // 
+            // DTGDetalleMedico
+            // 
+            this.DTGDetalleMedico.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DTGDetalleMedico.BackgroundColor = System.Drawing.Color.LightGray;
+            this.DTGDetalleMedico.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.DTGDetalleMedico.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DTGDetalleMedico.GridColor = System.Drawing.SystemColors.ActiveBorder;
+            this.DTGDetalleMedico.Location = new System.Drawing.Point(0, 270);
+            this.DTGDetalleMedico.Name = "DTGDetalleMedico";
+            this.DTGDetalleMedico.Size = new System.Drawing.Size(1074, 245);
+            this.DTGDetalleMedico.TabIndex = 4;
             // 
             // FormEstadisticas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.ClientSize = new System.Drawing.Size(1077, 591);
-            this.Controls.Add(this.groupBox1);
+            this.ClientSize = new System.Drawing.Size(1077, 632);
+            this.Controls.Add(this.GBPacientes);
+            this.Controls.Add(this.GBMedicos);
+            this.Controls.Add(this.GBContadorTurnos);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.ChartEspecialidades);
             this.Controls.Add(this.panel1);
@@ -242,8 +327,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.ChartEspecialidades)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.GBContadorTurnos.ResumeLayout(false);
+            this.GBContadorTurnos.PerformLayout();
+            this.GBMedicos.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DTGDetalleMedico)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -256,7 +343,7 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart ChartEspecialidades;
         private System.Windows.Forms.DataGridView DTGRankingMedicos;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox GBContadorTurnos;
         private System.Windows.Forms.Label filtro;
         private System.Windows.Forms.Label LContadorTurnos;
         private System.Windows.Forms.Label label2;
@@ -265,5 +352,11 @@
         private System.Windows.Forms.Button BFiltro;
         private System.Windows.Forms.Label lFechaPeriodo;
         private System.Windows.Forms.Label lFechaHasta;
+        private System.Windows.Forms.GroupBox GBMedicos;
+        private System.Windows.Forms.Button BMedico;
+        private System.Windows.Forms.DataGridView DTGDetalleMedico;
+        private System.Windows.Forms.Button Turnos;
+        private System.Windows.Forms.Button BPacientes;
+        private System.Windows.Forms.GroupBox GBPacientes;
     }
 }
