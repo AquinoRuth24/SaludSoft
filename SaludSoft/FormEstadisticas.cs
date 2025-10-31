@@ -1,14 +1,21 @@
-﻿using System;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using DFont = System.Drawing.Font;
+using DRectangle = System.Drawing.Rectangle;
+using IFont = iTextSharp.text.Font;
+
 
 namespace SaludSoft
 {
@@ -28,8 +35,10 @@ namespace SaludSoft
             CargarEstadisticasGenerales();
 
             DTGRankingMedicos.CellPainting += DTGRankingMedicos_CellPainting;
+            DTGRankingPacientes.CellPainting += DTGRankingPacientes_CellPainting;
 
             BFiltro.Click += BFiltro_Click;
+            BImprimir.Click += BImprimir_Click;
 
         }
         //-------Parte de especialidades por turno-------//
@@ -78,7 +87,7 @@ namespace SaludSoft
                     ChartType = SeriesChartType.Pie,
                     IsValueShownAsLabel = true,
                     LabelForeColor = Color.FromArgb(90, 90, 150),
-                    Font = new Font("Segoe UI", 9, FontStyle.Bold)
+                    Font = new DFont("Segoe UI", 9, FontStyle.Bold)
                 };
                 serie["PieLabelStyle"] = "Outside";
                 serie["PieLineColor"] = "Gray";
@@ -94,7 +103,7 @@ namespace SaludSoft
                 ChartEspecialidades.Series.Add(serie);
                 ChartEspecialidades.Titles.Clear();
                 ChartEspecialidades.Titles.Add("Turnos por Especialidad");
-                ChartEspecialidades.Titles[0].Font = new Font("Segoe UI", 11, FontStyle.Bold);
+                ChartEspecialidades.Titles[0].Font = new DFont("Segoe UI", 11, FontStyle.Bold);
                 ChartEspecialidades.Titles[0].Alignment = ContentAlignment.TopLeft;
                 ChartEspecialidades.ChartAreas[0].BackColor = Color.White;
                 ChartEspecialidades.Legends.Clear();
@@ -121,8 +130,9 @@ namespace SaludSoft
                 // Crear nueva etiqueta descriptiva
                 Label lblDescripcionGrafico = new Label();
                 lblDescripcionGrafico.Name = "lblDescripcionGrafico";
+                lblDescripcionGrafico.Anchor = AnchorStyles.Top | AnchorStyles.Right;    
                 lblDescripcionGrafico.Text = descripcion.ToString();
-                lblDescripcionGrafico.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+                lblDescripcionGrafico.Font = new DFont("Segoe UI", 9, FontStyle.Regular);
                 lblDescripcionGrafico.ForeColor = Color.Black;
                 lblDescripcionGrafico.AutoSize = true;
                 lblDescripcionGrafico.MaximumSize = new Size(250, 0); // límite de ancho, texto con salto de línea
@@ -246,7 +256,7 @@ namespace SaludSoft
             Label lblValor = new Label
             {
                 Text = valor,
-                Font = new Font("Segoe UI", 20, FontStyle.Bold),
+                Font = new DFont("Segoe UI", 20, FontStyle.Bold),
                 ForeColor = colorTexto,
                 Dock = DockStyle.Top,
                 Height = 40,
@@ -256,7 +266,7 @@ namespace SaludSoft
             Label lblTitulo = new Label
             {
                 Text = titulo,
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                Font = new DFont("Segoe UI", 10, FontStyle.Bold),
                 ForeColor = Color.Black,
                 Dock = DockStyle.Top,
                 Height = 20,
@@ -266,7 +276,7 @@ namespace SaludSoft
             Label lblSubtitulo = new Label
             {
                 Text = subtitulo,
-                Font = new Font("Segoe UI", 8, FontStyle.Regular),
+                Font = new DFont("Segoe UI", 8, FontStyle.Regular),
                 ForeColor = Color.Gray,
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleCenter
@@ -349,13 +359,13 @@ namespace SaludSoft
                 DTGRankingMedicos.BorderStyle = BorderStyle.None;
                 DTGRankingMedicos.ColumnHeadersDefaultCellStyle.BackColor = Color.White;
                 DTGRankingMedicos.DefaultCellStyle.ForeColor = Color.Black;
-                DTGRankingMedicos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                DTGRankingMedicos.ColumnHeadersDefaultCellStyle.Font = new DFont("Segoe UI", 10, FontStyle.Bold);
                 DTGRankingMedicos.DefaultCellStyle.BackColor = Color.White;
                 DTGRankingMedicos.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
                 DTGRankingMedicos.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
                 DTGRankingMedicos.DefaultCellStyle.SelectionBackColor = Color.FromArgb(180, 220, 180);
                 DTGRankingMedicos.DefaultCellStyle.SelectionForeColor = Color.Black;
-                DTGRankingMedicos.DefaultCellStyle.Font = new Font("Segoe UI", 9);
+                DTGRankingMedicos.DefaultCellStyle.Font = new DFont("Segoe UI", 9);
                 DTGRankingMedicos.RowHeadersVisible = false;
                 DTGRankingMedicos.AllowUserToAddRows = false;
                 DTGRankingMedicos.ReadOnly = true;
@@ -381,7 +391,7 @@ namespace SaludSoft
                     e.Graphics.FillEllipse(brush, e.CellBounds.X + 10, e.CellBounds.Y + 5, 25, 25);
                 }
 
-                e.Graphics.DrawString(pos.ToString(), new Font("Segoe UI", 9, FontStyle.Bold),
+                e.Graphics.DrawString(pos.ToString(), new DFont("Segoe UI", 9, FontStyle.Bold),
                                       Brushes.White, e.CellBounds.X + 18, e.CellBounds.Y + 10);
                 e.Handled = true;
             }
@@ -423,13 +433,13 @@ namespace SaludSoft
                 DTGDetalleMedico.BorderStyle = BorderStyle.None;
                 DTGDetalleMedico.ColumnHeadersDefaultCellStyle.BackColor = Color.White;
                 DTGDetalleMedico.DefaultCellStyle.ForeColor = Color.Black;
-                DTGDetalleMedico.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                DTGDetalleMedico.ColumnHeadersDefaultCellStyle.Font = new DFont("Segoe UI", 10, FontStyle.Bold);
                 DTGDetalleMedico.DefaultCellStyle.BackColor = Color.White;
                 DTGDetalleMedico.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
                 DTGDetalleMedico.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
                 DTGDetalleMedico.DefaultCellStyle.SelectionBackColor = Color.FromArgb(180, 220, 180);
                 DTGDetalleMedico.DefaultCellStyle.SelectionForeColor = Color.Black;
-                DTGDetalleMedico.DefaultCellStyle.Font = new Font("Segoe UI", 9);
+                DTGDetalleMedico.DefaultCellStyle.Font = new DFont("Segoe UI", 9);
                 DTGDetalleMedico.RowHeadersVisible = false;
                 DTGDetalleMedico.AllowUserToAddRows = false;
                 DTGDetalleMedico.ReadOnly = true;
@@ -447,91 +457,77 @@ namespace SaludSoft
         {
             string query = @"
              SELECT 
-             sexo,
-             COUNT(*) AS Cantidad
-             FROM Paciente
-             WHERE id_estado = 1 -- opcional
-             GROUP BY sexo;";
+             p.sexo,
+             COUNT(DISTINCT p.id_paciente) AS Cantidad
+             FROM Paciente p
+             -- para aplicar el filtro de fechas se usa el historial de consultas 
+             INNER JOIN Historial h ON p.id_paciente = h.id_paciente
+             WHERE h.fechaConsulta BETWEEN @fechaInicio AND @fechaFin
+             AND p.id_estado = 1
+             GROUP BY p.sexo;";
 
             using (SqlConnection conexion = Conexion.GetConnection())
             {
                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                da.SelectCommand.Parameters.AddWithValue("@fechaInicio", DTPDesde.Value.Date);
+                da.SelectCommand.Parameters.AddWithValue("@fechaFin", DTPHasta.Value.Date);
+
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
                 if (dt.Rows.Count == 0)
                 {
-                    MessageBox.Show("No hay pacientes registrados.");
+                    MessageBox.Show("No hay pacientes con consultas en el rango seleccionado.");
                     return;
                 }
 
                 int total = dt.AsEnumerable().Sum(r => r.Field<int>("Cantidad"));
-                int masculino = dt.AsEnumerable()
-                    .Where(r => r.Field<string>("sexo") == "Masculino")
-                    .Select(r => r.Field<int>("Cantidad"))
-                    .FirstOrDefault();
-                int femenino = dt.AsEnumerable()
-                    .Where(r => r.Field<string>("sexo") == "Femenino")
-                    .Select(r => r.Field<int>("Cantidad"))
-                    .FirstOrDefault();
+                int masculino = dt.AsEnumerable().Where(r => r.Field<string>("sexo") == "Masculino").Select(r => r.Field<int>("Cantidad")).FirstOrDefault();
+                int femenino = dt.AsEnumerable().Where(r => r.Field<string>("sexo") == "Femenino").Select(r => r.Field<int>("Cantidad")).FirstOrDefault();
 
                 double porcMasculino = total > 0 ? Math.Round((double)masculino / total * 100, 1) : 0;
                 double porcFemenino = total > 0 ? Math.Round((double)femenino / total * 100, 1) : 0;
 
-                // Limpiar contenido previo
-                GBPacientes.Controls.Clear();
+                // Eliminar solo el contenedor anterior si existe, sin borrar el DataGrid
+                if (contenedorPacientes != null && GBPacientes.Controls.Contains(contenedorPacientes))
+                {
+                    GBPacientes.Controls.Remove(contenedorPacientes);
+                    contenedorPacientes.Dispose();
+                }
 
-                // Crear contenedor interno 
+                // Crear contenedor superior con las tarjetas
                 contenedorPacientes = new FlowLayoutPanel
                 {
-                    Dock = DockStyle.Fill,
+                    Dock = DockStyle.Top,
+                    Height = 160,
                     FlowDirection = FlowDirection.LeftToRight,
-                    WrapContents = false, // mantiene una sola fila
+                    WrapContents = false,
                     AutoScroll = true,
-                    Padding = new Padding(40, 25, 40, 25), //espacio interno
+                    Padding = new Padding(40, 5, 40, 5),
                     BackColor = Color.White
                 };
 
-                // Crear tarjetas
-                Panel tarjetaMasculino = CrearTarjetaGenero(
-                    masculino.ToString(),
-                    "Masculino",
-                    $"{porcMasculino}% del total",
-                    Color.FromArgb(230, 240, 255),
-                    Color.FromArgb(0, 102, 255)
-                );
+                //Crear las tarjetas de género
+                Panel tarjetaMasculino = CrearTarjetaGenero(masculino.ToString(), "Masculino", $"{porcMasculino}% del total", Color.FromArgb(230, 240, 255), Color.FromArgb(0, 102, 255));
+                Panel tarjetaFemenino = CrearTarjetaGenero(femenino.ToString(), "Femenino", $"{porcFemenino}% del total", Color.FromArgb(255, 240, 245), Color.DeepPink);
+                Panel tarjetaTotal = CrearTarjetaGenero(total.ToString(), "Total Pacientes", "Con consultas en el rango seleccionado", Color.FromArgb(240, 255, 240), Color.ForestGreen);
 
-                Panel tarjetaFemenino = CrearTarjetaGenero(
-                    femenino.ToString(),
-                    "Femenino",
-                    $"{porcFemenino}% del total",
-                    Color.FromArgb(255, 240, 245),
-                    Color.DeepPink
-                );
-
-                Panel tarjetaTotal = CrearTarjetaGenero(
-                    total.ToString(),
-                    "Total Pacientes",
-                    "Registrados en el sistema",
-                    Color.FromArgb(240, 255, 240),
-                    Color.ForestGreen
-                );
-
-                // Agregar tarjetas al contenedor
                 contenedorPacientes.Controls.Add(tarjetaMasculino);
                 contenedorPacientes.Controls.Add(tarjetaFemenino);
                 contenedorPacientes.Controls.Add(tarjetaTotal);
 
-                // Agregar el contenedor al GroupBox
+                //Agregar las tarjetas al GroupBox
                 GBPacientes.Controls.Add(contenedorPacientes);
+                contenedorPacientes.BringToFront();
 
-                // Configurar el GroupBox 
-                GBPacientes.Dock = DockStyle.Top;
-                GBPacientes.Height = 180; // altura tipo franja
-                GBPacientes.Padding = new Padding(0);
-                GBPacientes.BackColor = Color.FromArgb(245, 245, 245); // color suave de fondo
-                GBPacientes.Visible = true;
-                GBPacientes.BringToFront();
+                // Asegurar que el DataGrid esté visible debajo
+                if (!GBPacientes.Controls.Contains(DTGRankingPacientes))
+                {
+                    DTGRankingPacientes.Dock = DockStyle.Fill;
+                    GBPacientes.Controls.Add(DTGRankingPacientes);
+                }
+                DTGRankingPacientes.Visible = true;
+                DTGRankingPacientes.BringToFront();
             }
         }
 
@@ -550,7 +546,7 @@ namespace SaludSoft
             Label lblValor = new Label
             {
                 Text = valor,
-                Font = new Font("Segoe UI", 24, FontStyle.Bold),
+                Font = new DFont("Segoe UI", 24, FontStyle.Bold),
                 ForeColor = colorTexto,
                 Dock = DockStyle.Top,
                 Height = 50,
@@ -560,7 +556,7 @@ namespace SaludSoft
             Label lblTitulo = new Label
             {
                 Text = titulo,
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                Font = new DFont("Segoe UI", 10, FontStyle.Bold),
                 ForeColor = Color.Black,
                 Dock = DockStyle.Top,
                 Height = 25,
@@ -570,7 +566,7 @@ namespace SaludSoft
             Label lblSubtitulo = new Label
             {
                 Text = subtitulo,
-                Font = new Font("Segoe UI", 8, FontStyle.Regular),
+                Font = new DFont("Segoe UI", 8, FontStyle.Regular),
                 ForeColor = Color.Gray,
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleCenter
@@ -582,6 +578,188 @@ namespace SaludSoft
 
             return panel;
         }
+        // ranking de pacientes con mas turnos
+        private void CargarRankingPacientesGrid()
+        {
+            string query = @"
+             SELECT 
+             p.apellido + ', ' + p.nombre AS Paciente,
+             p.dni,
+             COUNT(t.id_turno) AS CantidadTurnos,
+             MAX(t.fecha) AS UltimaVisita
+             FROM Turnos t
+             INNER JOIN Paciente p ON t.id_paciente = p.id_paciente
+             WHERE t.fecha BETWEEN @fechaInicio AND @fechaFin
+             GROUP BY p.apellido, p.nombre, p.dni
+             ORDER BY CantidadTurnos DESC;";
+
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                da.SelectCommand.Parameters.AddWithValue("@fechaInicio", DTPDesde.Value.Date);
+                da.SelectCommand.Parameters.AddWithValue("@fechaFin", DTPHasta.Value.Date);
+
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                DataTable dtRanking = new DataTable();
+                dtRanking.Columns.Add("Posición", typeof(int));
+                dtRanking.Columns.Add("Paciente", typeof(string));
+                dtRanking.Columns.Add("DNI", typeof(string));
+                dtRanking.Columns.Add("Turnos", typeof(int));
+                dtRanking.Columns.Add("Última Visita", typeof(DateTime));
+
+                int posicion = 1;
+                foreach (DataRow row in dt.Rows)
+                {
+                    dtRanking.Rows.Add(posicion++, row["Paciente"], row["dni"], row["CantidadTurnos"], row["UltimaVisita"]);
+                }
+
+                DTGRankingPacientes.DataSource = dtRanking;
+
+                // estilos
+                DTGRankingPacientes.EnableHeadersVisualStyles = false;
+                DTGRankingPacientes.BorderStyle = BorderStyle.None;
+                DTGRankingPacientes.ColumnHeadersDefaultCellStyle.BackColor = Color.White;
+                DTGRankingPacientes.DefaultCellStyle.ForeColor = Color.Black;
+                DTGRankingPacientes.ColumnHeadersDefaultCellStyle.Font = new DFont("Segoe UI", 12, FontStyle.Bold);
+                DTGRankingPacientes.DefaultCellStyle.BackColor = Color.White;
+                DTGRankingPacientes.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
+                DTGRankingPacientes.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
+                DTGRankingPacientes.DefaultCellStyle.SelectionBackColor = Color.FromArgb(180, 220, 180);
+                DTGRankingPacientes.DefaultCellStyle.SelectionForeColor = Color.Black;
+                DTGRankingPacientes.DefaultCellStyle.Font = new DFont("Segoe UI", 9);
+                DTGRankingPacientes.RowHeadersVisible = false;
+                DTGRankingPacientes.AllowUserToAddRows = false;
+                DTGRankingPacientes.ReadOnly = true;
+                DTGRankingPacientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                DTGRankingPacientes.GridColor = Color.White;
+            }
+        }
+        private void DTGRankingPacientes_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.ColumnIndex == 0 && e.RowIndex >= 0)
+            {
+                e.PaintBackground(e.ClipBounds, true);
+                int pos = Convert.ToInt32(e.Value);
+
+                // Ajustar tamaño dinámico según la altura de la celda
+                int circleSize = Math.Min(e.CellBounds.Height - 6, 30); // máximo 30px
+                int circleX = e.CellBounds.X + 10;
+                int circleY = e.CellBounds.Y + (e.CellBounds.Height - circleSize) / 2;
+
+                Color circleColor = pos == 1 ? Color.Gold ://oro 1°lugar
+                                    pos == 2 ? Color.Silver ://plata 2° lugar
+                                    pos == 3 ? Color.FromArgb(205, 127, 50) :// bronce 3° lugar
+                                    Color.FromArgb(180, 220, 180);
+
+                using (SolidBrush brush = new SolidBrush(circleColor))
+                {
+                    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    e.Graphics.FillEllipse(brush, circleX, circleY, circleSize, circleSize);
+                }
+
+                // Centrar el número dentro del círculo
+                string text = pos.ToString();
+                using (DFont font = new DFont("Segoe UI", 9, FontStyle.Bold))
+                {
+                    SizeF textSize = e.Graphics.MeasureString(text, font);
+                    float textX = circleX + (circleSize - textSize.Width) / 2;
+                    float textY = circleY + (circleSize - textSize.Height) / 2;
+                    e.Graphics.DrawString(text, font, Brushes.White, textX, textY);
+                }
+
+                e.Handled = true;
+            }
+        }
+        // grafico de tortas con las edades de los pacientes
+        /* private void CargarDistribucionEdades()
+         {
+             string query = @"
+              SELECT 
+              CASE 
+                 WHEN DATEDIFF(YEAR, p.fecha_nacimiento, GETDATE()) BETWEEN 0 AND 17 THEN '0-17 años'
+                 WHEN DATEDIFF(YEAR, p.fecha_nacimiento, GETDATE()) BETWEEN 18 AND 35 THEN '18-35 años'
+                 WHEN DATEDIFF(YEAR, p.fecha_nacimiento, GETDATE()) BETWEEN 36 AND 50 THEN '36-50 años'
+                 WHEN DATEDIFF(YEAR, p.fecha_nacimiento, GETDATE()) BETWEEN 51 AND 65 THEN '51-65 años'
+                 ELSE '66+ años'
+              END AS RangoEdad,
+              COUNT(DISTINCT p.id_paciente) AS Cantidad
+              FROM Paciente p
+              INNER JOIN Historial h ON p.id_paciente = h.id_paciente
+              WHERE h.fechaConsulta BETWEEN @fechaInicio AND @fechaFin
+              AND p.id_estado = 1
+              GROUP BY 
+              CASE 
+                 WHEN DATEDIFF(YEAR, p.fecha_nacimiento, GETDATE()) BETWEEN 0 AND 17 THEN '0-17 años'
+                 WHEN DATEDIFF(YEAR, p.fecha_nacimiento, GETDATE()) BETWEEN 18 AND 35 THEN '18-35 años'
+                 WHEN DATEDIFF(YEAR, p.fecha_nacimiento, GETDATE()) BETWEEN 36 AND 50 THEN '36-50 años'
+                 WHEN DATEDIFF(YEAR, p.fecha_nacimiento, GETDATE()) BETWEEN 51 AND 65 THEN '51-65 años'
+                 ELSE '66+ años'
+              END
+              ORDER BY RangoEdad;";
+
+             using (SqlConnection conexion = Conexion.GetConnection())
+             {
+                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
+                 da.SelectCommand.Parameters.AddWithValue("@fechaInicio", DTPDesde.Value.Date);
+                 da.SelectCommand.Parameters.AddWithValue("@fechaFin", DTPHasta.Value.Date);
+
+                 DataTable dt = new DataTable();
+                 da.Fill(dt);
+
+                 if (dt.Rows.Count == 0)
+                 {
+                     MessageBox.Show("No hay datos de edades en el rango seleccionado.");
+                     return;
+                 }
+
+                 // Crear el Chart
+                 Chart ChartEdades = new Chart
+                 {
+                     Name = "ChartEdades",
+                     Dock = DockStyle.Right,
+                     Width = 380,
+                     Height = 250,
+                     BackColor = Color.White
+                 };
+
+                 ChartArea area = new ChartArea();
+                 area.BackColor = Color.White;
+                 ChartEdades.ChartAreas.Add(area);
+
+                 Series serie = new Series("Edades")
+                 {
+                     ChartType = SeriesChartType.Pie,
+                     Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                     IsValueShownAsLabel = true,
+                     LabelForeColor = Color.White
+                 };
+
+                 ChartEdades.Series.Add(serie);
+
+                 // Colores personalizados (como tu ejemplo)
+                 string[] colores = { "#3B82F6", "#60A5FA", "#93C5FD", "#BFDBFE", "#DBEAFE" };
+
+                 for (int i = 0; i < dt.Rows.Count; i++)
+                 {
+                     DataRow row = dt.Rows[i];
+                     string rango = row["RangoEdad"].ToString();
+                     int cantidad = Convert.ToInt32(row["Cantidad"]);
+
+                     int pIndex = serie.Points.AddXY(rango, cantidad);
+                     serie.Points[pIndex].Color = ColorTranslator.FromHtml(colores[i % colores.Length]);
+                     serie.Points[pIndex].Label = cantidad.ToString();
+                 }
+
+                 ChartEdades.Titles.Add("Distribución por Edad");
+                 ChartEdades.Titles[0].Font = new Font("Segoe UI", 11, FontStyle.Bold);
+                 ChartEdades.Titles[0].Alignment = ContentAlignment.TopLeft;
+
+                 GBPacientes.Controls.Add(ChartEdades);
+                 ChartEdades.BringToFront();
+             }
+         }*/
         // botones de accion
         private void BFiltro_Click(object sender, EventArgs e)
         {
@@ -590,20 +768,24 @@ namespace SaludSoft
                 MessageBox.Show("La fecha de inicio no puede ser mayor que la fecha de fin.");
                 return;
             }
-
-            // Limpiar antes de recargar
+            // limpiar todo previamente
             ChartEspecialidades.Series.Clear();
             DTGRankingMedicos.DataSource = null;
-
-            // Si el GBMedicos está visible, solo recargar los médicos
+            // si es el boton medico visible esos graficos
             if (GBMedicos.Visible)
             {
                 CargarRankingMedicosGrid();
                 CargarDetalleMedico();
+            }// si es el boton pacientes visible esos graficos
+            else if (GBPacientes.Visible)
+            {
+                CargarReportePacientes();
+                CargarRankingPacientesGrid();
+                // CargarDistribucionEdades();
             }
+            // sino cargar los graficos generales
             else
             {
-                // Si estamos en la vista general, recargar todo lo demás
                 CargarGrafico();
                 CargarRankingMedicosGrid();
                 CargarResumenCitas();
@@ -614,7 +796,7 @@ namespace SaludSoft
         {
             this.Close();
         }
-
+        // boon de medicos
         private void BMedico_Click(object sender, EventArgs e)
         {
             // Ocultar todo lo visible en el formulario
@@ -634,6 +816,27 @@ namespace SaludSoft
 
             // Cargar el detalle general de médicos (confirmados/cancelados/porcentaje)
             CargarDetalleMedico();
+        }
+        // boton de pacientes
+        private void BPacientes_Click(object sender, EventArgs e)
+        {
+            // Ocultar todo lo visible en el formulario
+            ChartEspecialidades.Visible = false;
+            if (contenedorResumen != null) contenedorResumen.Visible = false;
+            if (contenedorDetalleMedico != null) contenedorDetalleMedico.Visible = false;
+            if (this.Controls.ContainsKey("lblDescripcionGrafico"))
+                this.Controls["lblDescripcionGrafico"].Visible = false;
+            // Ocultar otros GroupBox
+            GBContadorTurnos.Visible = false;
+            GBMedicos.Visible = false;
+
+            // Mostrar el de pacientes
+            GBPacientes.Visible = true;
+            GBPacientes.BringToFront();
+            // graficos de pacientes
+            CargarReportePacientes();
+            CargarRankingPacientesGrid();
+            //CargarDistribucionEdades();
         }
 
         private void Turnos_Click(object sender, EventArgs e)
@@ -663,22 +866,54 @@ namespace SaludSoft
             CargarEstadisticasGenerales();
         }
 
-        private void BPacientes_Click(object sender, EventArgs e)
+        private void BImprimir_Click(object sender, EventArgs e)
         {
-            // Ocultar todo lo visible en el formulario
-            ChartEspecialidades.Visible = false;
-            if (contenedorResumen != null) contenedorResumen.Visible = false;
-            if (contenedorDetalleMedico != null) contenedorDetalleMedico.Visible = false;
-            if (this.Controls.ContainsKey("lblDescripcionGrafico"))
-                this.Controls["lblDescripcionGrafico"].Visible = false;
-            // Ocultar otros GroupBox
-            GBContadorTurnos.Visible = false;
-            GBMedicos.Visible = false;
+            try
+            {
+                // Captura la imagen del formulario completo
+                Bitmap captura = new Bitmap(this.Width, this.Height);
+                this.DrawToBitmap(captura, new DRectangle(0, 0, this.Width, this.Height));
 
-            // Mostrar el de pacientes
-            GBPacientes.Visible = true;
-            GBPacientes.BringToFront();
-            CargarReportePacientes();
+                // Crea el documento PDF
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "Archivo PDF|*.pdf",
+                    Title = "Guardar reporte en PDF",
+                    FileName = "ReporteEstadisticas.pdf"
+                };
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    using (FileStream stream = new FileStream(saveFileDialog.FileName, FileMode.Create))
+                    {
+                        // Tamaño del PDF proporcional al formulario
+                        var doc = new Document(new iTextSharp.text.Rectangle(captura.Width, captura.Height), 0, 0, 0, 0);
+                        PdfWriter.GetInstance(doc, stream);
+                        doc.Open();
+
+                        // Convierte el bitmap a imagen PDF
+                        using (MemoryStream imageStream = new MemoryStream())
+                        {
+                            captura.Save(imageStream, System.Drawing.Imaging.ImageFormat.Png);
+                            iTextSharp.text.Image pdfImage = iTextSharp.text.Image.GetInstance(imageStream.ToArray());
+                            pdfImage.ScaleToFit(doc.PageSize.Width, doc.PageSize.Height);
+                            pdfImage.Alignment = Element.ALIGN_CENTER;
+
+                            //Agrega la imagen al PDF
+                            doc.Add(pdfImage);
+                        }
+
+                        doc.Close();
+                        stream.Close();
+                    }
+                    this.ActiveControl = null;
+                    MessageBox.Show("Reporte guardado correctamente en PDF.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al generar el PDF: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);            }
         }
     }
 }
