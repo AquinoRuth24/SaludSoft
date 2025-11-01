@@ -32,8 +32,6 @@ namespace SaludSoft
 
             btCitas.Click += btCitas_Click;
             btCerrar.Click += btCerrar_Click_1;
-            
-            BCerrarSesion.Click += BCerrarSesion_Click;
 
         }
 

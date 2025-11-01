@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SaludSoft.Security;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -44,23 +45,28 @@ namespace SaludSoft
         private void BCerrarSesion_Click(object sender, EventArgs e)
         {
             var r = MessageBox.Show("¿Seguro que querés cerrar sesión?", "Confirmación",
-                                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                             MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (r != DialogResult.Yes) return;
 
-            this.Hide();
-            using (var login = new FormLogin())
+            try
             {
-                var result = login.ShowDialog();
-                if (result == DialogResult.OK)
-                {
-                    this.Show();
-                    CargarTotales();
-                }
-                else
-                {
-                    this.Close();
-                }
+                SesionActual.IdUsuario = 0;
+                SesionActual.Nombre = null;
+                SesionActual.Rol = null;
+                
             }
+            catch { /* ignorar si no existe */ }
+
+            
+            var login = Application.OpenForms.OfType<FormLogin>().FirstOrDefault() ?? new FormLogin();
+
+            
+            login.LimpiarCampos();
+            login.StartPosition = FormStartPosition.CenterScreen;
+            login.Show();
+            login.Activate();
+
+            this.Close();
         }
 
         private void CargarTotales()

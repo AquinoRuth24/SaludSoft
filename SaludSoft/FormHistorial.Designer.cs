@@ -65,6 +65,7 @@
             this.lObserv = new System.Windows.Forms.Label();
             this.lTrat = new System.Windows.Forms.Label();
             this.lDiagnostico = new System.Windows.Forms.Label();
+            this.btImprimir = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgHistorial)).BeginInit();
@@ -359,6 +360,7 @@
             // 
             // pnlBotones
             // 
+            this.pnlBotones.Controls.Add(this.btImprimir);
             this.pnlBotones.Controls.Add(this.btCancelar);
             this.pnlBotones.Controls.Add(this.btAgregar);
             this.pnlBotones.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -465,6 +467,18 @@
             this.lDiagnostico.Text = "Diagnóstico: ";
             this.lDiagnostico.Visible = false;
             // 
+            // btImprimir
+            // 
+            this.btImprimir.BackgroundImage = global::SaludSoft.Properties.Resources.impresora;
+            this.btImprimir.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btImprimir.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btImprimir.Location = new System.Drawing.Point(22, 31);
+            this.btImprimir.Name = "btImprimir";
+            this.btImprimir.Size = new System.Drawing.Size(56, 39);
+            this.btImprimir.TabIndex = 2;
+            this.btImprimir.UseVisualStyleBackColor = true;
+            this.btImprimir.Click += new System.EventHandler(this.btImprimir_Click);
+            // 
             // FormHistorial
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -533,5 +547,6 @@
         private System.Windows.Forms.Label lValorTrat;
         private System.Windows.Forms.Label lHistorial;
         private System.Windows.Forms.Label lValorHistorial;
+        private System.Windows.Forms.Button btImprimir;
     }
 }

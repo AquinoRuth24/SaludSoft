@@ -1,4 +1,5 @@
 ﻿using SaludSoft.Resources.Models;
+using SaludSoft.Security;
 using System;
 using System.Data.SqlClient;
 using System.Linq;
@@ -81,31 +82,29 @@ namespace SaludSoft
         }
         private void btCerrarSesion_Click(object sender, EventArgs e)
         {
-            var r = MessageBox.Show("¿Seguro que querés cerrar sesión?",
-                                    "Cerrar sesión",
-                                    MessageBoxButtons.YesNo,
-                                    MessageBoxIcon.Question);
+            var r = MessageBox.Show("¿Seguro que querés cerrar sesión?", "Confirmación",
+                             MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (r != DialogResult.Yes) return;
 
-           
+            try
+            {
+                SesionActual.IdUsuario = 0;
+                SesionActual.Nombre = null;
+                SesionActual.Rol = null;
+                
+            }
+            catch { /* ignorar si no existe */ }
 
-            //Cerrar
-            var aCerrar = Application.OpenForms.Cast<Form>()
-                           .Where(f => f != this && !(f is FormLogin))
-                           .ToList();
-            foreach (var f in aCerrar) f.Close();
+            var login = Application.OpenForms.OfType<FormLogin>().FirstOrDefault() ?? new FormLogin();
 
-            var login = BuscarAbierto<FormLogin>();
-            if (login == null) login = new FormLogin();
-
+            
+            login.LimpiarCampos();
             login.StartPosition = FormStartPosition.CenterScreen;
             login.Show();
+            login.Activate();
 
-            this.Hide();
-            login.FormClosed += (s, a2) =>
-            {
-                if (!this.IsDisposed) this.Close();
-            };
+           
+            this.Close();
         }
 
         private void btEspecialidades_Click(object sender, EventArgs e)

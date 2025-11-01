@@ -142,13 +142,13 @@ WHERE u.email = @email;";
         // Navegación por rol 
         private void AbrirSegunRol(string rol, string nombre)
         {
-            
+
             string formName;
             switch (rol.Trim().ToLowerInvariant())
             {
                 case "administrador": formName = "Admin"; break;
-                case "recepcionista": formName = "SaludSoft"; break; 
-                case "medico": formName = "Medico"; break;  
+                case "recepcionista": formName = "SaludSoft"; break;
+                case "medico": formName = "Medico"; break;
                 default:
                     MessageBox.Show($"Rol '{rol}' sin vista asignada.", "Aviso",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -168,13 +168,19 @@ WHERE u.email = @email;";
             destino.Text = $"SaludSoft - {rol} | {nombre}";
 
             this.Hide();
+
             destino.FormClosed += (s, e) =>
             {
-                tbContraseña.Clear();
+                try
+                {
+                    LimpiarCampos();   
+                }
+                catch { /* por si cambia la UI */ }
+
                 this.Show();
                 this.Activate();
-                tbUsuario.Focus();
             };
+
             destino.Show();
         }
 

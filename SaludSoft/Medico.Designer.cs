@@ -30,7 +30,6 @@
         {
             this.BHistorial = new System.Windows.Forms.Button();
             this.BCerrarSesion = new System.Windows.Forms.Button();
-            this.BPacientes = new System.Windows.Forms.Button();
             this.btCitas = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -73,7 +72,7 @@
             this.BHistorial.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BHistorial.Image = global::SaludSoft.Properties.Resources.expediente_del_paciente;
             this.BHistorial.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BHistorial.Location = new System.Drawing.Point(11, 248);
+            this.BHistorial.Location = new System.Drawing.Point(3, 178);
             this.BHistorial.Name = "BHistorial";
             this.BHistorial.Size = new System.Drawing.Size(166, 67);
             this.BHistorial.TabIndex = 6;
@@ -97,25 +96,12 @@
             this.BCerrarSesion.UseVisualStyleBackColor = true;
             this.BCerrarSesion.Click += new System.EventHandler(this.BCerrarSesion_Click);
             // 
-            // BPacientes
-            // 
-            this.BPacientes.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BPacientes.Image = global::SaludSoft.Properties.Resources.usuario;
-            this.BPacientes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BPacientes.Location = new System.Drawing.Point(11, 9);
-            this.BPacientes.Name = "BPacientes";
-            this.BPacientes.Size = new System.Drawing.Size(153, 59);
-            this.BPacientes.TabIndex = 3;
-            this.BPacientes.Text = "Pacientes";
-            this.BPacientes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.BPacientes.UseVisualStyleBackColor = true;
-            // 
             // btCitas
             // 
             this.btCitas.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btCitas.Image = global::SaludSoft.Properties.Resources.CitasProgramadas;
             this.btCitas.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btCitas.Location = new System.Drawing.Point(11, 131);
+            this.btCitas.Location = new System.Drawing.Point(11, 71);
             this.btCitas.Name = "btCitas";
             this.btCitas.Size = new System.Drawing.Size(138, 62);
             this.btCitas.TabIndex = 3;
@@ -172,7 +158,6 @@
             this.tbBuscarPaciente.Name = "tbBuscarPaciente";
             this.tbBuscarPaciente.Size = new System.Drawing.Size(244, 20);
             this.tbBuscarPaciente.TabIndex = 3;
-          //  this.tbBuscarPaciente.TextChanged += new System.EventHandler(this.tbBuscarPaciente_TextChanged);
             // 
             // dgPacientes
             // 
@@ -386,7 +371,6 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.panel1.Controls.Add(this.BPacientes);
             this.panel1.Controls.Add(this.BCerrarSesion);
             this.panel1.Controls.Add(this.btCitas);
             this.panel1.Controls.Add(this.BHistorial);
@@ -430,7 +414,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label lTitulo;
         private System.Windows.Forms.Button btCitas;
-        private System.Windows.Forms.Button BPacientes;
         private System.Windows.Forms.Button BCerrarSesion;
         private System.Windows.Forms.TextBox tbBuscarPaciente;
         private System.Windows.Forms.DataGridView dgPacientes;

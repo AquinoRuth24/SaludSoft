@@ -619,7 +619,7 @@ WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
             return (tConf, tPend, tCanc);
         }
 
-        private int DumpGrid(Excel.Worksheet ws, DataGridView dgv, int filaInicio, int colInicio)
+        /*private int DumpGrid(Excel.Worksheet ws, DataGridView dgv, int filaInicio, int colInicio)
         {
             if (dgv == null || dgv.Rows.Count == 0) return filaInicio;
 
@@ -640,7 +640,7 @@ WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
             }
             ((Excel.Range)ws.Columns).AutoFit();
             return rOut - 1;
-        }
+        }*/
         // boton volver 
         private void btnVolver_Click(object sender, EventArgs e)
         {

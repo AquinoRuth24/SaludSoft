@@ -1,7 +1,23 @@
 ﻿using System;
-using System.Linq;
-using System.Windows.Forms;
+using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Printing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
+using System.Diagnostics;
+
+// Alias para evitar choques con System.Drawing y genéricos
+using PdfFont = iTextSharp.text.Font;
+using PdfRect = iTextSharp.text.Rectangle;
+using PdfPhrase = iTextSharp.text.Phrase;
+using PdfParagraph = iTextSharp.text.Paragraph;
+using PdfList = iTextSharp.text.List;
+using PdfListItem = iTextSharp.text.ListItem;
 
 namespace SaludSoft
 {
@@ -9,6 +25,10 @@ namespace SaludSoft
     {
         enum ModoDetalle { Navegacion, Alta }
         ModoDetalle _modo = ModoDetalle.Navegacion;
+
+        // === CONEXIÓN A BD ===
+        private readonly string _cnx =
+            @"Server=localhost\SQLEXPRESS;Database=SaludSoft;Trusted_Connection=True;TrustServerCertificate=True;";
 
         public FormHistorial()
         {
@@ -30,8 +50,6 @@ namespace SaludSoft
             tbBuscarDni.MaxLength = 8;
             tbBuscarDni.ImeMode = ImeMode.Disable;
             tbBuscarDni.KeyDown += TbBuscarDni_KeyDown;
-
-            
         }
 
         // ---------- Load ----------
@@ -40,9 +58,11 @@ namespace SaludSoft
             AsegurarColumnas();
             pnlOverlay.Visible = false;
             SetModo(ModoDetalle.Navegacion);
-            CargarEjemplos();
 
-            //Ajuste automático de historial
+            // Si querés ejemplos de UI (no persiste), descomentá:
+            // CargarEjemplos();
+
+            // Ajuste automático de historial
             ConfigurarWrapHistorial();
             gbDetalle.Resize += (s, ev) => AjustarWrapHistorial();
             pnlOverlay.Resize += (s, ev) => AjustarWrapHistorial();
@@ -159,9 +179,12 @@ namespace SaludSoft
                 colBtn.UseColumnTextForButtonValue = true;
                 colBtn.Text = "Ver";
             }
+
+            // Se asume que existen desde el diseñador:
+            // colIdHistorial, colDni, colPaciente, colDiagnostico, colTratamiento
         }
 
-        // ---------- Buscar por DNI ----------
+        // ---------- Buscar por DNI (en BD; el médico NO da de alta pacientes) ----------
         private void EjecutarBusquedaDni()
         {
             string input = (tbBuscarDni.Text ?? "").Trim();
@@ -174,31 +197,23 @@ namespace SaludSoft
             }
 
             string dniBuscado = new string(input.Where(char.IsDigit).ToArray());
-            DataGridViewRow filaMatch = dgHistorial.Rows
-                .Cast<DataGridViewRow>()
-                .Where(r => !r.IsNewRow)
-                .FirstOrDefault(r =>
-                {
-                    string dniFila = Convert.ToString(r.Cells["colDni"].Value ?? "");
-                    dniFila = new string(dniFila.Where(char.IsDigit).ToArray());
-                    return dniFila == dniBuscado;
-                });
-
-            if (filaMatch == null)
+            if (dniBuscado.Length == 0 || dniBuscado.Length > 8)
             {
-                MessageBox.Show("No se encontró historial para ese DNI.", "Buscar",
+                MessageBox.Show("Ingresá un DNI numérico de hasta 8 dígitos.", "Buscar",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            dgHistorial.ClearSelection();
-            filaMatch.Selected = true;
-            dgHistorial.CurrentCell = filaMatch.Cells["colDni"];
-            dgHistorial.FirstDisplayedScrollingRowIndex = filaMatch.Index;
+            var pac = GetPacienteBasicoPorDni(dniBuscado);
+            if (pac == null)
+            {
+                MessageBox.Show("No existe un paciente con ese DNI. El médico no puede dar de alta pacientes.",
+                                "Historial", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
 
-            CargarDetalleDesdeFila(filaMatch);
-            SetModo(ModoDetalle.Navegacion);
-            MostrarDetalle(true);
+            // Paciente existe: cargar su historial (si no tiene, queda listo para 'Agregar')
+            CargarFilaDesdeDbPorDni(dniBuscado);
         }
 
         // ---------- Click en “Ver” ----------
@@ -228,11 +243,10 @@ namespace SaludSoft
                 : FormatearHistorial(histRaw);
 
             gbDetalle.Tag = fila;
-
             AjustarWrapHistorial();
         }
 
-        // ---------- Helpers ----------
+        // ---------- Helpers UI ----------
         private DateTime? TryGetDate(object v)
         {
             if (v == null) return null;
@@ -253,7 +267,7 @@ namespace SaludSoft
             if (lHistorial == null) return;
             lHistorial.AutoSize = false;
             lHistorial.UseCompatibleTextRendering = true;
-            lHistorial .AutoEllipsis = false;
+            lHistorial.AutoEllipsis = false;
             lHistorial.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             AjustarWrapHistorial();
         }
@@ -299,7 +313,7 @@ namespace SaludSoft
             if (!editable) this.ActiveControl = btAgregar;
         }
 
-        // ---------- Agregar ----------
+        // ---------- Agregar / Guardar (persistencia en BD) ----------
         private void btAgregar_Click(object sender, EventArgs e)
         {
             var filaBase = gbDetalle.Tag as DataGridViewRow;
@@ -311,7 +325,24 @@ namespace SaludSoft
             }
 
             string dni = Convert.ToString(filaBase.Cells["colDni"].Value ?? "");
-            string paciente = Convert.ToString(filaBase.Cells["colPaciente"].Value ?? "");
+            dni = new string((dni ?? "").Where(char.IsDigit).ToArray());
+            if (dni.Length == 0)
+            {
+                MessageBox.Show("No se pudo determinar el DNI del paciente.", "Historial",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var pac = GetPacienteBasicoPorDni(dni);
+            if (pac == null)
+            {
+                MessageBox.Show("El paciente ya no existe en BD.", "Historial",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string paciente = $"{pac.Value.nombre} {pac.Value.apellido}";
+            int idPaciente = pac.Value.idPaciente;
 
             using (var dlg = new FormEditarHistorial() { Owner = this, StartPosition = FormStartPosition.CenterParent })
             {
@@ -319,21 +350,17 @@ namespace SaludSoft
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
-                    AgregarOActualizarConsulta(
-                        dni: dni,
-                        paciente: paciente,
+                    GuardarConsultaEnDb(
+                        idPaciente: idPaciente,
                         fecha: dlg.Fecha,
                         diagnostico: dlg.Diagnostico,
                         tratamiento: dlg.Tratamiento,
                         observaciones: dlg.Observaciones
                     );
 
-                    var fila = BuscarFilaPorDni(dni);
-                    if (fila != null)
-                    {
-                        CargarDetalleDesdeFila(fila);
-                        MostrarDetalle(true);
-                    }
+                    // Refrescar visor desde BD
+                    CargarFilaDesdeDbPorDni(dni);
+                    MostrarDetalle(true);
                 }
             }
         }
@@ -354,7 +381,7 @@ namespace SaludSoft
             MostrarDetalle(false);
         }
 
-        // ---------- Datos de ejemplo ----------
+        // ---------- Datos de ejemplo (UI-only; no BD) ----------
         private void CargarEjemplos()
         {
             AgregarOActualizarConsulta(
@@ -376,7 +403,7 @@ namespace SaludSoft
             );
         }
 
-        // ---------- Buscar fila ----------
+        // ---------- Buscar fila en grilla ----------
         private DataGridViewRow BuscarFilaPorDni(string dni)
         {
             string objetivo = new string((dni ?? "").Where(char.IsDigit).ToArray());
@@ -390,7 +417,7 @@ namespace SaludSoft
             return null;
         }
 
-        // ---------- Agregar o actualizar ----------
+        // ---------- Agregar / actualizar en grilla (sólo UI) ----------
         public void AgregarOActualizarConsulta(string dni, string paciente, DateTime fecha,
                                        string diagnostico, string tratamiento, string observaciones)
         {
@@ -429,6 +456,143 @@ namespace SaludSoft
             return max + 1;
         }
 
+        // ---------- BD: obtener paciente por DNI ----------
+        private (string nombre, string apellido, string dni, int idPaciente)? GetPacienteBasicoPorDni(string dni)
+        {
+            using (var cn = new SqlConnection(_cnx))
+            using (var cmd = new SqlCommand(@"
+                SELECT TOP 1 id_paciente, nombre, apellido, CAST(dni AS varchar(20)) AS dni
+                FROM Paciente WHERE dni = @dni", cn))
+            {
+                cmd.Parameters.AddWithValue("@dni", dni);
+                cn.Open();
+                using (var rd = cmd.ExecuteReader())
+                {
+                    if (!rd.Read()) return null;
+                    return (rd.GetString(1), rd.GetString(2), rd.GetString(3), rd.GetInt32(0));
+                }
+            }
+        }
+
+        // ---------- BD: insertar/actualizar consulta ----------
+        private void GuardarConsultaEnDb(int idPaciente, DateTime fecha, string diagnostico, string tratamiento, string observaciones)
+        {
+            using (var cn = new SqlConnection(_cnx))
+            {
+                cn.Open();
+
+                int? idExistente = null;
+                using (var cSel = new SqlCommand(@"
+                    SELECT TOP 1 id_historial FROM Historial
+                    WHERE id_paciente = @idp AND fechaConsulta = @fec", cn))
+                {
+                    cSel.Parameters.AddWithValue("@idp", idPaciente);
+                    cSel.Parameters.AddWithValue("@fec", fecha.Date);
+                    var o = cSel.ExecuteScalar();
+                    if (o != null && o != DBNull.Value) idExistente = Convert.ToInt32(o);
+                }
+
+                if (idExistente.HasValue)
+                {
+                    using (var cUpd = new SqlCommand(@"
+                        UPDATE Historial
+                        SET diagnostico = @d, tratamiento = @t, observaciones = @o
+                        WHERE id_historial = @id", cn))
+                    {
+                        cUpd.Parameters.AddWithValue("@d", (object)diagnostico ?? DBNull.Value);
+                        cUpd.Parameters.AddWithValue("@t", (object)tratamiento ?? DBNull.Value);
+                        cUpd.Parameters.AddWithValue("@o", (object)observaciones ?? DBNull.Value);
+                        cUpd.Parameters.AddWithValue("@id", idExistente.Value);
+                        cUpd.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    using (var cIns = new SqlCommand(@"
+                        INSERT INTO Historial (id_paciente, fechaConsulta, diagnostico, tratamiento, observaciones)
+                        VALUES (@idp, @fec, @d, @t, @o)", cn))
+                    {
+                        cIns.Parameters.AddWithValue("@idp", idPaciente);
+                        cIns.Parameters.AddWithValue("@fec", fecha.Date);
+                        cIns.Parameters.AddWithValue("@d", (object)diagnostico ?? DBNull.Value);
+                        cIns.Parameters.AddWithValue("@t", (object)tratamiento ?? DBNull.Value);
+                        cIns.Parameters.AddWithValue("@o", (object)observaciones ?? DBNull.Value);
+                        cIns.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+        // ---------- Carga/Refresco desde BD (paciente existente) ----------
+        private void CargarFilaDesdeDbPorDni(string dni)
+        {
+            var pac = GetPacienteBasicoPorDni(dni);
+            if (pac == null) return;
+
+            string paciente = $"{pac.Value.nombre} {pac.Value.apellido}";
+            int idPac = pac.Value.idPaciente;
+
+            string historialTexto = "";
+            using (var cn = new SqlConnection(_cnx))
+            using (var cmd = new SqlCommand(@"
+                SELECT fechaConsulta, ISNULL(diagnostico,''), ISNULL(tratamiento,''), ISNULL(observaciones,'')
+                FROM Historial
+                WHERE id_paciente = @idp
+                ORDER BY fechaConsulta DESC;", cn))
+            {
+                cmd.Parameters.AddWithValue("@idp", idPac);
+                cn.Open();
+                using (var rd = cmd.ExecuteReader())
+                {
+                    var sb = new StringBuilder();
+                    while (rd.Read())
+                    {
+                        var f = rd.GetDateTime(0);
+                        var d = rd.GetString(1);
+                        var t = rd.GetString(2);
+                        var o = rd.GetString(3);
+                        sb.AppendLine($"{f:dd/MM/yyyy} — Diagnóstico: {d} | Tratamiento: {t} | Observación: {o}");
+                    }
+                    historialTexto = sb.ToString().TrimEnd();
+                }
+            }
+
+            // Última fecha (si existe)
+            DateTime? ultFecha = null;
+            using (var cn2 = new SqlConnection(_cnx))
+            using (var cmd2 = new SqlCommand(@"
+                SELECT TOP 1 fechaConsulta 
+                FROM Historial WHERE id_paciente = @idp
+                ORDER BY fechaConsulta DESC", cn2))
+            {
+                cmd2.Parameters.AddWithValue("@idp", idPac);
+                cn2.Open();
+                var o = cmd2.ExecuteScalar();
+                if (o != null && o != DBNull.Value) ultFecha = Convert.ToDateTime(o);
+            }
+
+            // Volcar/actualizar grilla
+            var fila = BuscarFilaPorDni(dni);
+            if (fila == null)
+            {
+                int idx = dgHistorial.Rows.Add();
+                fila = dgHistorial.Rows[idx];
+                fila.Cells["colIdHistorial"].Value = SiguienteId(); // sólo para UI
+                fila.Cells["colDni"].Value = dni;
+                fila.Cells["colPaciente"].Value = paciente;
+            }
+
+            fila.Cells["colFecha"].Value = (object)ultFecha ?? DBNull.Value;
+            fila.Cells["colDiagnostico"].Value = "";
+            fila.Cells["colTratamiento"].Value = "";
+            fila.Cells["colObservaciones"].Value = "";
+            fila.Cells["colHistorialTexto"].Value = historialTexto;
+
+            CargarDetalleDesdeFila(fila);
+            SetModo(ModoDetalle.Navegacion);
+            MostrarDetalle(true);
+        }
+
         // Campo para evitar doble clic
         private bool _cerrando = false;
 
@@ -438,14 +602,146 @@ namespace SaludSoft
             _cerrando = true;
             btVolver.Enabled = false;
 
-            
-            this.DialogResult = DialogResult.OK;  
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
-        
+        // =========================
+        //  Exportación a PDF
+        // =========================
 
+        private void ExportarDetalleAPdf(DataGridViewRow fila)
+        {
+            // --- Datos desde la fila seleccionada ---
+            string dni = Convert.ToString(fila.Cells["colDni"]?.Value ?? "");
+            string paciente = Convert.ToString(fila.Cells["colPaciente"]?.Value ?? "");
+            DateTime fecha = TryGetDate(fila.Cells["colFecha"]?.Value) ?? DateTime.Today;
 
+            string diagnostico = Convert.ToString(fila.Cells["colDiagnostico"]?.Value ?? "");
+            string tratamiento = Convert.ToString(fila.Cells["colTratamiento"]?.Value ?? "");
+            string observaciones = Convert.ToString(fila.Cells["colObservaciones"]?.Value ?? "");
+            string historialAcumulado = Convert.ToString(fila.Cells["colHistorialTexto"]?.Value ?? "");
 
+            // --- Ruta de salida (Documentos del usuario) ---
+            string carpeta = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string archivo = $"Historial_{SanitizeFileName(paciente)}_{fecha:yyyyMMdd}.pdf";
+            string ruta = Path.Combine(carpeta, archivo);
+
+            // --- Fuentes ---
+            PdfFont fTitulo = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16f);
+            PdfFont fSub = FontFactory.GetFont(FontFactory.HELVETICA, 9f, BaseColor.DARK_GRAY);
+            PdfFont fLabel = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 11f);
+            PdfFont fTxt = FontFactory.GetFont(FontFactory.HELVETICA, 11f);
+
+            // --- Documento ---
+            using (var fs = new FileStream(ruta, FileMode.Create))
+            {
+                var doc = new Document(PageSize.A4, 50, 50, 60, 60);
+                PdfWriter.GetInstance(doc, fs);
+                doc.AddAuthor("SaludSoft");
+                doc.AddTitle("Detalle de Historia Clínica");
+
+                doc.Open();
+
+                // ===== ENCABEZADO =====
+                var pTitulo = new PdfParagraph("Detalle de Historia Clínica", fTitulo) { SpacingAfter = 6f };
+                doc.Add(pTitulo);
+
+                var pSub = new PdfParagraph($"Impreso: {DateTime.Now:dd/MM/yyyy HH:mm}   ·   DNI: {dni}", fSub)
+                { SpacingAfter = 12f };
+                doc.Add(pSub);
+
+                // ===== TABLA DE DATOS PRINCIPALES =====
+                var tabla = new PdfPTable(2) { WidthPercentage = 100 };
+                tabla.SetWidths(new float[] { 25f, 75f });
+                AgregarFilaTabla(tabla, "Paciente", paciente, fLabel, fTxt);
+                AgregarFilaTabla(tabla, "Fecha de consulta", fecha.ToString("dd/MM/yyyy"), fLabel, fTxt);
+                doc.Add(tabla);
+
+                doc.Add(new PdfParagraph("\n"));
+
+                // ===== SECCIONES =====
+                AgregarSeccion(doc, "Diagnóstico", string.IsNullOrWhiteSpace(diagnostico) ? "—" : diagnostico, fLabel, fTxt);
+                AgregarSeccion(doc, "Tratamiento", string.IsNullOrWhiteSpace(tratamiento) ? "—" : tratamiento, fLabel, fTxt);
+                AgregarSeccion(doc, "Observaciones", string.IsNullOrWhiteSpace(observaciones) ? "—" : observaciones, fLabel, fTxt);
+
+                // ===== HISTORIAL ACUMULADO =====
+                doc.Add(new PdfParagraph("\n"));
+                doc.Add(new PdfParagraph("Historial (últimos registros)", fLabel) { SpacingAfter = 4f });
+
+                if (string.IsNullOrWhiteSpace(historialAcumulado))
+                {
+                    doc.Add(new PdfParagraph("—", fTxt));
+                }
+                else
+                {
+                    var lista = new PdfList(PdfList.UNORDERED, 10f);
+                    foreach (var linea in historialAcumulado
+                             .Replace("\r\n", "\n").Split('\n')
+                             .Where(l => !string.IsNullOrWhiteSpace(l)))
+                    {
+                        lista.Add(new PdfListItem(linea.Trim(), fTxt));
+                    }
+                    doc.Add(lista);
+                }
+
+                doc.Close();
+            }
+
+            // Pregunta para abrir
+            if (MessageBox.Show($"PDF generado:\n{ruta}\n\n¿Deseás abrirlo ahora?",
+                "Historial", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+            {
+                try { Process.Start(new ProcessStartInfo { FileName = ruta, UseShellExecute = true }); }
+                catch { /* Ignorar errores de apertura */ }
+            }
+        }
+
+        // Helpers PDF
+        private static void AgregarFilaTabla(PdfPTable t, string label, string value, PdfFont fLabel, PdfFont fTxt)
+        {
+            var c1 = new PdfPCell(new PdfPhrase(label, fLabel))
+            { Border = PdfRect.NO_BORDER, PaddingBottom = 4f };
+            var c2 = new PdfPCell(new PdfPhrase(value, fTxt))
+            { Border = PdfRect.NO_BORDER, PaddingBottom = 4f };
+            t.AddCell(c1);
+            t.AddCell(c2);
+        }
+
+        private static void AgregarSeccion(Document doc, string titulo, string texto, PdfFont fLabel, PdfFont fTxt)
+        {
+            var p1 = new PdfParagraph(titulo, fLabel) { SpacingBefore = 2f, SpacingAfter = 3f };
+            var p2 = new PdfParagraph(texto, fTxt) { SpacingAfter = 8f };
+            doc.Add(p1);
+            doc.Add(p2);
+        }
+
+        private static string SanitizeFileName(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s)) return "Paciente";
+            foreach (var c in Path.GetInvalidFileNameChars()) s = s.Replace(c, '_');
+            return s;
+        }
+
+        private void btImprimir_Click(object sender, EventArgs e)
+        {
+            var fila = gbDetalle.Tag as DataGridViewRow;
+            if (fila == null)
+            {
+                MessageBox.Show("Seleccioná un paciente de la lista (columna 'Ver').",
+                    "Historial", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            try
+            {
+                ExportarDetalleAPdf(fila);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo generar el PDF.\n\n" + ex.Message,
+                    "Historial", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
