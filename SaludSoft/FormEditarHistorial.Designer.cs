@@ -139,6 +139,7 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.CustomFormat = "dd/MM/yyyy";
+            this.dateTimePicker1.Enabled = false;
             this.dateTimePicker1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dateTimePicker1.Location = new System.Drawing.Point(110, 120);
@@ -160,11 +161,11 @@
             // 
             this.tbDiag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbDiag.Location = new System.Drawing.Point(160, 152);
+            this.tbDiag.Location = new System.Drawing.Point(171, 170);
             this.tbDiag.Multiline = true;
             this.tbDiag.Name = "tbDiag";
             this.tbDiag.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbDiag.Size = new System.Drawing.Size(752, 62);
+            this.tbDiag.Size = new System.Drawing.Size(752, 23);
             this.tbDiag.TabIndex = 8;
             // 
             // lTrat
@@ -181,11 +182,11 @@
             // 
             this.tbTrat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbTrat.Location = new System.Drawing.Point(160, 220);
+            this.tbTrat.Location = new System.Drawing.Point(171, 220);
             this.tbTrat.Multiline = true;
             this.tbTrat.Name = "tbTrat";
             this.tbTrat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbTrat.Size = new System.Drawing.Size(752, 52);
+            this.tbTrat.Size = new System.Drawing.Size(752, 23);
             this.tbTrat.TabIndex = 10;
             // 
             // lObserv
@@ -203,11 +204,11 @@
             // 
             this.tbObserv.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbObserv.Location = new System.Drawing.Point(184, 278);
+            this.tbObserv.Location = new System.Drawing.Point(171, 275);
             this.tbObserv.Multiline = true;
             this.tbObserv.Name = "tbObserv";
             this.tbObserv.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbObserv.Size = new System.Drawing.Size(728, 46);
+            this.tbObserv.Size = new System.Drawing.Size(752, 23);
             this.tbObserv.TabIndex = 12;
             // 
             // FormEditarHistorial
