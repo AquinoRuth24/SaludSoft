@@ -139,7 +139,7 @@ namespace SaludSoft.Resources
 
                 case RolUsuario.Paciente:
                     FormPaciente formPaciente = new FormPaciente();
-                    formPaciente.ShowDialog();
+                    formPaciente.Show();
                     cbRol.SelectedIndex = -1;  //deseleccionar el rol para evitar recargar
                     break;
             }
@@ -207,9 +207,9 @@ namespace SaludSoft.Resources
 
                     //Insert en Usuario
                     string insertUsuario = @"
-                INSERT INTO Usuario (nombre, apellido, contraseña, email, telefono, id_rol)
-                VALUES (@nombre, @apellido, @contraseña, @correo, @telefono, @idRol);
-                SELECT SCOPE_IDENTITY();";
+                     INSERT INTO Usuario (nombre, apellido, contraseña, email, telefono, id_rol)
+                     VALUES (@nombre, @apellido, @contraseña, @correo, @telefono, @idRol);
+                     SELECT SCOPE_IDENTITY();";
 
                     int idRol = (int)rolDestino + 1;
 
@@ -232,8 +232,8 @@ namespace SaludSoft.Resources
                         string sexo = (FindCtl<RadioButton>("rbMasculino")?.Checked ?? false) ? "Masculino" : "Femenino";
 
                         string insertPaciente = @"
-                    INSERT INTO Paciente (nombre, apellido, dni, sexo, direccion, email, telefono, id_estado)
-                    VALUES (@nombre, @apellido, @dni, @sexo, @direccion, @correo, @telefono, 1);";
+                         INSERT INTO Paciente (nombre, apellido, dni, sexo, direccion, email, telefono, id_estado)
+                         VALUES (@nombre, @apellido, @dni, @sexo, @direccion, @correo, @telefono, 1);";
 
                         using (SqlCommand cmd = new SqlCommand(insertPaciente, conexion))
                         {
@@ -256,23 +256,29 @@ namespace SaludSoft.Resources
 
                         if (CmbEspecialidades.SelectedValue == null)
                         {
-                            MessageBox.Show("Debe seleccionar una especialidad.",
-                                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("Debe seleccionar una especialidad.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        if (!int.TryParse(matricula, out int mat))
+                        {
+                            MessageBox.Show("La matrícula debe ser numérica.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
                         }
 
                         int idEspecialidad = Convert.ToInt32(CmbEspecialidades.SelectedValue);
 
                         string insertProfesional = @"
-                          INSERT INTO Profesional (nombre, apellido, email, matricula, id_estado, id_especialidad)
-                           VALUES (@nombre, @apellido, @correo, @matricula, 1, @idEspecialidad);";
+                         INSERT INTO Profesional (id_usuario, nombre, apellido, email, matricula, id_estado, id_especialidad)
+                         VALUES (@idUsuario, @nombre, @apellido, @correo, @matricula, 1, @idEspecialidad);";
 
                         using (SqlCommand cmd = new SqlCommand(insertProfesional, conexion))
                         {
+                            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
                             cmd.Parameters.AddWithValue("@nombre", nombre);
                             cmd.Parameters.AddWithValue("@apellido", apellido);
                             cmd.Parameters.AddWithValue("@correo", correo);
-                            cmd.Parameters.AddWithValue("@matricula", int.Parse(matricula));
+                            cmd.Parameters.AddWithValue("@matricula", mat);
                             cmd.Parameters.AddWithValue("@idEspecialidad", idEspecialidad);
 
                             cmd.ExecuteNonQuery();
@@ -529,6 +535,9 @@ namespace SaludSoft.Resources
 
         private void LimpiarCampos()
         {
+            // Desactivar evento temporalmente
+            cbRol.SelectedIndexChanged -= cbRol_SelectedIndexChanged;
+
             // Recorre todos los TextBox y limpia su contenido
             foreach (var tb in this.Controls.OfType<TextBox>())
                 tb.Clear();
@@ -540,9 +549,12 @@ namespace SaludSoft.Resources
                     tb.Clear();
             }
 
-            // Restablecer ComboBox (roles)
-            if (cbRol != null && cbRol.Items.Count > 0)
-                cbRol.SelectedIndex = 0;
+            //Restablecer ComboBox sin disparar el evento
+            if (cbRol != null)
+                cbRol.SelectedIndex = -1;
+
+            // Reactivar evento
+            cbRol.SelectedIndexChanged += cbRol_SelectedIndexChanged;
 
             // Deseleccionar radios de sexo
             var rbM = FindCtl<RadioButton>("rbMasculino");
@@ -550,7 +562,7 @@ namespace SaludSoft.Resources
             if (rbM != null) rbM.Checked = false;
             if (rbF != null) rbF.Checked = false;
 
-            // Opcional: limpiar NumericUpDown si usás
+            // limpiar NumericUpDown
             foreach (var nud in this.Controls.OfType<NumericUpDown>())
                 nud.Value = nud.Minimum;
         }
