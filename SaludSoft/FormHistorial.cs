@@ -29,7 +29,9 @@ namespace SaludSoft
         // === CONEXIÓN A BD ===
         private readonly string _cnx =
             @"Server=localhost\SQLEXPRESS;Database=SaludSoft;Trusted_Connection=True;TrustServerCertificate=True;";
-
+       //Datos de medico
+        public int? ProfesionalId { get; set; }  
+        public string EmailUsuarioActual { get; set; }
         public FormHistorial()
         {
             InitializeComponent();
@@ -59,13 +61,17 @@ namespace SaludSoft
             pnlOverlay.Visible = false;
             SetModo(ModoDetalle.Navegacion);
 
-            // Si querés ejemplos de UI (no persiste), descomentá:
-            // CargarEjemplos();
-
-            // Ajuste automático de historial
-            ConfigurarWrapHistorial();
-            gbDetalle.Resize += (s, ev) => AjustarWrapHistorial();
-            pnlOverlay.Resize += (s, ev) => AjustarWrapHistorial();
+            // Configurar RTB para historial(en el diseño tmb esta)
+            if (rtbHistorial != null)
+            {
+                rtbHistorial.ReadOnly = true;
+                rtbHistorial.BorderStyle = BorderStyle.None;
+                rtbHistorial.WordWrap = true;
+                rtbHistorial.ScrollBars = RichTextBoxScrollBars.Vertical;
+                rtbHistorial.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+                rtbHistorial.BackColor = gbDetalle.BackColor; 
+                rtbHistorial.Text = "—";
+            }
         }
 
         // ---------- Validación de DNI ----------
@@ -180,11 +186,9 @@ namespace SaludSoft
                 colBtn.Text = "Ver";
             }
 
-            // Se asume que existen desde el diseñador:
-            // colIdHistorial, colDni, colPaciente, colDiagnostico, colTratamiento
         }
 
-        // ---------- Buscar por DNI (en BD; el médico NO da de alta pacientes) ----------
+        // ---------- Buscar por DNI----------
         private void EjecutarBusquedaDni()
         {
             string input = (tbBuscarDni.Text ?? "").Trim();
@@ -212,7 +216,7 @@ namespace SaludSoft
                 return;
             }
 
-            // Paciente existe: cargar su historial (si no tiene, queda listo para 'Agregar')
+            // Paciente existe: cargar su historial
             CargarFilaDesdeDbPorDni(dniBuscado);
         }
 
@@ -238,12 +242,11 @@ namespace SaludSoft
             lbFechaValor.Text = fecha.ToString("dd/MM/yyyy");
 
             string histRaw = Convert.ToString(fila.Cells["colHistorialTexto"]?.Value ?? "");
-            lHistorial.Text = string.IsNullOrWhiteSpace(histRaw)
+            rtbHistorial.Text = string.IsNullOrWhiteSpace(histRaw)
                 ? "—"
                 : FormatearHistorial(histRaw);
 
             gbDetalle.Tag = fila;
-            AjustarWrapHistorial();
         }
 
         // ---------- Helpers UI ----------
@@ -262,33 +265,6 @@ namespace SaludSoft
             return string.Join(Environment.NewLine + Environment.NewLine, lineas);
         }
 
-        private void ConfigurarWrapHistorial()
-        {
-            if (lHistorial == null) return;
-            lHistorial.AutoSize = false;
-            lHistorial.UseCompatibleTextRendering = true;
-            lHistorial.AutoEllipsis = false;
-            lHistorial.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            AjustarWrapHistorial();
-        }
-
-        private void AjustarWrapHistorial()
-        {
-            if (lHistorial == null || gbDetalle == null) return;
-
-            const int margenDerecho = 20;
-            int anchoDisponible = Math.Max(100, gbDetalle.ClientSize.Width - lHistorial.Left - margenDerecho);
-            lHistorial.Width = anchoDisponible;
-
-            Size medida = TextRenderer.MeasureText(
-                (lHistorial.Text ?? "") + " ",
-                    lHistorial.Font,
-                new Size(anchoDisponible, int.MaxValue),
-                TextFormatFlags.WordBreak | TextFormatFlags.TextBoxControl
-            );
-
-            lHistorial.Height = medida.Height;
-        }
 
         // ---------- Mostrar/Ocultar visor ----------
         private void MostrarDetalle(bool mostrar)
@@ -336,7 +312,7 @@ namespace SaludSoft
             var pac = GetPacienteBasicoPorDni(dni);
             if (pac == null)
             {
-                MessageBox.Show("El paciente ya no existe en BD.", "Historial",
+                MessageBox.Show("El paciente ya no existe en la base de datos.", "Historial",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -344,9 +320,25 @@ namespace SaludSoft
             string paciente = $"{pac.Value.nombre} {pac.Value.apellido}";
             int idPaciente = pac.Value.idPaciente;
 
+            // 🔹 Buscar si ya tiene un historial para HOY
+            var hoy = DateTime.Today;
+            var historialHoy = GetHistorialPorFecha(idPaciente, hoy);
+
             using (var dlg = new FormEditarHistorial() { Owner = this, StartPosition = FormStartPosition.CenterParent })
             {
-                dlg.InitContext(dni, paciente);
+                // 🔹 Si existe historial de hoy => editar, si no => alta nueva
+                if (historialHoy.HasValue)
+                {
+                    dlg.InitContext(dni, paciente,
+                                    historialHoy.Value.fecha,
+                                    historialHoy.Value.diagnostico,
+                                    historialHoy.Value.tratamiento,
+                                    historialHoy.Value.observaciones);
+                }
+                else
+                {
+                    dlg.InitContext(dni, paciente, hoy, "", "", "");
+                }
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
@@ -358,12 +350,33 @@ namespace SaludSoft
                         observaciones: dlg.Observaciones
                     );
 
-                    // Refrescar visor desde BD
+                    // Refrescar grilla/visor
                     CargarFilaDesdeDbPorDni(dni);
                     MostrarDetalle(true);
                 }
             }
         }
+        //Helper para editar historial por fecha
+        private (DateTime fecha, string diagnostico, string tratamiento, string observaciones)? GetHistorialPorFecha(int idPaciente, DateTime fecha)
+        {
+            using (var cn = new SqlConnection(_cnx))
+            using (var cmd = new SqlCommand(@"
+        SELECT TOP 1 fechaConsulta, ISNULL(diagnostico,''), ISNULL(tratamiento,''), ISNULL(observaciones,'')
+        FROM Historial
+        WHERE id_paciente = @idp AND CAST(fechaConsulta AS date) = @fecha;", cn))
+            {
+                cmd.Parameters.AddWithValue("@idp", idPaciente);
+                cmd.Parameters.AddWithValue("@fecha", fecha.Date);
+                cn.Open();
+                using (var rd = cmd.ExecuteReader())
+                {
+                    if (rd.Read())
+                        return (rd.GetDateTime(0), rd.GetString(1), rd.GetString(2), rd.GetString(3));
+                }
+            }
+            return null;
+        }
+
 
         // ---------- Cancelar ----------
         private void btCancelar_Click(object sender, EventArgs e)
@@ -379,28 +392,6 @@ namespace SaludSoft
         private void btCerrarDetalle_Click(object sender, EventArgs e)
         {
             MostrarDetalle(false);
-        }
-
-        // ---------- Datos de ejemplo (UI-only; no BD) ----------
-        private void CargarEjemplos()
-        {
-            AgregarOActualizarConsulta(
-                dni: "12345678",
-                paciente: "Juan Pérez",
-                fecha: new DateTime(2025, 10, 19),
-                diagnostico: "Hipertensión arterial - Mejoría",
-                tratamiento: "Enalapril 10 mg y Amlodipino 5 mg",
-                observaciones: "Presión controlada. Sin síntomas. Continuar esquema."
-            );
-
-            AgregarOActualizarConsulta(
-                dni: "87654321",
-                paciente: "María Gómez",
-                fecha: new DateTime(2025, 09, 30),
-                diagnostico: "Gastritis aguda",
-                tratamiento: "Omeprazol 20 mg cada 24 h",
-                observaciones: "Dieta blanda. Revalorar en 15 días."
-            );
         }
 
         // ---------- Buscar fila en grilla ----------
@@ -535,10 +526,11 @@ namespace SaludSoft
             string historialTexto = "";
             using (var cn = new SqlConnection(_cnx))
             using (var cmd = new SqlCommand(@"
-                SELECT fechaConsulta, ISNULL(diagnostico,''), ISNULL(tratamiento,''), ISNULL(observaciones,'')
-                FROM Historial
-                WHERE id_paciente = @idp
-                ORDER BY fechaConsulta DESC;", cn))
+        SELECT fechaConsulta, ISNULL(diagnostico,''), ISNULL(tratamiento,''), ISNULL(observaciones,'')
+        FROM Historial
+        WHERE id_paciente = @idp
+          AND (ISNULL(diagnostico,'')<>'' OR ISNULL(tratamiento,'')<>'' OR ISNULL(observaciones,'')<>'')
+        ORDER BY fechaConsulta DESC;", cn))
             {
                 cmd.Parameters.AddWithValue("@idp", idPac);
                 cn.Open();
@@ -557,13 +549,14 @@ namespace SaludSoft
                 }
             }
 
-            // Última fecha (si existe)
+            // Última fecha con datos (si querés mostrar la más reciente con info; si no hay, queda null)
             DateTime? ultFecha = null;
             using (var cn2 = new SqlConnection(_cnx))
             using (var cmd2 = new SqlCommand(@"
-                SELECT TOP 1 fechaConsulta 
-                FROM Historial WHERE id_paciente = @idp
-                ORDER BY fechaConsulta DESC", cn2))
+        SELECT MAX(fechaConsulta)
+        FROM Historial
+        WHERE id_paciente = @idp
+          AND (ISNULL(diagnostico,'')<>'' OR ISNULL(tratamiento,'')<>'' OR ISNULL(observaciones,'')<>'')", cn2))
             {
                 cmd2.Parameters.AddWithValue("@idp", idPac);
                 cn2.Open();
@@ -571,19 +564,18 @@ namespace SaludSoft
                 if (o != null && o != DBNull.Value) ultFecha = Convert.ToDateTime(o);
             }
 
-            // Volcar/actualizar grilla
             var fila = BuscarFilaPorDni(dni);
             if (fila == null)
             {
                 int idx = dgHistorial.Rows.Add();
                 fila = dgHistorial.Rows[idx];
-                fila.Cells["colIdHistorial"].Value = SiguienteId(); // sólo para UI
+                fila.Cells["colIdHistorial"].Value = SiguienteId();
                 fila.Cells["colDni"].Value = dni;
                 fila.Cells["colPaciente"].Value = paciente;
             }
 
             fila.Cells["colFecha"].Value = (object)ultFecha ?? DBNull.Value;
-            fila.Cells["colDiagnostico"].Value = "";
+            fila.Cells["colDiagnostico"].Value = "";     // el detalle puntual se carga al editar
             fila.Cells["colTratamiento"].Value = "";
             fila.Cells["colObservaciones"].Value = "";
             fila.Cells["colHistorialTexto"].Value = historialTexto;
@@ -620,9 +612,26 @@ namespace SaludSoft
             string diagnostico = Convert.ToString(fila.Cells["colDiagnostico"]?.Value ?? "");
             string tratamiento = Convert.ToString(fila.Cells["colTratamiento"]?.Value ?? "");
             string observaciones = Convert.ToString(fila.Cells["colObservaciones"]?.Value ?? "");
-            string historialAcumulado = Convert.ToString(fila.Cells["colHistorialTexto"]?.Value ?? "");
 
-            // --- Ruta de salida (Documentos del usuario) ---
+            var pac = GetPacienteBasicoPorDni(new string((dni ?? "").Where(char.IsDigit).ToArray()));
+            if (pac != null && string.IsNullOrWhiteSpace(diagnostico) && string.IsNullOrWhiteSpace(tratamiento) && string.IsNullOrWhiteSpace(observaciones))
+            {
+                var ult = GetUltimaConsultaNoVacia(pac.Value.idPaciente);
+                if (ult.HasValue)
+                {
+                    fecha = ult.Value.fecha;
+                    diagnostico = ult.Value.diag;
+                    tratamiento = ult.Value.trat;
+                    observaciones = ult.Value.obs;
+                }
+            }
+
+            // Datos del profesional
+            var prof = GetProfesionalActual();
+            string profesionalNombre = prof.HasValue ? $"{prof.Value.nombre} {prof.Value.apellido}" : "—";
+            string profesionalMatricula = prof.HasValue ? prof.Value.matricula.ToString() : "—";
+
+            // --- Ruta de salida ---
             string carpeta = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string archivo = $"Historial_{SanitizeFileName(paciente)}_{fecha:yyyyMMdd}.pdf";
             string ruta = Path.Combine(carpeta, archivo);
@@ -640,7 +649,6 @@ namespace SaludSoft
                 PdfWriter.GetInstance(doc, fs);
                 doc.AddAuthor("SaludSoft");
                 doc.AddTitle("Detalle de Historia Clínica");
-
                 doc.Open();
 
                 // ===== ENCABEZADO =====
@@ -651,51 +659,44 @@ namespace SaludSoft
                 { SpacingAfter = 12f };
                 doc.Add(pSub);
 
-                // ===== TABLA DE DATOS PRINCIPALES =====
+                // ===== TABLA PRINCIPAL =====
                 var tabla = new PdfPTable(2) { WidthPercentage = 100 };
-                tabla.SetWidths(new float[] { 25f, 75f });
+                tabla.SetWidths(new float[] { 30f, 70f });
+
                 AgregarFilaTabla(tabla, "Paciente", paciente, fLabel, fTxt);
                 AgregarFilaTabla(tabla, "Fecha de consulta", fecha.ToString("dd/MM/yyyy"), fLabel, fTxt);
+                AgregarFilaTabla(tabla, "Profesional", profesionalNombre, fLabel, fTxt);
+                AgregarFilaTabla(tabla, "Matrícula", profesionalMatricula, fLabel, fTxt);
                 doc.Add(tabla);
 
                 doc.Add(new PdfParagraph("\n"));
 
-                // ===== SECCIONES =====
-                AgregarSeccion(doc, "Diagnóstico", string.IsNullOrWhiteSpace(diagnostico) ? "—" : diagnostico, fLabel, fTxt);
-                AgregarSeccion(doc, "Tratamiento", string.IsNullOrWhiteSpace(tratamiento) ? "—" : tratamiento, fLabel, fTxt);
-                AgregarSeccion(doc, "Observaciones", string.IsNullOrWhiteSpace(observaciones) ? "—" : observaciones, fLabel, fTxt);
+                // ===== SECCIONES (solo si tienen contenido) =====
+                if (!string.IsNullOrWhiteSpace(diagnostico))
+                    AgregarSeccion(doc, "Diagnóstico", diagnostico, fLabel, fTxt);
 
-                // ===== HISTORIAL ACUMULADO =====
-                doc.Add(new PdfParagraph("\n"));
-                doc.Add(new PdfParagraph("Historial (últimos registros)", fLabel) { SpacingAfter = 4f });
+                if (!string.IsNullOrWhiteSpace(tratamiento))
+                    AgregarSeccion(doc, "Tratamiento", tratamiento, fLabel, fTxt);
 
-                if (string.IsNullOrWhiteSpace(historialAcumulado))
+                if (!string.IsNullOrWhiteSpace(observaciones))
+                    AgregarSeccion(doc, "Observaciones", observaciones, fLabel, fTxt);
+
+                if (string.IsNullOrWhiteSpace(diagnostico) &&
+                    string.IsNullOrWhiteSpace(tratamiento) &&
+                    string.IsNullOrWhiteSpace(observaciones))
                 {
-                    doc.Add(new PdfParagraph("—", fTxt));
+                    AgregarSeccion(doc, "Detalle", "Sin registro cargado para la fecha seleccionada.", fLabel, fTxt);
                 }
-                else
-                {
-                    var lista = new PdfList(PdfList.UNORDERED, 10f);
-                    foreach (var linea in historialAcumulado
-                             .Replace("\r\n", "\n").Split('\n')
-                             .Where(l => !string.IsNullOrWhiteSpace(l)))
-                    {
-                        lista.Add(new PdfListItem(linea.Trim(), fTxt));
-                    }
-                    doc.Add(lista);
-                }
-
                 doc.Close();
             }
 
-            // Pregunta para abrir
             if (MessageBox.Show($"PDF generado:\n{ruta}\n\n¿Deseás abrirlo ahora?",
                 "Historial", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
             {
-                try { Process.Start(new ProcessStartInfo { FileName = ruta, UseShellExecute = true }); }
-                catch { /* Ignorar errores de apertura */ }
+                try { Process.Start(new ProcessStartInfo { FileName = ruta, UseShellExecute = true }); } catch { }
             }
         }
+
 
         // Helpers PDF
         private static void AgregarFilaTabla(PdfPTable t, string label, string value, PdfFont fLabel, PdfFont fTxt)
@@ -722,6 +723,42 @@ namespace SaludSoft
             foreach (var c in Path.GetInvalidFileNameChars()) s = s.Replace(c, '_');
             return s;
         }
+        //Obtener datos del medico
+        private (string nombre, string apellido, int matricula)? GetProfesionalActual()
+        {
+            using (var cn = new SqlConnection(_cnx))
+            using (var cmd = new SqlCommand())
+            {
+                cmd.Connection = cn;
+
+                if (ProfesionalId.HasValue)
+                {
+                    cmd.CommandText = @"SELECT nombre, apellido, matricula 
+                                FROM Profesional 
+                                WHERE id_profesional = @id";
+                    cmd.Parameters.AddWithValue("@id", ProfesionalId.Value);
+                }
+                else if (!string.IsNullOrWhiteSpace(EmailUsuarioActual))
+                {
+                    cmd.CommandText = @"SELECT TOP 1 p.nombre, p.apellido, p.matricula
+                                FROM Profesional p
+                                JOIN Usuario u ON u.id_usuario = p.id_usuario
+                                WHERE u.email = @mail";
+                    cmd.Parameters.AddWithValue("@mail", EmailUsuarioActual);
+                }
+                else
+                {
+                    return null; 
+                }
+
+                cn.Open();
+                using (var rd = cmd.ExecuteReader())
+                {
+                    if (!rd.Read()) return null;
+                    return (rd.GetString(0), rd.GetString(1), rd.GetInt32(2));
+                }
+            }
+        }
 
         private void btImprimir_Click(object sender, EventArgs e)
         {
@@ -743,5 +780,25 @@ namespace SaludSoft
                     "Historial", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private (DateTime fecha, string diag, string trat, string obs)? GetUltimaConsultaNoVacia(int idPaciente)
+        {
+            using (var cn = new SqlConnection(_cnx))
+            using (var cmd = new SqlCommand(@"
+        SELECT TOP 1 fechaConsulta, ISNULL(diagnostico,''), ISNULL(tratamiento,''), ISNULL(observaciones,'')
+        FROM Historial
+        WHERE id_paciente = @idp
+          AND (ISNULL(diagnostico,'')<>'' OR ISNULL(tratamiento,'')<>'' OR ISNULL(observaciones,'')<>'')
+        ORDER BY fechaConsulta DESC;", cn))
+            {
+                cmd.Parameters.AddWithValue("@idp", idPaciente);
+                cn.Open();
+                using (var rd = cmd.ExecuteReader())
+                {
+                    if (!rd.Read()) return null;
+                    return (rd.GetDateTime(0), rd.GetString(1), rd.GetString(2), rd.GetString(3));
+                }
+            }
+        }
+
     }
 }

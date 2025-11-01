@@ -48,26 +48,56 @@ namespace SaludSoft
             // Load
             Load += (s, e) =>
             {
-                lTitulo.Text = "Editar consulta";
-                lPaciente.Text = "Paciente:";
-                lValorPaciente.Text = string.IsNullOrWhiteSpace(_paciente) && string.IsNullOrWhiteSpace(_dni)
-                    ? "—"
-                    : $"{_paciente}  |  DNI: {_dni}";
-
+                // formato fecha
                 dateTimePicker1.Format = DateTimePickerFormat.Custom;
                 dateTimePicker1.CustomFormat = "dd/MM/yyyy";
-                if (dateTimePicker1.Value == default) dateTimePicker1.Value = DateTime.Today;
 
-                tbDiag.Focus();
+                // si se puede editar, va a diagnóstico
+                if (btGuardar.Enabled) tbDiag.Focus();
             };
         }
 
-        // Llamalo APENAS crees el diálogo desde FormHistorial
-        public void InitContext(string dni, string paciente)
+        public void InitContext(string dni, string paciente,
+                        DateTime? fecha = null,
+                        string diagnostico = "",
+                        string tratamiento = "",
+                        string observaciones = "")
         {
             _dni = dni ?? "";
             _paciente = paciente ?? "";
+
+            // Cargar datos en controles
+            dateTimePicker1.Value = (fecha ?? DateTime.Today).Date;
+            tbDiag.Text = diagnostico ?? "";
+            tbTrat.Text = tratamiento ?? "";
+            tbObserv.Text = observaciones ?? "";
+
+            // Mostrar encabezado
+            lTitulo.Text = "Editar consulta";
+            lPaciente.Text = "Paciente:";
+            lValorPaciente.Text = (string.IsNullOrWhiteSpace(_paciente) && string.IsNullOrWhiteSpace(_dni))
+                ? "—"
+                : $"{_paciente}  |  DNI: {_dni}";
+
+            // ¿Se puede editar? Solo si la fecha es hoy
+            bool editable = dateTimePicker1.Value.Date == DateTime.Today;
+            SetEditable(editable);
         }
+        //Helper bloqueo/desbloqueo edición
+        private void SetEditable(bool canEdit)
+        {
+            tbDiag.ReadOnly = !canEdit;
+            tbTrat.ReadOnly = !canEdit;
+            tbObserv.ReadOnly = !canEdit;
+            dateTimePicker1.Enabled = canEdit;
+
+            btGuardar.Enabled = canEdit;
+            btGuardar.Visible = true; // si querés ocultarlo cuando no se edita, poné false cuando !canEdit
+
+            // Opcional: feedback visual
+            lTitulo.Text = canEdit ? "Editar consulta (hoy)" : "Consulta (solo lectura)";
+        }
+
 
         // --- Guardar ---
         private void btGuardar_Click(object sender, EventArgs e)
@@ -105,7 +135,8 @@ namespace SaludSoft
             Close();
         }
 
-        // (Si el diseñador dejó algún handler vacío, puede quedar así)
+  
         private void lObserv_Click(object sender, EventArgs e) { }
+
     }
 }

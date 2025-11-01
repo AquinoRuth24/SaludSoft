@@ -58,6 +58,9 @@
             this.btCerrar = new System.Windows.Forms.Button();
             this.lCitas = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lPaciente = new System.Windows.Forms.Label();
+            this.btPacientes = new System.Windows.Forms.Button();
+            this.btInicio = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgPacientes)).BeginInit();
@@ -72,7 +75,7 @@
             this.BHistorial.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BHistorial.Image = global::SaludSoft.Properties.Resources.expediente_del_paciente;
             this.BHistorial.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BHistorial.Location = new System.Drawing.Point(3, 178);
+            this.BHistorial.Location = new System.Drawing.Point(3, 280);
             this.BHistorial.Name = "BHistorial";
             this.BHistorial.Size = new System.Drawing.Size(166, 67);
             this.BHistorial.TabIndex = 6;
@@ -87,7 +90,7 @@
             this.BCerrarSesion.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BCerrarSesion.Image = global::SaludSoft.Properties.Resources.circulo_marca_x;
             this.BCerrarSesion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BCerrarSesion.Location = new System.Drawing.Point(11, 393);
+            this.BCerrarSesion.Location = new System.Drawing.Point(16, 393);
             this.BCerrarSesion.Name = "BCerrarSesion";
             this.BCerrarSesion.Size = new System.Drawing.Size(153, 41);
             this.BCerrarSesion.TabIndex = 3;
@@ -101,7 +104,7 @@
             this.btCitas.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btCitas.Image = global::SaludSoft.Properties.Resources.CitasProgramadas;
             this.btCitas.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btCitas.Location = new System.Drawing.Point(11, 71);
+            this.btCitas.Location = new System.Drawing.Point(17, 183);
             this.btCitas.Name = "btCitas";
             this.btCitas.Size = new System.Drawing.Size(138, 62);
             this.btCitas.TabIndex = 3;
@@ -153,11 +156,11 @@
             // 
             // tbBuscarPaciente
             // 
-            this.tbBuscarPaciente.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbBuscarPaciente.Location = new System.Drawing.Point(304, 112);
+            this.tbBuscarPaciente.Location = new System.Drawing.Point(289, 124);
             this.tbBuscarPaciente.Name = "tbBuscarPaciente";
             this.tbBuscarPaciente.Size = new System.Drawing.Size(244, 20);
             this.tbBuscarPaciente.TabIndex = 3;
+            this.tbBuscarPaciente.Visible = false;
             // 
             // dgPacientes
             // 
@@ -182,6 +185,7 @@
             this.dgPacientes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgPacientes.Size = new System.Drawing.Size(763, 195);
             this.dgPacientes.TabIndex = 4;
+            this.dgPacientes.Visible = false;
             // 
             // colId
             // 
@@ -221,36 +225,41 @@
             // 
             // lDNI
             // 
-            this.lDNI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lDNI.AutoSize = true;
             this.lDNI.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lDNI.Location = new System.Drawing.Point(237, 113);
+            this.lDNI.Location = new System.Drawing.Point(219, 125);
             this.lDNI.Name = "lDNI";
             this.lDNI.Size = new System.Drawing.Size(48, 19);
             this.lDNI.TabIndex = 6;
             this.lDNI.Text = "DNI: ";
+            this.lDNI.Visible = false;
+            this.lDNI.Click += new System.EventHandler(this.lDNI_Click);
             // 
             // btBuscar
             // 
-            this.btBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btBuscar.Image = global::SaludSoft.Properties.Resources.busqueda;
-            this.btBuscar.Location = new System.Drawing.Point(603, 107);
+            this.btBuscar.BackgroundImage = global::SaludSoft.Properties.Resources.busqueda;
+            this.btBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btBuscar.Location = new System.Drawing.Point(556, 120);
             this.btBuscar.Name = "btBuscar";
-            this.btBuscar.Size = new System.Drawing.Size(75, 33);
+            this.btBuscar.Size = new System.Drawing.Size(53, 27);
             this.btBuscar.TabIndex = 5;
             this.btBuscar.UseVisualStyleBackColor = true;
+            this.btBuscar.Visible = false;
             // 
             // pnlCitas
             // 
+            this.pnlCitas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlCitas.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.pnlCitas.Controls.Add(this.btnImprimirCitas);
             this.pnlCitas.Controls.Add(this.dgCitas);
             this.pnlCitas.Controls.Add(this.lFecha);
             this.pnlCitas.Controls.Add(this.dateTimePicker1);
             this.pnlCitas.Controls.Add(this.panel3);
-            this.pnlCitas.Location = new System.Drawing.Point(190, 215);
+            this.pnlCitas.Location = new System.Drawing.Point(190, 80);
             this.pnlCitas.Name = "pnlCitas";
-            this.pnlCitas.Size = new System.Drawing.Size(402, 260);
+            this.pnlCitas.Size = new System.Drawing.Size(807, 408);
             this.pnlCitas.TabIndex = 7;
             this.pnlCitas.Visible = false;
             // 
@@ -259,7 +268,7 @@
             this.btnImprimirCitas.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnImprimirCitas.BackgroundImage = global::SaludSoft.Properties.Resources.impresora;
             this.btnImprimirCitas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnImprimirCitas.Location = new System.Drawing.Point(339, 69);
+            this.btnImprimirCitas.Location = new System.Drawing.Point(744, 69);
             this.btnImprimirCitas.Name = "btnImprimirCitas";
             this.btnImprimirCitas.Size = new System.Drawing.Size(47, 32);
             this.btnImprimirCitas.TabIndex = 5;
@@ -271,6 +280,9 @@
             // 
             this.dgCitas.AllowUserToAddRows = false;
             this.dgCitas.AllowUserToDeleteRows = false;
+            this.dgCitas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgCitas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgCitas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgCitas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -283,7 +295,7 @@
             this.dgCitas.ReadOnly = true;
             this.dgCitas.RowHeadersVisible = false;
             this.dgCitas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgCitas.Size = new System.Drawing.Size(370, 121);
+            this.dgCitas.Size = new System.Drawing.Size(757, 269);
             this.dgCitas.TabIndex = 4;
             // 
             // colHora
@@ -338,17 +350,18 @@
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.panel3.Controls.Add(this.btCerrar);
             this.panel3.Controls.Add(this.lCitas);
-            this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Location = new System.Drawing.Point(0, 1);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(402, 62);
+            this.panel3.Size = new System.Drawing.Size(807, 62);
             this.panel3.TabIndex = 1;
             // 
             // btCerrar
             // 
+            this.btCerrar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btCerrar.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btCerrar.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btCerrar.Image = global::SaludSoft.Properties.Resources.circulo_marca_x;
-            this.btCerrar.Location = new System.Drawing.Point(366, 3);
+            this.btCerrar.Location = new System.Drawing.Point(763, 4);
             this.btCerrar.Name = "btCerrar";
             this.btCerrar.Size = new System.Drawing.Size(33, 30);
             this.btCerrar.TabIndex = 2;
@@ -357,10 +370,12 @@
             // 
             // lCitas
             // 
+            this.lCitas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lCitas.AutoSize = true;
             this.lCitas.BackColor = System.Drawing.Color.White;
             this.lCitas.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lCitas.Location = new System.Drawing.Point(135, 20);
+            this.lCitas.Location = new System.Drawing.Point(362, 17);
             this.lCitas.Name = "lCitas";
             this.lCitas.Size = new System.Drawing.Size(107, 23);
             this.lCitas.TabIndex = 0;
@@ -371,6 +386,8 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.panel1.Controls.Add(this.btInicio);
+            this.panel1.Controls.Add(this.btPacientes);
             this.panel1.Controls.Add(this.BCerrarSesion);
             this.panel1.Controls.Add(this.btCitas);
             this.panel1.Controls.Add(this.BHistorial);
@@ -379,12 +396,50 @@
             this.panel1.Size = new System.Drawing.Size(183, 437);
             this.panel1.TabIndex = 0;
             // 
+            // lPaciente
+            // 
+            this.lPaciente.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lPaciente.AutoSize = true;
+            this.lPaciente.Font = new System.Drawing.Font("Comic Sans MS", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lPaciente.Location = new System.Drawing.Point(573, 77);
+            this.lPaciente.Name = "lPaciente";
+            this.lPaciente.Size = new System.Drawing.Size(108, 29);
+            this.lPaciente.TabIndex = 8;
+            this.lPaciente.Text = "Pacientes";
+            this.lPaciente.Visible = false;
+            // 
+            // btPacientes
+            // 
+            this.btPacientes.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btPacientes.Image = global::SaludSoft.Properties.Resources.usuario;
+            this.btPacientes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btPacientes.Location = new System.Drawing.Point(17, 96);
+            this.btPacientes.Name = "btPacientes";
+            this.btPacientes.Size = new System.Drawing.Size(138, 52);
+            this.btPacientes.TabIndex = 9;
+            this.btPacientes.Text = "Pacientes";
+            this.btPacientes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btPacientes.UseVisualStyleBackColor = true;
+            // 
+            // btInicio
+            // 
+            this.btInicio.BackgroundImage = global::SaludSoft.Properties.Resources.hogar;
+            this.btInicio.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btInicio.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btInicio.Location = new System.Drawing.Point(38, 17);
+            this.btInicio.Name = "btInicio";
+            this.btInicio.Size = new System.Drawing.Size(97, 41);
+            this.btInicio.TabIndex = 9;
+            this.btInicio.UseVisualStyleBackColor = true;
+            // 
             // Medico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(1009, 508);
+            this.Controls.Add(this.lPaciente);
             this.Controls.Add(this.pnlCitas);
             this.Controls.Add(this.btBuscar);
             this.Controls.Add(this.dgPacientes);
@@ -440,5 +495,8 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnImprimirCitas;
+        private System.Windows.Forms.Label lPaciente;
+        private System.Windows.Forms.Button btPacientes;
+        private System.Windows.Forms.Button btInicio;
     }
 }

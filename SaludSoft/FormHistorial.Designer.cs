@@ -45,7 +45,6 @@
             this.tbBuscarDni = new System.Windows.Forms.TextBox();
             this.pnlOverlay = new System.Windows.Forms.Panel();
             this.gbDetalle = new System.Windows.Forms.GroupBox();
-            this.lValorHistorial = new System.Windows.Forms.Label();
             this.lHistorial = new System.Windows.Forms.Label();
             this.lValorObser = new System.Windows.Forms.Label();
             this.lValorTrat = new System.Windows.Forms.Label();
@@ -56,6 +55,7 @@
             this.lbTratValor = new System.Windows.Forms.Label();
             this.lbDiagValor = new System.Windows.Forms.Label();
             this.pnlBotones = new System.Windows.Forms.Panel();
+            this.btImprimir = new System.Windows.Forms.Button();
             this.btCancelar = new System.Windows.Forms.Button();
             this.btAgregar = new System.Windows.Forms.Button();
             this.lFecha = new System.Windows.Forms.Label();
@@ -65,7 +65,7 @@
             this.lObserv = new System.Windows.Forms.Label();
             this.lTrat = new System.Windows.Forms.Label();
             this.lDiagnostico = new System.Windows.Forms.Label();
-            this.btImprimir = new System.Windows.Forms.Button();
+            this.rtbHistorial = new System.Windows.Forms.RichTextBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgHistorial)).BeginInit();
@@ -222,9 +222,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlOverlay.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnlOverlay.Controls.Add(this.gbDetalle);
-            this.pnlOverlay.Location = new System.Drawing.Point(31, 190);
+            this.pnlOverlay.Location = new System.Drawing.Point(31, 149);
             this.pnlOverlay.Name = "pnlOverlay";
-            this.pnlOverlay.Size = new System.Drawing.Size(965, 384);
+            this.pnlOverlay.Size = new System.Drawing.Size(965, 402);
             this.pnlOverlay.TabIndex = 8;
             this.pnlOverlay.Visible = false;
             // 
@@ -234,7 +234,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbDetalle.BackColor = System.Drawing.Color.Gainsboro;
-            this.gbDetalle.Controls.Add(this.lValorHistorial);
+            this.gbDetalle.Controls.Add(this.rtbHistorial);
             this.gbDetalle.Controls.Add(this.lHistorial);
             this.gbDetalle.Controls.Add(this.lValorObser);
             this.gbDetalle.Controls.Add(this.lValorTrat);
@@ -253,30 +253,19 @@
                 | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbDetalle.Location = new System.Drawing.Point(18, 15);
             this.gbDetalle.Name = "gbDetalle";
-            this.gbDetalle.Size = new System.Drawing.Size(932, 352);
+            this.gbDetalle.Size = new System.Drawing.Size(932, 376);
             this.gbDetalle.TabIndex = 0;
             this.gbDetalle.TabStop = false;
             this.gbDetalle.Text = "Detalle Historial";
             this.gbDetalle.Visible = false;
             // 
-            // lValorHistorial
-            // 
-            this.lValorHistorial.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lValorHistorial.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lValorHistorial.Location = new System.Drawing.Point(28, 130);
-            this.lValorHistorial.Name = "lValorHistorial";
-            this.lValorHistorial.Size = new System.Drawing.Size(45, 18);
-            this.lValorHistorial.TabIndex = 28;
-            this.lValorHistorial.UseCompatibleTextRendering = true;
-            // 
             // lHistorial
             // 
             this.lHistorial.AutoSize = true;
-            this.lHistorial.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lHistorial.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lHistorial.Location = new System.Drawing.Point(15, 87);
             this.lHistorial.Name = "lHistorial";
-            this.lHistorial.Size = new System.Drawing.Size(75, 19);
+            this.lHistorial.Size = new System.Drawing.Size(89, 23);
             this.lHistorial.TabIndex = 27;
             this.lHistorial.Text = "Historial: ";
             // 
@@ -364,10 +353,22 @@
             this.pnlBotones.Controls.Add(this.btCancelar);
             this.pnlBotones.Controls.Add(this.btAgregar);
             this.pnlBotones.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlBotones.Location = new System.Drawing.Point(3, 260);
+            this.pnlBotones.Location = new System.Drawing.Point(3, 284);
             this.pnlBotones.Name = "pnlBotones";
             this.pnlBotones.Size = new System.Drawing.Size(926, 89);
             this.pnlBotones.TabIndex = 18;
+            // 
+            // btImprimir
+            // 
+            this.btImprimir.BackgroundImage = global::SaludSoft.Properties.Resources.impresora;
+            this.btImprimir.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btImprimir.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btImprimir.Location = new System.Drawing.Point(22, 31);
+            this.btImprimir.Name = "btImprimir";
+            this.btImprimir.Size = new System.Drawing.Size(56, 39);
+            this.btImprimir.TabIndex = 2;
+            this.btImprimir.UseVisualStyleBackColor = true;
+            this.btImprimir.Click += new System.EventHandler(this.btImprimir_Click);
             // 
             // btCancelar
             // 
@@ -467,17 +468,20 @@
             this.lDiagnostico.Text = "Diagnóstico: ";
             this.lDiagnostico.Visible = false;
             // 
-            // btImprimir
+            // rtbHistorial
             // 
-            this.btImprimir.BackgroundImage = global::SaludSoft.Properties.Resources.impresora;
-            this.btImprimir.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btImprimir.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btImprimir.Location = new System.Drawing.Point(22, 31);
-            this.btImprimir.Name = "btImprimir";
-            this.btImprimir.Size = new System.Drawing.Size(56, 39);
-            this.btImprimir.TabIndex = 2;
-            this.btImprimir.UseVisualStyleBackColor = true;
-            this.btImprimir.Click += new System.EventHandler(this.btImprimir_Click);
+            this.rtbHistorial.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbHistorial.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbHistorial.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbHistorial.Location = new System.Drawing.Point(19, 124);
+            this.rtbHistorial.Name = "rtbHistorial";
+            this.rtbHistorial.ReadOnly = true;
+            this.rtbHistorial.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.rtbHistorial.Size = new System.Drawing.Size(893, 120);
+            this.rtbHistorial.TabIndex = 28;
+            this.rtbHistorial.Text = "";
             // 
             // FormHistorial
             // 
@@ -546,7 +550,7 @@
         private System.Windows.Forms.Label lValorObser;
         private System.Windows.Forms.Label lValorTrat;
         private System.Windows.Forms.Label lHistorial;
-        private System.Windows.Forms.Label lValorHistorial;
         private System.Windows.Forms.Button btImprimir;
+        private System.Windows.Forms.RichTextBox rtbHistorial;
     }
 }

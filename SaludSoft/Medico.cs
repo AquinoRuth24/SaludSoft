@@ -1,12 +1,13 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
-using PdfFont = iTextSharp.text.Font;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using PdfFont = iTextSharp.text.Font;
 
 namespace SaludSoft
 {
@@ -18,6 +19,13 @@ namespace SaludSoft
         // Setealo desde Login:
         private string _emailUsuarioActual = "laura.gomez@hospital.com";
         private int _idProfesional = 0;
+        private Panel pnlInicio;      // dashboard
+        private Panel pnlPacientes;   // contenedor de dgPacientes
+
+        // Cards (dashboard)
+        private Panel cardConfirmados, cardPendientes, cardCancelados;
+        private Label lbConfN, lbPendN, lbCancN;
+
 
         public Medico()
         {
@@ -29,11 +37,26 @@ namespace SaludSoft
             btBuscar.Click += btBuscar_Click;
             tbBuscarPaciente.KeyDown += (s, e) => { if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; btBuscar_Click(s, EventArgs.Empty); } };
             dateTimePicker1.ValueChanged += (s, e) => CargarCitasDelDia();
-
+            btInicio.Click += (s, e) =>
+            {
+                MostrarSeccion("INICIO");
+                ActualizarCardsTurnos(dateTimePicker1.Value.Date);
+            };
             btCitas.Click += btCitas_Click;
             btCerrar.Click += btCerrar_Click_1;
 
+            btPacientes.Click += btPacientes_Click;
+
+            dateTimePicker1.ValueChanged += (s, e) =>
+            {
+                CargarCitasDelDia();
+                ActualizarCardsTurnos(dateTimePicker1.Value.Date);
+            };
+
+            //preparar paneles y dashboard
+            PrepararSecciones();
         }
+
 
         // ---------- Load ----------
         private void Medico_Load(object sender, EventArgs e)
@@ -50,8 +73,261 @@ namespace SaludSoft
             CargarPacientesDelProfesional();
             CargarCitasDelDia();
 
+            // Secciones visibles
             pnlCitas.Visible = false;
+            MostrarSeccion("INICIO");
+            ActualizarCardsTurnos(dateTimePicker1.Value.Date);
         }
+
+        private void PrepararSecciones()
+        {
+            // INICIO
+            if (pnlInicio == null)
+            {
+                pnlInicio = new Panel
+                {
+                    Name = "pnlInicio",
+                    Left = 200,
+                    Top = 130,
+                    Width = this.ClientSize.Width - 240,
+                    Height = 240,
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
+                };
+                this.Controls.Add(pnlInicio);
+                pnlInicio.BringToFront();
+                PrepararDashboard(pnlInicio);
+                pnlInicio.Resize += (s, e) => ReflowCards();
+            }
+
+            // PACIENTES
+            if (pnlPacientes == null)
+            {
+                pnlPacientes = new Panel
+                {
+                    Name = "pnlPacientes",
+                    Left = 200,
+                    Top = 130,
+                    Width = this.ClientSize.Width - 240,
+                    Height = this.ClientSize.Height - 180,
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom
+                };
+                this.Controls.Add(pnlPacientes);
+
+                if (lDNI.Parent != pnlPacientes)
+                {
+                    lDNI.Parent = pnlPacientes;
+                    lDNI.Top = 20;
+                    lDNI.Left = 20;
+                    lDNI.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+                }
+
+                if (tbBuscarPaciente.Parent != pnlPacientes)
+                {
+                    tbBuscarPaciente.Parent = pnlPacientes;
+                    tbBuscarPaciente.Top = 16;
+                    tbBuscarPaciente.Left = lDNI.Right + 10;
+                    tbBuscarPaciente.Width = 280;
+                    tbBuscarPaciente.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+                }
+
+                if (btBuscar.Parent != pnlPacientes)
+                {
+                    btBuscar.Parent = pnlPacientes;
+                    btBuscar.Top = 16;
+                    btBuscar.Left = tbBuscarPaciente.Right + 8;
+                    btBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+                }
+
+                if (dgPacientes.Parent != pnlPacientes)
+                {
+                    dgPacientes.Parent = pnlPacientes;
+                }
+                
+                dgPacientes.Top = tbBuscarPaciente.Bottom + 14;
+                dgPacientes.Left = 20;
+                dgPacientes.Width = pnlPacientes.ClientSize.Width - 40;
+                dgPacientes.Height = pnlPacientes.ClientSize.Height - dgPacientes.Top - 20;
+                dgPacientes.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+
+                
+                pnlPacientes.Resize += (s, e) =>
+                {
+                    tbBuscarPaciente.Width = Math.Max(200, pnlPacientes.ClientSize.Width - tbBuscarPaciente.Left - 120);
+                    btBuscar.Left = tbBuscarPaciente.Right + 8;
+
+                    dgPacientes.Width = pnlPacientes.ClientSize.Width - 40;
+                    dgPacientes.Height = pnlPacientes.ClientSize.Height - dgPacientes.Top - 20;
+                };
+            }
+
+            // Por defecto, oculto filtros de Pacientes (se muestran solo en esa sección)
+            SetPacientesUIVisible(false);
+        }
+        private void SetPacientesUIVisible(bool visible)
+        {
+            if (pnlPacientes == null) return;
+            lDNI.Visible = visible;
+            tbBuscarPaciente.Visible = visible;
+            btBuscar.Visible = visible;
+            dgPacientes.Visible = visible;
+        }
+
+
+        private void PrepararDashboard(Panel host)
+        {
+            host.Controls.Clear();
+
+            Panel CrearCard(string titulo, out Label lbNumero, Color back, Color fore)
+            {
+                var card = new Panel
+                {
+                    BackColor = back,
+                    BorderStyle = BorderStyle.FixedSingle,
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left
+                };
+
+                var lTitulo = new Label
+                {
+                    Text = titulo,
+                    AutoSize = false,
+                    Left = 12,
+                    Top = 10,
+                    Width = 10,  // se recalcula en Reflow
+                    Height = 24,
+                    Font = new System.Drawing.Font("Comic Sans MS", 11F, System.Drawing.FontStyle.Bold),
+                    ForeColor = fore
+                };
+
+                lbNumero = new Label
+                {
+                    Text = "0",
+                    AutoSize = false,
+                    Left = 12,
+                    Top = 50,   // se recalcula
+                    Width = 10, // se recalcula
+                    Height = 48,
+                    Font = new System.Drawing.Font("Comic Sans MS", 28F, System.Drawing.FontStyle.Bold),
+                    ForeColor = fore
+                };
+
+                card.Controls.Add(lTitulo);
+                card.Controls.Add(lbNumero);
+                return card;
+            }
+
+            cardConfirmados = CrearCard("Confirmados (hoy)", out lbConfN, Color.FromArgb(217, 247, 223), Color.FromArgb(0, 102, 68));
+            cardPendientes = CrearCard("Pendientes (hoy)", out lbPendN, Color.FromArgb(255, 249, 196), Color.FromArgb(141, 98, 0));
+            cardCancelados = CrearCard("Cancelados (hoy)", out lbCancN, Color.FromArgb(255, 235, 238), Color.FromArgb(183, 28, 28));
+
+            host.Controls.Add(cardConfirmados);
+            host.Controls.Add(cardPendientes);
+            host.Controls.Add(cardCancelados);
+
+            ReflowCards(); 
+        }
+        //se agrega metodo para acomodar las cards en el dashboard
+        private void ReflowCards()
+        {
+            if (pnlInicio == null || cardConfirmados == null) return;
+
+            int padding = 24;
+            int cols = 3;
+            int availW = pnlInicio.ClientSize.Width - padding * (cols + 1);
+            int cardW = Math.Max(220, availW / cols);
+            int cardH = Math.Max(120, (int)(pnlInicio.ClientSize.Height * 0.35));
+
+            Panel[] cards = { cardConfirmados, cardPendientes, cardCancelados };
+            for (int i = 0; i < cards.Length; i++)
+            {
+                var c = cards[i];
+                c.Width = cardW;
+                c.Height = cardH;
+                c.Left = padding + i * (cardW + padding);
+                c.Top = padding;
+
+                foreach (Control ctrl in c.Controls)
+                {
+                    if (ctrl is Label lbl)
+                    {
+                        lbl.Width = cardW - 24;
+                        if (lbl.Font.Size >= 20) 
+                        {
+                            lbl.Left = 12;
+                            lbl.Top = (cardH / 2) - 28;
+                        }
+                        else // título
+                        {
+                            lbl.Left = 12;
+                            lbl.Top = 10;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        private void MostrarSeccion(string seccion)
+        {
+            seccion = (seccion ?? "").ToUpperInvariant();
+
+            pnlInicio.Visible = seccion == "INICIO";
+            pnlPacientes.Visible = seccion == "PACIENTES";
+            pnlCitas.Visible = seccion == "CITAS";
+
+            SetPacientesUIVisible(seccion == "PACIENTES");
+
+            if (pnlInicio.Visible) pnlInicio.BringToFront();
+            if (pnlPacientes.Visible) pnlPacientes.BringToFront();
+            if (pnlCitas.Visible) pnlCitas.BringToFront();
+        }
+
+
+
+        //boton pacientes
+        private void btPacientes_Click(object sender, EventArgs e)
+        {
+            MostrarSeccion("PACIENTES");
+            CargarPacientesDelProfesional(); 
+            dgPacientes.Focus();
+        }
+        private void ActualizarCardsTurnos(DateTime dia)
+        {
+            int conf = 0, pend = 0, canc = 0;
+
+            const string SQL = @"
+            SELECT ISNULL(t.estado,'Pendiente') AS estado, COUNT(*) AS cantidad
+            FROM Turnos t
+            JOIN Agenda a                   ON a.id_agenda = t.id_agenda
+            JOIN Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
+            JOIN Profesional pr             ON pr.id_profesional = pc.id_profesional
+            WHERE pr.id_profesional = @idProf
+              AND CAST(t.fecha AS date) = @dia
+            GROUP BY ISNULL(t.estado,'Pendiente');";
+
+            using (var cn = new SqlConnection(_cnx))
+            using (var cmd = new SqlCommand(SQL, cn))
+            {
+                cmd.Parameters.AddWithValue("@idProf", _idProfesional);
+                cmd.Parameters.AddWithValue("@dia", dia.Date);
+                cn.Open();
+                using (var rd = cmd.ExecuteReader())
+                {
+                    while (rd.Read())
+                    {
+                        string est = rd.GetString(0);
+                        int cant = rd.GetInt32(1);
+                        if (est.Equals("Confirmado", StringComparison.OrdinalIgnoreCase)) conf = cant;
+                        else if (est.Equals("Cancelado", StringComparison.OrdinalIgnoreCase)) canc = cant;
+                        else pend = cant; // todo lo demás lo tratamos como pendiente
+                    }
+                }
+            }
+
+            if (lbConfN != null) lbConfN.Text = conf.ToString();
+            if (lbPendN != null) lbPendN.Text = pend.ToString();
+            if (lbCancN != null) lbCancN.Text = canc.ToString();
+        }
+
 
         // ---------- Mapeo columnas ----------
         private void ConfigurarMapeoGrillas()
@@ -201,34 +477,40 @@ ORDER BY t.fecha;";
         // ---------- Panel Citas ----------
         private void btCitas_Click(object sender, EventArgs e)
         {
-            pnlCitas.Visible = true;
-            pnlCitas.BringToFront();
+            MostrarSeccion("CITAS");
             CargarCitasDelDia();
         }
 
         private void btCerrar_Click_1(object sender, EventArgs e)
         {
-            if (pnlCitas == null) return;
-            pnlCitas.Visible = false;
-            pnlCitas.SendToBack();
+            MostrarSeccion("INICIO");
         }
+
 
         // ---------- Historial ----------
         private bool _abriendoHistorial = false;
 
         private void BHistorial_Click(object sender, EventArgs e)
         {
-            if (_abriendoHistorial) return;    
+            if (_abriendoHistorial) return;
             _abriendoHistorial = true;
             BHistorial.Enabled = false;
 
             try
             {
-                using (var frm = new FormHistorial() { Owner = this, StartPosition = FormStartPosition.CenterParent })
+                using (var frm = new FormHistorial()
+                {
+                    Owner = this,
+                    StartPosition = FormStartPosition.CenterParent,
+
+                    EmailUsuarioActual = _emailUsuarioActual,                       
+                    ProfesionalId = (_idProfesional > 0) ? _idProfesional : (int?)null
+                })
                 {
                     this.Hide();
-                    frm.ShowDialog(this);      
+                    frm.ShowDialog(this);
                 }
+
                 this.Show();
                 this.Activate();
                 this.BringToFront();
@@ -349,6 +631,11 @@ ORDER BY t.fecha;";
                 MessageBox.Show("Error al generar el PDF: " + ex.Message, "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void lDNI_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
