@@ -23,6 +23,16 @@ namespace SaludSoft
         private List<TurnoVM> _turnosDia = new List<TurnoVM>();
         private DateTime _diaSeleccionado = DateTime.Today;
         private bool _sobreturnoActivo = false;
+       
+        private DateTime? _ultimoReservado = null;
+        private enum SlotState { Disponible, RequiereSobreturno, Lleno, Pasado }
+
+        private sealed class SlotMeta
+        {
+            public DateTime FH { get; set; }
+            public SlotState Estado { get; set; }
+        }
+
 
         public FormAgenda()
         {
@@ -43,6 +53,19 @@ namespace SaludSoft
 
             if (DTVGAgenda != null)
                 DTVGAgenda.DataBindingComplete += DTVGAgenda_DataBindingComplete;
+            
+            flpFranjas.BackColor = Color.White;
+            flpFranjas.Padding = new Padding(8);
+            flpFranjas.AutoScroll = true;
+
+            btSobreturno.Visible = false;
+
+            flpFranjas.MouseClick += (s, e) =>
+            {
+                if (e.Button == MouseButtons.Left)
+                    btSobreturno.Visible = !btSobreturno.Visible;
+            };
+
         }
 
         //     CARGAS DE DATOS
@@ -303,12 +326,7 @@ namespace SaludSoft
 
 
         //FRANJAS
-        private static DateTime RoundUp(DateTime dt, int minutos)
-        {
-            var ticks = TimeSpan.FromMinutes(minutos).Ticks;
-            return new DateTime(((dt.Ticks + ticks - 1) / ticks) * ticks, dt.Kind);
-        }
-
+      
         private IEnumerable<DateTime> GenerarSlotsEstandar(DateTime fecha)
         {
             var list = new List<DateTime>();
@@ -360,45 +378,125 @@ namespace SaludSoft
             flpFranjas.SuspendLayout();
             flpFranjas.Controls.Clear();
 
-            int total = 0, libres = 0;
+            int total = 0, visibles = 0;
 
             var slots = GenerarSlots(_diaSeleccionado);
 
+            // NO cancelados por fecha/hora
             var conteoPorHora = _turnosDia
                 .GroupBy(x => x.FechaHora)
                 .ToDictionary(g => g.Key, g => g.Count(x => !string.Equals(x.Estado, "Cancelado", StringComparison.OrdinalIgnoreCase)));
 
             var estandarSet = GenerarSlotsEstandar(_diaSeleccionado).ToHashSet();
+            DateTime ahora = DateTime.Now;
 
             foreach (var fh in slots)
             {
-                int ocupadosEnEse = conteoPorHora.TryGetValue(fh, out var c) ? c : 0;
-                int capacidad = estandarSet.Contains(fh) ? 2 : 1;
-                bool disponible = ocupadosEnEse < capacidad;
+                total++;
+
+                bool esEstandar = estandarSet.Contains(fh);
+                int ocupados = conteoPorHora.TryGetValue(fh, out var c) ? c : 0;
+                int capacidad = esEstandar ? 2 : 1;
+
+                SlotState state;
+
+                if (_diaSeleccionado.Date == ahora.Date && fh <= ahora)
+                    state = SlotState.Pasado;
+                else if (ocupados >= capacidad)
+                    state = SlotState.Lleno;
+                else if (esEstandar && !_sobreturnoActivo && ocupados >= 1)
+                    state = SlotState.RequiereSobreturno;
+                else
+                    state = SlotState.Disponible;
 
                 var b = new Button
                 {
                     Text = fh.ToString("HH:mm"),
-                    Tag = fh,
+                    Tag = new SlotMeta { FH = fh, Estado = state },
                     AutoSize = true,
                     FlatStyle = FlatStyle.Flat,
                     Margin = new Padding(6),
-                    Padding = new Padding(10, 6, 10, 6),
-                    BackColor = disponible ? Color.White : Color.FromArgb(233, 236, 239),
-                    Enabled = disponible
+                    Padding = new Padding(14, 8, 14, 8)
                 };
-                b.FlatAppearance.BorderSize = 0;
-                b.Click += ClickFranja;
+                b.FlatAppearance.BorderSize = 1;
 
-                if (disponible) libres++;
-                total++;
+                // Estilos por estado
+                switch (state)
+                {
+                    case SlotState.Disponible:
+                        b.BackColor = Color.White;
+                        b.ForeColor = Color.FromArgb(25, 135, 84);
+                        b.FlatAppearance.BorderColor = Color.FromArgb(209, 231, 221);
+                        visibles++;
+                        break;
+
+                    case SlotState.RequiereSobreturno:
+                        // Clicable (para mostrar btSobreturno), pero con look “ocupado”
+                        b.BackColor = Color.FromArgb(245, 245, 245);
+                        b.ForeColor = Color.FromArgb(108, 117, 125);
+                        b.FlatAppearance.BorderColor = Color.FromArgb(222, 226, 230);
+                        visibles++;
+                        break;
+
+                    case SlotState.Lleno:
+                    case SlotState.Pasado:
+                        // Clicable (para mostrar btSobreturno si tiene sentido), look apagado
+                        b.BackColor = Color.FromArgb(233, 236, 239);
+                        b.ForeColor = Color.FromArgb(108, 117, 125);
+                        b.FlatAppearance.BorderColor = Color.FromArgb(222, 226, 230);
+                        visibles++;
+                        break;
+                }
+
+                // Sombrado del último reservado
+                if (_ultimoReservado.HasValue && _ultimoReservado.Value == fh)
+                {
+                    b.BackColor = Color.FromArgb(209, 231, 221);
+                    b.ForeColor = Color.FromArgb(21, 87, 36);
+                    b.Font = new Font(b.Font, FontStyle.Bold);
+                }
+
+                b.Click += BotonFranja_Click;
 
                 flpFranjas.Controls.Add(b);
             }
 
-            lDisponibles.Text = $"{libres} de {total} disponibles";
+            lDisponibles.Text = $"{visibles} horarios visibles";
             flpFranjas.ResumeLayout();
         }
+        private void BotonFranja_Click(object sender, EventArgs e)
+        {
+            var btn = (Button)sender;
+            var meta = (SlotMeta)btn.Tag;
+
+            if (meta.Estado == SlotState.Disponible)
+            {
+                ClickFranja(sender, e);
+                return;
+            }
+
+            if (meta.Estado == SlotState.RequiereSobreturno)
+            {
+                btSobreturno.Visible = true;
+                btSobreturno.Focus();
+                MessageBox.Show("Ese horario ya tiene un turno. Activá 'Sobreturno' para agregar un único adicional.",
+                                "Agenda", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (meta.Estado == SlotState.Lleno)
+            {
+                btSobreturno.Visible = true; // por si quiere buscar otro horario con sobreturno activo
+                MessageBox.Show("Este horario ya está completo.", "Agenda",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (meta.Estado == SlotState.Pasado)
+            {
+                btSobreturno.Visible = false;
+                MessageBox.Show("No podés reservar turnos en el pasado.", "Agenda",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+
 
         //   RESERVA DESDE FRANJA
 
@@ -452,12 +550,18 @@ namespace SaludSoft
         private void ClickFranja(object sender, EventArgs e)
         {
             var btn = (Button)sender;
-            var fechaHora = (DateTime)btn.Tag;
 
-            if (fechaHora < DateTime.Now.AddMinutes(-1))
+            DateTime fechaHora;
+           
+            if (btn.Tag is SlotMeta sm)
+                fechaHora = sm.FH;
+        
+            else if (btn.Tag is DateTime dt)
+                fechaHora = dt;
+            else
             {
-                MessageBox.Show("No podés reservar turnos en el pasado.", "Agenda",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("No se pudo determinar la fecha/hora del turno.",
+                                "Agenda", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -539,6 +643,7 @@ namespace SaludSoft
             try
             {
                 InsertarTurnoBD(idAgenda.Value, idPaciente.Value, fechaHora);
+                _ultimoReservado = fechaHora;                 
             }
             catch (Exception ex)
             {
@@ -551,6 +656,10 @@ namespace SaludSoft
             RefrescarFranjas();
             MessageBox.Show("Turno reservado correctamente.", "Agenda",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
+            InsertarTurnoBD(idAgenda.Value, idPaciente.Value, fechaHora);
+            _ultimoReservado = fechaHora;   
+
+
         }
 
         //  ACCIONES EDITAR/CANCELAR

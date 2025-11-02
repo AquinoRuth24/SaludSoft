@@ -114,16 +114,17 @@ namespace SaludSoft
         // ===== RANGO FECHAS =====
         private (DateTime desde, DateTime hastaEx) RangoActual()
         {
-            var desde = new DateTime(dtpPeriodo.Value.Year, dtpPeriodo.Value.Month, 1);
+            var desde = dtpPeriodo.Value.Date;
             if (dtpHasta.Checked)
             {
-                var hastaMes = new DateTime(dtpHasta.Value.Year, dtpHasta.Value.Month, 1);
-                var hastaEx = hastaMes.AddMonths(1);
-                if (hastaEx <= desde) hastaEx = desde.AddMonths(1);
+                var hastaEx = dtpHasta.Value.Date.AddDays(1); // exclusivo
+                if (hastaEx <= desde) hastaEx = desde.AddDays(1);
                 return (desde, hastaEx);
             }
-            return (desde, desde.AddMonths(1));
+            // si no hay “hasta”, por defecto solo ese día
+            return (desde, desde.AddDays(1));
         }
+
 
         // ===== BD HELPERS =====
         private DataTable GetTable(string sql, Action<SqlCommand> bind)
@@ -645,6 +646,11 @@ WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
         private void btnVolver_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void lReportesMes_Click(object sender, EventArgs e)
+        {
+
         }
 
         /*private void btnImprimir_Click(object sender, EventArgs e)

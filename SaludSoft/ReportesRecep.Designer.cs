@@ -28,14 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea13 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend13 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series13 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea14 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend14 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnVolver = new System.Windows.Forms.Button();
             this.lReportesMes = new System.Windows.Forms.Label();
@@ -74,6 +74,14 @@
             this.dtpHasta = new System.Windows.Forms.DateTimePicker();
             this.btnImprimir = new System.Windows.Forms.Button();
             this.btActualizar = new System.Windows.Forms.Button();
+            this.panelPacientes = new System.Windows.Forms.Panel();
+            this.panelDisponibilidad = new System.Windows.Forms.Panel();
+            this.lbTituloPacientes = new System.Windows.Forms.Label();
+            this.lbValorPacientes = new System.Windows.Forms.Label();
+            this.lbTituloDisponibilidad = new System.Windows.Forms.Label();
+            this.lbValorDisponibilidad = new System.Windows.Forms.Label();
+            this.pbPacientes = new System.Windows.Forms.ProgressBar();
+            this.pbDisponibilidad = new System.Windows.Forms.ProgressBar();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -86,6 +94,8 @@
             this.gbTopMedicos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRankingMedicos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chTopMedicos)).BeginInit();
+            this.panelPacientes.SuspendLayout();
+            this.panelDisponibilidad.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -126,6 +136,7 @@
             this.lReportesMes.Size = new System.Drawing.Size(179, 29);
             this.lReportesMes.TabIndex = 1;
             this.lReportesMes.Text = "Reporte mensual";
+            this.lReportesMes.Click += new System.EventHandler(this.lReportesMes_Click);
             // 
             // pictureBox1
             // 
@@ -149,7 +160,7 @@
             // 
             // dtpPeriodo
             // 
-            this.dtpPeriodo.CustomFormat = "MMMM yyyy";
+            this.dtpPeriodo.CustomFormat = "dd/MM/yyyy";
             this.dtpPeriodo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpPeriodo.Location = new System.Drawing.Point(140, 75);
             this.dtpPeriodo.Name = "dtpPeriodo";
@@ -159,138 +170,138 @@
             // 
             // panel2
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.lbValor);
             this.panel2.Controls.Add(this.lbTituloConfirmado);
             this.panel2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(283, 50);
+            this.panel2.Size = new System.Drawing.Size(169, 73);
             this.panel2.TabIndex = 4;
             // 
             // lbValor
             // 
-            this.lbValor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbValor.AutoSize = true;
+            this.lbValor.Dock = System.Windows.Forms.DockStyle.Top;
             this.lbValor.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbValor.ForeColor = System.Drawing.Color.Green;
-            this.lbValor.Location = new System.Drawing.Point(260, 12);
+            this.lbValor.Location = new System.Drawing.Point(0, 33);
             this.lbValor.Name = "lbValor";
-            this.lbValor.Size = new System.Drawing.Size(0, 27);
+            this.lbValor.Size = new System.Drawing.Size(167, 21);
             this.lbValor.TabIndex = 1;
+            this.lbValor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbTituloConfirmado
             // 
-            this.lbTituloConfirmado.AutoSize = true;
+            this.lbTituloConfirmado.Dock = System.Windows.Forms.DockStyle.Top;
             this.lbTituloConfirmado.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbTituloConfirmado.ForeColor = System.Drawing.Color.Green;
-            this.lbTituloConfirmado.Location = new System.Drawing.Point(11, 15);
+            this.lbTituloConfirmado.Location = new System.Drawing.Point(0, 0);
             this.lbTituloConfirmado.Name = "lbTituloConfirmado";
-            this.lbTituloConfirmado.Size = new System.Drawing.Size(160, 23);
+            this.lbTituloConfirmado.Size = new System.Drawing.Size(167, 33);
             this.lbTituloConfirmado.TabIndex = 0;
             this.lbTituloConfirmado.Text = "Turnos Confirmados";
+            this.lbTituloConfirmado.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pbTurnosConfirmados
             // 
             this.pbTurnosConfirmados.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pbTurnosConfirmados.Location = new System.Drawing.Point(3, 80);
+            this.pbTurnosConfirmados.Location = new System.Drawing.Point(3, 82);
             this.pbTurnosConfirmados.MarqueeAnimationSpeed = 0;
             this.pbTurnosConfirmados.Name = "pbTurnosConfirmados";
-            this.pbTurnosConfirmados.Size = new System.Drawing.Size(283, 29);
+            this.pbTurnosConfirmados.Size = new System.Drawing.Size(169, 28);
             this.pbTurnosConfirmados.Step = 1;
             this.pbTurnosConfirmados.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.pbTurnosConfirmados.TabIndex = 2;
             // 
             // panel3
             // 
-            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel3.Controls.Add(this.lbValorTP);
             this.panel3.Controls.Add(this.lbTurnosPendientes);
             this.panel3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.panel3.Location = new System.Drawing.Point(292, 3);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(178, 3);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(283, 50);
+            this.panel3.Size = new System.Drawing.Size(165, 73);
             this.panel3.TabIndex = 5;
             // 
             // lbValorTP
             // 
-            this.lbValorTP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbValorTP.AutoSize = true;
+            this.lbValorTP.Dock = System.Windows.Forms.DockStyle.Top;
             this.lbValorTP.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbValorTP.ForeColor = System.Drawing.Color.Yellow;
-            this.lbValorTP.Location = new System.Drawing.Point(254, 11);
+            this.lbValorTP.Location = new System.Drawing.Point(0, 33);
             this.lbValorTP.Name = "lbValorTP";
-            this.lbValorTP.Size = new System.Drawing.Size(0, 27);
+            this.lbValorTP.Size = new System.Drawing.Size(163, 21);
             this.lbValorTP.TabIndex = 1;
+            this.lbValorTP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbTurnosPendientes
             // 
-            this.lbTurnosPendientes.AutoSize = true;
+            this.lbTurnosPendientes.Dock = System.Windows.Forms.DockStyle.Top;
             this.lbTurnosPendientes.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbTurnosPendientes.ForeColor = System.Drawing.Color.Yellow;
-            this.lbTurnosPendientes.Location = new System.Drawing.Point(12, 14);
+            this.lbTurnosPendientes.Location = new System.Drawing.Point(0, 0);
             this.lbTurnosPendientes.Name = "lbTurnosPendientes";
-            this.lbTurnosPendientes.Size = new System.Drawing.Size(149, 23);
+            this.lbTurnosPendientes.Size = new System.Drawing.Size(163, 33);
             this.lbTurnosPendientes.TabIndex = 0;
             this.lbTurnosPendientes.Text = "Turnos Pendientes";
+            this.lbTurnosPendientes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pbTP
             // 
             this.pbTP.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pbTP.Location = new System.Drawing.Point(292, 81);
+            this.pbTP.Location = new System.Drawing.Point(178, 82);
             this.pbTP.MarqueeAnimationSpeed = 0;
             this.pbTP.Name = "pbTP";
-            this.pbTP.Size = new System.Drawing.Size(283, 28);
+            this.pbTP.Size = new System.Drawing.Size(165, 28);
             this.pbTP.Step = 1;
             this.pbTP.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.pbTP.TabIndex = 2;
             // 
             // panel4
             // 
-            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel4.Controls.Add(this.lbValorTC);
             this.panel4.Controls.Add(this.lbTurnosCancelados);
             this.panel4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.panel4.Location = new System.Drawing.Point(581, 3);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel4.Location = new System.Drawing.Point(349, 3);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(285, 50);
+            this.panel4.Size = new System.Drawing.Size(154, 73);
             this.panel4.TabIndex = 6;
             // 
             // lbValorTC
             // 
-            this.lbValorTC.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbValorTC.AutoSize = true;
+            this.lbValorTC.Dock = System.Windows.Forms.DockStyle.Top;
             this.lbValorTC.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbValorTC.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.lbValorTC.Location = new System.Drawing.Point(256, 10);
+            this.lbValorTC.Location = new System.Drawing.Point(0, 33);
             this.lbValorTC.Name = "lbValorTC";
-            this.lbValorTC.Size = new System.Drawing.Size(0, 27);
+            this.lbValorTC.Size = new System.Drawing.Size(152, 21);
             this.lbValorTC.TabIndex = 1;
+            this.lbValorTC.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lbTurnosCancelados
             // 
-            this.lbTurnosCancelados.AutoSize = true;
+            this.lbTurnosCancelados.Dock = System.Windows.Forms.DockStyle.Top;
             this.lbTurnosCancelados.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbTurnosCancelados.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.lbTurnosCancelados.Location = new System.Drawing.Point(12, 10);
+            this.lbTurnosCancelados.Location = new System.Drawing.Point(0, 0);
             this.lbTurnosCancelados.Name = "lbTurnosCancelados";
-            this.lbTurnosCancelados.Size = new System.Drawing.Size(150, 23);
+            this.lbTurnosCancelados.Size = new System.Drawing.Size(152, 33);
             this.lbTurnosCancelados.TabIndex = 0;
             this.lbTurnosCancelados.Text = "Turnos Cancelados";
+            this.lbTurnosCancelados.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // progressBar1
             // 
             this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.progressBar1.Location = new System.Drawing.Point(581, 81);
+            this.progressBar1.Location = new System.Drawing.Point(349, 82);
             this.progressBar1.MarqueeAnimationSpeed = 0;
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(285, 28);
+            this.progressBar1.Size = new System.Drawing.Size(154, 28);
             this.progressBar1.Step = 1;
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar1.TabIndex = 2;
@@ -319,23 +330,23 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.chPieEstados.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea1.BackColor = System.Drawing.Color.White;
-            chartArea1.BorderWidth = 0;
-            chartArea1.Name = "ChartArea1";
-            this.chPieEstados.ChartAreas.Add(chartArea1);
-            legend1.Alignment = System.Drawing.StringAlignment.Center;
-            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
-            legend1.Name = "Legend1";
-            this.chPieEstados.Legends.Add(legend1);
+            chartArea13.BackColor = System.Drawing.Color.White;
+            chartArea13.BorderWidth = 0;
+            chartArea13.Name = "ChartArea1";
+            this.chPieEstados.ChartAreas.Add(chartArea13);
+            legend13.Alignment = System.Drawing.StringAlignment.Center;
+            legend13.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend13.Name = "Legend1";
+            this.chPieEstados.Legends.Add(legend13);
             this.chPieEstados.Location = new System.Drawing.Point(653, 44);
             this.chPieEstados.Name = "chPieEstados";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            series1.IsValueShownAsLabel = true;
-            series1.Legend = "Legend1";
-            series1.Name = "Estados";
-            this.chPieEstados.Series.Add(series1);
+            series13.ChartArea = "ChartArea1";
+            series13.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series13.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            series13.IsValueShownAsLabel = true;
+            series13.Legend = "Legend1";
+            series13.Name = "Estados";
+            this.chPieEstados.Series.Add(series13);
             this.chPieEstados.Size = new System.Drawing.Size(213, 150);
             this.chPieEstados.TabIndex = 1;
             this.chPieEstados.Text = "chart1";
@@ -384,10 +395,10 @@
             // 
             // colFechaHora
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.Format = "g";
-            dataGridViewCellStyle1.NullValue = null;
-            this.colFechaHora.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle13.Format = "g";
+            dataGridViewCellStyle13.NullValue = null;
+            this.colFechaHora.DefaultCellStyle = dataGridViewCellStyle13;
             this.colFechaHora.HeaderText = "Fecha/Hora";
             this.colFechaHora.Name = "colFechaHora";
             this.colFechaHora.ReadOnly = true;
@@ -396,22 +407,28 @@
             // 
             this.tlKpis.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tlKpis.ColumnCount = 3;
-            this.tlKpis.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tlKpis.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tlKpis.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlKpis.ColumnCount = 5;
+            this.tlKpis.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 34.63918F));
+            this.tlKpis.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.81443F));
+            this.tlKpis.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.54639F));
+            this.tlKpis.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 171F));
+            this.tlKpis.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 192F));
             this.tlKpis.Controls.Add(this.progressBar1, 2, 1);
             this.tlKpis.Controls.Add(this.pbTP, 1, 1);
             this.tlKpis.Controls.Add(this.panel4, 2, 0);
             this.tlKpis.Controls.Add(this.panel2, 0, 0);
             this.tlKpis.Controls.Add(this.pbTurnosConfirmados, 0, 1);
             this.tlKpis.Controls.Add(this.panel3, 1, 0);
-            this.tlKpis.Location = new System.Drawing.Point(13, 114);
+            this.tlKpis.Controls.Add(this.panelPacientes, 3, 0);
+            this.tlKpis.Controls.Add(this.panelDisponibilidad, 4, 0);
+            this.tlKpis.Controls.Add(this.pbPacientes, 3, 1);
+            this.tlKpis.Controls.Add(this.pbDisponibilidad, 4, 1);
+            this.tlKpis.Location = new System.Drawing.Point(13, 113);
             this.tlKpis.Name = "tlKpis";
             this.tlKpis.RowCount = 2;
-            this.tlKpis.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlKpis.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlKpis.Size = new System.Drawing.Size(869, 112);
+            this.tlKpis.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 69.91151F));
+            this.tlKpis.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30.0885F));
+            this.tlKpis.Size = new System.Drawing.Size(871, 113);
             this.tlKpis.TabIndex = 8;
             // 
             // gbTopMedicos
@@ -450,14 +467,14 @@
             this.dgvRankingMedicos.Location = new System.Drawing.Point(20, 152);
             this.dgvRankingMedicos.Name = "dgvRankingMedicos";
             this.dgvRankingMedicos.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRankingMedicos.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRankingMedicos.RowHeadersDefaultCellStyle = dataGridViewCellStyle14;
             this.dgvRankingMedicos.RowHeadersVisible = false;
             this.dgvRankingMedicos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvRankingMedicos.Size = new System.Drawing.Size(833, 78);
@@ -502,19 +519,19 @@
             // 
             this.chTopMedicos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea2.AxisY.Interval = 1D;
-            chartArea2.AxisY.LabelStyle.Format = "N0";
-            chartArea2.Name = "caTop";
-            this.chTopMedicos.ChartAreas.Add(chartArea2);
-            legend2.Name = "lgTop";
-            this.chTopMedicos.Legends.Add(legend2);
+            chartArea14.AxisY.Interval = 1D;
+            chartArea14.AxisY.LabelStyle.Format = "N0";
+            chartArea14.Name = "caTop";
+            this.chTopMedicos.ChartAreas.Add(chartArea14);
+            legend14.Name = "lgTop";
+            this.chTopMedicos.Legends.Add(legend14);
             this.chTopMedicos.Location = new System.Drawing.Point(3, 20);
             this.chTopMedicos.Name = "chTopMedicos";
             this.chTopMedicos.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SemiTransparent;
-            series2.ChartArea = "caTop";
-            series2.Legend = "lgTop";
-            series2.Name = "Consultas";
-            this.chTopMedicos.Series.Add(series2);
+            series14.ChartArea = "caTop";
+            series14.Legend = "lgTop";
+            series14.Name = "Consultas";
+            this.chTopMedicos.Series.Add(series14);
             this.chTopMedicos.Size = new System.Drawing.Size(865, 132);
             this.chTopMedicos.TabIndex = 0;
             this.chTopMedicos.Text = "chart1";
@@ -531,7 +548,7 @@
             // 
             // dtpHasta
             // 
-            this.dtpHasta.CustomFormat = "MMMM yyyy";
+            this.dtpHasta.CustomFormat = "dd/MM/yyyy";
             this.dtpHasta.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpHasta.Location = new System.Drawing.Point(452, 72);
             this.dtpHasta.Name = "dtpHasta";
@@ -561,6 +578,92 @@
             this.btActualizar.TabIndex = 3;
             this.btActualizar.UseVisualStyleBackColor = true;
             // 
+            // panelPacientes
+            // 
+            this.panelPacientes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelPacientes.Controls.Add(this.lbValorPacientes);
+            this.panelPacientes.Controls.Add(this.lbTituloPacientes);
+            this.panelPacientes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelPacientes.Location = new System.Drawing.Point(509, 3);
+            this.panelPacientes.Name = "panelPacientes";
+            this.panelPacientes.Size = new System.Drawing.Size(165, 73);
+            this.panelPacientes.TabIndex = 7;
+            // 
+            // panelDisponibilidad
+            // 
+            this.panelDisponibilidad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelDisponibilidad.Controls.Add(this.lbValorDisponibilidad);
+            this.panelDisponibilidad.Controls.Add(this.lbTituloDisponibilidad);
+            this.panelDisponibilidad.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelDisponibilidad.Location = new System.Drawing.Point(680, 3);
+            this.panelDisponibilidad.Name = "panelDisponibilidad";
+            this.panelDisponibilidad.Size = new System.Drawing.Size(188, 73);
+            this.panelDisponibilidad.TabIndex = 8;
+            // 
+            // lbTituloPacientes
+            // 
+            this.lbTituloPacientes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lbTituloPacientes.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbTituloPacientes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.lbTituloPacientes.Location = new System.Drawing.Point(0, 0);
+            this.lbTituloPacientes.Name = "lbTituloPacientes";
+            this.lbTituloPacientes.Size = new System.Drawing.Size(163, 33);
+            this.lbTituloPacientes.TabIndex = 0;
+            this.lbTituloPacientes.Text = "Pacientes Totales";
+            this.lbTituloPacientes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbValorPacientes
+            // 
+            this.lbValorPacientes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lbValorPacientes.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbValorPacientes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.lbValorPacientes.Location = new System.Drawing.Point(0, 33);
+            this.lbValorPacientes.Name = "lbValorPacientes";
+            this.lbValorPacientes.Size = new System.Drawing.Size(163, 23);
+            this.lbValorPacientes.TabIndex = 1;
+            this.lbValorPacientes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbTituloDisponibilidad
+            // 
+            this.lbTituloDisponibilidad.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lbTituloDisponibilidad.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbTituloDisponibilidad.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.lbTituloDisponibilidad.Location = new System.Drawing.Point(0, 0);
+            this.lbTituloDisponibilidad.Name = "lbTituloDisponibilidad";
+            this.lbTituloDisponibilidad.Size = new System.Drawing.Size(186, 33);
+            this.lbTituloDisponibilidad.TabIndex = 0;
+            this.lbTituloDisponibilidad.Text = "Agenda Disponible";
+            this.lbTituloDisponibilidad.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbValorDisponibilidad
+            // 
+            this.lbValorDisponibilidad.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lbValorDisponibilidad.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbValorDisponibilidad.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.lbValorDisponibilidad.Location = new System.Drawing.Point(0, 33);
+            this.lbValorDisponibilidad.Name = "lbValorDisponibilidad";
+            this.lbValorDisponibilidad.Size = new System.Drawing.Size(186, 23);
+            this.lbValorDisponibilidad.TabIndex = 1;
+            this.lbValorDisponibilidad.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pbPacientes
+            // 
+            this.pbPacientes.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pbPacientes.Location = new System.Drawing.Point(509, 82);
+            this.pbPacientes.Name = "pbPacientes";
+            this.pbPacientes.Size = new System.Drawing.Size(165, 28);
+            this.pbPacientes.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.pbPacientes.TabIndex = 9;
+            // 
+            // pbDisponibilidad
+            // 
+            this.pbDisponibilidad.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pbDisponibilidad.Location = new System.Drawing.Point(680, 82);
+            this.pbDisponibilidad.Name = "pbDisponibilidad";
+            this.pbDisponibilidad.Size = new System.Drawing.Size(188, 28);
+            this.pbDisponibilidad.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.pbDisponibilidad.TabIndex = 10;
+            // 
             // ReportesRecep
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -582,11 +685,8 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
             this.gbDetalle.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chPieEstados)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetalle)).EndInit();
@@ -594,6 +694,8 @@
             this.gbTopMedicos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRankingMedicos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chTopMedicos)).EndInit();
+            this.panelPacientes.ResumeLayout(false);
+            this.panelDisponibilidad.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -639,5 +741,13 @@
         private System.Windows.Forms.Label lFechaHasta;
         private System.Windows.Forms.DateTimePicker dtpHasta;
         private System.Windows.Forms.Button btnImprimir;
+        private System.Windows.Forms.Panel panelPacientes;
+        private System.Windows.Forms.Label lbTituloPacientes;
+        private System.Windows.Forms.Panel panelDisponibilidad;
+        private System.Windows.Forms.Label lbValorPacientes;
+        private System.Windows.Forms.Label lbTituloDisponibilidad;
+        private System.Windows.Forms.Label lbValorDisponibilidad;
+        private System.Windows.Forms.ProgressBar pbPacientes;
+        private System.Windows.Forms.ProgressBar pbDisponibilidad;
     }
 }

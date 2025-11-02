@@ -224,6 +224,7 @@
             // 
             this.btSobreturno.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btSobreturno.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btSobreturno.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btSobreturno.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btSobreturno.Image = global::SaludSoft.Properties.Resources.agregar;
             this.btSobreturno.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;

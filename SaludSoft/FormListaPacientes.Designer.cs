@@ -55,12 +55,13 @@
             // 
             // BVolver
             // 
+            this.BVolver.BackgroundImage = global::SaludSoft.Properties.Resources.angulo_izquierdo;
+            this.BVolver.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.BVolver.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BVolver.Location = new System.Drawing.Point(15, 9);
+            this.BVolver.Location = new System.Drawing.Point(19, 9);
             this.BVolver.Name = "BVolver";
-            this.BVolver.Size = new System.Drawing.Size(77, 31);
+            this.BVolver.Size = new System.Drawing.Size(71, 31);
             this.BVolver.TabIndex = 3;
-            this.BVolver.Text = "<--Volver";
             this.BVolver.UseVisualStyleBackColor = true;
             this.BVolver.Click += new System.EventHandler(this.BVolver_Click);
             // 
@@ -84,6 +85,9 @@
             // 
             // dgvPacientes
             // 
+            this.dgvPacientes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvPacientes.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dgvPacientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvPacientes.Location = new System.Drawing.Point(12, 110);
@@ -95,7 +99,7 @@
             // TBBuscar
             // 
             this.TBBuscar.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TBBuscar.Location = new System.Drawing.Point(313, 70);
+            this.TBBuscar.Location = new System.Drawing.Point(246, 72);
             this.TBBuscar.Name = "TBBuscar";
             this.TBBuscar.Size = new System.Drawing.Size(540, 26);
             this.TBBuscar.TabIndex = 8;
@@ -103,12 +107,13 @@
             // 
             // BBuscarPaciente
             // 
+            this.BBuscarPaciente.BackgroundImage = global::SaludSoft.Properties.Resources.busqueda;
+            this.BBuscarPaciente.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.BBuscarPaciente.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BBuscarPaciente.Location = new System.Drawing.Point(928, 70);
+            this.BBuscarPaciente.Location = new System.Drawing.Point(817, 73);
             this.BBuscarPaciente.Name = "BBuscarPaciente";
             this.BBuscarPaciente.Size = new System.Drawing.Size(81, 26);
             this.BBuscarPaciente.TabIndex = 9;
-            this.BBuscarPaciente.Text = "Buscar";
             this.BBuscarPaciente.UseVisualStyleBackColor = true;
             this.BBuscarPaciente.Click += new System.EventHandler(this.BBuscarPaciente_Click);
             // 
@@ -121,6 +126,7 @@
             this.pictureBox2.Size = new System.Drawing.Size(70, 23);
             this.pictureBox2.TabIndex = 10;
             this.pictureBox2.TabStop = false;
+            this.pictureBox2.Visible = false;
             // 
             // FormListaPacientes
             // 
