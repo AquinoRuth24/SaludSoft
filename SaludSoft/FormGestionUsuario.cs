@@ -28,16 +28,17 @@ namespace SaludSoft
 
                 string query = @"
                  SELECT 
-                  u.id_usuario, 
-                  u.nombre, 
-                  u.apellido, 
-                  u.email, 
-                  u.telefono, 
-                  r.descripcion AS rol,
-                  eP.id_estado,
-                  eP.descripcion AS estado,
-                  p.matricula, 
-                  es.nombre AS especialidad
+                 u.id_usuario, 
+                 u.nombre, 
+                 u.apellido, 
+                 u.email, 
+                 u.telefono, 
+                 r.descripcion AS rol,
+                 eP.id_estado,
+                 eP.descripcion AS estado,
+                 p.matricula, 
+                 p.id_especialidad,
+                 es.nombre AS especialidad
                  FROM Usuario u
                  INNER JOIN Rol r ON u.id_rol = r.id_rol
                  INNER JOIN Estado eP ON u.id_estado = eP.id_estado
@@ -87,8 +88,8 @@ namespace SaludSoft
 
                 // Ocultar columnas innecesarias
                 if (dgUsuario.Columns.Contains("id_usuario")) dgUsuario.Columns["id_usuario"].Visible = false;
-                if (dgUsuario.Columns.Contains("matricula")) dgUsuario.Columns["matricula"].Visible = false;
                 if (dgUsuario.Columns.Contains("id_estado")) dgUsuario.Columns["id_estado"].Visible = false;
+                if (dgUsuario.Columns.Contains("id_especialidad")) dgUsuario.Columns["id_especialidad"].Visible = false;
             }
         }
 

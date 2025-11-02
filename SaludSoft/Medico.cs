@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using PdfFont = iTextSharp.text.Font;
+using SaludSoft.Security;
 
 namespace SaludSoft
 {
@@ -17,7 +18,7 @@ namespace SaludSoft
             "Server=localhost\\SQLEXPRESS;Database=SaludSoft;Trusted_Connection=True;";
 
         // Setealo desde Login:
-        private string _emailUsuarioActual = "laura.gomez@hospital.com";
+        private string _emailUsuarioActual = "";
         private int _idProfesional = 0;
         private Panel pnlInicio;      // dashboard
         private Panel pnlPacientes;   // contenedor de dgPacientes
@@ -61,10 +62,28 @@ namespace SaludSoft
         // ---------- Load ----------
         private void Medico_Load(object sender, EventArgs e)
         {
+            if (!SesionActual.EstaLogueado)
+            {
+                MessageBox.Show("Debe iniciar sesión primero.", "Acceso denegado",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.Close();
+                return;
+            }
+
+            // Toma el email del usuario activo
+            _emailUsuarioActual = ObtenerEmailDeUsuario(SesionActual.IdUsuario);
+
+            if (string.IsNullOrEmpty(_emailUsuarioActual))
+            {
+                MessageBox.Show("No se pudo determinar el correo del usuario actual.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             _idProfesional = GetIdProfesionalPorEmail(_emailUsuarioActual);
             if (_idProfesional == 0)
             {
-                MessageBox.Show("No se encontró el profesional del usuario actual.", "Médico",
+                MessageBox.Show("No se encontró el profesional vinculado al usuario actual.", "Médico",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -73,12 +92,23 @@ namespace SaludSoft
             CargarPacientesDelProfesional();
             CargarCitasDelDia();
 
-            // Secciones visibles
             pnlCitas.Visible = false;
             MostrarSeccion("INICIO");
             ActualizarCardsTurnos(dateTimePicker1.Value.Date);
         }
-
+        // obtener el email del usuario
+        private string ObtenerEmailDeUsuario(int idUsuario)
+        {
+            const string SQL = "SELECT email FROM Usuario WHERE id_usuario = @id;";
+            using (var cn = new SqlConnection(_cnx))
+            using (var cmd = new SqlCommand(SQL, cn))
+            {
+                cmd.Parameters.AddWithValue("@id", idUsuario);
+                cn.Open();
+                var result = cmd.ExecuteScalar();
+                return result?.ToString() ?? "";
+            }
+        }
         private void PrepararSecciones()
         {
             // INICIO
