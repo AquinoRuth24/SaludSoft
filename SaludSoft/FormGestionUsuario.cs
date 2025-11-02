@@ -90,6 +90,24 @@ namespace SaludSoft
                 if (dgUsuario.Columns.Contains("id_usuario")) dgUsuario.Columns["id_usuario"].Visible = false;
                 if (dgUsuario.Columns.Contains("id_estado")) dgUsuario.Columns["id_estado"].Visible = false;
                 if (dgUsuario.Columns.Contains("id_especialidad")) dgUsuario.Columns["id_especialidad"].Visible = false;
+                // si es administrador bloquear boton eliminar
+                foreach (DataGridViewRow fila in dgUsuario.Rows)
+                {
+                    if (fila.Cells["rol"].Value != null &&
+                        fila.Cells["rol"].Value.ToString().Equals("Administrador", StringComparison.OrdinalIgnoreCase))
+                    {
+                        DataGridViewButtonCell botonEliminar = fila.Cells["Eliminar"] as DataGridViewButtonCell;
+                        if (botonEliminar != null)
+                        {
+                            botonEliminar.FlatStyle = FlatStyle.Flat;
+                            botonEliminar.Style.ForeColor = System.Drawing.Color.Gray;
+                            botonEliminar.Style.BackColor = System.Drawing.Color.LightGray;
+                            botonEliminar.Value = "Bloqueado";
+                            botonEliminar.ReadOnly = true;
+                        }
+                    }
+                }
+
             }
         }
 
@@ -145,9 +163,21 @@ namespace SaludSoft
                 }
             }
 
-            // ===== Botón Eliminar =====
+            // Botón Eliminar
             if (columnName == "Eliminar")
             {
+                string rol = dgUsuario.Rows[e.RowIndex].Cells["rol"].Value.ToString();
+
+                //impedir eliminar administradores
+                if (rol.Equals("Administrador", StringComparison.OrdinalIgnoreCase))
+                {
+                    MessageBox.Show("No se puede eliminar un usuario con rol Administrador.",
+                                    "Acción no permitida",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning);
+                    return;
+                }
+
                 DialogResult result = MessageBox.Show("¿Está seguro de eliminar este usuario?",
                                                       "Confirmación",
                                                       MessageBoxButtons.YesNo,

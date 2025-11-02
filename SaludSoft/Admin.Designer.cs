@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Admin));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel2 = new System.Windows.Forms.Panel();
             this.BReportes = new System.Windows.Forms.Button();
             this.btCerrarSesion = new System.Windows.Forms.Button();
@@ -39,6 +41,20 @@
             this.btTurnos = new System.Windows.Forms.Button();
             this.btConsultorios = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.pnlTurnos = new System.Windows.Forms.Panel();
+            this.lblProfesionalMes = new System.Windows.Forms.Label();
+            this.cmbMedicoMes = new System.Windows.Forms.ComboBox();
+            this.lTitulo = new System.Windows.Forms.Label();
+            this.dtpSemana = new System.Windows.Forms.DateTimePicker();
+            this.btnVolver = new System.Windows.Forms.Button();
+            this.dgvTurnosMes = new System.Windows.Forms.DataGridView();
+            this.colFechaHora = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPaciente = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colProfesional = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMotivo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colEstado = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colEditar = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.colCancelar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.LTurnosDelDia = new System.Windows.Forms.Label();
             this.LContador = new System.Windows.Forms.Label();
             this.PPacienetes = new System.Windows.Forms.Button();
@@ -48,6 +64,8 @@
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel3.SuspendLayout();
+            this.pnlTurnos.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTurnosMes)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
@@ -166,6 +184,7 @@
             this.btTurnos.Text = "Turnos ";
             this.btTurnos.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btTurnos.UseVisualStyleBackColor = true;
+            this.btTurnos.Click += new System.EventHandler(this.btTurnos_Click);
             // 
             // btConsultorios
             // 
@@ -188,6 +207,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.panel3.Controls.Add(this.pnlTurnos);
             this.panel3.Controls.Add(this.LTurnosDelDia);
             this.panel3.Controls.Add(this.LContador);
             this.panel3.Controls.Add(this.PPacienetes);
@@ -199,6 +219,165 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(890, 446);
             this.panel3.TabIndex = 3;
+            // 
+            // pnlTurnos
+            // 
+            this.pnlTurnos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlTurnos.BackColor = System.Drawing.Color.PaleGreen;
+            this.pnlTurnos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlTurnos.Controls.Add(this.lblProfesionalMes);
+            this.pnlTurnos.Controls.Add(this.cmbMedicoMes);
+            this.pnlTurnos.Controls.Add(this.lTitulo);
+            this.pnlTurnos.Controls.Add(this.dtpSemana);
+            this.pnlTurnos.Controls.Add(this.btnVolver);
+            this.pnlTurnos.Controls.Add(this.dgvTurnosMes);
+            this.pnlTurnos.Location = new System.Drawing.Point(16, 6);
+            this.pnlTurnos.Name = "pnlTurnos";
+            this.pnlTurnos.Size = new System.Drawing.Size(852, 438);
+            this.pnlTurnos.TabIndex = 9;
+            this.pnlTurnos.Visible = false;
+            // 
+            // lblProfesionalMes
+            // 
+            this.lblProfesionalMes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblProfesionalMes.AutoSize = true;
+            this.lblProfesionalMes.Font = new System.Drawing.Font("Comic Sans MS", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProfesionalMes.Location = new System.Drawing.Point(400, 26);
+            this.lblProfesionalMes.Name = "lblProfesionalMes";
+            this.lblProfesionalMes.Size = new System.Drawing.Size(100, 23);
+            this.lblProfesionalMes.TabIndex = 14;
+            this.lblProfesionalMes.Text = "Profesional:";
+            // 
+            // cmbMedicoMes
+            // 
+            this.cmbMedicoMes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbMedicoMes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbMedicoMes.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbMedicoMes.FormattingEnabled = true;
+            this.cmbMedicoMes.Location = new System.Drawing.Point(506, 25);
+            this.cmbMedicoMes.Name = "cmbMedicoMes";
+            this.cmbMedicoMes.Size = new System.Drawing.Size(198, 26);
+            this.cmbMedicoMes.TabIndex = 13;
+            // 
+            // lTitulo
+            // 
+            this.lTitulo.AutoSize = true;
+            this.lTitulo.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lTitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.lTitulo.Location = new System.Drawing.Point(3, 6);
+            this.lTitulo.Name = "lTitulo";
+            this.lTitulo.Size = new System.Drawing.Size(151, 27);
+            this.lTitulo.TabIndex = 7;
+            this.lTitulo.Text = "Turnos del mes";
+            // 
+            // dtpSemana
+            // 
+            this.dtpSemana.CustomFormat = "dd/MM/yyyy";
+            this.dtpSemana.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpSemana.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpSemana.Location = new System.Drawing.Point(167, 23);
+            this.dtpSemana.Name = "dtpSemana";
+            this.dtpSemana.ShowUpDown = true;
+            this.dtpSemana.Size = new System.Drawing.Size(141, 26);
+            this.dtpSemana.TabIndex = 8;
+            // 
+            // btnVolver
+            // 
+            this.btnVolver.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnVolver.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnVolver.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnVolver.Image = global::SaludSoft.Properties.Resources.circulo_marca_x;
+            this.btnVolver.Location = new System.Drawing.Point(797, 3);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(50, 30);
+            this.btnVolver.TabIndex = 10;
+            this.btnVolver.UseVisualStyleBackColor = false;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
+            // 
+            // dgvTurnosMes
+            // 
+            this.dgvTurnosMes.AllowUserToAddRows = false;
+            this.dgvTurnosMes.AllowUserToDeleteRows = false;
+            this.dgvTurnosMes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvTurnosMes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTurnosMes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvTurnosMes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTurnosMes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colFechaHora,
+            this.colPaciente,
+            this.colProfesional,
+            this.colMotivo,
+            this.colEstado,
+            this.colEditar,
+            this.colCancelar});
+            this.dgvTurnosMes.EnableHeadersVisualStyles = false;
+            this.dgvTurnosMes.Location = new System.Drawing.Point(5, 69);
+            this.dgvTurnosMes.MultiSelect = false;
+            this.dgvTurnosMes.Name = "dgvTurnosMes";
+            this.dgvTurnosMes.ReadOnly = true;
+            this.dgvTurnosMes.RowHeadersVisible = false;
+            this.dgvTurnosMes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvTurnosMes.Size = new System.Drawing.Size(836, 358);
+            this.dgvTurnosMes.TabIndex = 11;
+            // 
+            // colFechaHora
+            // 
+            dataGridViewCellStyle2.Format = "g";
+            dataGridViewCellStyle2.NullValue = null;
+            this.colFechaHora.DefaultCellStyle = dataGridViewCellStyle2;
+            this.colFechaHora.HeaderText = "Fecha/Hora";
+            this.colFechaHora.Name = "colFechaHora";
+            this.colFechaHora.ReadOnly = true;
+            // 
+            // colPaciente
+            // 
+            this.colPaciente.HeaderText = "Paciente";
+            this.colPaciente.Name = "colPaciente";
+            this.colPaciente.ReadOnly = true;
+            // 
+            // colProfesional
+            // 
+            this.colProfesional.HeaderText = "Profesional";
+            this.colProfesional.Name = "colProfesional";
+            this.colProfesional.ReadOnly = true;
+            // 
+            // colMotivo
+            // 
+            this.colMotivo.HeaderText = "Motivo";
+            this.colMotivo.Name = "colMotivo";
+            this.colMotivo.ReadOnly = true;
+            // 
+            // colEstado
+            // 
+            this.colEstado.HeaderText = "Estado";
+            this.colEstado.Name = "colEstado";
+            this.colEstado.ReadOnly = true;
+            // 
+            // colEditar
+            // 
+            this.colEditar.HeaderText = "Editar";
+            this.colEditar.Name = "colEditar";
+            this.colEditar.ReadOnly = true;
+            this.colEditar.Text = "Editar";
+            this.colEditar.UseColumnTextForButtonValue = true;
+            // 
+            // colCancelar
+            // 
+            this.colCancelar.HeaderText = "Cancelar";
+            this.colCancelar.Name = "colCancelar";
+            this.colCancelar.ReadOnly = true;
+            this.colCancelar.Text = "Cancelar";
+            this.colCancelar.UseColumnTextForButtonValue = true;
             // 
             // LTurnosDelDia
             // 
@@ -299,6 +478,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            this.pnlTurnos.ResumeLayout(false);
+            this.pnlTurnos.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTurnosMes)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -320,5 +502,19 @@
         private System.Windows.Forms.Label LContador;
         private System.Windows.Forms.Label LTurnosDelDia;
         private System.Windows.Forms.Button BReportes;
+        private System.Windows.Forms.Panel pnlTurnos;
+        private System.Windows.Forms.Label lblProfesionalMes;
+        private System.Windows.Forms.ComboBox cmbMedicoMes;
+        private System.Windows.Forms.Label lTitulo;
+        private System.Windows.Forms.DateTimePicker dtpSemana;
+        private System.Windows.Forms.Button btnVolver;
+        private System.Windows.Forms.DataGridView dgvTurnosMes;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colFechaHora;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPaciente;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colProfesional;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMotivo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colEstado;
+        private System.Windows.Forms.DataGridViewButtonColumn colEditar;
+        private System.Windows.Forms.DataGridViewButtonColumn colCancelar;
     }
 }
