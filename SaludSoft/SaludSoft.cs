@@ -580,5 +580,26 @@ ORDER BY fechaHora;";
             frm.ShowDialog();
             this.Show();
         }
+
+        private void PPacientes_Paint(object sender, PaintEventArgs e)
+        {
+            int cantidadTurnos = 0;
+
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                conexion.Open();
+
+                string query = @"
+                 SELECT COUNT(*) 
+                 FROM Turnos 
+                 WHERE CONVERT(date, fecha) = CONVERT(date, GETDATE())";
+                using (SqlCommand cmd = new SqlCommand(query, conexion))
+                {
+                    cantidadTurnos = (int)cmd.ExecuteScalar();
+                }
+            }
+
+            LContadorPacientesHoy.Text = $"{cantidadTurnos}";
+        }
     }
 }
