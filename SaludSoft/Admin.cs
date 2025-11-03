@@ -116,6 +116,17 @@ namespace SaludSoft
 
                     using (var rd = cmd.ExecuteReader())
                     {
+                        if (!rd.HasRows)
+                        {
+                            //Si no hay resultados, limpia y muestra aviso opcional
+                            dgvTurnosMes.Rows.Clear();
+                            MessageBox.Show("No hay turnos para este profesional en el mes seleccionado.",
+                                            "Sin resultados",
+                                            MessageBoxButtons.OK,
+                                            MessageBoxIcon.Information);
+                            return;
+                        }
+
                         while (rd.Read())
                         {
                             dgvTurnosMes.Rows.Add(
