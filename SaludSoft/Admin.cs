@@ -3,8 +3,10 @@ using SaludSoft.Resources.Models;
 using SaludSoft.Security;
 using System;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Data;
 
 namespace SaludSoft
 {
@@ -175,6 +177,53 @@ namespace SaludSoft
                     row.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             }
         }
+        // historial del paciente
+        private void CargarHistorialMedico()
+        {
+            string query = @"
+             SELECT 
+             p.nombre + ' ' + p.apellido AS Paciente,
+             pr.nombre + ' ' + pr.apellido AS Medico,
+             h.fechaConsulta,
+             h.diagnostico,
+             h.tratamiento,
+             h.observaciones
+             FROM Historial h
+             INNER JOIN Paciente p ON h.id_paciente = p.id_paciente
+             INNER JOIN Turnos t ON t.id_paciente = p.id_paciente
+             INNER JOIN Agenda a ON t.id_agenda = a.id_agenda
+             INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
+             INNER JOIN Profesional pr ON pc.id_profesional = pr.id_profesional
+             ORDER BY h.fechaConsulta DESC; ";
+
+            using (SqlConnection conexion = Conexion.GetConnection())
+            {
+                SqlCommand cmd = new SqlCommand(query, conexion);
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                DTGHistorialPacientes.DataSource = dt;
+                //Permite que el texto se muestre en varias líneas
+                DTGHistorialPacientes.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+                //Ajusta automáticamente la altura de las filas al contenido
+                DTGHistorialPacientes.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            }
+
+            // Mostrar el GroupBox si estaba oculto
+            GBHistorialPaciente.Visible = true;
+        }
+        // estilos 
+        private void EstiloGridHistorial()
+        {
+            DTGHistorialPacientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DTGHistorialPacientes.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            DTGHistorialPacientes.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            DTGHistorialPacientes.EnableHeadersVisualStyles = false;
+            DTGHistorialPacientes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            DTGHistorialPacientes.MultiSelect = false;
+        }
         // eventos de filtros
         private void dtpMes_ValueChanged(object sender, EventArgs e)
         {
@@ -315,6 +364,15 @@ namespace SaludSoft
             LTurnosDelDia.Text = $"{cantidadTurnos}";
         }
 
-       
+        private void btHistorial_Click(object sender, EventArgs e)
+        {
+            CargarHistorialMedico();
+            EstiloGridHistorial();
+        }
+
+        private void BVolverHistorial_Click(object sender, EventArgs e)
+        {
+            this.GBHistorialPaciente.Visible = false;
+        }
     }
 }

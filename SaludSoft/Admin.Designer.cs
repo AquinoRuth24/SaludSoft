@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Admin));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel2 = new System.Windows.Forms.Panel();
             this.BReportes = new System.Windows.Forms.Button();
             this.btCerrarSesion = new System.Windows.Forms.Button();
@@ -61,11 +61,21 @@
             this.btHistorial = new System.Windows.Forms.Button();
             this.btEspecialidades = new System.Windows.Forms.Button();
             this.btTurnosMes = new System.Windows.Forms.Button();
+            this.GBHistorialPaciente = new System.Windows.Forms.GroupBox();
+            this.DTGHistorialPacientes = new System.Windows.Forms.DataGridView();
+            this.LHistorial = new System.Windows.Forms.Label();
+            this.BVolverHistorial = new System.Windows.Forms.Button();
+            this.TBBuscarHistorial = new System.Windows.Forms.TextBox();
+            this.BBuscarHistorial = new System.Windows.Forms.Button();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel3.SuspendLayout();
             this.pnlTurnos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTurnosMes)).BeginInit();
+            this.GBHistorialPaciente.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DTGHistorialPacientes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
@@ -207,6 +217,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.panel3.Controls.Add(this.GBHistorialPaciente);
             this.panel3.Controls.Add(this.pnlTurnos);
             this.panel3.Controls.Add(this.LTurnosDelDia);
             this.panel3.Controls.Add(this.LContador);
@@ -232,7 +243,7 @@
             this.pnlTurnos.Controls.Add(this.dtpSemana);
             this.pnlTurnos.Controls.Add(this.btnVolver);
             this.pnlTurnos.Controls.Add(this.dgvTurnosMes);
-            this.pnlTurnos.Location = new System.Drawing.Point(16, 6);
+            this.pnlTurnos.Location = new System.Drawing.Point(16, 5);
             this.pnlTurnos.Name = "pnlTurnos";
             this.pnlTurnos.Size = new System.Drawing.Size(852, 438);
             this.pnlTurnos.TabIndex = 9;
@@ -303,14 +314,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvTurnosMes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvTurnosMes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTurnosMes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
             this.dgvTurnosMes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTurnosMes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colFechaHora,
@@ -332,9 +343,9 @@
             // 
             // colFechaHora
             // 
-            dataGridViewCellStyle2.Format = "g";
-            dataGridViewCellStyle2.NullValue = null;
-            this.colFechaHora.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle14.Format = "g";
+            dataGridViewCellStyle14.NullValue = null;
+            this.colFechaHora.DefaultCellStyle = dataGridViewCellStyle14;
             this.colFechaHora.HeaderText = "Fecha/Hora";
             this.colFechaHora.Name = "colFechaHora";
             this.colFechaHora.ReadOnly = true;
@@ -430,6 +441,7 @@
             this.btHistorial.Text = "Historial Paciente";
             this.btHistorial.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btHistorial.UseVisualStyleBackColor = false;
+            this.btHistorial.Click += new System.EventHandler(this.btHistorial_Click);
             // 
             // btEspecialidades
             // 
@@ -463,6 +475,87 @@
             this.btTurnosMes.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btTurnosMes.UseVisualStyleBackColor = false;
             // 
+            // GBHistorialPaciente
+            // 
+            this.GBHistorialPaciente.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GBHistorialPaciente.BackColor = System.Drawing.Color.PaleGreen;
+            this.GBHistorialPaciente.Controls.Add(this.pictureBox2);
+            this.GBHistorialPaciente.Controls.Add(this.BBuscarHistorial);
+            this.GBHistorialPaciente.Controls.Add(this.TBBuscarHistorial);
+            this.GBHistorialPaciente.Controls.Add(this.BVolverHistorial);
+            this.GBHistorialPaciente.Controls.Add(this.LHistorial);
+            this.GBHistorialPaciente.Controls.Add(this.DTGHistorialPacientes);
+            this.GBHistorialPaciente.Location = new System.Drawing.Point(3, 3);
+            this.GBHistorialPaciente.Name = "GBHistorialPaciente";
+            this.GBHistorialPaciente.Size = new System.Drawing.Size(877, 425);
+            this.GBHistorialPaciente.TabIndex = 15;
+            this.GBHistorialPaciente.TabStop = false;
+            this.GBHistorialPaciente.Visible = false;
+            // 
+            // DTGHistorialPacientes
+            // 
+            this.DTGHistorialPacientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DTGHistorialPacientes.Location = new System.Drawing.Point(17, 95);
+            this.DTGHistorialPacientes.Name = "DTGHistorialPacientes";
+            this.DTGHistorialPacientes.Size = new System.Drawing.Size(844, 280);
+            this.DTGHistorialPacientes.TabIndex = 0;
+            // 
+            // LHistorial
+            // 
+            this.LHistorial.AutoSize = true;
+            this.LHistorial.Font = new System.Drawing.Font("Comic Sans MS", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LHistorial.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.LHistorial.Location = new System.Drawing.Point(355, 3);
+            this.LHistorial.Name = "LHistorial";
+            this.LHistorial.Size = new System.Drawing.Size(162, 27);
+            this.LHistorial.TabIndex = 8;
+            this.LHistorial.Text = "Historial Medico";
+            // 
+            // BVolverHistorial
+            // 
+            this.BVolverHistorial.BackgroundImage = global::SaludSoft.Properties.Resources.angulo_izquierdo;
+            this.BVolverHistorial.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BVolverHistorial.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BVolverHistorial.Location = new System.Drawing.Point(10, 3);
+            this.BVolverHistorial.Name = "BVolverHistorial";
+            this.BVolverHistorial.Size = new System.Drawing.Size(71, 31);
+            this.BVolverHistorial.TabIndex = 9;
+            this.BVolverHistorial.UseVisualStyleBackColor = true;
+            this.BVolverHistorial.Click += new System.EventHandler(this.BVolverHistorial_Click);
+            // 
+            // TBBuscarHistorial
+            // 
+            this.TBBuscarHistorial.Font = new System.Drawing.Font("Constantia", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TBBuscarHistorial.Location = new System.Drawing.Point(172, 49);
+            this.TBBuscarHistorial.Name = "TBBuscarHistorial";
+            this.TBBuscarHistorial.Size = new System.Drawing.Size(540, 26);
+            this.TBBuscarHistorial.TabIndex = 10;
+            this.TBBuscarHistorial.Visible = false;
+            // 
+            // BBuscarHistorial
+            // 
+            this.BBuscarHistorial.BackgroundImage = global::SaludSoft.Properties.Resources.busqueda;
+            this.BBuscarHistorial.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BBuscarHistorial.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BBuscarHistorial.Location = new System.Drawing.Point(738, 47);
+            this.BBuscarHistorial.Name = "BBuscarHistorial";
+            this.BBuscarHistorial.Size = new System.Drawing.Size(81, 26);
+            this.BBuscarHistorial.TabIndex = 11;
+            this.BBuscarHistorial.UseVisualStyleBackColor = true;
+            this.BBuscarHistorial.Visible = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox2.Location = new System.Drawing.Point(96, 52);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(70, 23);
+            this.pictureBox2.TabIndex = 12;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Visible = false;
+            // 
             // Admin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -481,6 +574,10 @@
             this.pnlTurnos.ResumeLayout(false);
             this.pnlTurnos.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTurnosMes)).EndInit();
+            this.GBHistorialPaciente.ResumeLayout(false);
+            this.GBHistorialPaciente.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DTGHistorialPacientes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -516,5 +613,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colEstado;
         private System.Windows.Forms.DataGridViewButtonColumn colEditar;
         private System.Windows.Forms.DataGridViewButtonColumn colCancelar;
+        private System.Windows.Forms.GroupBox GBHistorialPaciente;
+        private System.Windows.Forms.Label LHistorial;
+        private System.Windows.Forms.DataGridView DTGHistorialPacientes;
+        private System.Windows.Forms.Button BVolverHistorial;
+        private System.Windows.Forms.TextBox TBBuscarHistorial;
+        private System.Windows.Forms.Button BBuscarHistorial;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
