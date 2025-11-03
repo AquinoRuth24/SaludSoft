@@ -156,8 +156,8 @@ namespace SaludSoft
                 {
                     // Inserta y devuelve el ID generado
                     query = @"
-                     INSERT INTO Profesional_Consultorio (id_profesional, id_consultorio, fecha, vigencia_desde, vigencia_hasta)
-                     VALUES (@prof, @cons, GETDATE(), @desde, @hasta);
+                     INSERT INTO Profesional_Consultorio (id_profesional, id_consultorio,vigencia_desde, vigencia_hasta)
+                     VALUES (@prof, @cons, @desde, @hasta);
                      SELECT SCOPE_IDENTITY();";
                 }
                 else
