@@ -655,11 +655,7 @@ namespace SaludSoft
             CargarTurnosDelDia();
             RefrescarFranjas();
             MessageBox.Show("Turno reservado correctamente.", "Agenda",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-            InsertarTurnoBD(idAgenda.Value, idPaciente.Value, fechaHora);
-            _ultimoReservado = fechaHora;   
-
-
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);   
         }
 
         //  ACCIONES EDITAR/CANCELAR
