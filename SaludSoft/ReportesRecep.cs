@@ -410,7 +410,23 @@ namespace SaludSoft
                 if (_modo == ModoDetalle.PacientesTotales) CargarPacientesTotales();
                 else CargarDetalleEstado();
             }
+            int totalPacientes = ContarPacientesTotales();
+
+            if (lbValorPacientes != null)
+                lbValorPacientes.Text = totalPacientes.ToString();
         }
+        private int ContarPacientesTotales()
+        {
+            string sql = @"SELECT COUNT(*) FROM dbo.Paciente;";
+            using (var cn = Conexion.GetConnection())
+            using (var cmd = new SqlCommand(sql, cn))
+            {
+                cn.Open();
+                int total = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
+                return total;
+            }
+        }
+
 
         // ===== KPIs + Pie =====
         private void CargarKpisYTorta()
