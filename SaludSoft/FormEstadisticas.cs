@@ -25,8 +25,8 @@ namespace SaludSoft
         {
             InitializeComponent();
 
-            // Establecer fechas por defecto ultimo mes
-            DTPDesde.Value = DateTime.Today.AddDays(-30);
+            // Establecer fechas por defecto (dia de la fecha)
+            DTPDesde.Value = DateTime.Today;
             DTPHasta.Value = DateTime.Today;
 
             CargarGrafico();
@@ -53,7 +53,7 @@ namespace SaludSoft
              INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
              INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
              INNER JOIN Especialidad e ON p.id_especialidad = e.id_especialidad
-             WHERE t.fecha BETWEEN @fechaInicio AND @fechaFin
+             WHERE t.fecha >= @fechaInicio AND t.fecha < DATEADD(DAY, 1, @fechaFin)
              GROUP BY e.nombre
              ORDER BY CantidadTurnos DESC;";
 
@@ -161,7 +161,7 @@ namespace SaludSoft
              SUM(CASE WHEN t.estado = 'Pendiente' THEN 1 ELSE 0 END) AS Pendientes,
              COUNT(*) AS Total
              FROM Turnos t
-             WHERE t.fecha BETWEEN @fechaInicio AND @fechaFin;";
+             WHERE t.fecha >= @fechaInicio AND t.fecha < DATEADD(DAY, 1, @fechaFin)";
 
             using (SqlConnection conexion = Conexion.GetConnection())
             {
@@ -173,10 +173,11 @@ namespace SaludSoft
 
                 if (reader.Read())
                 {
-                    int completadas = Convert.ToInt32(reader["Confirmados"]);
-                    int canceladas = Convert.ToInt32(reader["Canceladas"]);
-                    int pendientes = Convert.ToInt32(reader["Pendientes"]);
-                    int total = Convert.ToInt32(reader["Total"]);
+                    //Evita el error por valores nulos
+                    int completadas = Convert.IsDBNull(reader["Confirmados"]) ? 0 : Convert.ToInt32(reader["Confirmados"]);
+                    int canceladas = Convert.IsDBNull(reader["Canceladas"]) ? 0 : Convert.ToInt32(reader["Canceladas"]);
+                    int pendientes = Convert.IsDBNull(reader["Pendientes"]) ? 0 : Convert.ToInt32(reader["Pendientes"]);
+                    int total = Convert.IsDBNull(reader["Total"]) ? 0 : Convert.ToInt32(reader["Total"]);
 
                     reader.Close();
 
@@ -296,8 +297,8 @@ namespace SaludSoft
 
                 string queryTurnos = @"
                  SELECT COUNT(*) 
-                 FROM Turnos 
-                 WHERE fecha BETWEEN @fechaInicio AND @fechaFin;";
+                 FROM Turnos t
+                 WHERE t.fecha >= @fechaInicio AND t.fecha < DATEADD(DAY, 1, @fechaFin);";
 
                 SqlCommand cmdTurnos = new SqlCommand(queryTurnos, conexion);
                 cmdTurnos.Parameters.AddWithValue("@fechaInicio", DTPDesde.Value.Date);
@@ -327,7 +328,7 @@ namespace SaludSoft
              INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
              INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
              INNER JOIN Especialidad e ON p.id_especialidad = e.id_especialidad
-             WHERE t.fecha BETWEEN @fechaInicio AND @fechaFin
+             WHERE t.fecha >= @fechaInicio AND t.fecha < DATEADD(DAY, 1, @fechaFin)
              GROUP BY p.apellido, p.nombre, e.nombre
              ORDER BY CantidadTurnos DESC;";
 
@@ -413,7 +414,7 @@ namespace SaludSoft
              INNER JOIN Agenda a ON t.id_agenda = a.id_agenda
              INNER JOIN Profesional_Consultorio pc ON a.id_profesional_consultorio = pc.id_profesional_consultorio
              INNER JOIN Profesional p ON pc.id_profesional = p.id_profesional
-             WHERE t.fecha BETWEEN @fechaInicio AND @fechaFin
+             WHERE t.fecha >= @fechaInicio AND t.fecha < DATEADD(DAY, 1, @fechaFin)
              GROUP BY p.nombre, p.apellido
              ORDER BY PorcentajeConfirmados DESC;";
 
@@ -468,6 +469,9 @@ namespace SaludSoft
 
             using (SqlConnection conexion = Conexion.GetConnection())
             {
+                DateTime fechaInicio = DTPDesde.Value.Date;
+                DateTime fechaFin = DTPHasta.Value.Date.AddDays(1).AddTicks(-1);
+
                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
                 da.SelectCommand.Parameters.AddWithValue("@fechaInicio", DTPDesde.Value.Date);
                 da.SelectCommand.Parameters.AddWithValue("@fechaFin", DTPHasta.Value.Date);
@@ -589,7 +593,7 @@ namespace SaludSoft
              MAX(t.fecha) AS UltimaVisita
              FROM Turnos t
              INNER JOIN Paciente p ON t.id_paciente = p.id_paciente
-             WHERE t.fecha BETWEEN @fechaInicio AND @fechaFin
+             WHERE t.fecha >= @fechaInicio AND t.fecha < DATEADD(DAY, 1, @fechaFin)
              GROUP BY p.apellido, p.nombre, p.dni
              ORDER BY CantidadTurnos DESC;";
 
