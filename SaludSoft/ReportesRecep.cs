@@ -9,33 +9,57 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using Excel = Microsoft.Office.Interop.Excel;
+using PdfDoc = iTextSharp.text.Document;
+using PdfWriterAlias = iTextSharp.text.pdf.PdfWriter;
+using PdfPTableAlias = iTextSharp.text.pdf.PdfPTable;
+using PdfPCellAlias = iTextSharp.text.pdf.PdfPCell;
+using PdfPhraseAlias = iTextSharp.text.Phrase;
+using PdfParagraphAlias = iTextSharp.text.Paragraph;
+using PdfFontAlias = iTextSharp.text.Font;
+using PdfImageAlias = iTextSharp.text.Image;
+using PdfBaseColor = iTextSharp.text.BaseColor;
+using PdfPageSize = iTextSharp.text.PageSize;
+using PdfFontFactory = iTextSharp.text.FontFactory;
 
 namespace SaludSoft
 {
     public partial class ReportesRecep : Form
     {
+        // ===== WinAPI para colorear ProgressBars =====
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
         private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
         private const uint PBM_SETSTATE = 0x0410 + 16;
         private static void SetPBState(ProgressBar pb, int state) =>
             SendMessage(pb.Handle, PBM_SETSTATE, (IntPtr)state, IntPtr.Zero);
 
+        // ===== Estado UI =====
         private string _estadoActual = "Confirmado";
         private bool _detalleVisible = false;
+        private enum ModoDetalle { PorEstado, PacientesTotales }
+        private ModoDetalle _modo = ModoDetalle.PorEstado;
+
+        private bool _agendaVisible = false;
+        private bool _cargandoMedicos = false;
+        private bool _gbDetalleResizeHooked = false;
+
 
         public ReportesRecep()
         {
             InitializeComponent();
 
+            InicializarAgendaDisponibleUI();   
+            WireAgendaDisponibleCard();       
+
             Load += ReportesRecep_Load;
 
-            // Actualizar datos
-            btActualizar.Click += (s, e) => RefrescarTodo();
+           
+            if (btActualizar != null)
+                btActualizar.Click += (s, e) => RefrescarTodo();
 
-            // Clicks de las 3 cards
+            // Clicks de cards de estados + pacientes totales
             WireCardClicks();
 
+            // Decoración ranking
             dgvRankingMedicos.RowPostPaint += dgvRankingMedicos_RowPostPaint;
             dgvRankingMedicos.CellPainting += dgvRankingMedicos_CellPainting;
         }
@@ -43,7 +67,7 @@ namespace SaludSoft
         // ===== LOAD =====
         private void ReportesRecep_Load(object sender, EventArgs e)
         {
-            // Filtros
+            // Filtros de periodo
             dtpPeriodo.Format = DateTimePickerFormat.Custom;
             dtpPeriodo.CustomFormat = "MMMM yyyy";
             dtpPeriodo.ShowUpDown = true;
@@ -60,17 +84,17 @@ namespace SaludSoft
 
             dgvDetalle.AutoGenerateColumns = false;
             dgvRankingMedicos.AutoGenerateColumns = false;
-          
+
             foreach (var pb in new[] { pbTurnosConfirmados, pbTP, progressBar1 })
             {
                 pb.Style = ProgressBarStyle.Continuous;
                 pb.MarqueeAnimationSpeed = 0;
             }
-            SetPBState(pbTurnosConfirmados, 1); 
-            SetPBState(pbTP, 3);                
-            SetPBState(progressBar1, 2);        
+            SetPBState(pbTurnosConfirmados, 1); // verde
+            SetPBState(pbTP, 3);                // amarillo
+            SetPBState(progressBar1, 2);        // rojo
 
-            // Charts
+            // Charts base
             var caPie = EnsureChartArea(chPieEstados, "ca");
             var lgPie = EnsureLegend(chPieEstados, "lg");
             var sPie = EnsureSeries(chPieEstados, "Estados", SeriesChartType.Pie, caPie, lgPie);
@@ -79,8 +103,8 @@ namespace SaludSoft
             sPie.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
             sPie["PieLabelStyle"] = "Outside";
             sPie["PieLineColor"] = "Gray";
-            sPie.Label = "#VALX #PERCENT{P0}";    
-            sPie.LegendText = "#VALX";            
+            sPie.Label = "#VALX #PERCENT{P0}";
+            sPie.LegendText = "#VALX";
 
             chPieEstados.Legends[lgPie].Docking = Docking.Bottom;
             chPieEstados.Legends[lgPie].Alignment = StringAlignment.Center;
@@ -103,30 +127,30 @@ namespace SaludSoft
             gbDetalle.Visible = true;
             _detalleVisible = true;
 
+            CrearTableLayoutDetalle(); 
+
             RefrescarTodo();
             ConfigurarPie();
-
-
-
-
+            ActualizarKpiAgendaDisponible(); 
+            tlAgendaDisponible.Visible = false;
+            if (btnImprimir != null)
+                btnImprimir.Click += btnImprimir_Click;
         }
 
-        // ===== RANGO FECHAS =====
+        // ===== Rango de fechas =====
         private (DateTime desde, DateTime hastaEx) RangoActual()
         {
             var desde = dtpPeriodo.Value.Date;
             if (dtpHasta.Checked)
             {
-                var hastaEx = dtpHasta.Value.Date.AddDays(1); // exclusivo
+                var hastaEx = dtpHasta.Value.Date.AddDays(1);
                 if (hastaEx <= desde) hastaEx = desde.AddDays(1);
                 return (desde, hastaEx);
             }
-            // si no hay “hasta”, por defecto solo ese día
             return (desde, desde.AddDays(1));
         }
 
-
-        // ===== BD HELPERS =====
+        // ===== Acceso BD helpers =====
         private DataTable GetTable(string sql, Action<SqlCommand> bind)
         {
             using (var cn = Conexion.GetConnection())
@@ -151,21 +175,30 @@ namespace SaludSoft
             }
         }
 
-        // ===== UI: CARDS =====
+        // ===== Cards clickeables =====
         private void WireCardClicks()
         {
             void makeClickable(Control root, EventHandler onClick)
             {
                 root.Cursor = Cursors.Hand;
                 root.Click += onClick;
-                foreach (Control c in root.Controls) { c.Cursor = Cursors.Hand; c.Click += onClick; }
+                foreach (Control c in root.Controls)
+                {
+                    c.Cursor = Cursors.Hand;
+                    c.Click += onClick;
+                }
             }
+
             makeClickable(panel2, (s, e) => ToggleDetalle("Confirmado"));
             makeClickable(panel3, (s, e) => ToggleDetalle("Pendiente"));
             makeClickable(panel4, (s, e) => ToggleDetalle("Cancelado"));
+
+            var pnlPacTot = this.Controls.Find("panelPacientes", true).FirstOrDefault();
+            if (pnlPacTot != null)
+                makeClickable(pnlPacTot, (s, e) => MostrarPacientesTotales());
         }
 
-        // ===== CHART HELPERS =====
+        // ===== Chart helpers =====
         private static string EnsureChartArea(Chart chart, string desiredName)
         {
             if (chart.ChartAreas.IndexOf(desiredName) >= 0) return desiredName;
@@ -214,15 +247,172 @@ namespace SaludSoft
             return s;
         }
 
-        // ===== REFRESH =====
+        // ===== Columnas del detalle (Pacientes Totales) =====
+        private void EnsureDetalleColumnsForPacientes()
+        {
+            dgvDetalle.AutoGenerateColumns = false;
+
+            // Estilo base
+            dgvDetalle.ReadOnly = true;
+            dgvDetalle.AllowUserToAddRows = false;
+            dgvDetalle.AllowUserToDeleteRows = false;
+            dgvDetalle.MultiSelect = false;
+            dgvDetalle.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvDetalle.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvDetalle.RowHeadersVisible = false;
+
+            dgvDetalle.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10f, FontStyle.Bold);
+            dgvDetalle.DefaultCellStyle.Font = new Font("Segoe UI", 10f, FontStyle.Regular);
+            dgvDetalle.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 250, 247);
+
+            void addFill(string name, string header, string dataProp, float fillWeight)
+            {
+                if (!dgvDetalle.Columns.Contains(name))
+                {
+                    var col = new DataGridViewTextBoxColumn
+                    {
+                        Name = name,
+                        HeaderText = header,
+                        DataPropertyName = dataProp,
+                        ReadOnly = true,
+                        AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                        FillWeight = fillWeight
+                    };
+                    dgvDetalle.Columns.Add(col);
+                }
+                else
+                {
+                    var c = dgvDetalle.Columns[name];
+                    c.HeaderText = header;
+                    c.DataPropertyName = dataProp;
+                    c.Visible = true;
+                    c.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    c.FillWeight = fillWeight;
+                }
+            }
+
+            addFill("colNombre", "Nombre", "Nombre", 16);
+            addFill("colApellido", "Apellido", "Apellido", 16);
+            addFill("colDni", "DNI", "DNI", 12);
+            addFill("colCorreo", "Correo", "Correo", 28);
+            addFill("colMedico", "Médico", "Medico", 16);
+            addFill("colMotivo", "Motivo", "Motivo", 22);
+
+            foreach (DataGridViewColumn c in dgvDetalle.Columns)
+                c.Visible = new[] { "colNombre", "colApellido", "colDni", "colCorreo", "colMedico", "colMotivo" }.Contains(c.Name);
+        }
+
+        // ===== Columnas del detalle (Por estado) =====
+        private void EnsureDetalleColumnsForEstado()
+        {
+            dgvDetalle.AutoGenerateColumns = false;
+
+            void addText(string name, string header, string dataProp, int width)
+            {
+                if (!dgvDetalle.Columns.Contains(name))
+                {
+                    dgvDetalle.Columns.Add(new DataGridViewTextBoxColumn
+                    {
+                        Name = name,
+                        HeaderText = header,
+                        DataPropertyName = dataProp,
+                        ReadOnly = true,
+                        AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                        Width = width
+                    });
+                }
+                else
+                {
+                    var c = dgvDetalle.Columns[name];
+                    c.HeaderText = header;
+                    c.DataPropertyName = dataProp;
+                    c.Visible = true;
+                    c.Width = width;
+                }
+            }
+
+            addText("colNombre", "Nombre", "Nombre", 140);
+            addText("colApellido", "Apellido", "Apellido", 140);
+            addText("colDni", "DNI", "DNI", 110);
+            addText("colCorreo", "Correo", "Correo", 200);
+            addText("colMedico", "Médico", "Medico", 180);
+
+            foreach (DataGridViewColumn c in dgvDetalle.Columns)
+                c.Visible = new[] { "colNombre", "colApellido", "colDni", "colCorreo", "colMedico" }.Contains(c.Name);
+        }
+
+        // ===== Mostrar Pacientes Totales =====
+        private void MostrarPacientesTotales()
+        {
+            _modo = ModoDetalle.PacientesTotales;
+            _detalleVisible = true;
+            _agendaVisible = false;
+
+            gbDetalle.Visible = true;
+            gbDetalle.Text = "Pacientes atendidos (Confirmados)";
+            tlAgendaDisponible.Visible = false;
+            gbTopMedicos.Visible = false;
+
+            CargarPacientesTotales();
+            SetDetalleLayout(soloGrid: true);
+            LayoutSections();
+        }
+
+        private void CargarPacientesTotales()
+        {
+            var (desde, hastaEx) = RangoActual();
+
+            string sql = @"
+            SELECT DISTINCT
+                pa.nombre                           AS Nombre,
+                pa.apellido                         AS Apellido,
+                pa.dni                              AS DNI,
+                pa.email                            AS Correo,
+                oa.Medico                           AS Medico,
+                oa.Motivo                           AS Motivo
+            FROM dbo.Paciente pa
+            OUTER APPLY (
+                SELECT TOP (1)
+                    (pr.apellido + ' ' + pr.nombre) AS Medico,
+                    t.motivo                        AS Motivo,
+                    t.fecha                         AS FechaTurno
+                FROM dbo.Turnos t
+                INNER JOIN dbo.Agenda a                   ON a.id_agenda = t.id_agenda
+                INNER JOIN dbo.Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
+                INNER JOIN dbo.Profesional pr             ON pr.id_profesional = pc.id_profesional
+                WHERE t.id_paciente = pa.id_paciente
+                  AND t.fecha >= @desde AND t.fecha < @hasta
+                  AND ISNULL(t.estado,'Pendiente') = 'Confirmado'
+                ORDER BY t.fecha DESC
+            ) oa
+            WHERE oa.FechaTurno IS NOT NULL
+            ORDER BY pa.apellido, pa.nombre;";
+
+            var dt = GetTable(sql, c =>
+            {
+                c.Parameters.AddWithValue("@desde", desde);
+                c.Parameters.AddWithValue("@hasta", hastaEx);
+            });
+
+            EnsureDetalleColumnsForPacientes();
+            dgvDetalle.DataSource = dt;
+            SetDetalleLayout(soloGrid: true);
+        }
+
+        // ===== Refrescar todo =====
         private void RefrescarTodo()
         {
             CargarKpisYTorta();
             CargarTopMedicosYRanking();
-            if (_detalleVisible) CargarDetalleEstado();
+
+            if (_detalleVisible)
+            {
+                if (_modo == ModoDetalle.PacientesTotales) CargarPacientesTotales();
+                else CargarDetalleEstado();
+            }
         }
 
-        // KPI + TORTA
+        // ===== KPIs + Pie =====
         private void CargarKpisYTorta()
         {
             var (desde, hastaEx) = RangoActual();
@@ -233,7 +423,7 @@ namespace SaludSoft
             WHERE t.fecha >= @d AND t.fecha < @h
             GROUP BY t.estado;";
 
-                    string sqlTotal = @"
+            string sqlTotal = @"
             SELECT COUNT(*) AS TotalMes
             FROM dbo.Turnos
             WHERE fecha >= @d AND fecha < @h;";
@@ -248,28 +438,24 @@ namespace SaludSoft
                 c.Parameters.AddWithValue("@h", hastaEx);
             }).AsEnumerable().Select(r => r.Field<int>("TotalMes")).DefaultIfEmpty(0).First();
 
-            // Obtener valores
             int conf = dtEstados.AsEnumerable()
-                .Where(r => r.Field<string>("Estado").Equals("Confirmado", StringComparison.OrdinalIgnoreCase))
+                .Where(r => (r.Field<string>("Estado") ?? "").Equals("Confirmado", StringComparison.OrdinalIgnoreCase))
                 .Select(r => r.Field<int>("Cant")).DefaultIfEmpty(0).First();
 
             int pend = dtEstados.AsEnumerable()
-                .Where(r => r.Field<string>("Estado").Equals("Pendiente", StringComparison.OrdinalIgnoreCase))
+                .Where(r => (r.Field<string>("Estado") ?? "").Equals("Pendiente", StringComparison.OrdinalIgnoreCase))
                 .Select(r => r.Field<int>("Cant")).DefaultIfEmpty(0).First();
 
             int canc = dtEstados.AsEnumerable()
-                .Where(r => r.Field<string>("Estado").Equals("Cancelado", StringComparison.OrdinalIgnoreCase))
+                .Where(r => (r.Field<string>("Estado") ?? "").Equals("Cancelado", StringComparison.OrdinalIgnoreCase))
                 .Select(r => r.Field<int>("Cant")).DefaultIfEmpty(0).First();
 
-            // Actualizar KPI Cards
             SetCard(pbTurnosConfirmados, lbValor, lbTituloConfirmado, "Turnos Confirmados", conf, total, 1);
             SetCard(pbTP, lbValorTP, lbTurnosPendientes, "Turnos Pendientes", pend, total, 3);
             SetCard(progressBar1, lbValorTC, lbTurnosCancelados, "Turnos Cancelados", canc, total, 2);
 
             LlenarPie(conf, pend, canc);
-
         }
-
 
         private void SetCard(ProgressBar pb, Label lbNumero, Label lbTitulo, string titulo, int valor, int total, int colorState)
         {
@@ -280,21 +466,31 @@ namespace SaludSoft
             SetPBState(pb, colorState);
         }
 
-        // ===== DETALLE (toggle) =====
+        // ===== Toggle Detalle por Estado =====
         private void ToggleDetalle(string estado)
         {
-            if (_detalleVisible && _estadoActual.Equals(estado, StringComparison.OrdinalIgnoreCase))
+            if (_detalleVisible && _modo == ModoDetalle.PorEstado &&
+                _estadoActual.Equals(estado, StringComparison.OrdinalIgnoreCase))
             {
                 _detalleVisible = false;
                 gbDetalle.Visible = false;
+                LayoutSections();
                 return;
             }
 
+            _modo = ModoDetalle.PorEstado;
             _estadoActual = estado;
-            CargarDetalleEstado();
-            gbDetalle.Text = $"Detalle de turnos (mostrando: {estado})";
+
+            _agendaVisible = false;
+            tlAgendaDisponible.Visible = false;
+
             _detalleVisible = true;
             gbDetalle.Visible = true;
+            gbDetalle.Text = $"Detalle de turnos (mostrando: {estado})";
+
+            CargarDetalleEstado();
+            SetDetalleLayout(soloGrid: false);
+            LayoutSections();
         }
 
         private void CargarDetalleEstado()
@@ -303,18 +499,19 @@ namespace SaludSoft
 
             string sql = @"
             SELECT 
-                (pa.apellido + ', ' + pa.nombre)   AS Paciente,
-                (pr.apellido + ' ' + pr.nombre)    AS Profesional,
-                es.nombre                          AS Especialidad,
-                FORMAT(t.fecha,'dd/MM/yyyy HH:mm') AS [Fecha/Hora]
+                pa.nombre                         AS Nombre,
+                pa.apellido                       AS Apellido,
+                pa.dni                            AS DNI,
+                pa.email                          AS Correo,
+                (pr.apellido + ' ' + pr.nombre)   AS Medico
             FROM dbo.Turnos t
             INNER JOIN dbo.Paciente pa                ON pa.id_paciente = t.id_paciente
             INNER JOIN dbo.Agenda a                   ON a.id_agenda = t.id_agenda
             INNER JOIN dbo.Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
             INNER JOIN dbo.Profesional pr             ON pr.id_profesional = pc.id_profesional
-            INNER JOIN dbo.Especialidad es            ON es.id_especialidad = pr.id_especialidad
-            WHERE t.fecha >= @desde AND t.fecha < @hasta AND t.estado = @estado
-            ORDER BY t.fecha;";
+            WHERE t.fecha >= @desde AND t.fecha < @hasta 
+              AND ISNULL(t.estado,'Pendiente') = @estado
+            ORDER BY pr.apellido, pr.nombre, pa.apellido, pa.nombre;";
 
             var dt = GetTable(sql, c =>
             {
@@ -323,13 +520,9 @@ namespace SaludSoft
                 c.Parameters.AddWithValue("@estado", _estadoActual);
             });
 
-            dgvDetalle.AutoGenerateColumns = false;
+            EnsureDetalleColumnsForEstado();
             dgvDetalle.DataSource = dt;
-
-            if (dgvDetalle.Columns.Contains("colPaciente")) dgvDetalle.Columns["colPaciente"].DataPropertyName = "Paciente";
-            if (dgvDetalle.Columns.Contains("colProfesional")) dgvDetalle.Columns["colProfesional"].DataPropertyName = "Profesional";
-            if (dgvDetalle.Columns.Contains("colEspecialidad")) dgvDetalle.Columns["colEspecialidad"].DataPropertyName = "Especialidad";
-            if (dgvDetalle.Columns.Contains("colFechaHora")) dgvDetalle.Columns["colFechaHora"].DataPropertyName = "Fecha/Hora";
+            SetDetalleLayout(soloGrid: false);
         }
 
         // ===== TOP MÉDICOS + RANKING =====
@@ -338,19 +531,19 @@ namespace SaludSoft
             var (desde, hastaEx) = RangoActual();
 
             string sqlTop = @"
-SELECT TOP (5)
-  pr.id_profesional,
-  (pr.apellido + ' ' + pr.nombre) AS Medico,
-  es.nombre                       AS Especialidad,
-  COUNT(*)                        AS Consultas
-FROM dbo.Turnos t
-INNER JOIN dbo.Agenda a                   ON a.id_agenda = t.id_agenda
-INNER JOIN dbo.Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
-INNER JOIN dbo.Profesional pr             ON pr.id_profesional = pc.id_profesional
-INNER JOIN dbo.Especialidad es            ON es.id_especialidad = pr.id_especialidad
-WHERE t.fecha >= @desde AND t.fecha < @hasta AND t.estado = 'Confirmado'
-GROUP BY pr.id_profesional, pr.apellido, pr.nombre, es.nombre
-ORDER BY Consultas DESC;";
+            SELECT TOP (5)
+              pr.id_profesional,
+              (pr.apellido + ' ' + pr.nombre) AS Medico,
+              es.nombre                       AS Especialidad,
+              COUNT(*)                        AS Consultas
+            FROM dbo.Turnos t
+            INNER JOIN dbo.Agenda a                   ON a.id_agenda = t.id_agenda
+            INNER JOIN dbo.Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
+            INNER JOIN dbo.Profesional pr             ON pr.id_profesional = pc.id_profesional
+            INNER JOIN dbo.Especialidad es            ON es.id_especialidad = pr.id_especialidad
+            WHERE t.fecha >= @desde AND t.fecha < @hasta AND t.estado = 'Confirmado'
+            GROUP BY pr.id_profesional, pr.apellido, pr.nombre, es.nombre
+            ORDER BY Consultas DESC;";
 
             var dtTop = GetTable(sqlTop, c =>
             {
@@ -362,6 +555,7 @@ ORDER BY Consultas DESC;";
                 SeriesChartType.Column,
                 EnsureChartArea(chTopMedicos, "caTop"),
                 null);
+
             s.Points.Clear();
             foreach (DataRow r in dtTop.Rows)
             {
@@ -373,8 +567,8 @@ ORDER BY Consultas DESC;";
             }
 
             int totalConf = GetScalarInt(@"
-SELECT COUNT(*) FROM dbo.Turnos
-WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
+            SELECT COUNT(*) FROM dbo.Turnos
+            WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
                 c => { c.Parameters.AddWithValue("@d", desde); c.Parameters.AddWithValue("@h", hastaEx); });
 
             var dtRanking = new DataTable();
@@ -392,7 +586,7 @@ WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
                 dtRanking.Rows.Add(pos++, r["Medico"], r["Especialidad"], cant, pct);
             }
 
-            dgvRankingMedicos.AutoGenerateColumns = false; // evita duplicados
+            dgvRankingMedicos.AutoGenerateColumns = false;
             dgvRankingMedicos.DataSource = dtRanking;
 
             if (dgvRankingMedicos.Columns.Contains("colPos")) dgvRankingMedicos.Columns["colPos"].DataPropertyName = "Pos";
@@ -402,7 +596,7 @@ WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
             if (dgvRankingMedicos.Columns.Contains("colPorcentaje")) dgvRankingMedicos.Columns["colPorcentaje"].DataPropertyName = "Porcentaje";
         }
 
-        // ===== Estética ranking =====
+        // ===== Estética Ranking =====
         private void dgvRankingMedicos_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
             var grid = (DataGridView)sender;
@@ -426,7 +620,6 @@ WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
                     new RectangleF(cx - radius, cy - radius, radius * 2, radius * 2), sf);
             }
         }
-
         private void dgvRankingMedicos_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -457,16 +650,86 @@ WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
             }
         }
 
-        // ==== LAYOUT SECCIONES====
-        private const int SPACING = 10; 
+        // ===== Layout Secciones  =====
+        private const int SPACING = 10;
 
-   
-        private void LayoutSections()
+        private void CrearTableLayoutDetalle()
+        {
+            if (gbDetalle == null || dgvDetalle == null || chPieEstados == null) return;
+            if (gbDetalle.Controls.Find("tlDetalle", true).FirstOrDefault() != null) return;
+
+            var tlDetalle = new TableLayoutPanel
+            {
+                Name = "tlDetalle",
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                RowCount = 1,
+                BackColor = Color.Transparent
+            };
+
+            tlDetalle.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55f));
+            tlDetalle.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45f));
+            tlDetalle.RowStyles.Add(new RowStyle(SizeType.Percent, 100f));
+
+            gbDetalle.Controls.Remove(dgvDetalle);
+            gbDetalle.Controls.Remove(chPieEstados);
+
+            dgvDetalle.Dock = DockStyle.Fill;
+            chPieEstados.Dock = DockStyle.Fill;
+
+            tlDetalle.Controls.Add(dgvDetalle, 0, 0);
+            tlDetalle.Controls.Add(chPieEstados, 1, 0);
+
+            gbDetalle.Controls.Add(tlDetalle);
+        }
+
+        private void SetDetalleLayout(bool soloGrid)
+        {
+            CrearTableLayoutDetalle();
+            var tlDetalle = gbDetalle.Controls.Find("tlDetalle", true).FirstOrDefault() as TableLayoutPanel;
+            if (tlDetalle == null) return;
+
+            if (soloGrid)
+            {
+                tlDetalle.ColumnStyles[0].Width = 100f;
+                tlDetalle.ColumnStyles[1].Width = 0f;
+                chPieEstados.Visible = false;
+
+                if (_gbDetalleResizeHooked)
+                {
+                    gbDetalle.Resize -= GbDetalle_Resize;
+                    _gbDetalleResizeHooked = false;
+                }
+            }
+            else
+            {
+                tlDetalle.ColumnStyles[0].Width = 55f;
+                tlDetalle.ColumnStyles[1].Width = 45f;
+                chPieEstados.Visible = true;
+
+                if (!_gbDetalleResizeHooked)
+                {
+                    gbDetalle.Resize += GbDetalle_Resize;
+                    _gbDetalleResizeHooked = true;
+                }
+            }
+
+            dgvDetalle.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvDetalle.RowHeadersVisible = false;
+            dgvDetalle.Invalidate();
+        }
+
+        private void GbDetalle_Resize(object sender, EventArgs e)
         {
             
+        }
+
+        private void LayoutSections()
+        {
+            SuspendLayout();
+
             int y = tlKpis.Bottom + SPACING;
 
-           
             if (_detalleVisible)
             {
                 gbDetalle.Visible = true;
@@ -476,27 +739,34 @@ WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
             else
             {
                 gbDetalle.Visible = false;
-                
             }
 
+            if (tlAgendaDisponible != null)
+            {
+                tlAgendaDisponible.Top = y;
+                tlAgendaDisponible.Visible = _agendaVisible;
+                if (_agendaVisible)
+                    y = tlAgendaDisponible.Bottom + SPACING;
+            }
+
+            gbTopMedicos.Visible = !_agendaVisible && !_detalleVisible;
             gbTopMedicos.Top = y;
             y = gbTopMedicos.Bottom + SPACING;
 
-            
-            var btnImprimir = Controls.Find("btnImprimir", true).FirstOrDefault() as Control;
+            var btnImprimir = Controls.Find("btnImprimir", true).FirstOrDefault();
             if (btnImprimir != null)
             {
-               
                 btnImprimir.Top = y;
                 y = btnImprimir.Bottom + SPACING;
             }
 
-           
             if (AutoScroll)
                 AutoScrollMinSize = new Size(0, y + 20);
+
+            ResumeLayout();
         }
 
-        // ====== PIE CHART HELPERS ======
+        // ===== Pie config + data =====
         private void ConfigurarPie()
         {
             var ca = EnsureChartArea(chPieEstados, "ca");
@@ -504,284 +774,602 @@ WHERE fecha >= @d AND fecha < @h AND estado='Confirmado';",
 
             var s = EnsureSeries(chPieEstados, "Estados", SeriesChartType.Pie, ca, lg);
             s.IsValueShownAsLabel = true;
-            s.Label = "#PERCENT{P0}";          
-            s["PieLabelStyle"] = "Outside";    
-            s["PieLineColor"] = "Gray";        
-            s.LegendText = "#VALX";            
+            s.Label = "#PERCENT{P0}";
+            s["PieLabelStyle"] = "Outside";
+            s["PieLineColor"] = "Gray";
+            s.LegendText = "#VALX";
 
-           
             chPieEstados.Legends[lg].Docking = Docking.Bottom;
             chPieEstados.Legends[lg].Alignment = StringAlignment.Center;
         }
 
-       
         private void LlenarPie(int conf, int pend, int canc)
         {
             var s = chPieEstados.Series["Estados"];
             s.Points.Clear();
 
-           
-            var verde = Color.FromArgb(38, 166, 91);   // Confirmados
-            var amarillo = Color.FromArgb(247, 202, 24);  // Pendientes
-            var rojo = Color.FromArgb(231, 76, 60);   // Cancelados
+            var verde = Color.FromArgb(38, 166, 91);
+            var amarillo = Color.FromArgb(247, 202, 24);
+            var rojo = Color.FromArgb(231, 76, 60);
 
             var data = new[]
             {
-        ("Confirmados", conf, verde),
-        ("Pendientes",  pend, amarillo),
-        ("Cancelados",  canc, rojo)
-    };
+                ("Confirmados", conf, verde),
+                ("Pendientes",  pend, amarillo),
+                ("Cancelados",  canc, rojo)
+            };
 
             int total = Math.Max(conf + pend + canc, 0);
             foreach (var item in data)
             {
-                int idx = s.Points.AddY(item.Item2); 
-                var p = s.Points[idx];               
+                int idx = s.Points.AddY(item.Item2);
+                var p = s.Points[idx];
 
-                p.AxisLabel = item.Item1;           
-                p.LegendText = item.Item1;           
+                p.AxisLabel = item.Item1;
+                p.LegendText = item.Item1;
                 p.Color = item.Item3;
                 p.Label = total == 0 ? "" : "#PERCENT{P0}";
                 p.ToolTip = $"{item.Item1}: {item.Item2} (#PERCENT{{P0}})";
             }
-
         }
 
-        private static int FindColumnIndex(DataGridView dgv, params string[] candidates)
+        // ===== Utilidad TryMap para DataGridView =====
+        private static void TryMap(DataGridView dgv, string colName, string dataProp)
         {
-            if (dgv == null) return -1;
-            // por Name
-            for (int i = 0; i < dgv.Columns.Count; i++)
-                if (candidates.Any(c => string.Equals(dgv.Columns[i].Name, c, StringComparison.OrdinalIgnoreCase)))
-                    return i;
-            // por HeaderText
-            for (int i = 0; i < dgv.Columns.Count; i++)
-                if (candidates.Any(c => string.Equals(dgv.Columns[i].HeaderText, c, StringComparison.OrdinalIgnoreCase)))
-                    return i;
-            return -1;
+            var c = (dgv?.Columns.Contains(colName) ?? false) ? dgv.Columns[colName] : null;
+            if (c != null) c.DataPropertyName = dataProp;
         }
 
-
-        private DataGridView TryGetGridByEstado(string estado)
+        // ===== Card Agenda Disponible (abre/cierra) =====
+        private void WireAgendaDisponibleCard()
         {
-            estado = (estado ?? "").ToLowerInvariant(); // "confirmado" | "pendiente" | "cancelado"
-            foreach (Control c in this.Controls)
+            var pnl = this.Controls.Find("panelDisponibilidad", true).FirstOrDefault();
+            if (pnl == null) return;
+
+            void hook(Control c)
             {
-                if (c is DataGridView dgv)
+                c.Cursor = Cursors.Hand;
+                c.Click += (s, e) => ToggleAgendaDisponible();
+                c.DoubleClick += (s, e) => ToggleAgendaDisponible();
+                foreach (Control ch in c.Controls) hook(ch);
+            }
+            hook(pnl);
+        }
+
+        private void ToggleAgendaDisponible(bool? forceOpen = null)
+        {
+            bool abrir = forceOpen ?? !_agendaVisible;
+
+            if (abrir)
+            {
+                _agendaVisible = true;
+                _detalleVisible = false;
+                gbDetalle.Visible = false;
+
+                tlAgendaDisponible.Visible = true;
+                tlAgendaDisponible.BringToFront();
+                BuscarAgendaDisponible();
+            }
+            else
+            {
+                _agendaVisible = false;
+                tlAgendaDisponible.Visible = false;
+            }
+            LayoutSections();
+        }
+
+        // ===== Inicializa bloque Agenda Disponible =====
+        private void InicializarAgendaDisponibleUI()
+        {
+            if (tlAgendaDisponible == null) return;
+
+            if (dtADesde != null)
+            {
+                dtADesde.Format = DateTimePickerFormat.Custom;
+                dtADesde.CustomFormat = "dd/MM/yyyy";
+                dtADesde.Value = DateTime.Today;
+            }
+            if (dtAHasta != null)
+            {
+                dtAHasta.Format = DateTimePickerFormat.Custom;
+                dtAHasta.CustomFormat = "dd/MM/yyyy";
+                dtAHasta.Value = DateTime.Today;
+            }
+
+            if (btFiltrarAD != null) btFiltrarAD.Click += (s, e) => BuscarAgendaDisponible();
+            if (btCerrarAD != null) btCerrarAD.Click += (s, e) => ToggleAgendaDisponible(false);
+
+            if (cbMedico != null) cbMedico.KeyDown += (s, e) => { if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; BuscarAgendaDisponible(); } };
+            if (dtADesde != null) dtADesde.KeyDown += (s, e) => { if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; BuscarAgendaDisponible(); } };
+            if (dtAHasta != null) dtAHasta.KeyDown += (s, e) => { if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; BuscarAgendaDisponible(); } };
+
+            if (dgAgendaLibre != null)
+            {
+                dgAgendaLibre.AutoGenerateColumns = false;
+                TryMap(dgAgendaLibre, "colFecha", "Fecha");
+                TryMap(dgAgendaLibre, "colHora", "Hora");
+                TryMap(dgAgendaLibre, "columMedico", "Profesional");          
+                TryMap(dgAgendaLibre, "columEspecialidad", "Especialidad");
+                TryMap(dgAgendaLibre, "columConsultorio", "Consultorio");
+
+                dgAgendaLibre.RowHeadersVisible = false;
+                dgAgendaLibre.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                dgAgendaLibre.MultiSelect = false;
+                dgAgendaLibre.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            }
+
+            CargarMedicosCombo();
+        }
+
+        // ===== Helpers agenda =====
+        private static int DiaSemanaNumeroEs(string nombreEs)
+        {
+            if (string.IsNullOrWhiteSpace(nombreEs)) return 0;
+
+            string s = nombreEs.Trim().ToLowerInvariant();
+            s = s.Replace("á", "a").Replace("é", "e").Replace("í", "i")
+                 .Replace("ó", "o").Replace("ú", "u");
+
+            if (int.TryParse(s, out int n) && n >= 1 && n <= 7) return n;
+
+            switch (s)
+            {
+                case "lun": case "lunes": return 1;
+                case "mar": case "martes": return 2;
+                case "mie": case "miercoles": return 3;
+                case "jue": case "jueves": return 4;
+                case "vie": case "viernes": return 5;
+                case "sab": case "sabado": return 6;
+                case "dom": case "domingo": return 7;
+                default: return 0;
+            }
+        }
+
+        private const int _slotMin = 30; 
+
+        private DataTable GenerarLibresDesdeAgenda(DateTime desde, DateTime hastaEx, int idMedico)
+        {
+            const string SQL_AGENDAS = @"
+            SELECT 
+                a.id_agenda,
+                pc.id_profesional,
+                a.diaSemana,
+                a.horaInicio,
+                a.horaFin,
+                (pr.apellido + ' ' + pr.nombre) AS Profesional,
+                es.nombre AS Especialidad,
+                ISNULL(c.descripcion,'') AS Consultorio
+            FROM dbo.Agenda a
+            INNER JOIN dbo.Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
+            INNER JOIN dbo.Profesional pr             ON pr.id_profesional = pc.id_profesional
+            LEFT  JOIN dbo.Especialidad es            ON es.id_especialidad = pr.id_especialidad
+            LEFT  JOIN dbo.Consultorio c              ON c.id_consultorio = pc.id_consultorio
+            /**FILTRO_MEDICO**/";
+
+            const string SQL_OCUPADOS = @"
+            SELECT t.id_agenda, t.fecha
+            FROM dbo.Turnos t
+            WHERE t.fecha >= @d AND t.fecha < @h
+              AND ISNULL(t.estado,'Pendiente') <> 'Cancelado'
+              AND t.id_paciente IS NOT NULL;";
+
+            var agendas = new DataTable();
+            var ocupados = new DataTable();
+
+            using (var cn = Conexion.GetConnection())
+            {
+                string sqlA = SQL_AGENDAS;
+                if (idMedico > 0) sqlA = sqlA.Replace("/**FILTRO_MEDICO**/", "WHERE pc.id_profesional = @idMedico");
+                else sqlA = sqlA.Replace("/**FILTRO_MEDICO**/", "");
+
+                using (var da = new SqlDataAdapter(sqlA, cn))
                 {
-                    string n = (dgv.Name ?? "").ToLowerInvariant();
-                    if (estado.StartsWith("conf") && n.Contains("confirm")) return dgv;
-                    if (estado.StartsWith("pend") && n.Contains("pend")) return dgv;
-                    if (estado.StartsWith("canc") && n.Contains("cancel")) return dgv;
+                    if (idMedico > 0) da.SelectCommand.Parameters.AddWithValue("@idMedico", idMedico);
+                    da.Fill(agendas);
+                }
+                using (var da = new SqlDataAdapter(SQL_OCUPADOS, cn))
+                {
+                    da.SelectCommand.Parameters.AddWithValue("@d", desde);
+                    da.SelectCommand.Parameters.AddWithValue("@h", hastaEx);
+                    da.Fill(ocupados);
                 }
             }
-            return null;
-        }
-        private static string ColumnLetter(int colIndex)
-        {
-            string col = "";
-            while (colIndex > 0)
+
+            var setOcupados = new HashSet<string>(
+                ocupados.AsEnumerable().Select(r => $"{r.Field<int>("id_agenda")}|{r.Field<DateTime>("fecha"):yyyyMMddHHmm}")
+            );
+
+            var libres = new DataTable();
+            libres.Columns.Add("Fecha", typeof(DateTime));
+            libres.Columns.Add("Hora", typeof(string));
+            libres.Columns.Add("Profesional", typeof(string));
+            libres.Columns.Add("Especialidad", typeof(string));
+            libres.Columns.Add("Consultorio", typeof(string));
+            libres.Columns.Add("Medico", typeof(string));
+
+            for (DateTime dia = desde.Date; dia < hastaEx.Date; dia = dia.AddDays(1))
             {
-                int mod = (colIndex - 1) % 26;
-                col = (char)('A' + mod) + col;
-                colIndex = (colIndex - mod) / 26;
+                int nDia = ((int)dia.DayOfWeek + 6) % 7 + 1; // lunes=1 ... domingo=7
+                foreach (DataRow a in agendas.Rows)
+                {
+                    int nAgenda = DiaSemanaNumeroEs(a["diaSemana"]?.ToString());
+                    if (nAgenda != nDia) continue;
+
+                    var hi = (TimeSpan)a["horaInicio"];
+                    var hf = (TimeSpan)a["horaFin"];
+                    int idAgenda = (int)a["id_agenda"];
+
+                    DateTime fhi = dia.Date + hi;
+                    DateTime fhf = dia.Date + hf;
+
+                    for (DateTime fh = fhi; fh < fhf; fh = fh.AddMinutes(_slotMin))
+                    {
+                        string clave = $"{idAgenda}|{fh:yyyyMMddHHmm}";
+                        if (setOcupados.Contains(clave)) continue;
+
+                        libres.Rows.Add(
+                            fh.Date,
+                            fh.ToString("HH:mm"),
+                            a["Profesional"]?.ToString() ?? "",
+                            a["Especialidad"]?.ToString() ?? "",
+                            a["Consultorio"]?.ToString() ?? "",
+                            a["Profesional"]?.ToString() ?? ""
+                        );
+                    }
+                }
             }
-            return col;
+
+            return libres;
+        }
+
+        // ===== Cargar combo médicos =====
+        private void CargarMedicosCombo()
+        {
+            if (cbMedico == null) return;
+            if (_cargandoMedicos) return;
+
+            try
+            {
+                _cargandoMedicos = true;
+
+                const string SQL = @"
+                SELECT pr.id_profesional AS Id, (pr.apellido + ' ' + pr.nombre) AS Nombre
+                FROM dbo.Profesional pr
+                ORDER BY pr.apellido, pr.nombre;";
+
+                using (var cn = Conexion.GetConnection())
+                using (var da = new SqlDataAdapter(SQL, cn))
+                {
+                    var dt = new DataTable();
+                    da.Fill(dt);
+
+                    var row = dt.NewRow();
+                    row["Id"] = 0;
+                    row["Nombre"] = "Todos los médicos";
+                    dt.Rows.InsertAt(row, 0);
+
+                    cbMedico.DisplayMember = "Nombre";
+                    cbMedico.ValueMember = "Id";
+                    cbMedico.DataSource = dt;
+                }
+            }
+            finally
+            {
+                _cargandoMedicos = false;
+            }
+        }
+
+        // ===== Buscar Agenda Disponible =====
+        private void BuscarAgendaDisponible()
+        {
+            if (dgAgendaLibre == null) return;
+
+            DateTime d = (dtADesde?.Value.Date ?? DateTime.Today);
+            DateTime hEx = (dtAHasta?.Value.Date ?? DateTime.Today).AddDays(1);
+
+            int idMedico = 0;
+            if (cbMedico != null && cbMedico.SelectedValue != null)
+                int.TryParse(cbMedico.SelectedValue.ToString(), out idMedico);
+
+            string sqlTurnosLibres = @"
+            SELECT 
+                CAST(t.fecha AS date)             AS Fecha,
+                CONVERT(varchar(5), t.fecha,108)  AS Hora,
+                (pr.apellido + ' ' + pr.nombre)   AS Medico,
+                es.nombre                         AS Especialidad,
+                ISNULL(c.descripcion,'')          AS Consultorio
+            FROM dbo.Turnos t
+            INNER JOIN dbo.Agenda a                    ON a.id_agenda = t.id_agenda
+            INNER JOIN dbo.Profesional_Consultorio pc  ON pc.id_profesional_consultorio = a.id_profesional_consultorio
+            INNER JOIN dbo.Profesional pr              ON pr.id_profesional = pc.id_profesional
+            LEFT  JOIN dbo.Especialidad es             ON es.id_especialidad = pr.id_especialidad
+            LEFT  JOIN dbo.Consultorio c               ON c.id_consultorio = pc.id_consultorio
+            WHERE t.fecha >= @d AND t.fecha < @h
+              AND (t.id_paciente IS NULL OR ISNULL(t.estado,'') = 'Cancelado')
+              /**FILTRO_MEDICO**/
+            ORDER BY t.fecha;";
+
+            if (idMedico > 0)
+                sqlTurnosLibres = sqlTurnosLibres.Replace("/**FILTRO_MEDICO**/", "AND pr.id_profesional = @idMedico");
+            else
+                sqlTurnosLibres = sqlTurnosLibres.Replace("/**FILTRO_MEDICO**/", "");
+
+            DataTable dtLibres;
+            using (var cn = Conexion.GetConnection())
+            using (var da = new SqlDataAdapter(sqlTurnosLibres, cn))
+            {
+                da.SelectCommand.Parameters.AddWithValue("@d", d);
+                da.SelectCommand.Parameters.AddWithValue("@h", hEx);
+                if (idMedico > 0) da.SelectCommand.Parameters.AddWithValue("@idMedico", idMedico);
+                dtLibres = new DataTable();
+                da.Fill(dtLibres);
+            }
+
+            if (dtLibres.Rows.Count == 0)
+                dtLibres = GenerarLibresDesdeAgenda(d, hEx, idMedico);
+
+            TryMap(dgAgendaLibre, "colFecha", "Fecha");
+            TryMap(dgAgendaLibre, "colHora", "Hora");
+            TryMap(dgAgendaLibre, "columMedico", "Profesional"); 
+            TryMap(dgAgendaLibre, "columEspecialidad", "Especialidad");
+            TryMap(dgAgendaLibre, "columConsultorio", "Consultorio");
+
+            dgAgendaLibre.AutoGenerateColumns = false;
+            dgAgendaLibre.DataSource = dtLibres;
+
+            ActualizarKpiAgendaDisponible();
+        }
+
+        // ===== KPI Agenda Disponible =====
+        private void ActualizarKpiAgendaDisponible()
+        {
+            DateTime d = (dtADesde?.Value.Date ?? DateTime.Today);
+            DateTime hEx = (dtAHasta?.Value.Date ?? DateTime.Today).AddDays(1);
+
+            int idMedico = 0;
+            if (cbMedico?.SelectedValue != null)
+                int.TryParse(cbMedico.SelectedValue.ToString(), out idMedico);
+
+            string sql = @"
+            SELECT COUNT(*)
+            FROM dbo.Turnos t
+            INNER JOIN dbo.Agenda a                   ON a.id_agenda = t.id_agenda
+            INNERINNER JOIN dbo.Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
+            WHERE t.fecha >= @d AND t.fecha < @h
+              AND (t.id_paciente IS NULL OR ISNULL(t.estado,'') = 'Cancelado')
+              /**FILTRO_MEDICO**/;".Replace("INNERINNER", "INNER"); // (solo para evitar confusiones al pegar)
+
+            if (idMedico > 0)
+                sql = sql.Replace("/**FILTRO_MEDICO**/", "AND pc.id_profesional = @idMedico");
+            else
+                sql = sql.Replace("/**FILTRO_MEDICO**/", "");
+
+            int libres = GetScalarInt(sql, c =>
+            {
+                c.Parameters.AddWithValue("@d", d);
+                c.Parameters.AddWithValue("@h", hEx);
+                if (idMedico > 0) c.Parameters.AddWithValue("@idMedico", idMedico);
+            });
+
+            if (lbTituloDisponibilidad != null) lbTituloDisponibilidad.Text = "Agenda Disponible";
+            if (lbValorDisponibilidad != null) lbValorDisponibilidad.Text = libres.ToString();
+            if (pbDisponibilidad != null)
+            {
+                pbDisponibilidad.Maximum = Math.Max(libres, 1);
+                pbDisponibilidad.Value = Math.Min(libres, pbDisponibilidad.Maximum);
+                SetPBState(pbDisponibilidad, 1);
+            }
         }
 
         
-        private (int conf, int pend, int canc) GetTotalsFromChartOrFallback()
+        private void lReportesMes_Click(object sender, EventArgs e)
         {
-            int tConf = 0, tPend = 0, tCanc = 0;
-
            
-            if (chPieEstados?.Series.Count > 0 && chPieEstados.Series[0].Points.Count > 0)
-            {
-                foreach (var p in chPieEstados.Series[0].Points)
-                {
-                    string lbl = (p.AxisLabel ?? p.LegendText ?? "").Trim().ToLowerInvariant();
-                    int val = (int)p.YValues.FirstOrDefault();
-
-                    if (lbl.Contains("confirm")) tConf = val;
-                    else if (lbl.Contains("pend")) tPend = val;
-                    else if (lbl.Contains("cancel")) tCanc = val;
-                }
-               
-                return (tConf, tPend, tCanc);
-            }
-
-            
-            int countGrid = dgvDetalle?.Rows.Cast<DataGridViewRow>().Count(r => !r.IsNewRow) ?? 0;
-            string estado = _estadoActual?.Trim() ?? "";
-            if (estado.StartsWith("conf", System.StringComparison.OrdinalIgnoreCase)) tConf = countGrid;
-            else if (estado.StartsWith("pend", System.StringComparison.OrdinalIgnoreCase)) tPend = countGrid;
-            else if (estado.StartsWith("canc", System.StringComparison.OrdinalIgnoreCase)) tCanc = countGrid;
-
-            return (tConf, tPend, tCanc);
+        }
+        private void lbValorPacientes_Click(object sender, EventArgs e)
+        {
+           
         }
 
-        /*private int DumpGrid(Excel.Worksheet ws, DataGridView dgv, int filaInicio, int colInicio)
-        {
-            if (dgv == null || dgv.Rows.Count == 0) return filaInicio;
-
-            // Cabeceras
-            for (int c = 0; c < dgv.Columns.Count; c++)
-            {
-                ws.Cells[filaInicio, colInicio + c] = dgv.Columns[c].HeaderText;
-                ((Excel.Range)ws.Cells[filaInicio, colInicio + c]).Font.Bold = true;
-            }
-            // Datos
-            int rOut = filaInicio + 1;
-            foreach (DataGridViewRow r in dgv.Rows)
-            {
-                if (r.IsNewRow) continue;
-                for (int c = 0; c < dgv.Columns.Count; c++)
-                    ws.Cells[rOut, colInicio + c] = r.Cells[c].Value?.ToString() ?? "";
-                rOut++;
-            }
-            ((Excel.Range)ws.Columns).AutoFit();
-            return rOut - 1;
-        }*/
-        // boton volver 
         private void btnVolver_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+        // ====== HELPERS PDF ======
+        private static PdfFontAlias FTitle(int size)
+            => PdfFontFactory.GetFont("Helvetica", size, PdfFontAlias.BOLD, PdfBaseColor.BLACK);
+        private static PdfFontAlias FText(int size)
+            => PdfFontFactory.GetFont("Helvetica", size, PdfFontAlias.NORMAL, PdfBaseColor.BLACK);
+        private static PdfFontAlias FSmall(int size)
+            => PdfFontFactory.GetFont("Helvetica", size, PdfFontAlias.NORMAL, new PdfBaseColor(60, 60, 60));
 
-        private void lReportesMes_Click(object sender, EventArgs e)
+        private static PdfImageAlias ChartToImg(Chart chart, int maxWidth, int maxHeight)
         {
-
+            using (var ms = new MemoryStream())
+            {
+                chart.SaveImage(ms, ChartImageFormat.Png);
+                var img = PdfImageAlias.GetInstance(ms.ToArray());
+                img.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
+                img.SpacingBefore = 6f;
+                img.SpacingAfter = 6f;
+                img.ScaleToFit(maxWidth, maxHeight);
+                return img;
+            }
         }
 
-        /*private void btnImprimir_Click(object sender, EventArgs e)
+        private static PdfPTableAlias GridToPdfTable(DataGridView grid)
         {
-            Excel.Application app = null;
-            Excel.Workbook wb = null;
-            Excel.Worksheet ws1 = null, ws2 = null;
-            Excel.ChartObjects chartObjs1 = null, chartObjs2 = null;
-            Excel.ChartObject chPieObj = null, chColObj = null;
+            var cols = grid.Columns.Cast<DataGridViewColumn>()
+                         .Where(c => c.Visible)
+                         .OrderBy(c => c.DisplayIndex)
+                         .ToList();
 
+            var table = new PdfPTableAlias(cols.Count)
+            {
+                WidthPercentage = 100f,
+                SpacingBefore = 6f,
+                SpacingAfter = 6f
+            };
+
+            // Encabezados
+            foreach (var c in cols)
+            {
+                var cell = new PdfPCellAlias(new PdfPhraseAlias(c.HeaderText, FText(10)))
+                {
+                    BackgroundColor = new PdfBaseColor(230, 240, 235),
+                    Padding = 4f
+                };
+                table.AddCell(cell);
+            }
+
+            // Filas
+            foreach (DataGridViewRow r in grid.Rows)
+            {
+                if (r.IsNewRow) continue;
+                foreach (var c in cols)
+                {
+                    var val = r.Cells[c.Index].Value?.ToString() ?? "";
+                    var cell = new PdfPCellAlias(new PdfPhraseAlias(val, FText(10))) { Padding = 3f };
+                    table.AddCell(cell);
+                }
+            }
+
+            return table;
+        }
+
+        private void AddSectionTitle(PdfDoc doc, string text)
+        {
+            var p = new PdfParagraphAlias(text, FTitle(12))
+            {
+                SpacingBefore = 10f,
+                SpacingAfter = 4f,
+                Alignment = iTextSharp.text.Element.ALIGN_LEFT
+            };
+            doc.Add(p);
+        }
+        private void btnImprimir_Click(object sender, EventArgs e)
+        {
             try
             {
-                if ((dgvDetalle?.Rows.Count ?? 0) == 0 && (dgvRankingMedicos?.Rows.Count ?? 0) == 0)
+                // Verifica que haya algo para imprimir
+                bool hayAlgo =
+                    (dgvDetalle?.Rows.Count ?? 0) > 0 ||
+                    (dgvRankingMedicos?.Rows.Count ?? 0) > 0 ||
+                    (chPieEstados?.Series.Count ?? 0) > 0 ||
+                    (chTopMedicos?.Series.Count ?? 0) > 0;
+
+                if (!hayAlgo)
                 {
-                    MessageBox.Show("No hay datos para exportar.", "Reportes",
+                    MessageBox.Show("No hay datos para imprimir.", "Reportes",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                var (tConf, tPend, tCanc) = GetTotalsFromChartOrFallback();
-
-                app = new Excel.Application { Visible = false };
-                wb = app.Workbooks.Add(Type.Missing);
-
-                // -------- Hoja 1: Resumen + detalle (dgvDetalle) --------
-                ws1 = wb.ActiveSheet;
-                ws1.Name = "Turnos por Estado";
-
-                ws1.Cells[1, 1] = "Estado"; ws1.Cells[1, 2] = "Cantidad";
-                ((Excel.Range)ws1.Range["A1", "B1"]).Font.Bold = true;
-
-                ws1.Cells[2, 1] = "Confirmado"; ws1.Cells[2, 2] = tConf;
-                ws1.Cells[3, 1] = "Pendiente"; ws1.Cells[3, 2] = tPend;
-                ws1.Cells[4, 1] = "Cancelado"; ws1.Cells[4, 2] = tCanc;
-                ws1.Cells[5, 1] = "Total"; ws1.Cells[5, 2] = tConf + tPend + tCanc;
-                ((Excel.Range)ws1.Cells[5, 1]).Font.Bold = true;
-                ((Excel.Range)ws1.Cells[5, 2]).Font.Bold = true;
-
-                chartObjs1 = (Excel.ChartObjects)ws1.ChartObjects();
-                chPieObj = chartObjs1.Add(350, 0, 480, 320);
-                Excel.Chart chPie = chPieObj.Chart;
-                chPie.ChartType = Excel.XlChartType.xlPie;
-                chPie.SetSourceData(ws1.Range["A2", "B4"]);
-                chPie.HasTitle = true;
-                chPie.ChartTitle.Text = "Distribución de turnos";
-                chPie.HasLegend = true;
-                chPie.Legend.Position = Excel.XlLegendPosition.xlLegendPositionRight;
-                chPie.ApplyDataLabels(Excel.XlDataLabelsType.xlDataLabelsShowPercent);
-                chPie.SeriesCollection(1).ApplyDataLabels(Excel.XlDataLabelsType.xlDataLabelsShowValue);
-                chPie.SeriesCollection(1).DataLabels().ShowPercentage = true;
-                chPie.SeriesCollection(1).DataLabels().ShowValue = true;
-
-                int fila = 7;
-                ws1.Cells[fila, 1] = "Detalle de turnos";
-                ((Excel.Range)ws1.Cells[fila, 1]).Font.Bold = true;
-                fila++;
-                DumpGrid(ws1, dgvDetalle, fila, 1);
-
-                // -------- Hoja 2: Ranking Médicos (dgvRankingMedicos) --------
-                if (dgvRankingMedicos != null && dgvRankingMedicos.Rows.Count > 0)
+                string sugerido = $"Reporte_SaludSoft_{DateTime.Now:yyyyMMdd_HHmm}.pdf";
+                using (var sfd = new SaveFileDialog { FileName = sugerido, Filter = "Archivo PDF (*.pdf)|*.pdf" })
                 {
-                    ws2 = wb.Sheets.Add(After: ws1);
-                    ws2.Name = "Ranking Médicos";
+                    if (sfd.ShowDialog() != DialogResult.OK) return;
 
-                    int lastRow = DumpGrid(ws2, dgvRankingMedicos, 1, 1);
+                    // A4 horizontal favorece las tablas anchas; si preferís vertical, usá PdfPageSize.A4
+                    var doc = new PdfDoc(PdfPageSize.A4.Rotate(), 36, 36, 36, 36);
+                    var fs = new FileStream(sfd.FileName, FileMode.Create);
+                    var writer = PdfWriterAlias.GetInstance(doc, fs);
 
-                    
-                    int idxMedico = dgvRankingMedicos.Columns["colMedico"].Index + 1;
-                    int idxCant = dgvRankingMedicos.Columns["colConsultas"].Index + 1;
+                    doc.Open();
 
-                    string x1 = ColumnLetter(idxMedico) + "2";
-                    string x2 = ColumnLetter(idxMedico) + lastRow;
-                    string y1 = ColumnLetter(idxCant) + "2";
-                    string y2 = ColumnLetter(idxCant) + lastRow;
+                    // ===== Encabezado =====
+                    var titulo = new PdfParagraphAlias("REPORTE MENSUAL - SALUDSOFT", FTitle(16))
+                    {
+                        Alignment = iTextSharp.text.Element.ALIGN_CENTER,
+                        SpacingAfter = 5f
+                    };
+                    doc.Add(titulo);
 
-                    chartObjs2 = (Excel.ChartObjects)ws2.ChartObjects();
-                    chColObj = chartObjs2.Add(350, 0, 520, 340);
-                    Excel.Chart chCol = chColObj.Chart;
-                    chCol.ChartType = Excel.XlChartType.xlColumnClustered;
-                    chCol.HasTitle = true;
-                    chCol.ChartTitle.Text = "Ranking de Médicos (cantidad de turnos)";
-                    chCol.SetSourceData(ws2.Range[$"{y1}:{y2}"]);
-                    chCol.SeriesCollection(1).XValues = ws2.Range[$"{x1}:{x2}"];
-                    chCol.Axes(Excel.XlAxisType.xlCategory).HasTitle = true;
-                    chCol.Axes(Excel.XlAxisType.xlCategory).AxisTitle.Text = "Médico";
-                    chCol.Axes(Excel.XlAxisType.xlValue).HasTitle = true;
-                    chCol.Axes(Excel.XlAxisType.xlValue).AxisTitle.Text = "Turnos";
-                    chCol.ApplyDataLabels();
+                    // Rango de fechas desde tus DateTimePickers
+                    DateTime fechaDesde = dtpPeriodo.Value.Date;
+                    DateTime fechaHasta = dtpHasta.Checked ? dtpHasta.Value.Date : fechaDesde;
+
+                    var rango = new PdfParagraphAlias(
+                        $"Desde: {fechaDesde:dd/MM/yyyy}    Hasta: {fechaHasta:dd/MM/yyyy}", FText(11))
+                    {
+                        Alignment = iTextSharp.text.Element.ALIGN_CENTER,
+                        SpacingAfter = 8f
+                    };
+                    doc.Add(rango);
+
+                    var info = new PdfParagraphAlias($"Generado el {DateTime.Now:dd/MM/yyyy HH:mm}", FSmall(9))
+                    {
+                        Alignment = iTextSharp.text.Element.ALIGN_CENTER,
+                        SpacingAfter = 10f
+                    };
+                    doc.Add(info);
+
+                    // ===== KPIs (labels de tus cards) =====
+                    var kpi = new PdfParagraphAlias(
+                        $"Confirmados: {lbValor?.Text ?? "0"}   |   " +
+                        $"Pendientes: {lbValorTP?.Text ?? "0"}   |   " +
+                        $"Cancelados: {lbValorTC?.Text ?? "0"}",
+                        FText(11))
+                    {
+                        Alignment = iTextSharp.text.Element.ALIGN_CENTER,
+                        SpacingAfter = 6f
+                    };
+                    doc.Add(kpi);
+
+                    // ===== Gráfico torta =====
+                    if (chPieEstados != null && chPieEstados.Series.Count > 0)
+                    {
+                        AddSectionTitle(doc, "Distribución de turnos");
+                        var imgPie = ChartToImg(chPieEstados, 800, 360);
+                        doc.Add(imgPie);
+                    }
+
+                    // ===== Detalle principal (lo que esté visible en la pantalla) =====
+                    if (dgvDetalle != null && dgvDetalle.Rows.Count > 0)
+                    {
+                        string tituloDetalle = (_modo == ModoDetalle.PacientesTotales)
+                            ? "Pacientes atendidos (Confirmados)"
+                            : $"Detalle de turnos (mostrando: {_estadoActual})";
+
+                        AddSectionTitle(doc, tituloDetalle);
+                        var tablaDetalle = GridToPdfTable(dgvDetalle);
+                        doc.Add(tablaDetalle);
+                    }
+
+                    // ===== Ranking de médicos =====
+                    if (dgvRankingMedicos != null && dgvRankingMedicos.Rows.Count > 0)
+                    {
+                        AddSectionTitle(doc, "Ranking de Médicos");
+                        var tablaRank = GridToPdfTable(dgvRankingMedicos);
+                        doc.Add(tablaRank);
+                    }
+
+                    // ===== Gráfico columnas Top Médicos =====
+                    if (chTopMedicos != null && chTopMedicos.Series.Count > 0)
+                    {
+                        AddSectionTitle(doc, "Consultas por Médico");
+                        var imgCols = ChartToImg(chTopMedicos, 800, 340);
+                        doc.Add(imgCols);
+                    }
+
+                    // Cierre
+                    doc.Close();
+                    writer.Close();
+                    fs.Close();
+
+                    if (MessageBox.Show("PDF generado correctamente.\n\n¿Desea abrirlo ahora?",
+                        "PDF", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        try { System.Diagnostics.Process.Start(sfd.FileName); } catch { }
+                    }
                 }
-
-                string fileName = $"Reporte_SaludSoft_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
-                string ruta = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
-                wb.SaveAs(ruta);
-
-                if (MessageBox.Show($"Reporte generado.\n¿Abrir en Excel para imprimir?\n\n{ruta}",
-                    "Excel", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    app.Visible = true;
-                }
-                else
-                {
-                    wb.Close(false);
-                    app.Quit();
-                }
-
-                MessageBox.Show("Archivo guardado en: " + ruta, "Éxito",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al generar el reporte: " + ex.Message, "Error",
+                MessageBox.Show("Error al generar el PDF: " + ex.Message, "PDF",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                void Release(object o) { if (o != null) Marshal.ReleaseComObject(o); }
-                Release(chColObj); Release(chartObjs2);
-                Release(chPieObj); Release(chartObjs1);
-                Release(ws2); Release(ws1);
-                if (wb != null) { try { wb.Close(false); } catch { } Release(wb); }
-                if (app != null) { try { app.Quit(); } catch { } Release(app); }
-                GC.Collect(); GC.WaitForPendingFinalizers();
             }
         }
 
-        private void btnVolver_Click(object sender, EventArgs e)
-        {
-            // Cierra el formulario actual de reportes
-            this.Close();
-
-        }*/
     }
 }
-
