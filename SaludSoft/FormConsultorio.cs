@@ -92,12 +92,16 @@ namespace SaludSoft
                 conexion.Open();
 
                 // Cargar consultorios
-                SqlDataAdapter daCons = new SqlDataAdapter("SELECT id_consultorio, descripcion FROM Consultorio", conexion);
+                SqlDataAdapter daCons = new SqlDataAdapter(@"
+                  SELECT 
+                 id_consultorio, 
+                 CAST(nroConsultorio AS VARCHAR(10)) + ' - ' + descripcion AS consultorio_mostrado
+                 FROM Consultorio", conexion);
                 DataTable dtCons = new DataTable();
                 daCons.Fill(dtCons);
                 CMBConsultorio.DataSource = dtCons;
-                CMBConsultorio.DisplayMember = "descripcion";
-                CMBConsultorio.ValueMember = "id_consultorio";
+                CMBConsultorio.DisplayMember = "consultorio_mostrado"; 
+                CMBConsultorio.ValueMember = "id_consultorio";          
 
                 // Cargar profesionales
                 SqlDataAdapter daProf = new SqlDataAdapter(@"
@@ -218,7 +222,7 @@ namespace SaludSoft
             CLBDiasSemana.Items.Clear();
             CLBDiasSemana.Items.AddRange(new string[]
             {
-              "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"
+              "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"
             });
 
             DTPHoraInicio.Format = DateTimePickerFormat.Time;

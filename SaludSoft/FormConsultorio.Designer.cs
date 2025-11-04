@@ -76,15 +76,15 @@
             this.LProfesionales = new System.Windows.Forms.Label();
             this.CBDiaSemana = new System.Windows.Forms.ComboBox();
             this.CMBProfesional_consultorio = new System.Windows.Forms.ComboBox();
-            this.GBDisponibilidad = new System.Windows.Forms.GroupBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.BGuardarDisponibe = new System.Windows.Forms.Button();
-            this.BCancearDisponibilidad = new System.Windows.Forms.Button();
-            this.DPTHoraInicio = new System.Windows.Forms.DateTimePicker();
             this.DTPHoraFin = new System.Windows.Forms.DateTimePicker();
+            this.DPTHoraInicio = new System.Windows.Forms.DateTimePicker();
+            this.BCancearDisponibilidad = new System.Windows.Forms.Button();
+            this.BGuardarDisponibe = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.CLBDiasSemana = new System.Windows.Forms.CheckedListBox();
+            this.GBDisponibilidad = new System.Windows.Forms.GroupBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGWConsultorios_profesional)).BeginInit();
             this.panel2.SuspendLayout();
@@ -584,6 +584,87 @@
             this.CMBProfesional_consultorio.Size = new System.Drawing.Size(237, 28);
             this.CMBProfesional_consultorio.TabIndex = 1;
             // 
+            // DTPHoraFin
+            // 
+            this.DTPHoraFin.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DTPHoraFin.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.DTPHoraFin.Location = new System.Drawing.Point(143, 134);
+            this.DTPHoraFin.Name = "DTPHoraFin";
+            this.DTPHoraFin.Size = new System.Drawing.Size(102, 28);
+            this.DTPHoraFin.TabIndex = 3;
+            // 
+            // DPTHoraInicio
+            // 
+            this.DPTHoraInicio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DPTHoraInicio.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.DPTHoraInicio.Location = new System.Drawing.Point(6, 134);
+            this.DPTHoraInicio.Name = "DPTHoraInicio";
+            this.DPTHoraInicio.Size = new System.Drawing.Size(102, 28);
+            this.DPTHoraInicio.TabIndex = 2;
+            // 
+            // BCancearDisponibilidad
+            // 
+            this.BCancearDisponibilidad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BCancearDisponibilidad.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BCancearDisponibilidad.Location = new System.Drawing.Point(199, 177);
+            this.BCancearDisponibilidad.Name = "BCancearDisponibilidad";
+            this.BCancearDisponibilidad.Size = new System.Drawing.Size(93, 29);
+            this.BCancearDisponibilidad.TabIndex = 6;
+            this.BCancearDisponibilidad.Text = "Cancelar";
+            this.BCancearDisponibilidad.UseVisualStyleBackColor = false;
+            this.BCancearDisponibilidad.Click += new System.EventHandler(this.BCancelarDisponibilidad_Click);
+            // 
+            // BGuardarDisponibe
+            // 
+            this.BGuardarDisponibe.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BGuardarDisponibe.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BGuardarDisponibe.Location = new System.Drawing.Point(310, 177);
+            this.BGuardarDisponibe.Name = "BGuardarDisponibe";
+            this.BGuardarDisponibe.Size = new System.Drawing.Size(88, 29);
+            this.BGuardarDisponibe.TabIndex = 7;
+            this.BGuardarDisponibe.Text = "Guardar";
+            this.BGuardarDisponibe.UseVisualStyleBackColor = false;
+            this.BGuardarDisponibe.Click += new System.EventHandler(this.BGuardarDisponibilidad_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(54, 63);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(113, 18);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Dia De la Semana";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(16, 100);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(78, 18);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Hora Inicio";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(159, 100);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(61, 18);
+            this.label10.TabIndex = 11;
+            this.label10.Text = "Hora Fin";
+            // 
+            // CLBDiasSemana
+            // 
+            this.CLBDiasSemana.CheckOnClick = true;
+            this.CLBDiasSemana.FormattingEnabled = true;
+            this.CLBDiasSemana.Location = new System.Drawing.Point(235, 63);
+            this.CLBDiasSemana.Name = "CLBDiasSemana";
+            this.CLBDiasSemana.Size = new System.Drawing.Size(120, 19);
+            this.CLBDiasSemana.TabIndex = 12;
+            // 
             // GBDisponibilidad
             // 
             this.GBDisponibilidad.Controls.Add(this.CLBDiasSemana);
@@ -600,87 +681,6 @@
             this.GBDisponibilidad.TabIndex = 22;
             this.GBDisponibilidad.TabStop = false;
             this.GBDisponibilidad.Visible = false;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(159, 100);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(61, 18);
-            this.label10.TabIndex = 11;
-            this.label10.Text = "Hora Fin";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(16, 100);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(78, 18);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Hora Inicio";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(54, 63);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(113, 18);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Dia De la Semana";
-            // 
-            // BGuardarDisponibe
-            // 
-            this.BGuardarDisponibe.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.BGuardarDisponibe.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BGuardarDisponibe.Location = new System.Drawing.Point(310, 177);
-            this.BGuardarDisponibe.Name = "BGuardarDisponibe";
-            this.BGuardarDisponibe.Size = new System.Drawing.Size(88, 29);
-            this.BGuardarDisponibe.TabIndex = 7;
-            this.BGuardarDisponibe.Text = "Guardar";
-            this.BGuardarDisponibe.UseVisualStyleBackColor = false;
-            this.BGuardarDisponibe.Click += new System.EventHandler(this.BGuardarDisponibilidad_Click);
-            // 
-            // BCancearDisponibilidad
-            // 
-            this.BCancearDisponibilidad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.BCancearDisponibilidad.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BCancearDisponibilidad.Location = new System.Drawing.Point(199, 177);
-            this.BCancearDisponibilidad.Name = "BCancearDisponibilidad";
-            this.BCancearDisponibilidad.Size = new System.Drawing.Size(93, 29);
-            this.BCancearDisponibilidad.TabIndex = 6;
-            this.BCancearDisponibilidad.Text = "Cancelar";
-            this.BCancearDisponibilidad.UseVisualStyleBackColor = false;
-            this.BCancearDisponibilidad.Click += new System.EventHandler(this.BCancelarDisponibilidad_Click);
-            // 
-            // DPTHoraInicio
-            // 
-            this.DPTHoraInicio.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DPTHoraInicio.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.DPTHoraInicio.Location = new System.Drawing.Point(6, 134);
-            this.DPTHoraInicio.Name = "DPTHoraInicio";
-            this.DPTHoraInicio.Size = new System.Drawing.Size(102, 28);
-            this.DPTHoraInicio.TabIndex = 2;
-            // 
-            // DTPHoraFin
-            // 
-            this.DTPHoraFin.Font = new System.Drawing.Font("Comic Sans MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DTPHoraFin.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.DTPHoraFin.Location = new System.Drawing.Point(143, 134);
-            this.DTPHoraFin.Name = "DTPHoraFin";
-            this.DTPHoraFin.Size = new System.Drawing.Size(102, 28);
-            this.DTPHoraFin.TabIndex = 3;
-            // 
-            // CLBDiasSemana
-            // 
-            this.CLBDiasSemana.CheckOnClick = true;
-            this.CLBDiasSemana.FormattingEnabled = true;
-            this.CLBDiasSemana.Location = new System.Drawing.Point(235, 63);
-            this.CLBDiasSemana.Name = "CLBDiasSemana";
-            this.CLBDiasSemana.Size = new System.Drawing.Size(120, 19);
-            this.CLBDiasSemana.TabIndex = 12;
             // 
             // FormConsultorio
             // 
@@ -773,14 +773,14 @@
         private System.Windows.Forms.DateTimePicker DPTHoraFin;
         private System.Windows.Forms.Button BCancelarDisponibilidad;
         private System.Windows.Forms.Button BGuardarDisponibilidad;
-        private System.Windows.Forms.GroupBox GBDisponibilidad;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button BGuardarDisponibe;
-        private System.Windows.Forms.Button BCancearDisponibilidad;
-        private System.Windows.Forms.DateTimePicker DPTHoraInicio;
         private System.Windows.Forms.DateTimePicker DTPHoraFin;
+        private System.Windows.Forms.DateTimePicker DPTHoraInicio;
+        private System.Windows.Forms.Button BCancearDisponibilidad;
+        private System.Windows.Forms.Button BGuardarDisponibe;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckedListBox CLBDiasSemana;
+        private System.Windows.Forms.GroupBox GBDisponibilidad;
     }
 }
