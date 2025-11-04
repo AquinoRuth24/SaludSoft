@@ -97,8 +97,14 @@ namespace SaludSoft
                 using (var cmdEsp = new SqlCommand("SELECT COUNT(*) FROM Especialidad", conexion))
                     LContadorEspecialidades.Text = ((int)cmdEsp.ExecuteScalar()).ToString();
 
-                using (var cmdDoc = new SqlCommand("SELECT COUNT(*) FROM Profesional WHERE id_estado = 1", conexion))
+                using (var cmdDoc = new SqlCommand(@"
+                 SELECT COUNT(DISTINCT p.id_profesional)
+                 FROM Profesional p
+                 INNER JOIN Profesional_Consultorio pc ON pc.id_profesional = p.id_profesional
+                 WHERE p.id_estado = 1;", conexion))
+                {
                     LContadorDoctores.Text = ((int)cmdDoc.ExecuteScalar()).ToString();
+                }
 
                 LContadorPacientesHoy.Text = totalPacientes.ToString();
             }
