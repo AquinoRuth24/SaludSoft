@@ -424,26 +424,34 @@ namespace SaludSoft
                 switch (state)
                 {
                     case SlotState.Disponible:
-                        b.BackColor = Color.White;
+                        //Verde - Disponible
+                        b.BackColor = Color.FromArgb(209, 231, 221);
                         b.ForeColor = Color.FromArgb(25, 135, 84);
-                        b.FlatAppearance.BorderColor = Color.FromArgb(209, 231, 221);
+                        b.FlatAppearance.BorderColor = Color.FromArgb(25, 135, 84);
                         visibles++;
                         break;
 
                     case SlotState.RequiereSobreturno:
-                        // Clicable (para mostrar btSobreturno), pero con look “ocupado”
-                        b.BackColor = Color.FromArgb(245, 245, 245);
-                        b.ForeColor = Color.FromArgb(108, 117, 125);
-                        b.FlatAppearance.BorderColor = Color.FromArgb(222, 226, 230);
+                        //Amarillo - Hay un turno, pero se puede sobreturno
+                        b.BackColor = Color.FromArgb(255, 249, 196);
+                        b.ForeColor = Color.FromArgb(133, 100, 4);
+                        b.FlatAppearance.BorderColor = Color.Goldenrod;
                         visibles++;
                         break;
 
                     case SlotState.Lleno:
+                        //Rojo - Turno completo / reservado
+                        b.BackColor = Color.FromArgb(255, 205, 210);   // Rojo claro
+                        b.ForeColor = Color.DarkRed;
+                        b.FlatAppearance.BorderColor = Color.Firebrick;
+                        visibles++;
+                        break;
+
                     case SlotState.Pasado:
-                        // Clicable (para mostrar btSobreturno si tiene sentido), look apagado
-                        b.BackColor = Color.FromArgb(233, 236, 239);
-                        b.ForeColor = Color.FromArgb(108, 117, 125);
-                        b.FlatAppearance.BorderColor = Color.FromArgb(222, 226, 230);
+                        //Rojo apagado - Horario pasado
+                        b.BackColor = Color.FromArgb(244, 199, 199);
+                        b.ForeColor = Color.FromArgb(139, 0, 0);
+                        b.FlatAppearance.BorderColor = Color.FromArgb(200, 100, 100);
                         visibles++;
                         break;
                 }
