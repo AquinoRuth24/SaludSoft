@@ -37,9 +37,6 @@ namespace SaludSoft
             DTGRankingMedicos.CellPainting += DTGRankingMedicos_CellPainting;
             DTGRankingPacientes.CellPainting += DTGRankingPacientes_CellPainting;
 
-            BFiltro.Click += BFiltro_Click;
-            BImprimir.Click += BImprimir_Click;
-
         }
         //-------Parte de especialidades por turno-------//
         private void CargarGrafico()
@@ -461,11 +458,11 @@ namespace SaludSoft
              p.sexo,
              COUNT(DISTINCT p.id_paciente) AS Cantidad
              FROM Paciente p
-             -- para aplicar el filtro de fechas se usa el historial de consultas 
              INNER JOIN Historial h ON p.id_paciente = h.id_paciente
-             WHERE h.fechaConsulta BETWEEN @fechaInicio AND @fechaFin
+             WHERE h.fechaConsulta <= @fechaFin
              AND p.id_estado = 1
              GROUP BY p.sexo;";
+
 
             using (SqlConnection conexion = Conexion.GetConnection())
             {
