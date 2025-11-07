@@ -15,6 +15,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using DFont = System.Drawing.Font;
 using DRectangle = System.Drawing.Rectangle;
 using IFont = iTextSharp.text.Font;
+using System.Drawing.Imaging;
 
 
 namespace SaludSoft
@@ -871,50 +872,211 @@ namespace SaludSoft
         {
             try
             {
-                // Captura la imagen del formulario completo
-                Bitmap captura = new Bitmap(this.Width, this.Height);
-                this.DrawToBitmap(captura, new DRectangle(0, 0, this.Width, this.Height));
+                //Determinar la sección visible
+                string tituloReporte = "";
+                string introduccion = "";
+                DataGridView dgv = null;
+                Control grafico = null;
 
-                // Crea el documento PDF
-                SaveFileDialog saveFileDialog = new SaveFileDialog
+                if (GBMedicos.Visible)
+                {
+                    tituloReporte = "Reporte de Actividad de Médicos";
+                    introduccion = "Este informe muestra la cantidad de turnos atendidos por cada profesional y el porcentaje de consultas confirmadas durante el período seleccionado.";
+                    dgv = DTGRankingMedicos;
+                    grafico = ChartEspecialidades;
+                }
+                else if (GBPacientes.Visible)
+                {
+                    tituloReporte = "Reporte de Actividad de Pacientes";
+                    introduccion = "Este informe detalla la distribución de pacientes por sexo y los pacientes con mayor cantidad de turnos registrados.";
+                    dgv = DTGRankingPacientes;
+                    grafico = ChartEspecialidades;
+                }
+                else
+                {
+                    tituloReporte = "Reporte General de Turnos";
+                    introduccion = "Este informe presenta el resumen general de los turnos según su estado y especialidad en el período seleccionado.";
+                    dgv = DTGRankingMedicos; // por defecto
+                    grafico = ChartEspecialidades;
+                }
+
+                string fechaGeneracion = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+                string rangoFechas = $"Período: {DTPDesde.Value:dd/MM/yyyy} al {DTPHasta.Value:dd/MM/yyyy}";
+
+                //Dialogo para guardar
+                using (SaveFileDialog saveFileDialog = new SaveFileDialog
                 {
                     Filter = "Archivo PDF|*.pdf",
                     Title = "Guardar reporte en PDF",
-                    FileName = "ReporteEstadisticas.pdf"
-                };
-
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    FileName = tituloReporte.Replace(" ", "_") + ".pdf"
+                })
                 {
+                    if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                        return;
+
+                    //Crear PDF
                     using (FileStream stream = new FileStream(saveFileDialog.FileName, FileMode.Create))
                     {
-                        // Tamaño del PDF proporcional al formulario
-                        var doc = new Document(new iTextSharp.text.Rectangle(captura.Width, captura.Height), 0, 0, 0, 0);
+                        Document doc = new Document(PageSize.A4.Rotate(), 40, 40, 60, 40);
                         PdfWriter.GetInstance(doc, stream);
                         doc.Open();
 
-                        // Convierte el bitmap a imagen PDF
-                        using (MemoryStream imageStream = new MemoryStream())
-                        {
-                            captura.Save(imageStream, System.Drawing.Imaging.ImageFormat.Png);
-                            iTextSharp.text.Image pdfImage = iTextSharp.text.Image.GetInstance(imageStream.ToArray());
-                            pdfImage.ScaleToFit(doc.PageSize.Width, doc.PageSize.Height);
-                            pdfImage.Alignment = Element.ALIGN_CENTER;
+                        //Estilos
+                        var fontTitulo = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 18, iTextSharp.text.Font.BOLD, BaseColor.DARK_GRAY);
+                        var fontSub = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 11, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                        var fontFecha = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 9, iTextSharp.text.Font.ITALIC, BaseColor.GRAY);
+                        var fontBold = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
 
-                            //Agrega la imagen al PDF
-                            doc.Add(pdfImage);
+                        //Encabezado
+                        doc.Add(new Paragraph(tituloReporte, fontTitulo)
+                        {
+                            Alignment = Element.ALIGN_CENTER,
+                            SpacingAfter = 8
+                        });
+
+                        doc.Add(new Paragraph($"{rangoFechas}\nGenerado el: {fechaGeneracion}", fontFecha)
+                        {
+                            Alignment = Element.ALIGN_CENTER,
+                            SpacingAfter = 15
+                        });
+
+                        doc.Add(new Paragraph(introduccion, fontSub)
+                        {
+                            Alignment = Element.ALIGN_JUSTIFIED,
+                            SpacingAfter = 20
+                        });
+
+                        //Tarjetas de resumen general
+                        if (contenedorResumen != null && contenedorResumen.Controls.Count > 0)
+                        {
+                            doc.Add(new Paragraph("Resumen de Turnos", fontBold));
+                            doc.Add(new Paragraph("\n"));
+
+                            PdfPTable tablaResumen = new PdfPTable(contenedorResumen.Controls.Count)
+                            {
+                                WidthPercentage = 100,
+                                SpacingAfter = 20
+                            };
+
+                            foreach (Panel tarjeta in contenedorResumen.Controls.OfType<Panel>())
+                            {
+                                string texto = "";
+                                foreach (Label lbl in tarjeta.Controls.OfType<Label>().Reverse())
+                                {
+                                    texto += lbl.Text + "\n";
+                                }
+                                PdfPCell cell = new PdfPCell(new Phrase(texto.Trim(), fontSub))
+                                {
+                                    HorizontalAlignment = Element.ALIGN_CENTER,
+                                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                                    Padding = 8
+                                };
+                                tablaResumen.AddCell(cell);
+                            }
+                            doc.Add(tablaResumen);
                         }
+
+                        //Tarjetas de pacientes
+                        if (contenedorPacientes != null && contenedorPacientes.Controls.Count > 0)
+                        {
+                            doc.Add(new Paragraph("Resumen de Pacientes", fontBold));
+                            doc.Add(new Paragraph("\n"));
+
+                            PdfPTable tablaPacientesResumen = new PdfPTable(contenedorPacientes.Controls.Count)
+                            {
+                                WidthPercentage = 100,
+                                SpacingAfter = 20
+                            };
+
+                            foreach (Panel tarjeta in contenedorPacientes.Controls.OfType<Panel>())
+                            {
+                                string texto = "";
+                                foreach (Label lbl in tarjeta.Controls.OfType<Label>().Reverse())
+                                {
+                                    texto += lbl.Text + "\n";
+                                }
+                                PdfPCell cell = new PdfPCell(new Phrase(texto.Trim(), fontSub))
+                                {
+                                    HorizontalAlignment = Element.ALIGN_CENTER,
+                                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                                    Padding = 8
+                                };
+                                tablaPacientesResumen.AddCell(cell);
+                            }
+                            doc.Add(tablaPacientesResumen);
+                        }
+
+                        //Gráfico principal 
+                        if (grafico != null)
+                        {
+                            using (MemoryStream ms = new MemoryStream())
+                            {
+                                Bitmap bmp = new Bitmap(grafico.Width, grafico.Height);
+                                grafico.DrawToBitmap(bmp, new System.Drawing.Rectangle(0, 0, grafico.Width, grafico.Height));
+                                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+
+                                iTextSharp.text.Image chartImage = iTextSharp.text.Image.GetInstance(ms.ToArray());
+                                chartImage.Alignment = Element.ALIGN_CENTER;
+                                chartImage.ScaleToFit(doc.PageSize.Width - 100, 300);
+                                chartImage.SpacingAfter = 20;
+                                doc.Add(chartImage);
+                            }
+                        }
+
+                        //Tabla con datos detallados
+                        if (dgv != null && dgv.Rows.Count > 0)
+                        {
+                            doc.Add(new Paragraph("Datos detallados", fontBold));
+                            doc.Add(new Paragraph("\n"));
+
+                            PdfPTable pdfTable = new PdfPTable(dgv.Columns.Count)
+                            {
+                                WidthPercentage = 100
+                            };
+
+                            //Encabezados
+                            foreach (DataGridViewColumn column in dgv.Columns)
+                            {
+                                PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText, fontBold))
+                                {
+                                    BackgroundColor = new BaseColor(240, 240, 240),
+                                    HorizontalAlignment = Element.ALIGN_CENTER
+                                };
+                                pdfTable.AddCell(cell);
+                            }
+
+                            //Filas
+                            foreach (DataGridViewRow row in dgv.Rows)
+                            {
+                                if (row.IsNewRow) continue;
+                                foreach (DataGridViewCell cell in row.Cells)
+                                {
+                                    pdfTable.AddCell(new Phrase(Convert.ToString(cell.Value ?? ""), fontSub));
+                                }
+                            }
+
+                            doc.Add(pdfTable);
+                        }
+
+                        //Pie de pagina
+                        doc.Add(new Paragraph("\nSaludSoft © " + DateTime.Now.Year, fontFecha)
+                        {
+                            Alignment = Element.ALIGN_RIGHT
+                        });
 
                         doc.Close();
                         stream.Close();
                     }
-                    this.ActiveControl = null;
-                    MessageBox.Show("Reporte guardado correctamente en PDF.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                   
+                    BeginInvoke(new Action(() =>
+                    {
+                        MessageBox.Show("Reporte PDF generado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }));
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al generar el PDF: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);            }
+                MessageBox.Show("Error al generar el PDF: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
