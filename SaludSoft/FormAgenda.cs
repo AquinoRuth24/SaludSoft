@@ -23,8 +23,8 @@ namespace SaludSoft
         private List<TurnoVM> _turnosDia = new List<TurnoVM>();
         private DateTime _diaSeleccionado = DateTime.Today;
         private bool _sobreturnoActivo = false;
-       
         private DateTime? _ultimoReservado = null;
+
         private enum SlotState { Disponible, RequiereSobreturno, Lleno, Pasado }
 
         private sealed class SlotMeta
@@ -32,7 +32,6 @@ namespace SaludSoft
             public DateTime FH { get; set; }
             public SlotState Estado { get; set; }
         }
-
 
         public FormAgenda()
         {
@@ -53,11 +52,13 @@ namespace SaludSoft
 
             if (DTVGAgenda != null)
                 DTVGAgenda.DataBindingComplete += DTVGAgenda_DataBindingComplete;
-            
+
+            // Estética franja horaria
             flpFranjas.BackColor = Color.White;
             flpFranjas.Padding = new Padding(8);
             flpFranjas.AutoScroll = true;
 
+            // Botón sobreturno oculto por defecto
             btSobreturno.Visible = false;
 
             flpFranjas.MouseClick += (s, e) =>
@@ -65,10 +66,9 @@ namespace SaludSoft
                 if (e.Button == MouseButtons.Left)
                     btSobreturno.Visible = !btSobreturno.Visible;
             };
-
         }
 
-        //     CARGAS DE DATOS
+        // ===================== CARGAS DE DATOS =====================
 
         private void CargarProfesionales()
         {
@@ -79,7 +79,6 @@ namespace SaludSoft
                     SELECT id_profesional, nombre + ' ' + apellido AS Profesional
                     FROM Profesional
                     WHERE id_estado = 1";
-
                 var da = new SqlDataAdapter(sql, cn);
                 var dt = new DataTable();
                 da.Fill(dt);
@@ -141,8 +140,8 @@ namespace SaludSoft
             }
         }
 
-        //       GRILLA
-  
+        // ===================== GRILLA =====================
+
         private void ConfigurarDTVGAgenda()
         {
             DTVGAgenda.AutoGenerateColumns = false;
@@ -165,8 +164,8 @@ namespace SaludSoft
                 var colS = new DataGridViewTextBoxColumn
                 {
                     Name = "colS",
-                    HeaderText = "Sobreturno",
-                    Width = 40,
+                    HeaderText = "S",
+                    Width = 30,
                     DataPropertyName = nameof(TurnoVM.FlagSobreturno)
                 };
                 DTVGAgenda.Columns.Insert(0, colS);
@@ -177,7 +176,7 @@ namespace SaludSoft
                 DTVGAgenda.Columns.Add(new DataGridViewButtonColumn
                 {
                     Name = "colEditar",
-                    HeaderText = "Acciones",
+                    HeaderText = "Editar",
                     Text = "Editar",
                     UseColumnTextForButtonValue = true
                 });
@@ -187,14 +186,15 @@ namespace SaludSoft
                 DTVGAgenda.Columns.Add(new DataGridViewButtonColumn
                 {
                     Name = "colCancelar",
-                    HeaderText = "",
-                    Text = "Cancelar / Reprog.",
+                    HeaderText = "Cancelar",
+                    Text = "Cancelar/Reprog.",
                     UseColumnTextForButtonValue = true
                 });
             }
 
             DTVGAgenda.CellContentClick += DTVGAgenda_CellContentClick;
         }
+
         private void DTVGAgenda_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             foreach (DataGridViewRow row in DTVGAgenda.Rows)
@@ -215,11 +215,9 @@ namespace SaludSoft
 
                 // Pintar sobreturno
                 var flag = Convert.ToString(row.Cells["colS"].Value);
-                if (flag == "S")
-                    row.DefaultCellStyle.BackColor = Color.LemonChiffon;
+                if (flag == "S") row.DefaultCellStyle.BackColor = Color.LemonChiffon;
             }
         }
-
 
         private void WireEventosAgenda()
         {
@@ -247,7 +245,7 @@ namespace SaludSoft
             };
         }
 
-        //    TURNOS DEL DÍA
+        // ===================== TURNOS DEL DÍA =====================
 
         private void CargarTurnosDelDia()
         {
@@ -258,20 +256,20 @@ namespace SaludSoft
             {
                 cn.Open();
                 string sql = @"
-            SELECT  t.id_turno       AS IdTurno,
-                    t.fecha          AS FechaHora,
-                    pa.apellido + ' ' + pa.nombre AS Paciente,
-                    pr.nombre + ' ' + pr.apellido AS Profesional,
-                    t.motivo         AS Motivo,
-                    t.estado         AS Estado
-            FROM Turnos t
-            INNER JOIN Paciente pa                ON pa.id_paciente = t.id_paciente
-            INNER JOIN Agenda a                   ON a.id_agenda = t.id_agenda
-            INNER JOIN Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
-            INNER JOIN Profesional pr             ON pr.id_profesional = pc.id_profesional
-            WHERE CONVERT(date, t.fecha) = @fecha
-              AND (@idProfesional = 0 OR pr.id_profesional = @idProfesional)
-            ORDER BY t.fecha";
+                    SELECT  t.id_turno       AS IdTurno,
+                            t.fecha          AS FechaHora,
+                            pa.apellido + ' ' + pa.nombre AS Paciente,
+                            pr.nombre + ' ' + pr.apellido AS Profesional,
+                            t.motivo         AS Motivo,
+                            t.estado         AS Estado
+                    FROM Turnos t
+                    INNER JOIN Paciente pa                ON pa.id_paciente = t.id_paciente
+                    INNER JOIN Agenda a                   ON a.id_agenda = t.id_agenda
+                    INNER JOIN Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
+                    INNER JOIN Profesional pr             ON pr.id_profesional = pc.id_profesional
+                    WHERE CONVERT(date, t.fecha) = @fecha
+                      AND (@idProfesional = 0 OR pr.id_profesional = @idProfesional)
+                    ORDER BY t.fecha";
                 var da = new SqlDataAdapter(sql, cn);
                 da.SelectCommand.Parameters.AddWithValue("@fecha", _diaSeleccionado.Date);
                 da.SelectCommand.Parameters.AddWithValue("@idProfesional", idProfesional);
@@ -281,7 +279,7 @@ namespace SaludSoft
 
                 var slotsEstandar = GenerarSlotsEstandar(_diaSeleccionado).ToHashSet();
 
-                //contador por horario con NO cancelados para decidir si es sobreturno
+                // contador por horario de NO cancelados para decidir sobreturno
                 var cuentaNoCanceladosPorFH = new Dictionary<DateTime, int>();
 
                 _turnosDia = dt.AsEnumerable()
@@ -292,17 +290,13 @@ namespace SaludSoft
                         var est = (r.Field<string>("Estado") ?? "").Trim();
                         bool noCancelado = !string.Equals(est, "Cancelado", StringComparison.OrdinalIgnoreCase);
 
-                        // Si no es horario estándar => siempre es sobreturno (son los “extras”).
+                        // Sobreturno si no es slot estándar, o si ya hay uno no cancelado en ese slot
                         bool esSob = !slotsEstandar.Contains(fh);
-
-                        // Si es horario estándar: el 1° no cancelado es "normal"; el 2° (o más) es sobreturno.
                         if (!esSob)
                         {
                             cuentaNoCanceladosPorFH.TryGetValue(fh, out int cnt);
-                            esSob = cnt >= 1; // a partir del segundo, sobreturno
+                            esSob = cnt >= 1;
                         }
-
-                        // Actualizo contador sólo con no cancelados
                         if (noCancelado)
                             cuentaNoCanceladosPorFH[fh] = (cuentaNoCanceladosPorFH.TryGetValue(fh, out int cur) ? cur : 0) + 1;
 
@@ -324,9 +318,8 @@ namespace SaludSoft
             DTVGAgenda.DataSource = _turnosDia;
         }
 
+        // ===================== FRANJAS =====================
 
-        //FRANJAS
-      
         private IEnumerable<DateTime> GenerarSlotsEstandar(DateTime fecha)
         {
             var list = new List<DateTime>();
@@ -343,11 +336,8 @@ namespace SaludSoft
         private List<DateTime> GenerarSlots(DateTime fechaSeleccionada)
         {
             var slots = new List<DateTime>();
-
-            // estándar
             foreach (var s in GenerarSlotsEstandar(fechaSeleccionada)) slots.Add(s);
 
-            // extras de sobreturno visibles solo si el switch está activo
             if (_sobreturnoActivo)
             {
                 var extras = new[]
@@ -358,27 +348,16 @@ namespace SaludSoft
                     new TimeSpan(15,30,0),
                     new TimeSpan(19,30,0)
                 };
-                foreach (var ts in extras)
-                {
-                    var dt = fechaSeleccionada.Date + ts;
-                    slots.Add(dt);
-                }
+                foreach (var ts in extras) slots.Add(fechaSeleccionada.Date + ts);
             }
 
-            // no repetir
-            slots = slots.Distinct().OrderBy(x => x).ToList();
-
-
-            return slots;
+            return slots.Distinct().OrderBy(x => x).ToList();
         }
 
-        // REGLA DE CAPACIDAD POR SLOT: estándar -> 2 (1 normal + 1 sobreturno), extra -> 1
         private void RefrescarFranjas()
         {
             flpFranjas.SuspendLayout();
             flpFranjas.Controls.Clear();
-
-            int total = 0, visibles = 0;
 
             var slots = GenerarSlots(_diaSeleccionado);
 
@@ -390,24 +369,23 @@ namespace SaludSoft
             var estandarSet = GenerarSlotsEstandar(_diaSeleccionado).ToHashSet();
             DateTime ahora = DateTime.Now;
 
+            int visibles = 0;
+
             foreach (var fh in slots)
             {
-                total++;
-
                 bool esEstandar = estandarSet.Contains(fh);
                 int ocupados = conteoPorHora.TryGetValue(fh, out var c) ? c : 0;
                 int capacidad = esEstandar ? 2 : 1;
 
-                SlotState state;
+                // >>> BLOQUEO de pasado (día anterior o mismo día pero hora <= ahora)
+                bool esPasado = _diaSeleccionado.Date < ahora.Date ||
+                                (_diaSeleccionado.Date == ahora.Date && fh <= ahora);
 
-                if (_diaSeleccionado.Date == ahora.Date && fh <= ahora)
-                    state = SlotState.Pasado;
-                else if (ocupados >= capacidad)
-                    state = SlotState.Lleno;
-                else if (esEstandar && !_sobreturnoActivo && ocupados >= 1)
-                    state = SlotState.RequiereSobreturno;
-                else
-                    state = SlotState.Disponible;
+                SlotState state;
+                if (esPasado) state = SlotState.Pasado;
+                else if (ocupados >= capacidad) state = SlotState.Lleno;
+                else if (esEstandar && !_sobreturnoActivo && ocupados >= 1) state = SlotState.RequiereSobreturno;
+                else state = SlotState.Disponible;
 
                 var b = new Button
                 {
@@ -420,38 +398,31 @@ namespace SaludSoft
                 };
                 b.FlatAppearance.BorderSize = 1;
 
-                // Estilos por estado
+                // Estilos
                 switch (state)
                 {
                     case SlotState.Disponible:
-                        //Verde - Disponible
                         b.BackColor = Color.FromArgb(209, 231, 221);
                         b.ForeColor = Color.FromArgb(25, 135, 84);
                         b.FlatAppearance.BorderColor = Color.FromArgb(25, 135, 84);
                         visibles++;
                         break;
-
                     case SlotState.RequiereSobreturno:
-                        //Amarillo - Hay un turno, pero se puede sobreturno
                         b.BackColor = Color.FromArgb(255, 249, 196);
                         b.ForeColor = Color.FromArgb(133, 100, 4);
                         b.FlatAppearance.BorderColor = Color.Goldenrod;
                         visibles++;
                         break;
-
                     case SlotState.Lleno:
-                        //Rojo - Turno completo / reservado
-                        b.BackColor = Color.FromArgb(255, 205, 210);   // Rojo claro
+                        b.BackColor = Color.FromArgb(255, 205, 210);
                         b.ForeColor = Color.DarkRed;
                         b.FlatAppearance.BorderColor = Color.Firebrick;
                         visibles++;
                         break;
-
                     case SlotState.Pasado:
-                        //Rojo apagado - Horario pasado
-                        b.BackColor = Color.FromArgb(244, 199, 199);
-                        b.ForeColor = Color.FromArgb(139, 0, 0);
-                        b.FlatAppearance.BorderColor = Color.FromArgb(200, 100, 100);
+                        b.BackColor = Color.FromArgb(248, 249, 250);
+                        b.ForeColor = Color.FromArgb(134, 142, 150);
+                        b.FlatAppearance.BorderColor = Color.FromArgb(222, 226, 230);
                         visibles++;
                         break;
                 }
@@ -465,13 +436,13 @@ namespace SaludSoft
                 }
 
                 b.Click += BotonFranja_Click;
-
                 flpFranjas.Controls.Add(b);
             }
 
             lDisponibles.Text = $"{visibles} horarios visibles";
             flpFranjas.ResumeLayout();
         }
+
         private void BotonFranja_Click(object sender, EventArgs e)
         {
             var btn = (Button)sender;
@@ -492,7 +463,7 @@ namespace SaludSoft
             }
             else if (meta.Estado == SlotState.Lleno)
             {
-                btSobreturno.Visible = true; // por si quiere buscar otro horario con sobreturno activo
+                btSobreturno.Visible = true;
                 MessageBox.Show("Este horario ya está completo.", "Agenda",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -504,9 +475,7 @@ namespace SaludSoft
             }
         }
 
-
-
-        //   RESERVA DESDE FRANJA
+        // ===================== RESERVA =====================
 
         private string PedirDniSoloNumeros()
         {
@@ -522,25 +491,16 @@ namespace SaludSoft
                 var ok = new Button { Text = "Aceptar", DialogResult = DialogResult.OK, Left = 185, Top = 70, Width = 75 };
                 var cancel = new Button { Text = "Cancelar", DialogResult = DialogResult.Cancel, Left = 265, Top = 70, Width = 75 };
 
+                // Solo dígitos
                 tb.KeyPress += (s, e) =>
                 {
                     if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
                         e.Handled = true;
                 };
-                tb.TextChanged += (s, e) =>
-                {
-                    var solo = new string(tb.Text.Where(char.IsDigit).ToArray());
-                    if (solo.Length > 8) solo = solo.Substring(0, 8);
-                    if (tb.Text != solo)
-                    {
-                        int pos = tb.SelectionStart;
-                        tb.Text = solo;
-                        tb.SelectionStart = Math.Min(pos, tb.Text.Length);
-                    }
-                };
 
                 f.Controls.AddRange(new Control[] { lbl, tb, ok, cancel });
-                f.AcceptButton = ok; f.CancelButton = cancel;
+                f.AcceptButton = ok;
+                f.CancelButton = cancel;
 
                 if (f.ShowDialog(this) == DialogResult.OK)
                 {
@@ -549,7 +509,6 @@ namespace SaludSoft
 
                     MessageBox.Show("DNI inválido. Debe contener solo números (7–8 dígitos).",
                                     "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return null;
                 }
                 return null;
             }
@@ -560,16 +519,20 @@ namespace SaludSoft
             var btn = (Button)sender;
 
             DateTime fechaHora;
-           
-            if (btn.Tag is SlotMeta sm)
-                fechaHora = sm.FH;
-        
-            else if (btn.Tag is DateTime dt)
-                fechaHora = dt;
+            if (btn.Tag is SlotMeta sm) fechaHora = sm.FH;
+            else if (btn.Tag is DateTime dt) fechaHora = dt;
             else
             {
                 MessageBox.Show("No se pudo determinar la fecha/hora del turno.",
                                 "Agenda", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // BLOQUEO: no permitir reservar en el pasado
+            if (fechaHora <= DateTime.Now)
+            {
+                MessageBox.Show("No podés reservar turnos en el pasado.", "Agenda",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -625,22 +588,20 @@ namespace SaludSoft
                 return;
             }
 
-            //REGLA DE CAPACIDAD POR SLOT
+            // Capacidad por slot
             bool esEstandar = EsHorarioEstandar(fechaHora);
             int cantidadExistente = ContarTurnosMismoHorario(idAgenda.Value, fechaHora);
-            int capacidadSlot = esEstandar ? 2 : 1; // estándar: 2 (1 normal + 1 sobreturno), extra: 1
+            int capacidadSlot = esEstandar ? 2 : 1;
 
             if (cantidadExistente >= capacidadSlot)
             {
-                MessageBox.Show(
-                    esEstandar
+                MessageBox.Show(esEstandar
                         ? "Ya existe el turno y su sobreturno para este horario. No se pueden agregar más."
                         : "Este horario extra (sobreturno) ya está ocupado.",
                     "Agenda", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Si el switch no está activo y ya hay 1 turno en ese slot estándar, sugerir activar sobreturno.
             if (!_sobreturnoActivo && esEstandar && cantidadExistente >= 1)
             {
                 MessageBox.Show("Ese horario ya está ocupado. Activá 'Sobreturno' para agregar un único sobreturno.",
@@ -651,7 +612,7 @@ namespace SaludSoft
             try
             {
                 InsertarTurnoBD(idAgenda.Value, idPaciente.Value, fechaHora);
-                _ultimoReservado = fechaHora;                 
+                _ultimoReservado = fechaHora;
             }
             catch (Exception ex)
             {
@@ -663,10 +624,10 @@ namespace SaludSoft
             CargarTurnosDelDia();
             RefrescarFranjas();
             MessageBox.Show("Turno reservado correctamente.", "Agenda",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);   
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        //  ACCIONES EDITAR/CANCELAR
+        // ===================== ACCIONES EDITAR/CANCELAR =====================
 
         private void DTVGAgenda_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -729,6 +690,14 @@ namespace SaludSoft
                     var nueva = PedirNuevaFechaHora(turno.FechaHora);
                     if (nueva == null) return;
 
+                    // BLOQUEO reprogramar a pasado
+                    if (nueva.Value <= DateTime.Now)
+                    {
+                        MessageBox.Show("No podés reprogramar un turno al pasado.", "Agenda",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     int idProf = ObtenerProfesionalSeleccionadoId();
                     int? idAgenda = ObtenerIdAgendaParaHorario(idProf, nueva.Value, _sobreturnoActivo);
                     if (idAgenda == null)
@@ -738,7 +707,6 @@ namespace SaludSoft
                         return;
                     }
 
-                    // Validar capacidad también al reprogramar
                     bool esStd = EsHorarioEstandar(nueva.Value);
                     int cant = ContarTurnosMismoHorario(idAgenda.Value, nueva.Value);
                     int cap = esStd ? 2 : 1;
@@ -760,146 +728,7 @@ namespace SaludSoft
             }
         }
 
-        private int ObtenerProfesionalSeleccionadoId()
-        {
-            return int.TryParse(CMBProfesionales?.SelectedValue?.ToString(), out int id) ? id : 0;
-        }
-
-        private DateTime? PedirNuevaFechaHora(DateTime valorActual)
-        {
-            using (var f = new Form())
-            {
-                f.Text = "Reprogramar";
-                f.FormBorderStyle = FormBorderStyle.FixedDialog;
-                f.StartPosition = FormStartPosition.CenterParent;
-                f.ClientSize = new Size(420, 120);
-
-                var lbl = new Label { Text = "Nueva fecha/hora (dd/MM/yyyy HH:mm):", AutoSize = true, Left = 10, Top = 10 };
-
-                var dtp = new DateTimePicker
-                {
-                    Left = 10,
-                    Top = 35,
-                    Width = 380,
-                    Format = DateTimePickerFormat.Custom,
-                    CustomFormat = "dd/MM/yyyy HH:mm",
-                    ShowUpDown = true,
-                    Value = valorActual
-                };
-                dtp.ValueChanged += (s, e) =>
-                {
-                    var v = dtp.Value;
-                    var rounded = new DateTime(v.Year, v.Month, v.Day, v.Hour, v.Minute / 30 * 30, 0);
-                    if (rounded != dtp.Value) dtp.Value = rounded;
-                };
-
-                var ok = new Button { Text = "Aceptar", DialogResult = DialogResult.OK, Left = 245, Top = 75, Width = 75 };
-                var cancel = new Button { Text = "Cancelar", DialogResult = DialogResult.Cancel, Left = 325, Top = 75, Width = 75 };
-
-                f.Controls.AddRange(new Control[] { lbl, dtp, ok, cancel });
-                f.AcceptButton = ok; f.CancelButton = cancel;
-
-                return f.ShowDialog(this) == DialogResult.OK ? dtp.Value : (DateTime?)null;
-            }
-        }
-
-        //        HELPERS BD
-
-        private int? GetPacienteIdPorDni(string dni)
-        {
-            using (var cn = Conexion.GetConnection())
-            using (var cmd = new SqlCommand("SELECT id_paciente FROM Paciente WHERE dni=@dni", cn))
-            {
-                cn.Open();
-                cmd.Parameters.AddWithValue("@dni", dni);
-                object res = cmd.ExecuteScalar();
-                return (res == null || res == DBNull.Value) ? (int?)null : Convert.ToInt32(res);
-            }
-        }
-
-        // Permitir sobreturno hasta +30 min del fin
-        private int? ObtenerIdAgendaParaHorario(int idProfesional, DateTime fh, bool permitirSobreturno)
-        {
-            var cultura = new CultureInfo("es-ES");
-            string dia = cultura.DateTimeFormat.GetDayName(fh.DayOfWeek).ToLower();
-            int extra = permitirSobreturno ? 30 : 0;
-
-            using (var cn = Conexion.GetConnection())
-            using (var cmd = new SqlCommand(@"
-                SELECT TOP 1 a.id_agenda
-                FROM Agenda a
-                INNER JOIN Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
-                WHERE pc.id_profesional = @p
-                  AND LOWER(a.diaSemana) = @dia
-                  AND @hora >= a.horaInicio 
-                  AND @hora <= DATEADD(minute, @extra, a.horaFin)
-                ORDER BY a.horaInicio", cn))
-            {
-                cn.Open();
-                cmd.Parameters.AddWithValue("@p", idProfesional);
-                cmd.Parameters.AddWithValue("@dia", dia);
-                cmd.Parameters.AddWithValue("@hora", fh.TimeOfDay);
-                cmd.Parameters.AddWithValue("@extra", extra);
-                var o = cmd.ExecuteScalar();
-                return (o == null || o == DBNull.Value) ? (int?)null : Convert.ToInt32(o);
-            }
-        }
-
-        private bool ExisteTurnoMismoHorario(int idAgenda, DateTime fechaHora)
-        {
-            using (var cn = Conexion.GetConnection())
-            using (var cmd = new SqlCommand(
-                "SELECT COUNT(1) FROM Turnos WHERE id_agenda=@a AND fecha=@fh AND estado <> 'Cancelado'", cn))
-            {
-                cn.Open();
-                cmd.Parameters.AddWithValue("@a", idAgenda);
-                cmd.Parameters.AddWithValue("@fh", fechaHora);
-                return (int)cmd.ExecuteScalar() > 0;
-            }
-        }
-
-        private void InsertarTurnoBD(int idAgenda, int idPaciente, DateTime fh)
-        {
-            using (var cn = Conexion.GetConnection())
-            using (var cmd = new SqlCommand(@"
-                INSERT INTO Turnos (id_agenda, id_paciente, fecha, motivo, estado)
-                VALUES (@a, @pac, @fh, NULL, 'Pendiente')", cn))
-            {
-                cn.Open();
-                cmd.Parameters.AddWithValue("@a", idAgenda);
-                cmd.Parameters.AddWithValue("@pac", idPaciente);
-                cmd.Parameters.AddWithValue("@fh", fh);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        private void ActualizarFechaTurnoBD(int idTurno, DateTime nueva)
-        {
-            using (var cn = Conexion.GetConnection())
-            using (var cmd = new SqlCommand("UPDATE Turnos SET fecha=@fh WHERE id_turno=@id", cn))
-            {
-                cn.Open();
-                cmd.Parameters.AddWithValue("@fh", nueva);
-                cmd.Parameters.AddWithValue("@id", idTurno);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        private void ActualizarEstadoMotivoTurnoBD(int idTurno, string estado, string motivo)
-        {
-            using (var cn = Conexion.GetConnection())
-            using (var cmd = new SqlCommand(
-                "UPDATE Turnos SET estado = @estado, motivo = @motivo WHERE id_turno = @id", cn))
-            {
-                cn.Open();
-                cmd.Parameters.AddWithValue("@estado", estado);
-                cmd.Parameters.AddWithValue("@motivo", motivo);
-                cmd.Parameters.AddWithValue("@id", idTurno);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        // EDITAR TURNO
+        // ===================== DIALOGOS/EDIT =====================
 
         private bool MostrarDialogoEditarTurno(TurnoVM turno, out string nuevoEstado, out string nuevoMotivo)
         {
@@ -961,27 +790,96 @@ namespace SaludSoft
             return false;
         }
 
-        //         BOTONES
-       
-        private void BVolverAgenda_Click(object sender, EventArgs e)
+        private DateTime? PedirNuevaFechaHora(DateTime valorActual)
         {
-            if (_home != null && !_home.IsDisposed) _home.Show();
-            this.Close();
+            using (var f = new Form())
+            {
+                f.Text = "Reprogramar";
+                f.FormBorderStyle = FormBorderStyle.FixedDialog;
+                f.StartPosition = FormStartPosition.CenterParent;
+                f.ClientSize = new Size(420, 120);
+
+                var lbl = new Label { Text = "Nueva fecha/hora (dd/MM/yyyy HH:mm):", AutoSize = true, Left = 10, Top = 10 };
+                var dtp = new DateTimePicker
+                {
+                    Left = 10,
+                    Top = 35,
+                    Width = 380,
+                    Format = DateTimePickerFormat.Custom,
+                    CustomFormat = "dd/MM/yyyy HH:mm",
+                    ShowUpDown = true,
+                    Value = valorActual
+                };
+                // Redondeo a múltiplos de 30 minutos
+                dtp.ValueChanged += (s, e) =>
+                {
+                    var v = dtp.Value;
+                    var rounded = new DateTime(v.Year, v.Month, v.Day, v.Hour, v.Minute / 30 * 30, 0);
+                    if (rounded != dtp.Value) dtp.Value = rounded;
+                };
+
+                var ok = new Button { Text = "Aceptar", DialogResult = DialogResult.OK, Left = 245, Top = 75, Width = 75 };
+                var cancel = new Button { Text = "Cancelar", DialogResult = DialogResult.Cancel, Left = 325, Top = 75, Width = 75 };
+
+                f.Controls.AddRange(new Control[] { lbl, dtp, ok, cancel });
+                f.AcceptButton = ok; f.CancelButton = cancel;
+
+                return f.ShowDialog(this) == DialogResult.OK ? dtp.Value : (DateTime?)null;
+            }
         }
 
-        private void gbSeleccionarFecha_Enter(object sender, EventArgs e) { }
-        private void btSobreturno_Click(object sender, EventArgs e) { }
+        private int ObtenerProfesionalSeleccionadoId()
+        {
+            return int.TryParse(CMBProfesionales?.SelectedValue?.ToString(), out int id) ? id : 0;
+        }
 
-        //  HELPERS DE CAPACIDAD
- 
+        // ===================== HELPERS BD =====================
 
-        //horario pertenece a las franjas estándar (mañana/tarde, cada 30')
+        private int? GetPacienteIdPorDni(string dni)
+        {
+            using (var cn = Conexion.GetConnection())
+            using (var cmd = new SqlCommand("SELECT id_paciente FROM Paciente WHERE dni=@dni", cn))
+            {
+                cn.Open();
+                cmd.Parameters.AddWithValue("@dni", dni);
+                object res = cmd.ExecuteScalar();
+                return (res == null || res == DBNull.Value) ? (int?)null : Convert.ToInt32(res);
+            }
+        }
+
+        // Permitir sobreturno hasta +30 min del fin
+        private int? ObtenerIdAgendaParaHorario(int idProfesional, DateTime fh, bool permitirSobreturno)
+        {
+            var cultura = new CultureInfo("es-ES");
+            string dia = cultura.DateTimeFormat.GetDayName(fh.DayOfWeek).ToLower();
+            int extra = permitirSobreturno ? 30 : 0;
+
+            using (var cn = Conexion.GetConnection())
+            using (var cmd = new SqlCommand(@"
+                SELECT TOP 1 a.id_agenda
+                FROM Agenda a
+                INNER JOIN Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
+                WHERE pc.id_profesional = @p
+                  AND LOWER(a.diaSemana) = @dia
+                  AND @hora >= a.horaInicio 
+                  AND @hora <= DATEADD(minute, @extra, a.horaFin)
+                ORDER BY a.horaInicio", cn))
+            {
+                cn.Open();
+                cmd.Parameters.AddWithValue("@p", idProfesional);
+                cmd.Parameters.AddWithValue("@dia", dia);
+                cmd.Parameters.AddWithValue("@hora", fh.TimeOfDay);
+                cmd.Parameters.AddWithValue("@extra", extra);
+                var o = cmd.ExecuteScalar();
+                return (o == null || o == DBNull.Value) ? (int?)null : Convert.ToInt32(o);
+            }
+        }
+
         private bool EsHorarioEstandar(DateTime fh)
         {
             return GenerarSlotsEstandar(fh.Date).Contains(fh);
         }
 
-        // Cantidad de turnos NO cancelados que existen en la misma agenda y mismo horario
         private int ContarTurnosMismoHorario(int idAgenda, DateTime fechaHora)
         {
             using (var cn = Conexion.GetConnection())
@@ -994,6 +892,58 @@ namespace SaludSoft
                 return (int)cmd.ExecuteScalar();
             }
         }
+
+        private void InsertarTurnoBD(int idAgenda, int idPaciente, DateTime fh)
+        {
+            using (var cn = Conexion.GetConnection())
+            using (var cmd = new SqlCommand(@"
+                INSERT INTO Turnos (id_agenda, id_paciente, fecha, motivo, estado)
+                VALUES (@a, @pac, @fh, NULL, 'Pendiente')", cn))
+            {
+                cn.Open();
+                cmd.Parameters.AddWithValue("@a", idAgenda);
+                cmd.Parameters.AddWithValue("@pac", idPaciente);
+                cmd.Parameters.AddWithValue("@fh", fh);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private void ActualizarFechaTurnoBD(int idTurno, DateTime nueva)
+        {
+            using (var cn = Conexion.GetConnection())
+            using (var cmd = new SqlCommand("UPDATE Turnos SET fecha=@fh WHERE id_turno=@id", cn))
+            {
+                cn.Open();
+                cmd.Parameters.AddWithValue("@fh", nueva);
+                cmd.Parameters.AddWithValue("@id", idTurno);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private void ActualizarEstadoMotivoTurnoBD(int idTurno, string estado, string motivo)
+        {
+            using (var cn = Conexion.GetConnection())
+            using (var cmd = new SqlCommand(
+                "UPDATE Turnos SET estado = @estado, motivo = @motivo WHERE id_turno = @id", cn))
+            {
+                cn.Open();
+                cmd.Parameters.AddWithValue("@estado", estado);
+                cmd.Parameters.AddWithValue("@motivo", motivo);
+                cmd.Parameters.AddWithValue("@id", idTurno);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        // ===================== BOTONES =====================
+
+        private void BVolverAgenda_Click(object sender, EventArgs e)
+        {
+            if (_home != null && !_home.IsDisposed) _home.Show();
+            this.Close();
+        }
+
+        private void gbSeleccionarFecha_Enter(object sender, EventArgs e) { }
+        private void btSobreturno_Click(object sender, EventArgs e) { }
     }
 
     public class TurnoVM
@@ -1004,8 +954,6 @@ namespace SaludSoft
         public string Profesional { get; set; }
         public string Motivo { get; set; }
         public string Estado { get; set; }
-
-        // Marcador de Sobreturno para la grilla
         public bool EsSobreturno { get; set; }
         public string FlagSobreturno => EsSobreturno ? "S" : "";
     }

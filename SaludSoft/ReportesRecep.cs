@@ -42,24 +42,20 @@ namespace SaludSoft
         private bool _cargandoMedicos = false;
         private bool _gbDetalleResizeHooked = false;
 
-
         public ReportesRecep()
         {
             InitializeComponent();
 
-            InicializarAgendaDisponibleUI();   
-            WireAgendaDisponibleCard();       
+            InicializarAgendaDisponibleUI();
+            WireAgendaDisponibleCard();
 
             Load += ReportesRecep_Load;
 
-           
             if (btActualizar != null)
                 btActualizar.Click += (s, e) => RefrescarTodo();
 
-            // Clicks de cards de estados + pacientes totales
             WireCardClicks();
 
-            // Decoración ranking
             dgvRankingMedicos.RowPostPaint += dgvRankingMedicos_RowPostPaint;
             dgvRankingMedicos.CellPainting += dgvRankingMedicos_CellPainting;
         }
@@ -127,12 +123,13 @@ namespace SaludSoft
             gbDetalle.Visible = true;
             _detalleVisible = true;
 
-            CrearTableLayoutDetalle(); 
+            CrearTableLayoutDetalle();
 
             RefrescarTodo();
             ConfigurarPie();
-            ActualizarKpiAgendaDisponible(); 
+            ActualizarKpiAgendaDisponible();
             tlAgendaDisponible.Visible = false;
+
             if (btnImprimir != null)
                 btnImprimir.Click += btnImprimir_Click;
         }
@@ -397,6 +394,9 @@ namespace SaludSoft
             EnsureDetalleColumnsForPacientes();
             dgvDetalle.DataSource = dt;
             SetDetalleLayout(soloGrid: true);
+
+            // Sincroniza KPI con la cantidad de pacientes únicos mostrados
+            if (lbValorPacientes != null) lbValorPacientes.Text = dt.Rows.Count.ToString();
         }
 
         // ===== Refrescar todo =====
@@ -410,23 +410,34 @@ namespace SaludSoft
                 if (_modo == ModoDetalle.PacientesTotales) CargarPacientesTotales();
                 else CargarDetalleEstado();
             }
-            int totalPacientes = ContarPacientesTotales();
 
+            // Actualiza KPI de Pacientes Totales aunque la grilla no esté visible
+            int totalPacientes = ContarPacientesTotales();
             if (lbValorPacientes != null)
                 lbValorPacientes.Text = totalPacientes.ToString();
         }
+
+        // === CORREGIDO: cuenta pacientes únicos Confirmados en el rango ===
         private int ContarPacientesTotales()
         {
-            string sql = @"SELECT COUNT(*) FROM dbo.Paciente;";
+            var (desde, hastaEx) = RangoActual();
+
+            const string sql = @"
+                SELECT COUNT(DISTINCT t.id_paciente)
+                FROM dbo.Turnos t
+                WHERE t.id_paciente IS NOT NULL
+                  AND ISNULL(t.estado,'Pendiente') = 'Confirmado'
+                  AND t.fecha >= @d AND t.fecha < @h;";
+
             using (var cn = Conexion.GetConnection())
             using (var cmd = new SqlCommand(sql, cn))
             {
+                cmd.Parameters.AddWithValue("@d", desde);
+                cmd.Parameters.AddWithValue("@h", hastaEx);
                 cn.Open();
-                int total = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
-                return total;
+                return Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
             }
         }
-
 
         // ===== KPIs + Pie =====
         private void CargarKpisYTorta()
@@ -666,7 +677,7 @@ namespace SaludSoft
             }
         }
 
-        // ===== Layout Secciones  =====
+        // ===== Layout Secciones =====
         private const int SPACING = 10;
 
         private void CrearTableLayoutDetalle()
@@ -735,10 +746,7 @@ namespace SaludSoft
             dgvDetalle.Invalidate();
         }
 
-        private void GbDetalle_Resize(object sender, EventArgs e)
-        {
-            
-        }
+        private void GbDetalle_Resize(object sender, EventArgs e) { }
 
         private void LayoutSections()
         {
@@ -904,7 +912,7 @@ namespace SaludSoft
                 dgAgendaLibre.AutoGenerateColumns = false;
                 TryMap(dgAgendaLibre, "colFecha", "Fecha");
                 TryMap(dgAgendaLibre, "colHora", "Hora");
-                TryMap(dgAgendaLibre, "columMedico", "Profesional");          
+                TryMap(dgAgendaLibre, "columMedico", "Profesional");
                 TryMap(dgAgendaLibre, "columEspecialidad", "Especialidad");
                 TryMap(dgAgendaLibre, "columConsultorio", "Consultorio");
 
@@ -941,7 +949,7 @@ namespace SaludSoft
             }
         }
 
-        private const int _slotMin = 30; 
+        private const int _slotMin = 30;
 
         private DataTable GenerarLibresDesdeAgenda(DateTime desde, DateTime hastaEx, int idMedico)
         {
@@ -1126,7 +1134,7 @@ namespace SaludSoft
 
             TryMap(dgAgendaLibre, "colFecha", "Fecha");
             TryMap(dgAgendaLibre, "colHora", "Hora");
-            TryMap(dgAgendaLibre, "columMedico", "Profesional"); 
+            TryMap(dgAgendaLibre, "columMedico", "Profesional");
             TryMap(dgAgendaLibre, "columEspecialidad", "Especialidad");
             TryMap(dgAgendaLibre, "columConsultorio", "Consultorio");
 
@@ -1153,7 +1161,7 @@ namespace SaludSoft
             INNERINNER JOIN dbo.Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
             WHERE t.fecha >= @d AND t.fecha < @h
               AND (t.id_paciente IS NULL OR ISNULL(t.estado,'') = 'Cancelado')
-              /**FILTRO_MEDICO**/;".Replace("INNERINNER", "INNER"); // (solo para evitar confusiones al pegar)
+              /**FILTRO_MEDICO**/;".Replace("INNERINNER", "INNER");
 
             if (idMedico > 0)
                 sql = sql.Replace("/**FILTRO_MEDICO**/", "AND pc.id_profesional = @idMedico");
@@ -1177,20 +1185,14 @@ namespace SaludSoft
             }
         }
 
-        
-        private void lReportesMes_Click(object sender, EventArgs e)
-        {
-           
-        }
-        private void lbValorPacientes_Click(object sender, EventArgs e)
-        {
-           
-        }
+        private void lReportesMes_Click(object sender, EventArgs e) { }
+        private void lbValorPacientes_Click(object sender, EventArgs e) { }
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+
         // ====== HELPERS PDF ======
         private static PdfFontAlias FTitle(int size)
             => PdfFontFactory.GetFont("Helvetica", size, PdfFontAlias.BOLD, PdfBaseColor.BLACK);
@@ -1263,11 +1265,11 @@ namespace SaludSoft
             };
             doc.Add(p);
         }
+
         private void btnImprimir_Click(object sender, EventArgs e)
         {
             try
             {
-                // Verifica que haya algo para imprimir
                 bool hayAlgo =
                     (dgvDetalle?.Rows.Count ?? 0) > 0 ||
                     (dgvRankingMedicos?.Rows.Count ?? 0) > 0 ||
@@ -1286,14 +1288,12 @@ namespace SaludSoft
                 {
                     if (sfd.ShowDialog() != DialogResult.OK) return;
 
-                    // A4 horizontal favorece las tablas anchas; si preferís vertical, usá PdfPageSize.A4
                     var doc = new PdfDoc(PdfPageSize.A4.Rotate(), 36, 36, 36, 36);
                     var fs = new FileStream(sfd.FileName, FileMode.Create);
                     var writer = PdfWriterAlias.GetInstance(doc, fs);
 
                     doc.Open();
 
-                    // ===== Encabezado =====
                     var titulo = new PdfParagraphAlias("REPORTE MENSUAL - SALUDSOFT", FTitle(16))
                     {
                         Alignment = iTextSharp.text.Element.ALIGN_CENTER,
@@ -1301,7 +1301,6 @@ namespace SaludSoft
                     };
                     doc.Add(titulo);
 
-                    // Rango de fechas desde tus DateTimePickers
                     DateTime fechaDesde = dtpPeriodo.Value.Date;
                     DateTime fechaHasta = dtpHasta.Checked ? dtpHasta.Value.Date : fechaDesde;
 
@@ -1320,7 +1319,6 @@ namespace SaludSoft
                     };
                     doc.Add(info);
 
-                    // ===== KPIs (labels de tus cards) =====
                     var kpi = new PdfParagraphAlias(
                         $"Confirmados: {lbValor?.Text ?? "0"}   |   " +
                         $"Pendientes: {lbValorTP?.Text ?? "0"}   |   " +
@@ -1332,7 +1330,6 @@ namespace SaludSoft
                     };
                     doc.Add(kpi);
 
-                    // ===== Gráfico torta =====
                     if (chPieEstados != null && chPieEstados.Series.Count > 0)
                     {
                         AddSectionTitle(doc, "Distribución de turnos");
@@ -1340,7 +1337,6 @@ namespace SaludSoft
                         doc.Add(imgPie);
                     }
 
-                    // ===== Detalle principal (lo que esté visible en la pantalla) =====
                     if (dgvDetalle != null && dgvDetalle.Rows.Count > 0)
                     {
                         string tituloDetalle = (_modo == ModoDetalle.PacientesTotales)
@@ -1352,7 +1348,6 @@ namespace SaludSoft
                         doc.Add(tablaDetalle);
                     }
 
-                    // ===== Ranking de médicos =====
                     if (dgvRankingMedicos != null && dgvRankingMedicos.Rows.Count > 0)
                     {
                         AddSectionTitle(doc, "Ranking de Médicos");
@@ -1360,7 +1355,6 @@ namespace SaludSoft
                         doc.Add(tablaRank);
                     }
 
-                    // ===== Gráfico columnas Top Médicos =====
                     if (chTopMedicos != null && chTopMedicos.Series.Count > 0)
                     {
                         AddSectionTitle(doc, "Consultas por Médico");
@@ -1368,7 +1362,6 @@ namespace SaludSoft
                         doc.Add(imgCols);
                     }
 
-                    // Cierre
                     doc.Close();
                     writer.Close();
                     fs.Close();
@@ -1386,6 +1379,5 @@ namespace SaludSoft
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
     }
 }
