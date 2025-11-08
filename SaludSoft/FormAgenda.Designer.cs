@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel2 = new System.Windows.Forms.Panel();
             this.BVolverAgenda = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -150,7 +150,7 @@
             this.pnIzquierdo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnIzquierdo.Location = new System.Drawing.Point(3, 3);
             this.pnIzquierdo.Name = "pnIzquierdo";
-            this.pnIzquierdo.Size = new System.Drawing.Size(502, 217);
+            this.pnIzquierdo.Size = new System.Drawing.Size(502, 247);
             this.pnIzquierdo.TabIndex = 8;
             // 
             // gbSeleccionarFecha
@@ -161,7 +161,7 @@
             this.gbSeleccionarFecha.Margin = new System.Windows.Forms.Padding(0);
             this.gbSeleccionarFecha.Name = "gbSeleccionarFecha";
             this.gbSeleccionarFecha.Padding = new System.Windows.Forms.Padding(12);
-            this.gbSeleccionarFecha.Size = new System.Drawing.Size(502, 217);
+            this.gbSeleccionarFecha.Size = new System.Drawing.Size(502, 247);
             this.gbSeleccionarFecha.TabIndex = 9;
             this.gbSeleccionarFecha.TabStop = false;
             this.gbSeleccionarFecha.Enter += new System.EventHandler(this.gbSeleccionarFecha_Enter);
@@ -186,35 +186,36 @@
             this.pnlDerecho.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlDerecho.Location = new System.Drawing.Point(511, 3);
             this.pnlDerecho.Name = "pnlDerecho";
-            this.pnlDerecho.Size = new System.Drawing.Size(502, 217);
+            this.pnlDerecho.Size = new System.Drawing.Size(502, 247);
             this.pnlDerecho.TabIndex = 9;
             // 
             // gbFranjaHoraria
             // 
+            this.gbFranjaHoraria.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbFranjaHoraria.Controls.Add(this.flpFranjas);
             this.gbFranjaHoraria.Controls.Add(this.lDisponibles);
             this.gbFranjaHoraria.Controls.Add(this.btSobreturno);
-            this.gbFranjaHoraria.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbFranjaHoraria.Location = new System.Drawing.Point(0, 0);
             this.gbFranjaHoraria.Margin = new System.Windows.Forms.Padding(0);
             this.gbFranjaHoraria.Name = "gbFranjaHoraria";
             this.gbFranjaHoraria.Padding = new System.Windows.Forms.Padding(12);
-            this.gbFranjaHoraria.Size = new System.Drawing.Size(502, 217);
+            this.gbFranjaHoraria.Size = new System.Drawing.Size(502, 247);
             this.gbFranjaHoraria.TabIndex = 0;
             this.gbFranjaHoraria.TabStop = false;
             // 
             // flpFranjas
             // 
-            this.flpFranjas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.flpFranjas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flpFranjas.AutoScroll = true;
             this.flpFranjas.AutoSize = true;
-            this.flpFranjas.Location = new System.Drawing.Point(12, 54);
+            this.flpFranjas.Location = new System.Drawing.Point(12, 44);
             this.flpFranjas.Margin = new System.Windows.Forms.Padding(0);
             this.flpFranjas.Name = "flpFranjas";
             this.flpFranjas.Padding = new System.Windows.Forms.Padding(8);
-            this.flpFranjas.Size = new System.Drawing.Size(478, 141);
+            this.flpFranjas.Size = new System.Drawing.Size(463, 191);
             this.flpFranjas.TabIndex = 2;
             // 
             // lDisponibles
@@ -222,7 +223,7 @@
             this.lDisponibles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lDisponibles.AutoSize = true;
             this.lDisponibles.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lDisponibles.Location = new System.Drawing.Point(69, 25);
+            this.lDisponibles.Location = new System.Drawing.Point(15, 8);
             this.lDisponibles.Name = "lDisponibles";
             this.lDisponibles.Size = new System.Drawing.Size(126, 19);
             this.lDisponibles.TabIndex = 1;
@@ -236,9 +237,9 @@
             this.btSobreturno.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btSobreturno.Image = global::SaludSoft.Properties.Resources.agregar;
             this.btSobreturno.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btSobreturno.Location = new System.Drawing.Point(369, 18);
+            this.btSobreturno.Location = new System.Drawing.Point(385, 8);
             this.btSobreturno.Name = "btSobreturno";
-            this.btSobreturno.Size = new System.Drawing.Size(124, 33);
+            this.btSobreturno.Size = new System.Drawing.Size(114, 33);
             this.btSobreturno.TabIndex = 0;
             this.btSobreturno.Text = "Sobreturno";
             this.btSobreturno.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -251,9 +252,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbTurnosDia.Controls.Add(this.DTVGAgenda);
             this.gbTurnosDia.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbTurnosDia.Location = new System.Drawing.Point(12, 334);
+            this.gbTurnosDia.Location = new System.Drawing.Point(12, 353);
             this.gbTurnosDia.Name = "gbTurnosDia";
-            this.gbTurnosDia.Size = new System.Drawing.Size(1016, 182);
+            this.gbTurnosDia.Size = new System.Drawing.Size(1016, 153);
             this.gbTurnosDia.TabIndex = 10;
             this.gbTurnosDia.TabStop = false;
             this.gbTurnosDia.Text = "Turnos del día";
@@ -265,14 +266,14 @@
             this.DTVGAgenda.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DTVGAgenda.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DTVGAgenda.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle19.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle19.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DTVGAgenda.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle19;
             this.DTVGAgenda.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DTVGAgenda.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colFechaHora,
@@ -293,9 +294,9 @@
             // 
             // colFechaHora
             // 
-            dataGridViewCellStyle8.Format = "f";
-            dataGridViewCellStyle8.NullValue = null;
-            this.colFechaHora.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle20.Format = "f";
+            dataGridViewCellStyle20.NullValue = null;
+            this.colFechaHora.DefaultCellStyle = dataGridViewCellStyle20;
             this.colFechaHora.HeaderText = "Fecha/hora";
             this.colFechaHora.Name = "colFechaHora";
             this.colFechaHora.ReadOnly = true;
@@ -354,7 +355,7 @@
             this.tlRootAgenda.RowCount = 1;
             this.tlRootAgenda.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlRootAgenda.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlRootAgenda.Size = new System.Drawing.Size(1016, 223);
+            this.tlRootAgenda.Size = new System.Drawing.Size(1016, 253);
             this.tlRootAgenda.TabIndex = 11;
             // 
             // FormAgenda
