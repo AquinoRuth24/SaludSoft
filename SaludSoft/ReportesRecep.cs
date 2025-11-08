@@ -86,9 +86,8 @@ namespace SaludSoft
                 pb.Style = ProgressBarStyle.Continuous;
                 pb.MarqueeAnimationSpeed = 0;
             }
-            SetPBState(pbTurnosConfirmados, 1); // verde
-            SetPBState(pbTP, 3);                // amarillo
-            SetPBState(progressBar1, 2);        // rojo
+            SetPBState(pbTurnosConfirmados, 1); 
+            SetPBState(pbTP, 3);                
 
             // Charts base
             var caPie = EnsureChartArea(chPieEstados, "ca");
@@ -147,7 +146,6 @@ namespace SaludSoft
             return (desde, desde.AddDays(1));
         }
 
-        // ===== Acceso BD helpers =====
         private DataTable GetTable(string sql, Action<SqlCommand> bind)
         {
             using (var cn = Conexion.GetConnection())
@@ -244,7 +242,7 @@ namespace SaludSoft
             return s;
         }
 
-        // ===== Columnas del detalle (Pacientes Totales) =====
+        // ===== Columnas del detalle =====
         private void EnsureDetalleColumnsForPacientes()
         {
             dgvDetalle.AutoGenerateColumns = false;
@@ -299,7 +297,7 @@ namespace SaludSoft
                 c.Visible = new[] { "colNombre", "colApellido", "colDni", "colCorreo", "colMedico", "colMotivo" }.Contains(c.Name);
         }
 
-        // ===== Columnas del detalle (Por estado) =====
+        // ===== Columnas del detalle =====
         private void EnsureDetalleColumnsForEstado()
         {
             dgvDetalle.AutoGenerateColumns = false;
@@ -395,7 +393,6 @@ namespace SaludSoft
             dgvDetalle.DataSource = dt;
             SetDetalleLayout(soloGrid: true);
 
-            // Sincroniza KPI con la cantidad de pacientes únicos mostrados
             if (lbValorPacientes != null) lbValorPacientes.Text = dt.Rows.Count.ToString();
         }
 
@@ -411,13 +408,13 @@ namespace SaludSoft
                 else CargarDetalleEstado();
             }
 
-            // Actualiza KPI de Pacientes Totales aunque la grilla no esté visible
+           
             int totalPacientes = ContarPacientesTotales();
             if (lbValorPacientes != null)
                 lbValorPacientes.Text = totalPacientes.ToString();
         }
 
-        // === CORREGIDO: cuenta pacientes únicos Confirmados en el rango ===
+     
         private int ContarPacientesTotales()
         {
             var (desde, hastaEx) = RangoActual();
@@ -1144,46 +1141,60 @@ namespace SaludSoft
             ActualizarKpiAgendaDisponible();
         }
 
-        // ===== KPI Agenda Disponible =====
+        // ===== KPI: Agendas activas =====
         private void ActualizarKpiAgendaDisponible()
         {
-            DateTime d = (dtADesde?.Value.Date ?? DateTime.Today);
-            DateTime hEx = (dtAHasta?.Value.Date ?? DateTime.Today).AddDays(1);
-
-            int idMedico = 0;
-            if (cbMedico?.SelectedValue != null)
-                int.TryParse(cbMedico.SelectedValue.ToString(), out idMedico);
-
-            string sql = @"
-            SELECT COUNT(*)
-            FROM dbo.Turnos t
-            INNER JOIN dbo.Agenda a                   ON a.id_agenda = t.id_agenda
-            INNERINNER JOIN dbo.Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
-            WHERE t.fecha >= @d AND t.fecha < @h
-              AND (t.id_paciente IS NULL OR ISNULL(t.estado,'') = 'Cancelado')
-              /**FILTRO_MEDICO**/;".Replace("INNERINNER", "INNER");
-
-            if (idMedico > 0)
-                sql = sql.Replace("/**FILTRO_MEDICO**/", "AND pc.id_profesional = @idMedico");
-            else
-                sql = sql.Replace("/**FILTRO_MEDICO**/", "");
-
-            int libres = GetScalarInt(sql, c =>
+            try
             {
-                c.Parameters.AddWithValue("@d", d);
-                c.Parameters.AddWithValue("@h", hEx);
-                if (idMedico > 0) c.Parameters.AddWithValue("@idMedico", idMedico);
-            });
+                DateTime d = (dtADesde?.Value.Date ?? DateTime.Today);
+                DateTime hEx = (dtAHasta?.Value.Date ?? DateTime.Today).AddDays(1);
 
-            if (lbTituloDisponibilidad != null) lbTituloDisponibilidad.Text = "Agenda Disponible";
-            if (lbValorDisponibilidad != null) lbValorDisponibilidad.Text = libres.ToString();
-            if (pbDisponibilidad != null)
+                int idMedico = 0;
+                if (cbMedico?.SelectedValue != null)
+                    int.TryParse(cbMedico.SelectedValue.ToString(), out idMedico);
+
+                // Contamos PROFESIONALES con agenda vigente (activos) que tengan al menos 1 fila en Agenda.
+                string sql = @"
+                SELECT COUNT(DISTINCT pc.id_profesional)
+                FROM dbo.Agenda a
+                INNER JOIN dbo.Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
+                INNER JOIN dbo.Profesional pr             ON pr.id_profesional = pc.id_profesional
+                WHERE pr.id_estado = 1
+                  -- superposición de vigencia con el rango solicitado
+                  AND pc.vigencia_desde <= @h
+                  AND pc.vigencia_hasta  >= @d
+                  /**FILTRO_MEDICO**/;";
+
+                if (idMedico > 0)
+                    sql = sql.Replace("/**FILTRO_MEDICO**/", "AND pc.id_profesional = @idMedico");
+                else
+                    sql = sql.Replace("/**FILTRO_MEDICO**/", "");
+
+                int agendasActivas = GetScalarInt(sql, c =>
+                {
+                    c.Parameters.AddWithValue("@d", d);
+                    c.Parameters.AddWithValue("@h", hEx);
+                    if (idMedico > 0) c.Parameters.AddWithValue("@idMedico", idMedico);
+                });
+
+                // UI
+                if (lbTituloDisponibilidad != null) lbTituloDisponibilidad.Text = "Agendas activas";
+                if (lbValorDisponibilidad != null) lbValorDisponibilidad.Text = agendasActivas.ToString();
+
+                if (pbDisponibilidad != null)
+                {
+                    pbDisponibilidad.Maximum = Math.Max(agendasActivas, 1);
+                    pbDisponibilidad.Value = Math.Min(agendasActivas, pbDisponibilidad.Maximum);
+                    SetPBState(pbDisponibilidad, 1); // verde
+                }
+            }
+            catch
             {
-                pbDisponibilidad.Maximum = Math.Max(libres, 1);
-                pbDisponibilidad.Value = Math.Min(libres, pbDisponibilidad.Maximum);
-                SetPBState(pbDisponibilidad, 1);
+                if (lbValorDisponibilidad != null) lbValorDisponibilidad.Text = "0";
+                try { SetPBState(pbDisponibilidad, 2); } catch { }
             }
         }
+
 
         private void lReportesMes_Click(object sender, EventArgs e) { }
         private void lbValorPacientes_Click(object sender, EventArgs e) { }
