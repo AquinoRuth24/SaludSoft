@@ -455,15 +455,25 @@ namespace SaludSoft
         private void CargarReportePacientes()
         {
             string query = @"
-             SELECT 
-             p.sexo,
-             COUNT(DISTINCT p.id_paciente) AS Cantidad
-             FROM Paciente p
-             INNER JOIN Historial h ON p.id_paciente = h.id_paciente
-             WHERE h.fechaConsulta <= @fechaFin
-             AND p.id_estado = 1
-             GROUP BY p.sexo;";
+        -- Totales por sexo
+        SELECT 
+            p.sexo,
+            COUNT(DISTINCT p.id_paciente) AS Cantidad
+        FROM Paciente p
+        WHERE p.id_estado = 1
+        GROUP BY p.sexo;
 
+        -- Pacientes nuevos en el rango (primer turno en el rango)
+        SELECT COUNT(*) AS Nuevos
+        FROM (
+            SELECT p.id_paciente, MIN(t.fecha) AS FechaPrimerTurno
+            FROM Paciente p
+            INNER JOIN Turnos t ON t.id_paciente = p.id_paciente
+            WHERE p.id_estado = 1
+            GROUP BY p.id_paciente
+            HAVING MIN(t.fecha) BETWEEN @fechaInicio AND @fechaFin
+        ) AS Sub;
+    ";
 
             using (SqlConnection conexion = Conexion.GetConnection())
             {
@@ -471,11 +481,14 @@ namespace SaludSoft
                 DateTime fechaFin = DTPHasta.Value.Date.AddDays(1).AddTicks(-1);
 
                 SqlDataAdapter da = new SqlDataAdapter(query, conexion);
-                da.SelectCommand.Parameters.AddWithValue("@fechaInicio", DTPDesde.Value.Date);
-                da.SelectCommand.Parameters.AddWithValue("@fechaFin", DTPHasta.Value.Date);
+                da.SelectCommand.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                da.SelectCommand.Parameters.AddWithValue("@fechaFin", fechaFin);
 
-                DataTable dt = new DataTable();
-                da.Fill(dt);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+
+                DataTable dt = ds.Tables[0]; // totales por sexo
+                DataTable dtNuevos = ds.Tables[1]; // pacientes nuevos
 
                 if (dt.Rows.Count == 0)
                 {
@@ -486,18 +499,19 @@ namespace SaludSoft
                 int total = dt.AsEnumerable().Sum(r => r.Field<int>("Cantidad"));
                 int masculino = dt.AsEnumerable().Where(r => r.Field<string>("sexo") == "Masculino").Select(r => r.Field<int>("Cantidad")).FirstOrDefault();
                 int femenino = dt.AsEnumerable().Where(r => r.Field<string>("sexo") == "Femenino").Select(r => r.Field<int>("Cantidad")).FirstOrDefault();
+                int nuevos = dtNuevos.Rows.Count > 0 ? Convert.ToInt32(dtNuevos.Rows[0]["Nuevos"]) : 0;
 
                 double porcMasculino = total > 0 ? Math.Round((double)masculino / total * 100, 1) : 0;
                 double porcFemenino = total > 0 ? Math.Round((double)femenino / total * 100, 1) : 0;
 
-                // Eliminar solo el contenedor anterior si existe, sin borrar el DataGrid
+                // Eliminar el contenedor anterior si existe
                 if (contenedorPacientes != null && GBPacientes.Controls.Contains(contenedorPacientes))
                 {
                     GBPacientes.Controls.Remove(contenedorPacientes);
                     contenedorPacientes.Dispose();
                 }
 
-                // Crear contenedor superior con las tarjetas
+                // Crear contenedor
                 contenedorPacientes = new FlowLayoutPanel
                 {
                     Dock = DockStyle.Top,
@@ -509,15 +523,37 @@ namespace SaludSoft
                     BackColor = Color.White
                 };
 
-                //Crear las tarjetas de género
-                Panel tarjetaMasculino = CrearTarjetaGenero(masculino.ToString(), "Masculino", $"{porcMasculino}% del total", Color.FromArgb(230, 240, 255), Color.FromArgb(0, 102, 255));
-                Panel tarjetaFemenino = CrearTarjetaGenero(femenino.ToString(), "Femenino", $"{porcFemenino}% del total", Color.FromArgb(255, 240, 245), Color.DeepPink);
-                Panel tarjetaTotal = CrearTarjetaGenero(total.ToString(), "Total Pacientes", "Con consultas en el rango seleccionado", Color.FromArgb(240, 255, 240), Color.ForestGreen);
+                // Crear las tarjetas
+                Panel tarjetaMasculino = CrearTarjetaGenero(
+                    masculino.ToString(),
+                    "Masculino",
+                    $"{porcMasculino}% del total",
+                    Color.FromArgb(230, 240, 255),
+                    Color.FromArgb(0, 102, 255)
+                );
 
+                Panel tarjetaFemenino = CrearTarjetaGenero(
+                    femenino.ToString(),
+                    "Femenino",
+                    $"{porcFemenino}% del total",
+                    Color.FromArgb(255, 240, 245),
+                    Color.DeepPink
+                );
+
+                string textoNuevos = $"{nuevos} nuevos en el rango seleccionado";
+
+                Panel tarjetaTotal = CrearTarjetaGenero(
+                    total.ToString(),
+                    "Pacientes Totales",
+                    textoNuevos,
+                    Color.FromArgb(240, 255, 240),
+                    Color.ForestGreen
+                );
+
+           
                 contenedorPacientes.Controls.Add(tarjetaMasculino);
                 contenedorPacientes.Controls.Add(tarjetaFemenino);
                 contenedorPacientes.Controls.Add(tarjetaTotal);
-
                 //Agregar las tarjetas al GroupBox
                 GBPacientes.Controls.Add(contenedorPacientes);
                 contenedorPacientes.BringToFront();
@@ -528,6 +564,7 @@ namespace SaludSoft
                     DTGRankingPacientes.Dock = DockStyle.Fill;
                     GBPacientes.Controls.Add(DTGRankingPacientes);
                 }
+
                 DTGRankingPacientes.Visible = true;
                 DTGRankingPacientes.BringToFront();
             }
@@ -589,11 +626,14 @@ namespace SaludSoft
              p.dni,
              COUNT(t.id_turno) AS CantidadTurnos,
              MAX(t.fecha) AS UltimaVisita
-             FROM Turnos t
-             INNER JOIN Paciente p ON t.id_paciente = p.id_paciente
-             WHERE t.fecha >= @fechaInicio AND t.fecha < DATEADD(DAY, 1, @fechaFin)
+             FROM Paciente p
+             LEFT JOIN Turnos t 
+             ON t.id_paciente = p.id_paciente 
+             AND t.fecha >= @fechaInicio 
+             AND t.fecha < DATEADD(DAY, 1, @fechaFin)
+             WHERE p.id_estado = 1
              GROUP BY p.apellido, p.nombre, p.dni
-             ORDER BY CantidadTurnos DESC;";
+             ORDER BY COUNT(t.id_turno) DESC, p.apellido ASC;";
 
             using (SqlConnection conexion = Conexion.GetConnection())
             {
@@ -609,7 +649,7 @@ namespace SaludSoft
                 dtRanking.Columns.Add("Paciente", typeof(string));
                 dtRanking.Columns.Add("DNI", typeof(string));
                 dtRanking.Columns.Add("Turnos", typeof(int));
-                dtRanking.Columns.Add("Última Visita", typeof(DateTime));
+                dtRanking.Columns.Add("Última Visita", typeof(string)); //string para mostrar vacío si es null
 
                 int posicion = 1;
                 foreach (DataRow row in dt.Rows)
@@ -770,7 +810,7 @@ namespace SaludSoft
                 MessageBox.Show("La fecha de inicio no puede ser mayor que la fecha de fin.");
                 return;
             }
-            // limpiar todo previamente
+            //limpiar todo previamente
             ChartEspecialidades.Series.Clear();
             DTGRankingMedicos.DataSource = null;
             // si es el boton medico visible esos graficos
@@ -778,14 +818,25 @@ namespace SaludSoft
             {
                 CargarRankingMedicosGrid();
                 CargarDetalleMedico();
-            }// si es el boton pacientes visible esos graficos
+            }
+
+            //Si esta visible la vista de PACIENTES
             else if (GBPacientes.Visible)
             {
                 CargarReportePacientes();
                 CargarRankingPacientesGrid();
-                // CargarDistribucionEdades();
             }
-            // sino cargar los graficos generales
+
+            //Si ninguna vista especifica está activa muestra la vista GENERAL
+            else if (!GBMedicos.Visible && !GBPacientes.Visible)
+            {
+                CargarGrafico();
+                CargarRankingMedicosGrid();
+                CargarResumenCitas();
+                CargarEstadisticasGenerales();
+            }
+
+            //ninguna condicion se cumple por error  forzar recarga general
             else
             {
                 CargarGrafico();

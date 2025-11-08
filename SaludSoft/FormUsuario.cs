@@ -288,6 +288,7 @@ namespace SaludSoft.Resources
                     MessageBox.Show("Usuario agregado correctamente en la base de datos.",
                         "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarCampos();
+                    this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
             }
