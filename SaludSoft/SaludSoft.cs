@@ -24,7 +24,9 @@ namespace SaludSoft
 
         private void BNuevaCita_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormAgenda()) frm.ShowDialog();
+            using (var frm = new FormAgenda()) 
+            frm.ShowDialog();
+            CargarTotales();
         }
 
         private void BPacientes_Click(object sender, EventArgs e)
@@ -35,6 +37,7 @@ namespace SaludSoft
         private void BAgenda_Click(object sender, EventArgs e)
         {
             using (var frm = new FormAgenda()) frm.ShowDialog();
+            CargarTotales();
         }
 
         private void PDoctores_Click(object sender, EventArgs e)
@@ -90,7 +93,7 @@ namespace SaludSoft
                        AND CONVERT(date, fecha) <  DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), CONVERT(date, GETDATE()))
                        AND estado <> 'Cancelado'", conexion))
                 {
-                    // LTurnosSemana.Text = ((int)cmdTurnosSemana.ExecuteScalar()).ToString();
+
                     cmdTurnosSemana.ExecuteScalar();
                 }
 

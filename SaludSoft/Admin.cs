@@ -66,7 +66,10 @@ namespace SaludSoft
                 filaTodos["Nombre"] = "Todos los profesionales";
 
                 // Insertarla al principio
-                dt.Rows.InsertAt(filaTodos, 0);
+                var filaTodas = dt.NewRow();
+                filaTodos["id_profesional"] = 0;
+                filaTodos["Nombre"] = "Todos los profesionales";
+                dt.Rows.InsertAt(filaTodas, 0);
 
                 cmbMedicoMes.DataSource = dt;
                 cmbMedicoMes.DisplayMember = "Nombre";
@@ -94,21 +97,21 @@ namespace SaludSoft
             using (var cn = Conexion.GetConnection())
             {
                 cn.Open();
-                string sql = @"
-                 SELECT 
-                 t.fecha AS FechaHora,
-                 (pa.apellido + ', ' + pa.nombre) AS Paciente,
-                 (pr.apellido + ', ' + pr.nombre) AS Profesional,
-                 t.motivo AS Motivo,
-                 t.estado AS Estado
-                 FROM Turnos t
-                 INNER JOIN Paciente pa ON pa.id_paciente = t.id_paciente
-                 INNER JOIN Agenda a ON a.id_agenda = t.id_agenda
-                 INNER JOIN Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
-                 INNER JOIN Profesional pr ON pr.id_profesional = pc.id_profesional
-                 WHERE t.fecha >= @desde AND t.fecha < @hasta
-                 AND (@idProf = 0 OR pr.id_profesional = @idProf)
-                 ORDER BY t.fecha";
+                 string sql = @"
+                  SELECT 
+                  t.fecha AS FechaHora,
+                  (pa.apellido + ', ' + pa.nombre) AS Paciente,
+                  (pr.apellido + ', ' + pr.nombre) AS Profesional,
+                  t.motivo AS Motivo,
+                  t.estado AS Estado
+                  FROM Turnos t
+                  INNER JOIN Paciente pa ON pa.id_paciente = t.id_paciente
+                  INNER JOIN Agenda a ON a.id_agenda = t.id_agenda
+                  INNER JOIN Profesional_Consultorio pc ON pc.id_profesional_consultorio = a.id_profesional_consultorio
+                  INNER JOIN Profesional pr ON pr.id_profesional = pc.id_profesional
+                  WHERE t.fecha >= @desde AND t.fecha < @hasta
+                  AND (@idProf = 0 OR pr.id_profesional = @idProf)
+                  ORDER BY t.fecha";
 
                 using (var cmd = new SqlCommand(sql, cn))
                 {
